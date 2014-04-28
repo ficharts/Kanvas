@@ -34,10 +34,9 @@ package commands
 			for (var i:int = 0; i < groupLength; i++)
 			{
 				var item:ElementBase = groupElements[i];
-				if (item is PageElement)
-					CoreFacade.coreMediator.pageManager.removePage(item.vo as PageVO);
-				else
-					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(item);
+				CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(item);
+				if (item.isPage)
+					CoreFacade.coreMediator.pageManager.removePage(item.vo.pageVO);
 				groupElementIndexs[i] = item.index;
 				CoreFacade.removeElement(item);
 			}
@@ -56,11 +55,8 @@ package commands
 			{
 				var item:ElementBase = groupElements[i];
 				CoreFacade.addElementAt(item, groupElementIndexs[i]);
-				if (item is PageElement)
-				{
-					var pageVO:PageVO = item.vo as PageVO;
-					CoreFacade.coreMediator.pageManager.addPageAt(pageVO, pageVO.index);
-				}
+				if (item.isPage)
+					CoreFacade.coreMediator.pageManager.addPageAt(item.vo.pageVO, item.vo.pageVO.index);
 			}
 			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
@@ -75,8 +71,8 @@ package commands
 			for each (var item:ElementBase in groupElements)
 			{
 				CoreFacade.removeElement(item);
-				if (item is PageElement)
-					CoreFacade.coreMediator.pageManager.removePage(item.vo as PageVO);
+				if (item.isPage)
+					CoreFacade.coreMediator.pageManager.removePage(item.vo.pageVO);
 			}
 			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
