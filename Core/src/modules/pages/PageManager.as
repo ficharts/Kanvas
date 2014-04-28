@@ -312,7 +312,7 @@ package modules.pages
 			if (current.isPage)
 			{
 				var vector:Vector.<PageVO> = new Vector.<PageVO>;
-				vector.push(current);
+				vector.push(current.vo.pageVO);
 			}
 			if (current.screenshot)
 			{
