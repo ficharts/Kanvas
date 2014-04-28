@@ -645,25 +645,28 @@ package view.element
 		 */		
 		public function layoutPageNum(s:Number = NaN):void
 		{
-			//尺寸缩放时需要临时取表象的信息
-			if(!numLabel)
-				drawPageNum();
-			if (isNaN(s))
-				s = vo.scale;
-			
-			numShape.width = numShape.height = height * .5;
-			var temSize:Number = numShape.width * s * parent.scaleX;
-			
-			if (temSize > maxNumSize)
+			if (isPage)
 			{
-				var size:Number = maxNumSize / s / parent.scaleX;
+				//尺寸缩放时需要临时取表象的信息
+				if(!numLabel)
+					drawPageNum();
+				if (isNaN(s))
+					s = scaleX;
 				
-				numShape.width  = size;
-				numShape.height = size;
+				numShape.width = numShape.height = height * .5;
+				var temSize:Number = numShape.width * s * parent.scaleX;
+				
+				if (temSize > maxNumSize)
+				{
+					var size:Number = maxNumSize / s / parent.scaleX;
+					
+					numShape.width  = size;
+					numShape.height = size;
+				}
+				
+				numShape.x = - width * .5 - numShape.width * .5;
+				numShape.y = - numShape.height;
 			}
-			
-			numShape.x = - width * .5 - numShape.width * .5;
-			numShape.y = - numShape.height;
 		}
 		
 		/**
