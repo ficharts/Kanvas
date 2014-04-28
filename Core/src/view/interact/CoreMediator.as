@@ -763,15 +763,17 @@ package view.interact
 			{
 				if (element.visible)
 				{
-					if (element is TextEditField)
-					{
-						(element as TextEditField).checkTextBm();
-					}
-					//刷新页面编号尺寸，防止太大
-					else if (element.isPage)
+					if (element.isPage)
 					{
 						element.layoutPageNum();
 					}
+					if (element is TextEditField)
+					{
+						trace("checkTextBm");
+						(element as TextEditField).checkTextBm();
+					}
+					//刷新页面编号尺寸，防止太大
+					
 				}
 			}
 			//PerformaceTest.end("CoreMediator.flashTrek()")
