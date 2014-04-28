@@ -208,12 +208,16 @@ package view.editor.text
 		{
 			if (RexUtil.ifHasText(textField.text))
 			{
-				synEditorToTextLabel(editMode.element.vo as TextVO);
-				
 				var field:TextEditField = editMode.element as TextEditField;
-				
+				//改变之前的页面
+				mainUIMediator.pageManager.registOverlappingPageVOs(field);
+				synEditorToTextLabel(editMode.element.vo as TextVO);
 				field.render();
-				field.checkTextBm(true);
+				//改变之后的页面
+				mainUIMediator.pageManager.registOverlappingPageVOs(field);
+				//field.checkTextBm(true);
+				mainUIMediator.pageManager.refreshVOThumbs();
+				
 			}
 			else 
 			{
@@ -263,6 +267,18 @@ package view.editor.text
 			
 			textVO.x = temp.x - r * Math.cos(rad);
 			textVO.y = temp.y - r * Math.sin(rad);
+			
+			var field:TextEditField = editMode.element as TextEditField;
+			if (field)
+			{
+				field.x = textVO.x;
+				field.y = textVO.y;
+				field.scaleX = field.scaleY = textVO.scale;
+				field.width = textVO.width;
+				field.layoutPageNum();
+			}
+			
+			//field.layoutPageNum();
 		}
 		
 		/**
