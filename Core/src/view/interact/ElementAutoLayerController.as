@@ -1,9 +1,11 @@
 package view.interact
 {
 	
+	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	
 	import flash.geom.Rectangle;
+	import flash.utils.Dictionary;
 	
 	import model.CoreFacade;
 	
@@ -42,17 +44,24 @@ package view.interact
 				{
 					//当前元素放入层级比较队列
 					_indexChangeElement.push(current);
+					current = getLargestSizeElement(_indexChangeElement);
+					_indexChangeElement.length = 0;
+					for each (element in elements)
+					{
+						if (checkAutoLayerAvailable(current, element))
+							_indexChangeElement.push(element);
+					}
+					_indexChangeElement.push(current);
 					_indexChangeElement.sort(sortOnElementIndex);
-					for each (element in _indexChangeElement)
-						trace(element, element.index);
+					/*for each (element in _indexChangeElement)
+						trace(element, element.index);*/
 					layer = new Vector.<int>;
 					for each (element in _indexChangeElement)
 						layer.push(element.index);
 					
-					var length:int = layer.length;
 					//获得一个重新比较后的顺序数组order
 					var order:Vector.<int> = getOrderBySize(_indexChangeElement);
-					trace(order);
+					//trace(order);
 					//重新排列元素
 					swapElements(_indexChangeElement, order);
 				}
@@ -101,28 +110,41 @@ package view.interact
 			return CoreFacade.coreProxy.elements;
 		}
 		
+		private function getLargestSizeElement(items:Vector.<ElementBase>):ElementBase
+		{
+			if (items && items.length)
+			{
+				var element:ElementBase = items[0];
+				var l:int = items.length;
+				for (var i:int = 1; i < l; i++)
+				{
+					var aw:Number = items[i].scaledWidth;
+					var ah:Number = items[i].scaledHeight;
+					var bw:Number = element .scaledWidth;
+					var bh:Number = element .scaledHeight;
+					if (aw > bw && ah > bh)
+						element = items[i];
+				}
+			}
+			return element;
+		}
+		
 		/**
 		 * 根据传入的element集合按照尺寸重新排列层级，并返回一个层级数组。
 		 * 
 		 */
 		private function getOrderBySize(items:Vector.<ElementBase>):Vector.<int>
 		{
-			var itemsBefore:Vector.<ElementBase> = items;
-			var itemsAfter :Vector.<ElementBase> = items.concat();
-			var layerBefore:Vector.<int> = new Vector.<int>;
-			var layerAfter :Vector.<int> = new Vector.<int>;
-			
-			for each (var item:ElementBase in itemsBefore)
-				layerBefore.push(item.index);
-
-			itemsAfter.sort(sortOnElementLayer);
-			//sortOnElementLayer2(itemsAfter);
-			
-			var length:int = itemsAfter.length;
-			for (var i:int = 0; i < length; i++)
-				layerAfter[i] = layerBefore[itemsAfter.indexOf(itemsBefore[i])];
-
-			return layerAfter;
+			var order:Vector.<ElementBase> = items.concat();
+			var layer:Vector.<int> = new Vector.<int>;
+			var l:int = items.length;
+			sortOnElementLayer2(order);
+			var dic:Dictionary = new Dictionary;
+			for (var i:int = 0; i < l; i++)
+				dic[order[i]] = items[i].index;
+			for (i = 0; i < l; i++)
+				layer[i] = dic[items[i]];
+			return layer;
 		}
 		
 		private function sortOnElementIndex(a:ElementBase, b:ElementBase):int
@@ -135,52 +157,33 @@ package view.interact
 				return 1;
 		}
 		
-		/*private function sortOnElementLayer2(vector:Vector.<ElementBase>):Vector.<ElementBase>
+		private function sortOnElementLayer2(vector:Vector.<ElementBase>):Vector.<ElementBase>
 		{
 			var l0:int = vector.length;
 			var l1:int = l0 - 1;
+			var rects:Vector.<Rectangle> = new Vector.<Rectangle>;
+			for each (var element:ElementBase in vector)
+				rects.push(LayoutUtil.getItemRect(coreMdt.canvas, element));
+				
 			for (var i:int = 0; i < l1; i++)
 			{
+				var arect:Rectangle = rects[i];
 				for (var j:int = i + 1; j < l0; j++)
 				{
-					if (overlappingElement(vector[i], vector[j]))
+					var brect:Rectangle = rects[j];
+					if (arect.width < brect.width && arect.height < brect.height && 
+						RectangleUtil.rectOverlapping(arect, brect))
 					{
-						var aw:Number = vector[i].scaledWidth;
-						var bw:Number = vector[j].scaledWidth;
-						var ah:Number = vector[i].scaledHeight;
-						var bh:Number = vector[j].scaledHeight;
-						if (aw < bw && ah < bh)
-						{
-							var t:ElementBase = vector[i];
-							vector[i] = vector[j];
-							vector[j] = t;
-						}
+						var r:Rectangle = rects[i];
+						rects[i] = rects[j];
+						rects[j] = r;
+						var t:ElementBase = vector[i];
+						vector[i] = vector[j];
+						vector[j] = t;
 					}
 				}
 			}
 			return vector;
-		}*/
-		
-		private function sortOnElementLayer(a:ElementBase, b:ElementBase):int
-		{
-			
-			if (overlappingElement(a, b))
-			{
-				var aw:Number = a.tempScaledWidth;
-				var bw:Number = b.tempScaledWidth;
-				var ah:Number = a.tempScaledHeight;
-				var bh:Number = b.tempScaledHeight;
-				if (aw > bw && ah > bh)
-					return -1;
-				else if (aw < bw && ah < bh)
-					return 1;
-				else 
-					return 0;
-			}
-			else
-			{
-				return 0;
-			}
 		}
 		
 		private function checkAutoLayerAvailable(current:ElementBase, element:ElementBase):Boolean
@@ -190,9 +193,7 @@ package view.interact
 			{
 				if (! (current is TemGroupElement) && ! (current is GroupElement) && ! current.grouped && 
 					! (element is TemGroupElement) && ! (element is GroupElement) && ! element.grouped)
-				{
 					result = overlappingElement(element, current);
-				}
 			}
 			return result;
 		}
