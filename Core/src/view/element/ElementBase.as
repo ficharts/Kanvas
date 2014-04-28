@@ -4,7 +4,6 @@ package view.element
 	import com.kvs.ui.clickMove.IClickMove;
 	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.MathUtil;
-	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	import com.kvs.utils.StageUtil;
 	import com.kvs.utils.ViewUtil;
@@ -24,10 +23,8 @@ package view.element
 	
 	import modules.pages.PageEvent;
 	
-	import util.ElementCreator;
 	import util.ElementUtil;
 	import util.LayoutUtil;
-	import util.StyleUtil;
 	
 	import view.element.state.*;
 	import view.elementSelector.ElementSelector;
@@ -576,6 +573,7 @@ package view.element
 			var h:Number = vo.height * scale;
 			if(vo.style && vo.style.getBorder)
 				h = h + vo.thickness * scale;
+			
 			return h;
 		}
 		
@@ -589,11 +587,16 @@ package view.element
 			return scaledHeight * ((parent) ? parent.scaleX : 1);
 		}
 		
+		/**
+		 * 
+		 */		
 		public function get isPage():Boolean
 		{
 			return Boolean(vo.pageVO);
 		}
 		
+		/**
+		 */		
 		public function setPage(pageVO:PageVO):void
 		{
 			if (vo.pageVO)
@@ -648,6 +651,7 @@ package view.element
 			//尺寸缩放时需要临时取表象的信息
 			if(!numLabel)
 				drawPageNum();
+			
 			if (isNaN(s))
 				s = vo.scale;
 			
@@ -681,6 +685,7 @@ package view.element
 				numShape.buttonMode = true;
 				numShape.cacheAsBitmap = true;
 			}
+			
 			numLabel.text = (vo.pageVO.index + 1).toString();
 			numLabel.render();
 			numLabel.x = - numLabel.width  * .5;
@@ -1190,6 +1195,7 @@ package view.element
 		{
 			return  _elementPageConvertable;
 		}
+		
 		protected var _elementPageConvertable:Boolean = true;
 		
 		/**

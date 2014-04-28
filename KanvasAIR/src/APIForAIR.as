@@ -15,7 +15,6 @@ package
 	import model.ConfigInitor;
 	import model.CoreFacade;
 	
-	import util.img.ImgInsertEvent;
 	import util.img.ImgLib;
 	
 	import view.element.ElementBase;
@@ -29,21 +28,15 @@ package
 		public function APIForAIR(core:CoreApp)
 		{
 			super(core);
-		}
+			
+			writer = new ZipFileWriter();
+			writer.addEventListener("zipFileCreated", fileSaved);
+		}		
 		
 		/**
+		 * 负责文件写入 
 		 */		
-		private function imgLoaded(evt:ImgInsertEvent):void
-		{
-			
-		}
-		
-		/**
-		 */		
-		private function imgLoadError(e:ImgInsertEvent):void
-		{
-			
-		}
+		private var writer:ZipFileWriter;
 		
 		/**
 		 * 当前文件
@@ -164,9 +157,9 @@ package
 		 */		
 		private function writeFile():void
 		{
-			PerformaceTest.start("save");
+			isSaving = true;
 			
-			var writer:ZipFileWriter = new ZipFileWriter();
+			PerformaceTest.start("save");
 			
 			writer.openAsync(this.file);
 			
@@ -205,6 +198,7 @@ package
 			writer.close();
 			PerformaceTest.end("save");
 			
+			
 			return;
 			
 			var pageData:ByteArray = core.thumbManager.getPageBytes(960, 720);
@@ -219,6 +213,18 @@ package
 			}
 			
 		}
+		
+		/**
+		 */		
+		private function fileSaved(evt:Event):void
+		{
+			isSaving = false;
+		}
+		
+		/**
+		 * 是否正在保存文件，此时不能退出程序 
+		 */		
+		private var isSaving:Boolean = false;
 		
 	}
 }
