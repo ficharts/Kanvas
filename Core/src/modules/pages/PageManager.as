@@ -1,7 +1,6 @@
 package modules.pages
 {
 	import com.kvs.utils.MathUtil;
-	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	import com.kvs.utils.graphic.BitmapUtil;
 	
@@ -20,11 +19,9 @@ package modules.pages
 	import model.ElementProxy;
 	import model.vo.PageVO;
 	
-	import util.CoreUtil;
 	import util.LayoutUtil;
 	
 	import view.element.ElementBase;
-	import view.element.PageElement;
 	import view.interact.CoreMediator;
 	import view.ui.MainUIBase;
 
@@ -63,8 +60,10 @@ package modules.pages
 			proxy.rotation = - coreMdt.canvas.rotation;
 			proxy.width = bound.width ;
 			proxy.height = bound.height;
+			
 			if (proxy.height / proxy.width < .75) proxy.width = proxy.height / .75;
 			else if (proxy.height / proxy.width > .75) proxy.height = proxy.width * .75;
+			
 			proxy.index = (index > 0 && index < length) ? index : length;
 			proxy.ifSelectedAfterCreate = false;
 			

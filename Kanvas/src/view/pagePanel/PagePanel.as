@@ -631,6 +631,22 @@ package view.pagePanel
 		//------------------------------------------------
 		
 		/**
+		 * 
+		 */		
+		private function showFrame(evt:MouseEvent):void
+		{
+			CoreFacade.coreMediator.showCameraShot();
+		}
+		
+		/**
+		 */		
+		private function hideFrame(evt:MouseEvent):void
+		{
+			CoreFacade.coreMediator.hideCanmeraShot();
+		}
+		
+		
+		/**
 		 */		
 		override protected function init():void
 		{
@@ -645,7 +661,7 @@ package view.pagePanel
 			addPageBtn.h = 30;
 			addPageBtn.iconW = 50;
 			addPageBtn.iconH = 50;
-			addPageBtn.tips = "按下或者拖动创建";
+			addPageBtn.tips = "按下或者拖动创建页面";
 			
 			shot_up;
 			shot_over;
@@ -679,6 +695,9 @@ package view.pagePanel
 			
 			pagesCtn.addEventListener(PagePanelEvent.PAGE_DOWN, pageDown);
 			pagesCtn.addEventListener(PagePanelEvent.PAGE_CLICKED, pageClicked);
+			
+			addPageBtn.addEventListener(MouseEvent.ROLL_OVER, showFrame);
+			addPageBtn.addEventListener(MouseEvent.MOUSE_OUT, hideFrame);
 			
 			updateLayout();
 			

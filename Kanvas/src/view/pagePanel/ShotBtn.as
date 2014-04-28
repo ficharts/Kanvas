@@ -7,11 +7,6 @@ package view.pagePanel
 	import com.kvs.utils.XMLConfigKit.style.elements.Img;
 	import com.kvs.utils.graphic.BitmapUtil;
 	
-	import flash.display.Sprite;
-	import flash.events.MouseEvent;
-	
-	import model.CoreFacade;
-	
 	/**
 	 */	
 	public class ShotBtn extends IconBtn implements IClickMove

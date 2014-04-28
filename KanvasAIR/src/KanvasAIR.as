@@ -223,6 +223,6 @@ package
 		
 		private var updater:AIRUpdater;
 		
-		public static const AIR_CLIENT_URL:String = "http://www.kanvas.cn/client/KanvasAIR.air";
+		public static const AIR_CLIENT_URL:String = "http://www.kanvas.cn/client/Kanvas.air";
 	}
 }

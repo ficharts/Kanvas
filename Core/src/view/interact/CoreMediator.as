@@ -23,7 +23,6 @@ package view.interact
 	import view.editor.EditorBase;
 	import view.element.ElementBase;
 	import view.element.GroupElement;
-	import view.element.PageElement;
 	import view.element.imgElement.ImgElement;
 	import view.element.text.TextEditField;
 	import view.elementSelector.ElementSelector;
