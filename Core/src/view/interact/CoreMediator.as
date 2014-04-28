@@ -769,7 +769,6 @@ package view.interact
 					}
 					if (element is TextEditField)
 					{
-						trace("checkTextBm");
 						(element as TextEditField).checkTextBm();
 					}
 					//刷新页面编号尺寸，防止太大

@@ -646,7 +646,6 @@ package view.element
 		public function layoutPageNum(s:Number = NaN):void
 		{
 			//尺寸缩放时需要临时取表象的信息
-			trace("layoutpageNum")
 			if(!numLabel)
 				drawPageNum();
 			if (isNaN(s))
