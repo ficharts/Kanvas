@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Kanvas演示</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script type="text/javascript" src="Kanvas.js">
+        </script>
+        <style>
+        	body, html {
+        		margin: 0;
+        		padding: 0;
+        		overflow-x: hidden;
+        		overflow-y: hidden;
+        	}
+        </style>
+        <script type="text/javascript">
+        	
+            var kvs = new Kanvas({id: 'demo', width: '100%', height: '100%'});
+			
+			kvs.onReady(function(){
+				kvs.setImgUploadServer('http://www.kanvas.cn/service/imageupload.php');
+				kvs.setImgDomainServer('http://www.kanvas.cn/');
+
+                kvs.initDataServer("http://www.kanvas.cn/service/savedata.php", "b8effccf96f9f407fc65f440d8bbd31e", 283 * 3, 150 * 3);
+
+                kvs.onSaveExit(function(e){
+
+                    alert();
+    
+                });
+                
+				//importData();
+			});
+
+            function saveData() {
+
+                kvs.getPageImgData("http://www.kanvas.cn/service/pageimg.php?docid=" + "b8effccf96f9f407fc65f440d8bbd31e");
+               
+            };
+		
+			
+			function getData(){
+				
+				var data = kvs.getXMLData();
+				//alert(kvs.getImgURLList());
+				alert(data);
+			};
+			
+			//测试数据导入, 成功后会看到一个正方形
+			var testData = "PGthbnZhcz4KICA8aGVhZGVyIHZlcnNpb249IjMuMCIgc3R5bGVJRD0iR3JlZW4iLz4KICA8bW9kdWxlLz4KICA8bWFpbj4KICAgIDxjaXJjbGUgaWQ9IjIiIHByb3BlcnR5PSIiIHR5cGU9ImNpcmNsZSIgc3R5bGVUeXBlPSJib3JkZXIiIHN0eWxlSUQ9IkJvcmRlciIgeD0iLTIyNS44MTk5NDM2MTI4NTY0IiB5PSItODEuMDIxNzgwOTk2MzQ1NzEiIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiByb3RhdGlvbj0iMCIgY29sb3I9ImZmZmZmZiIgY29sb3JJbmRleD0iMCIgc2NhbGU9IjIuOTU4Mzc3Mzk5MzAwODk4IiBib3JkZXJBbHBoYT0iMC45IiB0aGlja25lc3M9IjMiIHJhZGl1cz0iMCIvPgogICAgPGNpcmNsZSBpZD0iNiIgcHJvcGVydHk9IiIgdHlwZT0iY2lyY2xlIiBzdHlsZVR5cGU9ImJvcmRlciIgc3R5bGVJRD0iQm9yZGVyIiB4PSItMTU3Ljg4OTc3MDI2NTUwMjE2IiB5PSItMTEuMTAyMzkwMzY1ODMxMjMyIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgcm90YXRpb249IjAiIGNvbG9yPSJmZmZmZmYiIGNvbG9ySW5kZXg9IjAiIHNjYWxlPSIwLjY5MTYwMzQ3OTU2MDUyNTQiIGJvcmRlckFscGhhPSIwLjkiIHRoaWNrbmVzcz0iNiIgcmFkaXVzPSIwIi8+CiAgICA8dGV4dCBpZD0iMyIgcHJvcGVydHk9IiIgdHlwZT0idGV4dCIgc3R5bGVUeXBlPSJ0ZXh0IiBzdHlsZUlEPSJCb2R5IiB4PSItMjY4LjUyNjkyMzY3MzQyMDIiIHk9Ii0xMjEuMzE0MTQzODQ1NTQzNDgiIHdpZHRoPSIxMjAiIGhlaWdodD0iMzAiIHJvdGF0aW9uPSIwIiBjb2xvcj0iZmZmZmZmIiBjb2xvckluZGV4PSIwIiBzY2FsZT0iMS4yODIwNTQzOTQ4MzYwNjE0IiBpZk11dGlMaW5lPSJmYWxzZSIgZm9udD0i5Y2O5paH57uG6buRIiBzaXplPSIzMCI+CiAgICAgIDx0ZXh0PjwhW0NEQVRBW+aIkeaYr+iwge+8n11dPjwvdGV4dD4KICAgIDwvdGV4dD4KICAgIDx0ZXh0IGlkPSI3IiBwcm9wZXJ0eT0iIiB0eXBlPSJ0ZXh0IiBzdHlsZVR5cGU9InRleHQiIHN0eWxlSUQ9IkJvZHkiIHg9Ii0xNTEuNTI1MTcwMTQ5NzA4NTQiIHk9Ii0xLjAzNjczOTkwMzg3MjE2ODMiIHdpZHRoPSIxODAiIGhlaWdodD0iMzAiIHJvdGF0aW9uPSIwIiBjb2xvcj0iZmZmZmZmIiBjb2xvckluZGV4PSIwIiBzY2FsZT0iMC4yNzkwODE2NDcyMzM2NTMzNiIgaWZNdXRpTGluZT0iZmFsc2UiIGZvbnQ9IuWNjuaWh+e7hum7kSIgc2l6ZT0iMzAiPgogICAgICA8dGV4dD48IVtDREFUQVvmiJHku47lk6rph4zmnaXvvJ9dXT48L3RleHQ+CiAgICA8L3RleHQ+CiAgICA8Y2lyY2xlIGlkPSI4IiBwcm9wZXJ0eT0iIiB0eXBlPSJjaXJjbGUiIHN0eWxlVHlwZT0iYm9yZGVyIiBzdHlsZUlEPSJCb3JkZXIiIHg9Ii0xNTMuNjU0NTQ0NTM1MzM1MjIiIHk9Ii0yMy41NTg4Njg5Njk0MzU3MSIgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxMjAiIHJvdGF0aW9uPSIwIiBjb2xvcj0iZmZmZmZmIiBjb2xvckluZGV4PSIwIiBzY2FsZT0iMC4yMDc2MDc5NzY3MjY3NDEzMyIgYm9yZGVyQWxwaGE9IjAuOSIgdGhpY2tuZXNzPSIzIiByYWRpdXM9IjAiLz4KICAgIDx0ZXh0IGlkPSI5IiBwcm9wZXJ0eT0iIiB0eXBlPSJ0ZXh0IiBzdHlsZVR5cGU9InRleHQiIHN0eWxlSUQ9IkJvZHkiIHg9Ii0xNTIuMTQyNDcyMzIzMzIzNzQiIHk9Ii0yMy44OTg1OTY4MDExNjgwOSIgd2lkdGg9IjE4MCIgaGVpZ2h0PSIzMCIgcm90YXRpb249IjMzOSIgY29sb3I9ImZmZmZmZiIgY29sb3JJbmRleD0iMCIgc2NhbGU9IjAuMDQ0OTE2NjE4OTU5ODUxODM1IiBpZk11dGlMaW5lPSJmYWxzZSIgZm9udD0i5Y2O5paH57uG6buRIiBzaXplPSIzMCI+CiAgICAgIDx0ZXh0PjwhW0NEQVRBW+imgeWIsOWTqumHjOWOu++8n11dPjwvdGV4dD4KICAgIDwvdGV4dD4KICA8L21haW4+CiAgPHBhZ2VzPgogICAgPHBhZ2UgaWQ9IjIzIiBwcm9wZXJ0eT0iIiB0eXBlPSJwYWdlIiBzdHlsZVR5cGU9ImJvcmRlciIgc3R5bGVJRD0iUGFnZSIgeD0iLTIwNC45MTQ0ODkwODgzMjMxIiB5PSItODQuNDU3NDI3OTYzMjQ3MzEiIHdpZHRoPSI5OTYiIGhlaWdodD0iNTExIiByb3RhdGlvbj0iMCIgY29sb3I9ImZmZmZmZiIgY29sb3JJbmRleD0iMCIgc2NhbGU9IjAuODQ1NzY0Nzg5MzE3NTE5IiBpbmRleD0iMCIvPgogICAgPHBhZ2UgaWQ9IjI1IiBwcm9wZXJ0eT0iIiB0eXBlPSJwYWdlIiBzdHlsZVR5cGU9ImJvcmRlciIgc3R5bGVJRD0iUGFnZSIgeD0iLTE1My44NjAyMDI0MTc5Mzg3NSIgeT0iLTIuOTczMTU4ODc0NjQzOTA4NiIgd2lkdGg9Ijk5NiIgaGVpZ2h0PSI1MTEiIHJvdGF0aW9uPSIwIiBjb2xvcj0iZmZmZmZmIiBjb2xvckluZGV4PSIwIiBzY2FsZT0iMC4wODk2MTMxOTc4OTA2NzE5NyIgaW5kZXg9IjIiLz4KICAgIDxwYWdlIGlkPSIyNCIgcHJvcGVydHk9IiIgdHlwZT0icGFnZSIgc3R5bGVUeXBlPSJib3JkZXIiIHN0eWxlSUQ9IlBhZ2UiIHg9Ii0yNzkuMzc3ODgxNTM0NDU0NzMiIHk9Ii0xMTguMDgxMDczNjk1NDY3MiIgd2lkdGg9Ijk5NiIgaGVpZ2h0PSI1MTEiIHJvdGF0aW9uPSIwIiBjb2xvcj0iZmZmZmZmIiBjb2xvckluZGV4PSIwIiBzY2FsZT0iMC4xNzAzODgzMzQ1NTkyMDA4MyIgaW5kZXg9IjEiLz4KICAgIDxwYWdlIGlkPSIyNiIgcHJvcGVydHk9IiIgdHlwZT0icGFnZSIgc3R5bGVUeXBlPSJib3JkZXIiIHN0eWxlSUQ9IlBhZ2UiIHg9Ii0xNTIuODk3Mzk4NTUzNTc1MjciIHk9Ii0yMy41NTg4Njg5Njk0MzU3MiIgd2lkdGg9IjE3NC4zNDIxOTM4NDUxOTI4NCIgaGVpZ2h0PSI5MCIgcm90YXRpb249IjMzOSIgY29sb3I9ImZmZmZmZiIgY29sb3JJbmRleD0iMCIgc2NhbGU9IjAuMDYwMDI0MjU0NDIzNzg2ODIiIGluZGV4PSIzIi8+CiAgPC9wYWdlcz4KICA8YmcgY29sb3I9IjYzYTgwMCIgY29sb3JJbmRleD0iMjciIGltZ1VSTD0iIiBpbWdJRD0iMCIvPgo8L2thbnZhcz4=";
+
+
+
+			function importData(){
+				kvs.setBase64Data(testData, false);	
+			};
+			
+			
+			
+        </script>
+    </head>
+    <body>
+    	
+    	<!--input type="button" value="导出数据" onclick="getData()"/>
+    	<input type="button" value="导入数据" onclick="importData()"/>
+    	<input type="button" value="设置数据关联" onclick="getShotCut()"/-->
+    	
+        <div id="demo"></div>
+    </body>
+</html>

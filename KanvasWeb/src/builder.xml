@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="Kanvas Builder" basedir="." default="发布">
+	
+	<property name="FLEX_HOME" value="/Users/wanglei/projects/sdk" />
+	<property name="WORK_SPACE" value="/Users/wanglei/projects/kanvas" />
+	
+	<property name="VER" value="4.0" />
+
+	<property name="controlFlowObfuscation" value="20"/>
+	<property name="dynamicCodeWrapping" value="1"/>
+	
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+
+	<taskdef name="protect" classpath="${WORK_SPACE}/secureSWF/secureSWF.jar"
+	classname="secureSWF.ant.ProtectTask"/>
+
+	<!--发布-->
+	<target name="发布" 
+		depends="fresh release dir, Kanvas, KPlayer, KanvasLoader">
+
+		<copy overwrite="true" todir="${WORK_SPACE}/release">
+			<fileset dir="${WORK_SPACE}/KanvasWeb/src">
+				<include name="Kanvas.js" />
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="/Users/wanglei/Sites/Kanvas/web">
+			<fileset dir="${WORK_SPACE}/KanvasWeb/src">
+				<include name="Kanvas.js" />
+			</fileset>
+		</copy>
+		
+		<copy overwrite="true" todir="${WORK_SPACE}/release">
+					<fileset dir="${WORK_SPACE}/Kanvas/bin-debug">
+						<include name="FontLib.swf" />
+					</fileset>
+				</copy>
+
+		<zip destfile="${WORK_SPACE}/release/Kanvas(${VER}).zip"
+		       basedir="${WORK_SPACE}/release"
+		       update="true"/>
+	</target>
+	
+	<target name="KanvasLoader">
+			<mxmlc file="${WORK_SPACE}/Kanvas/src/KanvasLoader.as" output="${WORK_SPACE}/release/KanvasLoader.swf" 
+				actionscript-file-encoding="UTF-8" keep-generated-actionscript="false" incremental="false"
+				static-link-runtime-shared-libraries="true">
+				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+				<source-path path-element="${FLEX_HOME}/frameworks"/>
+				<source-path path-element="${WORK_SPACE}/Core/src"/>
+				
+				<library-path dir="${WORK_SPACE}/Kanvas/libs" includes="*.swc" />				
+				<library-path dir="${WORK_SPACE}/Core/libs" includes="*.swc" />
+				
+				<library-path dir="${FLEX_HOME}/frameworks/libs" includes="framework.swc"/>
+				<compiler.debug>false</compiler.debug>
+			</mxmlc>
+	</target>
+
+	<target name="Kanvas">
+		<mxmlc file="${WORK_SPACE}/KanvasWeb/src/KanvasWeb.as" output="${WORK_SPACE}/release/Kanvas.swf" 
+			actionscript-file-encoding="UTF-8" keep-generated-actionscript="false" incremental="false"
+			static-link-runtime-shared-libraries="true">
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+			<source-path path-element="${FLEX_HOME}/frameworks"/>
+			<source-path path-element="${WORK_SPACE}/Kanvas/src"/>
+			<source-path path-element="${WORK_SPACE}/Core/src"/>
+				
+			<library-path dir="${WORK_SPACE}/Kanvas/libs" includes="*.swc" />
+			<library-path dir="${WORK_SPACE}/Core/libs" includes="*.swc" />
+			
+			<library-path dir="${FLEX_HOME}/frameworks/libs" includes="framework.swc"/>
+			<library-path dir="${FLEX_HOME}/frameworks/libs" includes="textLayout.swc"/>
+			<compiler.debug>false</compiler.debug>
+		</mxmlc>
+		
+		<protect keyFilePath="${WORK_SPACE}/secureSWF/key.data" outputPath="${WORK_SPACE}/release/"
+			preset="best_size" superCompression="true" removeLinesNumbers="true" slr="true">
+			<fileset dir="${WORK_SPACE}/release" includes="Kanvas.swf"/>
+
+			<rule filter="*" rename="false"/>
+			<rule filter="com.kvs.utils.XMLConfigKit.XMLVOMapper.*" rename="true"/>
+			
+			<rule filter="CoreApp" rename="true"/>
+			<rule filter="CoreApp.*" 
+				controlFlowObfuscation="${controlFlowObfuscation}" 
+				dynamicCodeWrapping="${dynamicCodeWrapping}"
+				publicOnly="false" rename="true"/>
+			
+			<rule filter="model.CoreProxy" rename="true"/>
+			<rule filter="model.CoreProxy.*" 
+				controlFlowObfuscation="${controlFlowObfuscation}"
+				dynamicCodeWrapping="${dynamicCodeWrapping}"
+				publicOnly="false" rename="true"/>
+			
+			<rule filter="view.interact.CoreMediator" rename="true"/>
+			<rule filter="view.interact.CoreMediator.*" 
+				controlFlowObfuscation="${controlFlowObfuscation}" 
+				dynamicCodeWrapping="${dynamicCodeWrapping}"
+				publicOnly="false" rename="true"/>
+			
+			<rule filter="view.interact.zoomMove.*.*"
+				controlFlowObfuscation="${controlFlowObfuscation}" 
+				dynamicCodeWrapping="${dynamicCodeWrapping}"
+				publicOnly="false" rename="true"/>
+			
+			<rule filter="view.editor.text.*.*"
+				controlFlowObfuscation="${controlFlowObfuscation}" 
+				dynamicCodeWrapping="${dynamicCodeWrapping}"
+				publicOnly="false" rename="true"/>
+		</protect>
+		
+		<copy overwrite="true" todir="/Users/wanglei/Sites/Kanvas/web">
+			<fileset dir="${WORK_SPACE}/release">
+				<include name="Kanvas.swf" />
+			</fileset>
+		</copy>
+		
+		<rename src="/Users/wanglei/Sites/Kanvas/web/Kanvas.swf" dest="/Users/wanglei/Sites/Kanvas/web/KanvasWeb.swf"/>
+	</target>
+
+	<target name="KPlayer">
+		<mxmlc file="${WORK_SPACE}/KPlayer/src/KPlayer.as" output="${WORK_SPACE}/release/KPlayer.swf" 
+			actionscript-file-encoding="UTF-8" keep-generated-actionscript="false" incremental="false"
+			static-link-runtime-shared-libraries="true">
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+			<source-path path-element="${FLEX_HOME}/frameworks"/>
+			<source-path path-element="${WORK_SPACE}/_vision"/>
+			
+			<library-path dir="${WORK_SPACE}/Kanvas/libs" includes="*.swc" />
+			<library-path dir="${WORK_SPACE}/KPlayer/libs" includes="*.swc" />
+			<library-path dir="${WORK_SPACE}/Core/libs" includes="*.swc" />
+			<library-path dir="${WORK_SPACE}/Core/bin" includes="*.swc" />
+			
+			<library-path dir="${FLEX_HOME}/frameworks/libs" includes="framework.swc"/>
+			<library-path dir="${FLEX_HOME}/frameworks/libs" includes="textLayout.swc"/>
+			<compiler.debug>false</compiler.debug>
+		</mxmlc>
+	
+		<!--protect keyFilePath="${WORK_SPACE}/secureSWF/key.data" outputPath="${WORK_SPACE}/release/"
+			preset="best_size" superCompression="true" removeLinesNumbers="true" slr="true">
+			<fileset dir="${WORK_SPACE}/release" includes="KPlayer.swf"/>
+
+			<rule filter="*" rename="false"/>
+			<rule filter="com.kvs.utils.XMLConfigKit.XMLVOMapper.*" rename="true"/>
+			
+			<rule filter="KPlayer" rename="true"/>
+			<rule filter="KPlayer.*" 
+				controlFlowObfuscation="${controlFlowObfuscation}" 
+				dynamicCodeWrapping="${dynamicCodeWrapping}"
+				publicOnly="false" rename="true"/>
+			
+			<rule filter="view.interact.zoomMove.*.*"
+				controlFlowObfuscation="${controlFlowObfuscation}" 
+				dynamicCodeWrapping="${dynamicCodeWrapping}"
+				publicOnly="false" rename="true"/>
+			
+		</protect-->
+
+		<copy overwrite="true" todir="/Users/wanglei/Sites/Kanvas/web">
+			<fileset dir="${WORK_SPACE}/release">
+				<include name="KPlayer.swf" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="fresh release dir" >
+		<delete dir="${WORK_SPACE}/release"/>
+		<mkdir dir="${WORK_SPACE}/release"/>
+	</target>
+
+</project>

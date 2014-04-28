@@ -1,0 +1,102 @@
+<pages>
+	<page id='home' title='创建'>
+		<selector type='image' icon='image' tips='点击插入图片'/>
+		<selector type='shapePage' icon='shapes' tips='点击进入图形面板'/>
+	</page>
+	<page id='shapePage' title='图形'>
+		<selector icon='circle'>
+			<shape type='circle' styleType='fill' styleID='Fill' width='120' height='120' />
+		</selector>
+		<selector icon='rect'>
+			<shape type='rect' styleType='fill' styleID='Fill' width='120' height='120' radius='10'/>
+		</selector>
+		<selector icon='diamond'>
+			<shape type='diamond' styleType='fill' styleID='Fill' width='120' height='120' />
+		</selector>
+		<selector icon='triangle'>
+			<shape type='triangle' styleType='fill' styleID='Fill' width='120' height='120' />
+		</selector>
+		<selector icon='stepTriangle'>
+			<shape type='stepTriangle' styleType='fill' styleID='Fill' width='120' height='120' />
+		</selector>
+		<selector icon='arrow'>
+			<shape type='arrow' styleType='fill' styleID='Fill' width='120' height='120'/>
+		</selector>
+		<selector icon='doubleArrow'>
+			<shape type='doubleArrow' styleType='fill' styleID='Fill' width='200' height='120' />
+		</selector>
+		<selector icon='star'>
+			<shape type='star' styleType='fill' styleID='Fill' width='200' height='200' />
+		</selector>
+		
+		
+		
+		
+		<!------------------------------------------------------------------------------------------->
+		
+		
+		<selector icon='line'>
+			<shape type='line' styleType='line' styleID='Border' width='200' height='120' />
+		</selector>
+		<selector icon='arrowLine'>
+			<shape type='arrowLine' styleType='line' styleID='Border' width='200' height='120'/>
+		</selector>
+		<selector icon='doubleArrowLine'>
+			<shape type='doubleArrowLine' styleType='line' styleID='Border' width='200' height='120'/>
+		</selector>
+		
+		<!------------------------------------------------------------------------------------------->
+		
+		
+		<!--selector icon='hotspot' tips='热点'>
+			<shape type='hotspot' styleType='shape' styleID='Hot' width='100' height='50'/>
+		</selector>
+		<selector icon='canvas' tips='画布'>
+			<shape type='camera' styleType='border' styleID='Canvas' width='500' height='400'/>
+		</selector-->
+		<selector icon='dashRect'>
+			<shape type='dashRect' styleType='border' styleID='Border' width='120' height='120' radius='10'/>
+		</selector>
+		<selector icon='dialog'>
+			<shape type='dialog' styleType='fill' styleID='Dialog' width='120' height='100' radius='10'/>
+		</selector>
+		
+		<!--  -->
+		
+		<selector icon='circleFrame'>
+			<shape type='circle' styleType='border' styleID='Border' width='120' height='120' />
+		</selector>
+		<selector icon='rectFrame'>
+			<shape type='rect' styleType='border' styleID='Border' width='120' height='120' radius='10'/>
+		</selector>
+		<selector icon='diamondFrame'>
+			<shape type='diamond' styleType='border' styleID='Border' width='120' height='120' />
+		</selector>
+		<selector icon='triangleFrame'>
+			<shape type='triangle' styleType='border' styleID='Border' width='120' height='120' />
+		</selector>
+		<selector icon='stepTriangleFrame'>
+			<shape type='stepTriangle' styleType='border' styleID='Border' width='120' height='120' />
+		</selector>
+		<selector icon='arrowFrame'>
+			<shape type='arrow' styleType='border' styleID='Border' width='120' height='120'/>
+		</selector>
+		<selector icon='doubleArrowFrame'>
+			<shape type='doubleArrow' styleType='border' styleID='Border' width='200' height='120' />
+		</selector>
+		<selector icon='starFrame'>
+			<shape type='star' styleType='border' styleID='Border' width='200' height='200' />
+		</selector>
+		
+	</page>
+	<page id='smartArt' title='小组件'>
+		<selector type='circle' icon='addIcon' />
+		<selector type='rect' icon='addIcon' />
+		<selector type='triangle' icon='addIcon' />
+	</page>
+	<page id='photo' title='图标'>
+		<selector type='circle' icon='addIcon' />
+		<selector type='rect' icon='addIcon' />
+		<selector type='triangle' icon='addIcon' />
+	</page>
+</pages>
