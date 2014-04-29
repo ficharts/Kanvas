@@ -107,7 +107,7 @@ package view.ui
 		private const lbStyle:XML = <label hPadding='12' vPadding='8' radius='30' vMargin='10' hMargin='20'>
 										<border thikness='1' alpha='0' color='555555' pixelHinting='true'/>
 										<fill color='e96565' alpha='0.9'/>
-										<format font='华文细黑' size='15' color='ffffff'/>
+										<format font='微软雅黑' size='15' color='ffffff'/>
 										<text value='${tips}'>
 											<effects>
 												<shadow color='0' alpha='0.3' distance='1' blur='1' angle='90'/>
