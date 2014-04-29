@@ -29,14 +29,8 @@ package
 		{
 			super(core);
 			
-			writer = new ZipFileWriter();
-			writer.addEventListener("zipFileCreated", fileSaved);
+			
 		}		
-		
-		/**
-		 * 负责文件写入 
-		 */		
-		private var writer:ZipFileWriter;
 		
 		/**
 		 * 当前文件
@@ -161,6 +155,8 @@ package
 			
 			PerformaceTest.start("save");
 			
+			var writer:ZipFileWriter = new ZipFileWriter();// 这里每次都需要新建一个，全局writer的话第二次打开文件再保存会保存错误，将文件报废，再也打不开
+			writer.addEventListener("zipFileCreated", fileSaved, false, 0, true);
 			writer.openAsync(this.file);
 			
 			// file info
@@ -197,7 +193,6 @@ package
 			
 			writer.close();
 			PerformaceTest.end("save");
-			
 			
 			return;
 			

@@ -106,7 +106,9 @@ package model
 		 */		
 		public function updateBgColor():void
 		{
-			bgVO.color = StyleManager.setColor(bgColorsXML.children()[bgVO.colorIndex].toString());
+			//如果不存在颜色序号，说明此颜色不包含在背景色列表里
+			if (bgVO.colorIndex != - 1)
+				bgVO.color = StyleManager.setColor(bgColorsXML.children()[bgVO.colorIndex].toString());
 		}
 		
 		/**
@@ -123,14 +125,14 @@ package model
 		
 		/**
 		 */		
-		public function get bgColorIndex():uint
+		public function get bgColorIndex():int
 		{
 			return bgVO.colorIndex;
 		}
 		
 		/**
 		 */		
-		public function set bgColorIndex(value:uint):void
+		public function set bgColorIndex(value:int):void
 		{
 			bgVO.colorIndex = value;
 		}
@@ -326,18 +328,24 @@ package model
 			temElementMap.clear();
 			
 			//先设置总体样式风格
-			setCurrTheme(xml.header.@styleID);
+			
+			var styleID:String = xml.header.@styleID;
+			if (themeConfigMap.containsKey(styleID) == false)//为了兼容旧数据，旧数据里面的style命名方式与现有的不同
+				styleID = "style_1";
+			
+			setCurrTheme(styleID);
+			
 			//更新文本编辑器样式属性
 			(CoreFacade.coreMediator.coreApp as CoreApp).textEditor.initStyle();
 			// 通知UI更新
-			(CoreFacade.coreMediator.coreApp as CoreApp).themeUpdated(xml.header.@styleID);
+			(CoreFacade.coreMediator.coreApp as CoreApp).themeUpdated(styleID);
 			(CoreFacade.coreMediator.coreApp as CoreApp).bgColorsUpdated(bgColorsXML);
 			
 			//处理背景颜色绘制
 			XMLVOMapper.fuck(xml.bg, bgVO);
 			updateBgColor();
 			sendNotification(Command.RENDER_BG_COLOR, bgColor);
-			coreApp.bgColorUpdated(bgColorIndex);
+			coreApp.bgColorUpdated(bgColorIndex, bgColor);
 			ElementCreator.setID(bgVO.imgID);
 			
 			CoreFacade.clear();
@@ -513,7 +521,7 @@ package model
 		/**
 		 */		
 		private var dataXML:XML = <kanvas>
-									<header version = '3.0' styleID={currStyle}/>
+									<header version = {CoreApp.VER} styleID={currStyle}/>
 									<module/>
 									<main/>
 								  </kanvas>;

@@ -7,11 +7,54 @@
 		<format id='FontTitle' font='微软雅黑' size='${size}' color='${color}'/>
 		<format id='FontSubTitle' font='仿宋' size='${size}' color='${color}'/>
 		
-		<fill id='Simple' color='${color}' alpha='0.9' angle='90' type='radial'/>
-		<border id='Simple' color='${color}' alpha='0.9' thickness='${thickness}' caps='round' pixelHinting='true'/>
-		<border id="PageFrame" color='#ededed' alpha='0.8' thickness='0'/>
-		<fill id="PageFill" color='#eeeeee, #eeeeee' alpha='0.6, 0.6' radioes='0,255' angle='90'/>
+		<fill id='Simple' color='${color}' alpha='1' angle='90' type='radial'/>
+		<border id='Simple' color='${color}' alpha='1' thickness='${thickness}' caps='round' pixelHinting='true'/>
+
+		<border id="PageFrame" color='#ededed' alpha='0' thickness='0'/>
+		<fill id="PageFill" color='#eeeeee' alpha='0.8'/>
 		
+
+
+		<colors id='bg'>
+			<color>#FFFFFF</color>
+            <color>#F7F7F7</color>
+            <color>#E6E6E6</color>
+            <color>#CCCCCC</color>
+            <color>#A6A6A6</color>
+            <color>#808080</color>
+            <color>#666666</color>
+            <color>#474747</color>
+            <color>#262626</color>
+            <color>#000000</color>
+            
+            <color>#FFF9E1</color>
+            <color>#FFE8D9</color>
+			<color>#FFC9C5</color>
+            <color>#FFE9F6</color>
+            <color>#D4C9F4</color>
+            <color>#EEFEFF</color>
+            <color>#DAF7F3</color>
+            <color>#FFFFB3</color>
+            <color>#FFFAE9</color>
+            <color>#E4FCFF</color>
+            
+            <color>#EFDE0F</color>
+            <color>#E06A00</color>
+			<color>#CC2200</color>
+            <color>#C10098</color>
+            <color>#3C20A5</color>
+            <color>#2771C1</color>
+            <color>#2D8E87</color>
+            <color>#63A800</color>
+            <color>#470B19</color>
+            <color>#123665</color>
+
+            <color>#1e5a8c</color>
+            <color>#68a9e0</color>
+            
+		</colors>
+
+
 		<!--文本和背景颜色全局统一， 每套样式尽需指定颜色序号-->
 		<colors id='text'>
 			<color>#F7EDBA</color>
@@ -48,40 +91,7 @@
             <color>#000000</color>
 		</colors>
 		
-		<colors id='bg'>
-			<color>#FFFFFF</color>
-            <color>#F7F7F7</color>
-            <color>#E6E6E6</color>
-            <color>#CCCCCC</color>
-            <color>#A6A6A6</color>
-            <color>#808080</color>
-            <color>#666666</color>
-            <color>#474747</color>
-            <color>#262626</color>
-            <color>#000000</color>
-            
-            <color>#FFF9E1</color>
-            <color>#FFE8D9</color>
-			<color>#FFC9C5</color>
-            <color>#FFE9F6</color>
-            <color>#D4C9F4</color>
-            <color>#EEFEFF</color>
-            <color>#DAF7F3</color>
-            <color>#FFFFB3</color>
-            <color>#FFFAE9</color>
-            <color>#E4FCFF</color>
-            
-            <color>#EFDE0F</color>
-            <color>#E06A00</color>
-			<color>#CC2200</color>
-            <color>#C10098</color>
-            <color>#3C20A5</color>
-            <color>#2771C1</color>
-            <color>#2D8E87</color>
-            <color>#63A800</color>
-            <color>#470B19</color>
-            <color>#123665</color>
-		</colors>
+		
 	</template>
 	
 	
@@ -89,8 +99,16 @@
 	<!-- 一下是全局样式模板, 决定整体风格 , 每种元件还会有自己的自定义样式模板 -->
 	<!-- 样式模板决定的是整体风格，快捷工具条进能改变颜色，不能决定风格 -->
 	<themes>
-		<White>
+		<style_1>
 			<bg styleID='bg' colorIndex='0'/>
+
+			<colors styleID='shape'>
+				<color>#cccccc</color>
+				<color>#e6e6e6</color>
+	            <color>#9bc4f7</color>
+	            <color>#f2f2f2</color>
+	            <color>#d9d9d9</color>
+			</colors>
 			
 			<fill styleID='Fill'>
 				<style fill='Simple'>
@@ -102,29 +120,78 @@
 					<fill alpha='0'/>
 				</style>
 			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
 			
-			<fill styleID='Dialog'>
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#ebebeb"/>
+				</style>
+			</shape>
+			
+			<group styleID='group'>
 				<style>
-					<fill color='${color}' alpha='1'/>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_1>
+
+		<style_2>
+			<bg styleID='bg' colorIndex='-1' color='#f2f2f2'/>
+
+			<colors styleID='shape'>
+				<color>#e6e6e6</color>
+				<color>#cccccc</color>
+	            <color>#50e3c2</color>
+	            <color>#999999</color>
+	            <color>#737373</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#cbcbcb"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
 				</style>
 			</fill>
 			
-			<shape styleID='Hot' color='#66FFFF' thickness='2'>
-				<style border='Simple' fill='Simple'>
-					<border color='#666666'/>
-				</style>
-			</shape>
-			
-			<border styleID='Canvas'>
-				<style>
-					<border color='#666666' alpha='0.9' thickness='10' caps='square' pixelHinting='false' scaleMode='none'/>
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
 				</style>
 			</border>
-			
-			<shape styleID='Page'>
-				<style fill='PageFill' border='PageFrame'/>
-			</shape>
-			
+
 			<line styleID='Border'>
 				<style border='Simple'/>
 			</line>
@@ -160,91 +227,51 @@
 				<label format='FontBody'/>
 			</text>
 			
-			<colors styleID='fill'>
-				<color>#00AFFF</color>
-				<color>#FFE429</color>
-	            <color>#9ED54C</color>
-	            <color>#F25987</color>
-	            <color>#B27AFF</color>
-	            <color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#71777F</color>
-			</colors>
-			<colors styleID='border'>
-				<color>#00AFFF</color>
-				<color>#FFE429</color>
-	            <color>#9ED54C</color>
-	            <color>#F25987</color>
-	            <color>#B27AFF</color>
-	            <color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#71777F</color>
-			</colors>
-			<colors styleID='line'>
-				<color>#00AFFF</color>
-				<color>#FFE429</color>
-	            <color>#9ED54C</color>
-	            <color>#F25987</color>
-	            <color>#B27AFF</color>
-	            <color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#71777F</color>
-			</colors>
-			
-		</White>
+		</style_2>
 
-		<!-------------------------------------------------------------------------------------------->
+		<style_3>
+			<bg styleID='bg' colorIndex='-1' color='#8c8c8c'/>
 
-		<Black>
-			<bg styleID='bg' colorIndex='7'/>
+			<colors styleID='shape'>
+				<color>#b2b2b2</color>
+				<color>#595959</color>
+	            <color>#fec06c</color>
+	            <color>#333333</color>
+	            <color>#191919</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#404040"/>
+				</style>
+			</shape>
 			
 			<fill styleID='Fill'>
-				<style fill='Simple'/>
+				<style fill='Simple'>
+				</style>
 			</fill>
+			
 			<border styleID='Border'>
 				<style border='Simple'>
 					<fill alpha='0'/>
 				</style>
 			</border>
-			
-			<fill styleID='Dialog'>
-				<style>
-					<fill color='${color}' alpha='1'/>
-				</style>
-			</fill>
-			
-			<shape styleID='Hot' color='#66FFFF' thickness='1'>
-				<style border='Simple' fill='Simple'>
-					<border color='#666666'/>
-				</style>
-			</shape>
-			
-			<border styleID='Canvas'>
-				<style>
-					<border color='#66FFFF' alpha='0.9' thickness='10' caps='square' pixelHinting='false' scaleMode='none'/>
-				</style>
-			</border>
-			
-			<shape styleID='Page'>
-				<style fill='PageFill' border='PageFrame'/>
-			</shape>
-			
+
 			<line styleID='Border'>
 				<style border='Simple'/>
 			</line>
 			
 			<group styleID='group'>
 				<style>
-					<fill color='#0082B4' alpha='0.2'/>
+					<fill color='cccccc' alpha='0.2'/>
 				</style>
 			</group>
 			
 			<group styleID='tem'>
 				<style>
-					<fill color='#DDDDDD' alpha='0.2'/>
+					<fill color='#0082B4' alpha='0.1'/>
 				</style>
 			</group>
-			
 			
 			<!-- 文本模板 -->
 			<template styleID='text'>
@@ -254,7 +281,7 @@
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
-				<label format='FontTitle'/>
+				<label format='FontTitle' />
 			</text>
 			
 			<text styleID='SubTitle' size='30' colorIndex='8'>
@@ -265,91 +292,51 @@
 				<label format='FontBody'/>
 			</text>
 			
-			<colors styleID='fill'>
-				<color>#AFDA4F</color>
-				<color>#8AD8F7</color>
-	            <color>#FFE429</color>
-	            <color>#CF73D3</color>
-	            <color>#FE7B62</color>
-				<color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#000000</color>
-			</colors>
-			<colors styleID='border'>
-				<color>#AFDA4F</color>
-				<color>#8AD8F7</color>
-	            <color>#FFE429</color>
-	            <color>#CF73D3</color>
-	            <color>#FE7B62</color>
-				<color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#000000</color>
-			</colors>
-			<colors styleID='line'>
-				<color>#AFDA4F</color>
-				<color>#8AD8F7</color>
-	            <color>#FFE429</color>
-	            <color>#CF73D3</color>
-	            <color>#FE7B62</color>
-				<color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#000000</color>
-			</colors>
-			
-		</Black>
+		</style_3>
 
-		<!-------------------------------------------------------------------------------------------->
+		<style_4>
+			<bg styleID='bg' colorIndex='-1' color='#222222'/>
 
-		<Red>
-			<bg styleID='bg' colorIndex='21'/>
+			<colors styleID='shape'>
+				<color>#737373</color>
+				<color>#595959</color>
+	            <color>#fc6a4b</color>
+	            <color>#333333</color>
+	            <color>#191919</color>
+			</colors>
 			
 			<fill styleID='Fill'>
-				<style fill='Simple'/>
+				<style fill='Simple'>
+				</style>
 			</fill>
+			
 			<border styleID='Border'>
 				<style border='Simple'>
 					<fill alpha='0'/>
 				</style>
 			</border>
-			
-			<fill styleID='Dialog'>
-				<style>
-					<fill color='${color}' alpha='1'/>
-				</style>
-			</fill>
-			
-			<shape styleID='Hot' color='#66FFFF' thickness='1'>
-				<style border='Simple' fill='Simple'>
-					<border color='#666666'/>
-				</style>
-			</shape>
-			
-			<border styleID='Canvas'>
-				<style>
-					<border color='#66FFFF' alpha='0.9' thickness='10' caps='square' pixelHinting='false' scaleMode='none'/>
-				</style>
-			</border>
-			
-			<shape styleID='Page'>
-				<style fill='PageFill' border='PageFrame'/>
-			</shape>
-			
+
 			<line styleID='Border'>
 				<style border='Simple'/>
 			</line>
 			
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#808080"/>
+				</style>
+			</shape>
+			
 			<group styleID='group'>
 				<style>
-					<fill color='#0082B4' alpha='0.2'/>
+					<fill color='cccccc' alpha='0.2'/>
 				</style>
 			</group>
 			
 			<group styleID='tem'>
 				<style>
-					<fill color='#DDDDDD' alpha='0.2'/>
+					<fill color='#0082B4' alpha='0.1'/>
 				</style>
 			</group>
-			
 			
 			<!-- 文本模板 -->
 			<template styleID='text'>
@@ -359,7 +346,7 @@
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
-				<label format='FontTitle'/>
+				<label format='FontTitle' />
 			</text>
 			
 			<text styleID='SubTitle' size='30' colorIndex='8'>
@@ -370,93 +357,51 @@
 				<label format='FontBody'/>
 			</text>
 			
-			<colors styleID='fill'>
-				<color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#71777F</color>
-				<color>#A8CF53</color>
-				<color>#89D0EC</color>
-	            <color>#F5DC37</color>
-	            <color>#0E789A</color>
-	            <color>#6E1418</color>
-				
-			</colors>
-			<colors styleID='border'>
-				<color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#71777F</color>
-				<color>#A8CF53</color>
-				<color>#89D0EC</color>
-	            <color>#F5DC37</color>
-	            <color>#0E789A</color>
-	            <color>#6E1418</color>
-			</colors>
-			<colors styleID='line'>
-				<color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#71777F</color>
-				<color>#A8CF53</color>
-				<color>#89D0EC</color>
-	            <color>#F5DC37</color>
-	            <color>#0E789A</color>
-	            <color>#6E1418</color>
-			</colors>
-			
-			
-		</Red>
+		</style_4>
 
-<!-------------------------------------------------------------------------------------------->
+		<style_5>
+			<bg styleID='bg' colorIndex='-1' color='#193144'/>
 
-		<Blue>
-			<bg styleID='bg' colorIndex='25'/>
+			<colors styleID='shape'>
+				<color>#a18327</color>
+				<color>#e8b42a</color>
+	            <color>#fff71f</color>
+	            <color>#ffff55</color>
+	            <color>#ffff96</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#5f5c34"/>
+				</style>
+			</shape>
 			
 			<fill styleID='Fill'>
-				<style fill='Simple'/>
+				<style fill='Simple'>
+				</style>
 			</fill>
+			
 			<border styleID='Border'>
 				<style border='Simple'>
 					<fill alpha='0'/>
 				</style>
 			</border>
-			
-			<fill styleID='Dialog'>
-				<style>
-					<fill color='${color}' alpha='1'/>
-				</style>
-			</fill>
-			
-			<shape styleID='Hot' color='#66FFFF' thickness='1'>
-				<style border='Simple' fill='Simple'>
-					<border color='#666666'/>
-				</style>
-			</shape>
-			
-			<border styleID='Canvas'>
-				<style>
-					<border color='#66FFFF' alpha='0.9' thickness='10' caps='square' pixelHinting='false' scaleMode='none'/>
-				</style>
-			</border>
-			
-			<shape styleID='Page'>
-				<style fill='PageFill' border='PageFrame'/>
-			</shape>
-			
+
 			<line styleID='Border'>
 				<style border='Simple'/>
 			</line>
-			
+
 			<group styleID='group'>
 				<style>
-					<fill color='#0082B4' alpha='0.2'/>
+					<fill color='cccccc' alpha='0.2'/>
 				</style>
 			</group>
 			
 			<group styleID='tem'>
 				<style>
-					<fill color='#DDDDDD' alpha='0.2'/>
+					<fill color='#0082B4' alpha='0.1'/>
 				</style>
 			</group>
-			
 			
 			<!-- 文本模板 -->
 			<template styleID='text'>
@@ -466,7 +411,7 @@
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
-				<label format='FontTitle'/>
+				<label format='FontTitle' />
 			</text>
 			
 			<text styleID='SubTitle' size='30' colorIndex='8'>
@@ -477,93 +422,311 @@
 				<label format='FontBody'/>
 			</text>
 			
-			<colors styleID='fill'>
-				<color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#212121</color>
-				<color>#A8CF53</color>
-				<color>#89D0EC</color>
-	            <color>#F5DC37</color>
-	            <color>#E78514</color>
-	            <color>#6E1418</color>
-				
-			</colors>
-			<colors styleID='border'>
-				<color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#212121</color>
-				<color>#A8CF53</color>
-				<color>#89D0EC</color>
-	            <color>#F5DC37</color>
-	            <color>#E78514</color>
-	            <color>#6E1418</color>
-			</colors>
-			<colors styleID='line'>
-				<color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#212121</color>
-				<color>#A8CF53</color>
-				<color>#89D0EC</color>
-	            <color>#F5DC37</color>
-	            <color>#E78514</color>
-	            <color>#6E1418</color>
-			</colors>
-			
-		
-		</Blue>
+		</style_5>
 
-		<!-------------------------------------------------------------------------------------------->
+		<style_6>
+			<bg styleID='bg' colorIndex='-1' color='#4f7e8a'/>
 
-		<Yellow>
-			<bg styleID='bg' colorIndex='20'/>
+			<colors styleID='shape'>
+				<color>#8e0011</color>
+				<color>#c94612</color>
+	            <color>#ff8007</color>
+	            <color>#ffbb00</color>
+	            <color>#ffe100</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#aa7f45"/>
+				</style>
+			</shape>
 			
 			<fill styleID='Fill'>
-				<style fill='Simple'/>
+				<style fill='Simple'>
+				</style>
 			</fill>
+			
 			<border styleID='Border'>
 				<style border='Simple'>
 					<fill alpha='0'/>
 				</style>
 			</border>
-			
-			<fill styleID='Dialog'>
-				<style>
-					<fill color='${color}' alpha='1'/>
-				</style>
-			</fill>
-			
-			<shape styleID='Hot' color='#66FFFF' thickness='1'>
-				<style border='Simple' fill='Simple'>
-					<border color='#666666'/>
-				</style>
-			</shape>
-			
-			<border styleID='Canvas'>
-				<style>
-					<border color='#666666' alpha='0.9' thickness='10' caps='square' pixelHinting='false' scaleMode='none'/>
-				</style>
-			</border>
-			
-			<shape styleID='Page'>
-				<style fill='PageFill' border='PageFrame'/>
-			</shape>
-			
+
 			<line styleID='Border'>
 				<style border='Simple'/>
 			</line>
-			
+
 			<group styleID='group'>
 				<style>
-					<fill color='#0082B4' alpha='0.2'/>
+					<fill color='cccccc' alpha='0.2'/>
 				</style>
 			</group>
 			
 			<group styleID='tem'>
 				<style>
-					<fill color='#DDDDDD' alpha='0.2'/>
+					<fill color='#0082B4' alpha='0.1'/>
 				</style>
 			</group>
 			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='Body' text='宋体' colorIndex='8'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='8'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='8'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='8'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_6>
+
+		<style_7>
+			<bg styleID='bg' colorIndex='-1' color='#507153'/>
+
+			<colors styleID='shape'>
+				<color>#810010</color>
+				<color>#be001b</color>
+	            <color>#ff0000</color>
+	            <color>#ff6800</color>
+	            <color>#ffaa00</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#ff6813"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='Body' text='宋体' colorIndex='8'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='8'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='8'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='8'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_7>
+
+		<style_8>
+			<bg styleID='bg' colorIndex='-1' color='#3d321f'/>
+
+			<colors styleID='shape'>
+				<color>#768242</color>
+				<color>#abb94a</color>
+	            <color>#e3f251</color>
+	            <color>#f7ff44</color>
+	            <color>#f9ff87</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#aabb53"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='Body' text='宋体' colorIndex='8'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='8'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='8'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='8'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_8>
+
+		<style_9>
+			<bg styleID='bg' colorIndex='-1' color='#4a2828'/>
+
+			<colors styleID='shape'>
+				<color>#004983</color>
+				<color>#007997</color>
+	            <color>#35afa9</color>
+	            <color>#85e8ba</color>
+	            <color>#b9ffbd</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#80e9bc"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='Body' text='宋体' colorIndex='8'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='8'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='8'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='8'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_9>
+
+		<style_10>
+			<bg styleID='bg' colorIndex='-1' color='#eee4e0'/>
+
+			<colors styleID='shape'>
+				<color>#440000</color>
+				<color>#681f00</color>
+	            <color>#975433</color>
+	            <color>#cf893b</color>
+	            <color>#ffc241</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#d08a41"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
 			
 			<!-- 文本模板 -->
 			<template styleID='text'>
@@ -573,7 +736,7 @@
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
-				<label format='FontTitle'/>
+				<label format='FontTitle' />
 			</text>
 			
 			<text styleID='SubTitle' size='30' colorIndex='28'>
@@ -584,94 +747,441 @@
 				<label format='FontBody'/>
 			</text>
 			
-			<colors styleID='fill'>
-				<color>#444444</color>
-				<color>#777777</color>
-	            <color>#ffffff</color>
-	            <color>#E25780</color>
-	            <color>#9C5B24</color>
+		</style_10>
 
-				<color>#9079B6</color>
-				<color>#3CB8AF</color>
-	            <color>#488737</color>
-			</colors>
-			<colors styleID='border'>
-				<color>#444444</color>
-				<color>#777777</color>
-	            <color>#ffffff</color>
-	            <color>#E25780</color>
-	            <color>#9C5B24</color>
-	            
-				<color>#9079B6</color>
-				<color>#3CB8AF</color>
-	            <color>#488737</color>
-			</colors>
-			<colors styleID='line'>
-				<color>#444444</color>
-				<color>#777777</color>
-	            <color>#ffffff</color>
-	            <color>#E25780</color>
-	            <color>#9C5B24</color>
-	            
-				<color>#9079B6</color>
-				<color>#3CB8AF</color>
-	            <color>#488737</color>
-			</colors>
-			
-			
-		</Yellow>
+		<style_11>
+			<bg styleID='bg' colorIndex='0' color='#ffffff'/>
 
-<!-------------------------------------------------------------------------------------------->
-		<Green>
-			<bg styleID='bg' colorIndex='27'/>
+			<colors styleID='shape'>
+				<color>#260606</color>
+				<color>#380416</color>
+	            <color>#65111e</color>
+	            <color>#924b5d</color>
+	            <color>#cb806c</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#9e5d6c"/>
+				</style>
+			</shape>
 			
 			<fill styleID='Fill'>
-				<style fill='Simple'/>
+				<style fill='Simple'>
+				</style>
 			</fill>
+			
 			<border styleID='Border'>
 				<style border='Simple'>
 					<fill alpha='0'/>
 				</style>
 			</border>
-			
-			<fill styleID='Dialog'>
-				<style>
-					<fill color='${color}' alpha='1'/>
-				</style>
-			</fill>
-			
-			<shape styleID='Hot' color='#66FFFF' thickness='1'>
-				<style border='Simple' fill='Simple'>
-					<border color='#666666'/>
-				</style>
-			</shape>
-			
-			<border styleID='Canvas'>
-				<style>
-					<border color='#66FFFF' alpha='0.9' thickness='10' caps='square' pixelHinting='false' scaleMode='none'/>
-				</style>
-			</border>
-			
-			<shape styleID='Page'>
-				<style fill='PageFill' border='PageFrame'/>
-			</shape>
-			
+
 			<line styleID='Border'>
 				<style border='Simple'/>
 			</line>
-			
+
 			<group styleID='group'>
 				<style>
-					<fill color='#0082B4' alpha='0.2'/>
+					<fill color='cccccc' alpha='0.2'/>
 				</style>
 			</group>
 			
 			<group styleID='tem'>
 				<style>
-					<fill color='#DDDDDD' alpha='0.2'/>
+					<fill color='#0082B4' alpha='0.1'/>
 				</style>
 			</group>
 			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_11>
+
+		<style_12>
+			<bg styleID='bg' colorIndex='-1' color='#dbf4fc'/>
+
+			<colors styleID='shape'>
+				<color>#0035cf</color>
+				<color>#005be7</color>
+	            <color>#318bff</color>
+	            <color>#9bc0ff</color>
+	            <color>#bed0ed</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#005be7"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_12>
+
+		<style_13>
+			<bg styleID='bg' colorIndex='0' color='#ffffff'/>
+
+			<colors styleID='shape'>
+				<color>#030846</color>
+				<color>#002285</color>
+	            <color>#194a99</color>
+	            <color>#757baf</color>
+	            <color>#b6b1c2</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#194a99"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_13>
+
+		<style_14>
+			<bg styleID='bg' colorIndex='-1' color='#eadcdf'/>
+
+			<colors styleID='shape'>
+				<color>#2d003c</color>
+				<color>#4d003a</color>
+	            <color>#87234b</color>
+	            <color>#bf5b5a</color>
+	            <color>#fa9367</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#c15b5a"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_14>
+
+		<style_15>
+			<bg styleID='bg' colorIndex='-1' color='#6aceeb'/>
+
+			<colors styleID='shape'>
+				<color>#30394f</color>
+				<color>#0e6569</color>
+	            <color>#ff434c</color>
+	            <color>#9ad8eb</color>
+	            <color>#ffffff</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#006568"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_15>
+
+		<style_16>
+			<bg styleID='bg' colorIndex='-1' color='#ccbbab'/>
+
+			<colors styleID='shape'>
+				<color>#513e44</color>
+				<color>#ff6944</color>
+	            <color>#4a7c97</color>
+	            <color>#ccc5ba</color>
+	            <color>#f0e0c9</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#ff6946"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_16>
+
+		<style_17>
+			<bg styleID='bg' colorIndex='-1' color='#f1433f'/>
+
+			<colors styleID='shape'>
+				<color>#1b1d1e</color>
+				<color>#962d3e</color>
+	            <color>#fd9200</color>
+	            <color>#424e4f</color>
+	            <color>#5e6d70</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#982b3d"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
 			
 			<!-- 文本模板 -->
 			<template styleID='text'>
@@ -681,7 +1191,7 @@
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
-				<label format='FontTitle'/>
+				<label format='FontTitle' />
 			</text>
 			
 			<text styleID='SubTitle' size='30' colorIndex='8'>
@@ -692,39 +1202,465 @@
 				<label format='FontBody'/>
 			</text>
 			
-			<colors styleID='fill'>
-				<color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#71777F</color>
-				<color>#8AD8F7</color>
-	            <color>#FFE429</color>
-	            <color>#CF73D3</color>
-	            <color>#FE7B62</color>
-	            <color>#6E1418</color>
+		</style_17>
+
+		<style_18>
+			<bg styleID='bg' colorIndex='-1' color='#bdf271'/>
+
+			<colors styleID='shape'>
+				<color>#4a2748</color>
+				<color>#01a2a6</color>
+	            <color>#f5827f</color>
+	            <color>#00d9c3</color>
+	            <color>#ffffa6</color>
 			</colors>
-			<colors styleID='border'>
-				<color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#71777F</color>
-				<color>#8AD8F7</color>
-	            <color>#FFE429</color>
-	            <color>#CF73D3</color>
-	            <color>#FE7B62</color>
-	            <color>#6E1418</color>
-			</colors>
-			<colors styleID='line'>
-				<color>#FFFFFF</color>
-				<color>#CDCDCD</color>
-	            <color>#71777F</color>
-				<color>#8AD8F7</color>
-	            <color>#FFE429</color>
-	            <color>#CF73D3</color>
-	            <color>#FE7B62</color>
-	            <color>#6E1418</color>
-			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#00d9c3"/>
+				</style>
+			</shape>
 			
-		
-		</Green>
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_18>
+
+		<style_19>
+			<bg styleID='bg' colorIndex='-1' color='#2c3e50'/>
+
+			<colors styleID='shape'>
+				<color>#ab3e48</color>
+				<color>#e74c3c</color>
+	            <color>#ecf0f1</color>
+	            <color>#3a91fb</color>
+	            <color>#226ccc</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#ea4b3d"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='Body' text='宋体' colorIndex='8'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='8'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='8'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='8'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_19>
+
+		<style_20>
+			<bg styleID='bg' colorIndex='-1' color='#ffe11a'/>
+
+			<colors styleID='shape'>
+				<color>#004358</color>
+				<color>#fd7400</color>
+	            <color>#1f8a70</color>
+	            <color>#bedb39</color>
+	            <color>#ffeb5c</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#fb7422"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_20>
+
+
+		<style_21>
+			<bg styleID='bg' colorIndex='0' color='#ffffff'/>
+
+			<colors styleID='shape'>
+				<color>#34f6df</color>
+				<color>#33c257</color>
+	            <color>#f24268</color>
+	            <color>#f2e526</color>
+	            <color>#ffa93e</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#9b9b9b"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_21>
+
+
+		<style_22>
+			<bg styleID='bg' colorIndex='0' color='#ffffff'/>
+
+			<colors styleID='shape'>
+				<color>#362215</color>
+				<color>#854848</color>
+	            <color>#d75355</color>
+	            <color>#ddc2ac</color>
+	            <color>#99d6d7</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#9b9b9b"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_22>
+
+		<style_23>
+			<bg styleID='bg' colorIndex='0' color='#ffffff'/>
+
+			<colors styleID='shape'>
+				<color>#2c5752</color>
+				<color>#677494</color>
+	            <color>#e0625b</color>
+	            <color>#707954</color>
+	            <color>#f2b11e</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#9b9b9b"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_23>
+
+		<style_24>
+			<bg styleID='bg' colorIndex='0' color='#ffffff'/>
+
+			<colors styleID='shape'>
+				<color>#32404a</color>
+				<color>#fde04e</color>
+	            <color>#d45455</color>
+	            <color>#fa8484</color>
+	            <color>#a6587f</color>
+			</colors>
+
+			<shape styleID='Page'>
+				<style fill='PageFill' border='PageFrame'>
+					<fill color="#9b9b9b"/>
+				</style>
+			</shape>
+			
+			<fill styleID='Fill'>
+				<style fill='Simple'>
+				</style>
+			</fill>
+			
+			<border styleID='Border'>
+				<style border='Simple'>
+					<fill alpha='0'/>
+				</style>
+			</border>
+
+			<line styleID='Border'>
+				<style border='Simple'/>
+			</line>
+
+			<group styleID='group'>
+				<style>
+					<fill color='cccccc' alpha='0.2'/>
+				</style>
+			</group>
+			
+			<group styleID='tem'>
+				<style>
+					<fill color='#0082B4' alpha='0.1'/>
+				</style>
+			</group>
+			
+			<!-- 文本模板 -->
+			<template styleID='text'>
+				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
+				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='Body' text='宋体' colorIndex='28'/>
+			</template>
+			
+			<text styleID='Title' size='30' colorIndex='28'>
+				<label format='FontTitle' />
+			</text>
+			
+			<text styleID='SubTitle' size='30' colorIndex='28'>
+				<label format='FontSubTitle'/>
+			</text>
+			
+			<text styleID='Body' size='30' colorIndex='28'>
+				<label format='FontBody'/>
+			</text>
+			
+		</style_24>
+
 	</themes>
 	
 </config>

@@ -26,7 +26,7 @@ package view.element
 			super(vo);
 			
 			xmlData = <page/>;
-			_screenshot = false;
+			//_screenshot = false;
 			_elementPageConvertable = false;
 			
 			mouseChildren = true;			

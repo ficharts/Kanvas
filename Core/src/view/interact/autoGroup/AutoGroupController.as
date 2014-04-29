@@ -6,14 +6,9 @@ package view.interact.autoGroup
 	import flash.geom.Point;
 	
 	import model.CoreFacade;
-	import model.CoreProxy;
-	import model.vo.PageVO;
-	
-	import modules.pages.PageUtil;
 	
 	import util.StyleUtil;
 	
-	import view.element.Camera;
 	import view.element.ElementBase;
 	import view.element.imgElement.ImgElement;
 	import view.interact.CoreMediator;
@@ -59,7 +54,7 @@ package view.interact.autoGroup
 				newElement.vo.x += xOff;
 				newElement.vo.y += yOff;
 				
-				(newElement is Camera) ? CoreFacade.addElementAt(newElement, 1) : CoreFacade.addElement(newElement);
+				CoreFacade.addElement(newElement);
 				
 				_elements.push(newElement);
 			}

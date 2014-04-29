@@ -585,7 +585,6 @@
 			this.styleBtn.bgStatesXML = btnBGStyle;
 			
 			this.styleBtn.addEventListener(MouseEvent.CLICK, openColorsSelecterHandler, false, 0, true);
-			
 		}
 		
 		/**

@@ -36,9 +36,15 @@ package modules.pages
 	 */	
 	public final class PageManager extends EventDispatcher
 	{
-		
+		/**
+		 * 
+		 * @param $coreMdt
+		 * 
+		 */		
 		public function PageManager($coreMdt:CoreMediator)
 		{
+			this.coreMdt = $coreMdt;
+			
 			pageQuene = new PageQuene;
 			pageQuene.addEventListener(PageEvent.PAGE_ADDED, defaultHandler);
 			pageQuene.addEventListener(PageEvent.PAGE_DELETED, defaultHandler);
@@ -52,8 +58,6 @@ package modules.pages
 		{
 			var bound:Rectangle = coreMdt.coreApp.bound;
 			var proxy:ElementProxy = new ElementProxy;
-			
-			
 			
 			proxy.x = (bound.left + bound.right) * .5;
 			proxy.y = (bound.top + bound.bottom) * .5;
@@ -334,8 +338,15 @@ package modules.pages
 			return vector;
 		}
 		
-		public function getThumbByPageVO(pageVO:PageVO, w:Number, h:Number, mainUI:MainUIBase, color:uint = 0xFFFFFF, smooth:Boolean = false):BitmapData
+		/**
+		 * 根据PageVO，生成此页面的截图
+		 * 
+		 */		
+		public function getThumbByPageVO(pageVO:PageVO, w:Number, h:Number, smooth:Boolean = false):BitmapData
 		{
+			//背景色
+			var bgColor:uint = CoreFacade.coreProxy.bgColor;
+			var mainUI:MainUIBase = coreMdt.mainUI;
 			
 			//scale
 			var vw:Number = w;
@@ -374,19 +385,23 @@ package modules.pages
 			mat.scale(mainUI.bgImageCanvas.scaleX, mainUI.bgImageCanvas.scaleY);
 			mat.rotate(mainUI.bgImageCanvas.rotation);
 			mat.translate(mainUI.bgImageCanvas.x + offsetX, mainUI.bgImageCanvas.y + offsetY);
-			var bg:BitmapData = BitmapUtil.drawWithSize(mainUI.bgImageCanvas, w, h, false, color, mat, smooth);
+			var bg:BitmapData = BitmapUtil.drawWithSize(mainUI.bgImageCanvas, w, h, false, bgColor, mat, smooth);
+			
 			mat = new Matrix;
 			mat.translate(offsetX, offsetY);
 			var im:BitmapData = BitmapUtil.drawWithSize(mainUI.canvas, w, h, true, 0, mat, smooth);
+			
 			var sp:Sprite = new Sprite;
 			sp.addChild(new Bitmap(bg));
 			sp.addChild(new Bitmap(im));
 			//mainUI.parent.addChild(sp);
-			var bmd:BitmapData = new BitmapData(w, h, false, color);
+			
+			var bmd:BitmapData = new BitmapData(w, h, false, bgColor);
 			bmd.draw(sp, null, null, null, null, true);
 			
 			mainUI.canvas.toPreviewState();
 			mainUI.synBgImageToCanvas();
+			
 			return bmd;
 		}
 		
@@ -395,9 +410,9 @@ package modules.pages
 			return CoreFacade.coreProxy;
 		}
 		
-		private function get coreMdt():CoreMediator
-		{
-			return CoreFacade.coreMediator;
-		}
+		/**
+		 */		
+		private var coreMdt:CoreMediator
+		
 	}
 }

@@ -190,7 +190,7 @@ package
 		 */		
 		protected function kvsReadyHandler(evt:KVSEvent):void
 		{
-			kvsCore.changeTheme('White', false);
+			kvsCore.changeTheme('style_1', false);
 			pagePanel.initPageManager();
 		}
 		

@@ -74,6 +74,8 @@ package view.ui
 			return bmd;
 		}
 		
+		/**
+		 */		
 		public function getPageBytes(w:Number = 960, h:Number = 720):ByteArray
 		{
 			var manager:PageManager = CoreFacade.coreMediator.pageManager;
@@ -103,7 +105,7 @@ package view.ui
 						}
 						var page:PageVO = manager.pages[i];
 						
-						var bmd:BitmapData = manager.getThumbByPageVO(page, w, h, core, CoreFacade.coreProxy.bgColor);
+						var bmd:BitmapData = manager.getThumbByPageVO(page, w, h);
 					}
 					else
 					{
