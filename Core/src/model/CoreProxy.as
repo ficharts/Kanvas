@@ -352,13 +352,13 @@ package model
 			
 			//先创建所有元素，再匹配组合关系
 			var groupElements:Array = [];
-			var vos:Object = {};
+			var dic:Object = {};
 			var item:XML;
 			for each(item in xml.main.children())
 			{
 				var vo:ElementVO = createVO(item);
 				var element:ElementBase = createElement(vo);//创建并初始化元素
-				vos[vo.id] = vo;
+				dic[vo.id] = element;
 				
 				if (element is GroupElement)
 				{
@@ -384,9 +384,9 @@ package model
 			for each(item in xml.pages.children())
 			{
 				var pageVO:PageVO = (createVO(item) as PageVO);
-				if (pageVO.elementID > 0 && vos[pageVO.elementID])
+				if (pageVO.elementID > 0 && dic[pageVO.elementID])
 				{
-					element.setPage(pageVO);
+					dic[pageVO.elementID].setPage(pageVO);
 					//pageVO.elementVO = vos[pageVO.elementID];
 					//pageVO.elementVO.pageVO = pageVO;
 				}

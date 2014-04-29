@@ -5,6 +5,7 @@ package commands
 	
 	import org.puremvc.as3.interfaces.INotification;
 	
+	import util.ElementCreator;
 	import util.StyleUtil;
 	import util.undoRedo.UndoRedoMannager;
 	
@@ -22,6 +23,7 @@ package commands
 			element = notification.getBody() as ElementBase;
 			
 			pageVO = new PageVO;
+			pageVO.id = ElementCreator.id;
 			pageVO.index = CoreFacade.coreMediator.pageManager.index + 1;
 			pageVO.styleType = "shape";
 			StyleUtil.applyStyleToElement(pageVO, "Page");
