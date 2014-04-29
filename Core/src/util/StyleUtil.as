@@ -75,7 +75,7 @@ package util
 			if (xml)// 有些特殊的图形是没有颜色定义特性的，其视觉效果是唯一的，仅来自与样式模板，不存在颜色自定义
 			{
 				var colorIndex:uint = elementVO.colorIndex;
-				if (colorIndex > 4)
+				if (!(elementVO is TextVO) && colorIndex > 4)
 					colorIndex = 4;//现在的颜色仅仅保留5个可选，之前的旧数据有7种色，这里需要考虑兼容性；
 					
 				var color:Object = StyleManager.setColor(xml.children()[colorIndex].toString());
