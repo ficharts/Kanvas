@@ -44,7 +44,7 @@ package view.element.text
 			
 			textDrawer = new TextDrawer(this);
 			xmlData = <text/>;
-			
+			shape.visible = false;
 			
 		}
 		
@@ -380,8 +380,16 @@ package view.element.text
 			if (__smooth!= value)
 			{
 				__smooth = value;
-				textCanvas.visible = smooth;
-				shape.visible = !smooth;
+				if (stageWidth > stage.stageWidth || stageHeight > stage.stageHeight)
+				{
+					textCanvas.visible = smooth;
+					shape.visible = !smooth;
+				}
+				else
+				{
+					textCanvas.visible = true;
+					shape.visible = false;
+				}
 			}
 		}
 		
