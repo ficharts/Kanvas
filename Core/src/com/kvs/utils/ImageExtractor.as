@@ -48,15 +48,20 @@ package com.kvs.utils
 		private function analyse():void
 		{
 			analizeType();
-			
-			if (type == "png")
-				analizePNG();
-			else if (type == "jpg")
-				analizeJPG();
-			else
-				throw new Error("不支持的文件类型，只支持jpg，png");
-			
-			process();
+			try
+			{
+				if (type == "png")
+					analizePNG();
+				else if (type == "jpg")
+					analizeJPG();
+				else
+					throw new Error("不支持的文件类型，只支持jpg，png");
+				process();
+			}
+			catch (e:Error)
+			{
+				analizeIMG();
+			}
 		}
 		
 		private function analizeType():void 
@@ -151,6 +156,46 @@ package com.kvs.utils
 			}//end of while
 		}
 		
+		private function analizeIMG():void
+		{
+			loader = new Loader;
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, analizeHandler);
+			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, analizeHandler);
+			loader.loadBytes(tempo);
+		}
+		
+		private function analizeHandler(e:Event):void
+		{
+			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, analizeHandler);
+			loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, analizeHandler);
+			if (e.type == Event.COMPLETE)
+			{
+				var bmd:BitmapData = Bitmap(loader.content).bitmapData;
+				__originalWidth  = bmd.width;
+				__originalHeight = bmd.height;
+				var size:Number = originalWidth * originalHeight;
+				if (size > MAX_SUPPORTED_SIZE || originalWidth > MAX_SUPPORTED_WIDTH || originalHeight > MAX_SUPPORTED_WIDTH)
+				{
+					throw new Error("图片像素尺寸 " + originalWidth + " * " + originalHeight + " 超过了支持的最大尺寸，支持的尺寸宽*高在16777216以下，且宽度和高度高度都必须在8000以下！");;
+				}
+				else
+				{
+					var scale:Number = (size > limit) ? Math.pow((limit * limit) / (size * size), .5) : 1;
+					__width  = scale * originalWidth;
+					__height = scale * originalHeight;
+					
+					if (scale == 1)
+					{
+						__bytes = tempo;
+						__bytes.position = 0;
+					}
+					
+					translate(bmd);
+				}
+			}
+			dispatchEvent(e);
+		}
+		
 		private function process():void
 		{
 			var size:Number = originalWidth * originalHeight;
@@ -177,34 +222,36 @@ package com.kvs.utils
 		private function transform():void
 		{
 			loader = new Loader;
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, defaultHandler);
-			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, defaultHandler);
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, transformHandler);
+			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, transformHandler);
 			loader.loadBytes(tempo);
 		}
 		
-		private function defaultHandler(e:Event):void
+		private function transformHandler(e:Event):void
 		{
-			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, defaultHandler);
-			loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, defaultHandler);
+			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, transformHandler);
+			loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, transformHandler);
 			if (e.type == Event.COMPLETE)
-			{
-				var bmd:BitmapData = Bitmap(loader.content).bitmapData;
-				if (width == originalWidth && height == originalHeight)
-				{
-					__bitmapData = bmd;
-				}
-				else
-				{
-					__bitmapData = new BitmapData(width, height, true, 0);
-					var matrix:Matrix = new Matrix;
-					matrix.scale(width / originalWidth, height / originalHeight);
-					__bitmapData.draw(bmd, matrix, null, null, null, true);
-					encodeBmd();
-				}
-				bytes.position = 0;
-			}
+				translate(Bitmap(loader.content).bitmapData);
 			
 			dispatchEvent(e);
+		}
+		
+		private function translate(bmd:BitmapData):void
+		{
+			if (width == originalWidth && height == originalHeight)
+			{
+				__bitmapData = bmd;
+			}
+			else
+			{
+				__bitmapData = new BitmapData(width, height, true, 0);
+				var matrix:Matrix = new Matrix;
+				matrix.scale(width / originalWidth, height / originalHeight);
+				__bitmapData.draw(bmd, matrix, null, null, null, true);
+				encodeBmd();
+			}
+			bytes.position = 0;
 		}
 		
 		private function encodeBmd():void

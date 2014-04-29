@@ -443,12 +443,12 @@ package view.interact
 			
 			if (_isMulitySelectingMode)
 			{
-				Bubble.show(ConstsTip.TIP_TO_MULTI_STATE);
+				//Bubble.show(ConstsTip.TIP_TO_MULTI_STATE);
 				multiSelectControl.toMultiState();
 			}
 			else
 			{
-				Bubble.show(ConstsTip.TIP_TO_NORMAL_STATE);
+				//Bubble.show(ConstsTip.TIP_TO_NORMAL_STATE);
 				multiSelectControl.toNomalState();
 			}
 		}
