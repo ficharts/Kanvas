@@ -1063,7 +1063,7 @@ package view.element
 		{
 			updateLayout();
 			drawBG();
-			if (isPage) layoutPageNum();
+			layoutPageNum();
 		}
 		
 		/**
@@ -1111,7 +1111,7 @@ package view.element
 		{
 			bg.graphics.clear();
 			bg.graphics.beginFill(0x000000, 0);
-			bg.graphics.drawRect(- width / 2, - height / 2, width, height);
+			bg.graphics.drawRect(- width * .5, - height * .5, width, height);
 			bg.graphics.endFill();
 		}
 		

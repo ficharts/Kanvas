@@ -17,6 +17,7 @@ package model
 	import model.vo.ElementVO;
 	import model.vo.ImgVO;
 	import model.vo.PageVO;
+	import model.vo.TextVO;
 	
 	import modules.pages.PageEvent;
 	
@@ -35,6 +36,7 @@ package model
 	import view.element.GroupElement;
 	import view.element.PageElement;
 	import view.element.imgElement.ImgElement;
+	import view.element.text.TextEditField;
 	
 	/**
 	 * 负责数据，样式整体控制;
@@ -349,6 +351,7 @@ package model
 				var vo:ElementVO = createVO(item);
 				var element:ElementBase = createElement(vo);//创建并初始化元素
 				vos[vo.id] = vo;
+				
 				if (element is GroupElement)
 				{
 					element.xmlData = item;
@@ -457,6 +460,7 @@ package model
 				var imgVO:ImgVO = vo as ImgVO;
 				ImgLib.setID((vo as ImgVO).imgID); 
 			}
+			
 			return vo;
 		}
 		

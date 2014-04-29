@@ -27,6 +27,7 @@ package view.element.text
 	import view.element.state.IEditShapeState;
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.interact.autoGroup.IAutoGroupElement;
+	import view.ui.Debugger;
 	
 	
 	/**
@@ -247,11 +248,11 @@ package view.element.text
 		 */		
 		public function afterReRender():void
 		{
+			var bound:Rectangle = textManager.getContentBounds();
 			textVO.width  = textManager.compositionWidth;
 			textVO.height = textManager.compositionHeight;
-			
 			renderAfterLabelRender();
-			checkTextBm();
+			checkTextBm(true);
 		}
 		
 		/**
