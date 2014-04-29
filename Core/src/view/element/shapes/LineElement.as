@@ -56,9 +56,7 @@ package view.element.shapes
 			super.setPage(pageVO);
 			if (pageVO)
 			{
-				vo.pageVO.x        = vo.x;
 				vo.pageVO.y        = vo.y + lineVO.arc * .5;
-				vo.pageVO.width    = vo.width;
 				vo.pageVO.height   = vo.height + Math.abs(lineVO.arc);
 			}
 		}
@@ -131,7 +129,7 @@ package view.element.shapes
 		{
 			mcPoint.x = 0;
 			mcPoint.y = vo.scale * .5 * lineVO.arc;
-			return caculateTransform(mlPoint);
+			return caculateTransform(mcPoint);
 		}
 		
 		override public function get middleRight():Point
