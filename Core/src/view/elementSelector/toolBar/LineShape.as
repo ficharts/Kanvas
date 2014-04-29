@@ -21,6 +21,8 @@ package view.elementSelector.toolBar
 		 */		
 		override public function render():void
 		{
+			toolBar.clear();
+			initPageElementConvertIcons();
 			toolBar.addBtn(toolBar.styleBtn);
 			toolBar.addBtn(addBtn);
 			toolBar.addBtn(cutBtn);

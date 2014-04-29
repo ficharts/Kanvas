@@ -8,6 +8,9 @@ package view.element.shapes
 	
 	import model.vo.ElementVO;
 	import model.vo.LineVO;
+	import model.vo.PageVO;
+	
+	import modules.pages.PageEvent;
 	
 	import view.element.ElementBase;
 	import view.elementSelector.ElementSelector;
@@ -22,7 +25,6 @@ package view.element.shapes
 		public function LineElement(vo:ElementVO)
 		{
 			super(vo);
-			_elementPageConvertable = false;
 			xmlData = <line/>;
 		}
 		
@@ -49,6 +51,17 @@ package view.element.shapes
 			return xmlData;
 		}
 		
+		override public function setPage(pageVO:PageVO):void
+		{
+			super.setPage(pageVO);
+			if (pageVO)
+			{
+				vo.pageVO.x        = vo.x;
+				vo.pageVO.y        = vo.y + lineVO.arc * .5;
+				vo.pageVO.width    = vo.width;
+				vo.pageVO.height   = vo.height + Math.abs(lineVO.arc);
+			}
+		}
 		
 		/**
 		 */		

@@ -655,7 +655,7 @@ package view.element
 				if (isNaN(s))
 					s = scaleX;
 				
-				numShape.width = numShape.height = height * .5;
+				numShape.width = numShape.height = 100;
 				var temSize:Number = numShape.width * s * parent.scaleX;
 				
 				if (temSize > maxNumSize)

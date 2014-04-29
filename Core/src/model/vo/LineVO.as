@@ -12,6 +12,43 @@ package model.vo
 			this.styleType = 'line';
 		}
 		
+		override public function set y(value:Number):void
+		{
+			_y = value;
+			if (pageVO) 
+			{
+				pageVO.y = value + arc * .5;
+			}
+		}
+		
+		override public function set height(value:Number):void
+		{
+			_height = value;
+			if (pageVO) 
+			{
+				pageVO.height = value + Math.abs(arc);
+			}
+		}
+		
+		
+		/**
+		 * 弧度
+		 */
+		public function get arc():Number
+		{
+			return _arc;
+		}
+		public function set arc(value:Number):void
+		{
+			_arc = value;
+			if (pageVO) 
+			{
+				pageVO.y = value * .5 + y;
+				pageVO.height = height + Math.abs(value);
+			}
+		}
+		private var _arc:Number = 0;
+		
 		/**
 		 * 线条长度就是宽度，线宽等于高度
 		 */		
@@ -19,10 +56,5 @@ package model.vo
 		{
 			return this.thickness;
 		}
-		
-		/**
-		 * 线条的弧度， 弧度控制点到起点与终点连线的距离 
-		 */		
-		public var arc:Number = 0;
 	}
 }

@@ -28,6 +28,8 @@ package view.elementSelector.lineControl
 		override public function startMove():void
 		{
 			cacheOldProperty();
+			if (selector.element.isPage)
+				selector.element.vo.pageVO.thumbUpdatable = false;
 		}
 		
 		/**

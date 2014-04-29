@@ -82,6 +82,9 @@ package view.elementSelector.lineControl
 			startY = selector.y + r * Math.sin(sRad);
 			
 			cacheOldProperty();
+			
+			if (selector.element.isPage)
+				selector.element.vo.pageVO.thumbUpdatable = false;
 		}
 		
 		/**
@@ -89,6 +92,8 @@ package view.elementSelector.lineControl
 		 */		
 		public function stopMove():void
 		{
+			if (selector.element.isPage)
+				selector.element.vo.pageVO.thumbUpdatable = true;
 			selector.coreMdt.sendNotification(Command.CHANGE_ELEMENT_PROPERTY, oldObj);
 			
 			var xDir:int = selector.coreMdt.coreApp.stage.mouseX - lastMouseX;
