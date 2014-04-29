@@ -279,7 +279,7 @@ package model.vo
 				template = <element/>;
 			
 			template.@id = id;
-			template.@property = property;
+			//template.@property = property;
 			template.@type = type;
 			template.@styleType = styleType;
 			template.@styleID = styleID;

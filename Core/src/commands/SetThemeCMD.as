@@ -85,6 +85,9 @@ package commands
 			
 			this.dataChanged();
 			
+			//样式改变时，焦距框颜色随样式，需要重绘;
+			CoreFacade.coreMediator.currentMode.drawShotFrame();
+			
 			var evt:KVSEvent = new KVSEvent(KVSEvent.THEME_CHANGED);
 			evt.themeID = value;
 			coreApp.dispatchEvent(evt);

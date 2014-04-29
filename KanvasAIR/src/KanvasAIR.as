@@ -51,7 +51,7 @@ package
 			
 			FlowTextManager.ifUseEmbedFont = true;
 			kvsCore.addEventListener(KVSEvent.SAVE, saveHandler);
-			kvsCore.addEventListener(KVSEvent.THEME_CHANGED, themeChanged);
+			//kvsCore.addEventListener(KVSEvent.THEME_CHANGED, themeChanged);
 		}
 		
 		/**

@@ -281,8 +281,6 @@ package view.elementSelector
 			toolBar.rotation = - this.rotation;
 			
 			toolBar.layout(style);
-			
-			coreMdt.currentMode.drawShotFrame();
 		}
 		
 		/**

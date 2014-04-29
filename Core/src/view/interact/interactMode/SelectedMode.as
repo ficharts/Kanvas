@@ -25,7 +25,7 @@ package view.interact.interactMode
 		 */		
 		override public function drawShotFrame():void
 		{
-			mainMediator.drawShotFrame(mainMediator.coreApp.bound);
+			
 			
 			return;//暂时只保留
 			var layout:ElementVO = mainMediator.layoutTransformer.getLayoutInfo(mainMediator.currentElement);
@@ -174,7 +174,6 @@ package view.interact.interactMode
 			hideSelector();
 			
 			mainMediator.currentMode = mainMediator.unSelectedMode;
-			mainMediator.currentMode.drawShotFrame();
 		}
 		
 		/**
