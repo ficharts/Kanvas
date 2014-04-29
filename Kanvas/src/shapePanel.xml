@@ -30,8 +30,6 @@
 		</selector>
 		
 		
-		
-		
 		<!------------------------------------------------------------------------------------------->
 		
 		
@@ -47,18 +45,11 @@
 		
 		<!------------------------------------------------------------------------------------------->
 		
-		
-		<!--selector icon='hotspot' tips='热点'>
-			<shape type='hotspot' styleType='shape' styleID='Hot' width='100' height='50'/>
-		</selector>
-		<selector icon='canvas' tips='画布'>
-			<shape type='camera' styleType='border' styleID='Canvas' width='500' height='400'/>
-		</selector-->
 		<selector icon='dashRect'>
 			<shape type='dashRect' styleType='border' styleID='Border' width='120' height='120' radius='10'/>
 		</selector>
 		<selector icon='dialog'>
-			<shape type='dialog' styleType='fill' styleID='Dialog' width='120' height='100' radius='10'/>
+			<shape type='dialog' styleType='fill' styleID='Fill' width='120' height='100' radius='10'/>
 		</selector>
 		
 		<!--  -->

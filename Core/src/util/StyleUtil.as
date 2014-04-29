@@ -62,7 +62,12 @@ package util
 		 */		
 		public static function getColor(elementVO:ElementVO):void
 		{
-			var xml:XML = XMLVOMapper.getStyleXMLBy_ID(elementVO.styleType, 'colors') as XML;
+			//文本何图形的颜色列表不同
+			var colorlist:String = "shape";
+			if (elementVO is TextVO)
+				colorlist = "text";
+				
+			var xml:XML = XMLVOMapper.getStyleXMLBy_ID(colorlist, 'colors') as XML;
 			
 			if (xml)// 有些特殊的图形是没有颜色定义特性的，其视觉效果是唯一的，仅来自与样式模板，不存在颜色自定义
 			{

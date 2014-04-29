@@ -50,6 +50,11 @@ package
 		public static const DATA_CHANGED:String = "dataChanged";
 		
 		/**
+		 * 样式改变 
+		 */		
+		public static const THEME_CHANGED:String = "themeChanged";
+		
+		/**
 		 * 保存
 		 */	
 		public static const SAVE:String = "save";
@@ -63,11 +68,23 @@ package
 		
 		/**
 		 */		
+		override public function clone():Event
+		{
+			return new KVSEvent(this.type);
+		}
+		
+		/**
+		 */		
 		public var colorList:XML;
 		
 		/**
 		 */		
-		public var colorIndex:uint = 0;
+		public var colorIndex:int = 0;
+		
+		/**
+		 * 背景色 
+		 */		
+		public var bgColor:uint = 0;
 		
 		/**
 		 */		

@@ -28,6 +28,7 @@ package commands
 			
 			oldStyle = proxy.currStyle;
 			newStyle = notification.getBody().theme;
+			
 			var redoable:Boolean = notification.getBody().redoable;
 			if (setStyle(newStyle, true) && redoable) 
 				UndoRedoMannager.register(this);
@@ -68,7 +69,7 @@ package commands
 				// 通知UI更新
 				coreApp.themeUpdated(value);
 				coreApp.bgColorsUpdated(proxy.bgColorsXML);
-				coreApp.bgColorUpdated(proxy.bgColorIndex);
+				coreApp.bgColorUpdated(proxy.bgColorIndex, proxy.bgColor);
 				
 				if (exec)
 				{
@@ -82,9 +83,13 @@ package commands
 				}
 			}
 			
-			return result;
-			
 			this.dataChanged();
+			
+			var evt:KVSEvent = new KVSEvent(KVSEvent.THEME_CHANGED);
+			evt.themeID = value;
+			coreApp.dispatchEvent(evt);
+			
+			return result;
 		}
 		
 		/**

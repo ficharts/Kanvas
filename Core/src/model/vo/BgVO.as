@@ -24,11 +24,11 @@ package model.vo
 		
 		/**
 		 */		
-		private var _colorIndex:uint = 0;
+		private var _colorIndex:int = 0;
 
 		/**
 		 */
-		public function get colorIndex():uint
+		public function get colorIndex():int
 		{
 			return _colorIndex;
 		}
@@ -36,7 +36,7 @@ package model.vo
 		/**
 		 * @private
 		 */
-		public function set colorIndex(value:uint):void
+		public function set colorIndex(value:int):void
 		{
 			_colorIndex = value;
 		}

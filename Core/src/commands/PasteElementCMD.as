@@ -5,9 +5,9 @@ package commands
 	
 	import org.puremvc.as3.interfaces.INotification;
 	
+	import util.StyleUtil;
 	import util.undoRedo.UndoRedoMannager;
 	
-	import view.element.Camera;
 	import view.element.ElementBase;
 	import view.element.PageElement;
 	
@@ -47,9 +47,12 @@ package commands
 			var xOff:Number = element.vo.x - pastElement.vo.x;
 			var yOff:Number = element.vo.y - pastElement.vo.y;
 			
-			(element is Camera) ? CoreFacade.addElementAt(element, 1) : CoreFacade.addElement(element);
+			StyleUtil.applyStyleToElement(element.vo);
+			CoreFacade.addElement(element);
+			
 			if (element is PageElement)
 				CoreFacade.coreMediator.pageManager.addPage(element.vo as PageVO);
+			
 			elementIndex = element.index;
 			
 			if (element.screenshot)

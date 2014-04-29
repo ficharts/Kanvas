@@ -116,7 +116,7 @@ package view.pagePanel
 		 */		
 		private function updateThumb(evt:PageEvent = null):void
 		{
-			pageVO.bitmapData = CoreFacade.coreMediator.pageManager.getThumbByPageVO(pageVO, 480, 360, mainUI, CoreFacade.coreProxy.bgColor, true);
+			pageVO.bitmapData = CoreFacade.coreMediator.pageManager.getThumbByPageVO(pageVO, 480, 360, true);
 			
 			if (bmp && con.contains(bmp)) con.removeChild(bmp);
 			

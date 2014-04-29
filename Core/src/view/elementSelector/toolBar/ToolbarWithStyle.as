@@ -20,7 +20,7 @@ package view.elementSelector.toolBar
 		 */		
 		override public function init():void
 		{
-			var styleXML:XML = XMLVOMapper.getStyleXMLBy_ID(element.vo.styleType, 'colors') as XML;
+			var styleXML:XML = XMLVOMapper.getStyleXMLBy_ID("shape", 'colors') as XML;
 			resetColorBtns(styleXML);
 		}
 		

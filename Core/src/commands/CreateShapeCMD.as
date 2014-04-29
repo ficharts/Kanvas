@@ -6,10 +6,8 @@ package commands
 	import flash.geom.Point;
 	
 	import model.CoreFacade;
-	import model.CoreProxy;
 	import model.ElementProxy;
 	import model.vo.ElementVO;
-	import model.vo.PageVO;
 	import model.vo.ShapeVO;
 	
 	import org.puremvc.as3.interfaces.INotification;
@@ -20,9 +18,7 @@ package commands
 	import util.layout.LayoutTransformer;
 	import util.undoRedo.UndoRedoMannager;
 	
-	import view.element.Camera;
 	import view.element.ElementBase;
-	import view.element.PageElement;
 	
 	/**
 	 * 创建形状
@@ -58,6 +54,13 @@ package commands
 			elementVO.height = elementProxy.height;
 			elementVO.styleType = elementProxy.styleType;
 			
+			if (elementVO.styleType == "fill")
+				elementVO.colorIndex = 0;
+			else if (elementVO.styleType == "border")
+				elementVO.colorIndex = 4;
+			else
+				elementVO.colorIndex = 2;//line
+			
 			// 样式初始化,
 			StyleUtil.applyStyleToElement(elementVO, elementProxy.styleID);
 			
@@ -69,7 +72,7 @@ package commands
 			
 			// 新创建图形的比例总是与画布比例互补，保证任何时候创建的图形看起来是标准大小
 			elementVO.scale = layoutTransformer.compensateScale;
-			(element is Camera) ? CoreFacade.addElementAt(element, 1) : CoreFacade.addElement(element);
+			CoreFacade.addElement(element);
 			
 			//放置拖动创建时 当前原件未被指定 
 			CoreFacade.coreMediator.currentElement = element;

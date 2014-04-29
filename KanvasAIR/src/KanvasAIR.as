@@ -11,14 +11,21 @@ package
 	import flash.desktop.NativeApplication;
 	import flash.desktop.NativeDragActions;
 	import flash.desktop.NativeDragManager;
+	import flash.display.BitmapData;
+	import flash.display.JPEGEncoderOptions;
 	import flash.events.Event;
 	import flash.events.InvokeEvent;
 	import flash.events.MouseEvent;
 	import flash.events.NativeDragEvent;
 	import flash.filesystem.File;
-	import flash.text.ReturnKeyLabel;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
+	import flash.utils.ByteArray;
 	
 	import model.CoreFacade;
+	import model.vo.PageVO;
+	
+	import modules.pages.PageManager;
 	
 	import util.textFlow.FlowTextManager;
 	
@@ -44,6 +51,33 @@ package
 			
 			FlowTextManager.ifUseEmbedFont = true;
 			kvsCore.addEventListener(KVSEvent.SAVE, saveHandler);
+			kvsCore.addEventListener(KVSEvent.THEME_CHANGED, themeChanged);
+		}
+		
+		/**
+		 * 此函数用来辅助批量生成样式截图
+		 */		
+		private function themeChanged(evt:KVSEvent):void
+		{
+			var themeID:String = evt.themeID;
+			
+			var pageManager:PageManager = CoreFacade.coreMediator.pageManager;
+			
+			if (pageManager.length)
+			{
+				var page:PageVO = pageManager.getPageAt(0);
+				var pageBMD:BitmapData = pageManager.getThumbByPageVO(page, 180, 130, true);
+				var jpgEncodeOptions:JPEGEncoderOptions = new JPEGEncoderOptions;
+				jpgEncodeOptions.quality = 100;
+				var dat:ByteArray  = pageBMD.encode(pageBMD.rect, jpgEncodeOptions);
+				
+				var file:File = new File(File.desktopDirectory.nativePath+ "/" + themeID);
+				var files:FileStream = new FileStream();
+				files.open(file, FileMode.WRITE);
+				files.writeBytes(dat, 0, dat.bytesAvailable);
+				files.close();
+			}
+				
 		}
 		
 		/**
@@ -91,8 +125,9 @@ package
 		}
 		
 		/**
+		 * 鼠标按下与快捷键点击共同作用与此方法，用来保存文件
 		 */		
-		private function saveHandler(evt:MouseEvent):void
+		private function saveHandler(evt:Event):void
 		{
 			if(!saveBtn.selected)
 			{
