@@ -37,6 +37,9 @@ package util
 			// 有些元素是没有样式定义的，例如图片
 			if (elementVO.styleID && elementVO.styleID != 'null')// 数据导入时，没有id的会自动填充为null
 			{
+				if (elementVO.styleID == "Dialog")//兼容旧数据
+					elementVO.styleID = "Fill";
+				
 				var xml:Object = XMLVOMapper.getStyleXMLBy_ID(elementVO.styleID, elementVO.styleType);
 				var colorIndex:uint = elementVO.colorIndex;
 				
@@ -62,11 +65,20 @@ package util
 		 */		
 		public static function getColor(elementVO:ElementVO):void
 		{
-			var xml:XML = XMLVOMapper.getStyleXMLBy_ID(elementVO.styleType, 'colors') as XML;
+			//文本何图形的颜色列表不同
+			var colorlist:String = "shape";
+			if (elementVO is TextVO)
+				colorlist = "text";
+				
+			var xml:XML = XMLVOMapper.getStyleXMLBy_ID(colorlist, 'colors') as XML;
 			
 			if (xml)// 有些特殊的图形是没有颜色定义特性的，其视觉效果是唯一的，仅来自与样式模板，不存在颜色自定义
 			{
-				var color:Object = StyleManager.setColor(xml.children()[elementVO.colorIndex].toString());
+				var colorIndex:uint = elementVO.colorIndex;
+				if (!(elementVO is TextVO) && colorIndex > 4)
+					colorIndex = 4;//现在的颜色仅仅保留5个可选，之前的旧数据有7种色，这里需要考虑兼容性；
+					
+				var color:Object = StyleManager.setColor(xml.children()[colorIndex].toString());
 				elementVO.color = color;
 			}
 			

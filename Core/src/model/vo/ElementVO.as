@@ -264,16 +264,22 @@ package model.vo
 		{
 			return _thickness;
 		}
+		
 		protected var _thickness:Number = 6;
 		
-		public var pageVO:PageVO;
-		
+		/**
+		 * 
+		 * @param template
+		 * @return 
+		 * 
+		 */		
 		public function exportData(template:XML):XML
 		{
 			if(!template)
 				template = <element/>;
+			
 			template.@id = id;
-			template.@property = property;
+			//template.@property = property;
 			template.@type = type;
 			template.@styleType = styleType;
 			template.@styleID = styleID;
@@ -285,7 +291,10 @@ package model.vo
 			template.@color = color.toString(16);
 			template.@colorIndex = colorIndex;
 			template.@scale = scale;
+			
 			return template;
 		}
+		
+		public var pageVO:PageVO;
 	}
 }

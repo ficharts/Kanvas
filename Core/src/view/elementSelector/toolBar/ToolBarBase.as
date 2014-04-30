@@ -1,12 +1,10 @@
 package view.elementSelector.toolBar
 {
 	import com.greensock.TweenLite;
-	import com.greensock.TweenMax;
 	import com.greensock.easing.Cubic;
 	import com.kvs.utils.XMLConfigKit.style.Style;
 	
 	import view.element.ElementBase;
-	import view.element.PageElement;
 
 	/**
 	 */	
@@ -126,11 +124,21 @@ package view.elementSelector.toolBar
 			return toolBar.selector.rotation;	
 		}
 		
+		/**
+		 */		
 		protected function initPageElementConvertIcons():void
 		{
 			if (element.elementPageConvertable)
 			{
-				toolBar.addBtn((element.isPage) ? toolBar.convertElementBtn : toolBar.convertPageBtn);
+				if (element.isPage)
+				{
+					toolBar.addBtn(toolBar.pageToEleBtn)
+					toolBar.addBtn(toolBar.zoomBtn);
+				}
+				else
+				{
+					toolBar.addBtn(toolBar.eleToPageBtn);
+				}
 			}
 		}
 		

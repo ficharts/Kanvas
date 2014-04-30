@@ -17,6 +17,7 @@ package model
 	import model.vo.ElementVO;
 	import model.vo.ImgVO;
 	import model.vo.PageVO;
+	import model.vo.TextVO;
 	
 	import modules.pages.PageEvent;
 	
@@ -35,6 +36,7 @@ package model
 	import view.element.GroupElement;
 	import view.element.PageElement;
 	import view.element.imgElement.ImgElement;
+	import view.element.text.TextEditField;
 	
 	/**
 	 * 负责数据，样式整体控制;
@@ -104,7 +106,9 @@ package model
 		 */		
 		public function updateBgColor():void
 		{
-			bgVO.color = StyleManager.setColor(bgColorsXML.children()[bgVO.colorIndex].toString());
+			//如果不存在颜色序号，说明此颜色不包含在背景色列表里
+			if (bgVO.colorIndex != - 1)
+				bgVO.color = StyleManager.setColor(bgColorsXML.children()[bgVO.colorIndex].toString());
 		}
 		
 		/**
@@ -121,14 +125,14 @@ package model
 		
 		/**
 		 */		
-		public function get bgColorIndex():uint
+		public function get bgColorIndex():int
 		{
 			return bgVO.colorIndex;
 		}
 		
 		/**
 		 */		
-		public function set bgColorIndex(value:uint):void
+		public function set bgColorIndex(value:int):void
 		{
 			bgVO.colorIndex = value;
 		}
@@ -324,31 +328,38 @@ package model
 			temElementMap.clear();
 			
 			//先设置总体样式风格
-			setCurrTheme(xml.header.@styleID);
+			
+			var styleID:String = xml.header.@styleID;
+			if (themeConfigMap.containsKey(styleID) == false)//为了兼容旧数据，旧数据里面的style命名方式与现有的不同
+				styleID = "style_1";
+			
+			setCurrTheme(styleID);
+			
 			//更新文本编辑器样式属性
 			(CoreFacade.coreMediator.coreApp as CoreApp).textEditor.initStyle();
 			// 通知UI更新
-			(CoreFacade.coreMediator.coreApp as CoreApp).themeUpdated(xml.header.@styleID);
+			(CoreFacade.coreMediator.coreApp as CoreApp).themeUpdated(styleID);
 			(CoreFacade.coreMediator.coreApp as CoreApp).bgColorsUpdated(bgColorsXML);
 			
 			//处理背景颜色绘制
 			XMLVOMapper.fuck(xml.bg, bgVO);
 			updateBgColor();
 			sendNotification(Command.RENDER_BG_COLOR, bgColor);
-			coreApp.bgColorUpdated(bgColorIndex);
+			coreApp.bgColorUpdated(bgColorIndex, bgColor);
 			ElementCreator.setID(bgVO.imgID);
 			
 			CoreFacade.clear();
 			
 			//先创建所有元素，再匹配组合关系
 			var groupElements:Array = [];
-			var vos:Object = {};
+			var dic:Object = {};
 			var item:XML;
 			for each(item in xml.main.children())
 			{
 				var vo:ElementVO = createVO(item);
 				var element:ElementBase = createElement(vo);//创建并初始化元素
-				vos[vo.id] = vo;
+				dic[vo.id] = element;
+				
 				if (element is GroupElement)
 				{
 					element.xmlData = item;
@@ -373,9 +384,9 @@ package model
 			for each(item in xml.pages.children())
 			{
 				var pageVO:PageVO = (createVO(item) as PageVO);
-				if (pageVO.elementID > 0 && vos[pageVO.elementID])
+				if (pageVO.elementID > 0 && dic[pageVO.elementID])
 				{
-					element.setPage(pageVO);
+					dic[pageVO.elementID].setPage(pageVO);
 					//pageVO.elementVO = vos[pageVO.elementID];
 					//pageVO.elementVO.pageVO = pageVO;
 				}
@@ -457,6 +468,7 @@ package model
 				var imgVO:ImgVO = vo as ImgVO;
 				ImgLib.setID((vo as ImgVO).imgID); 
 			}
+			
 			return vo;
 		}
 		
@@ -509,7 +521,7 @@ package model
 		/**
 		 */		
 		private var dataXML:XML = <kanvas>
-									<header version = '3.0' styleID={currStyle}/>
+									<header version = {CoreApp.VER} styleID={currStyle}/>
 									<module/>
 									<main/>
 								  </kanvas>;

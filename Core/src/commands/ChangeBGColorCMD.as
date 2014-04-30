@@ -52,7 +52,7 @@ package commands
 			
 			sendNotification(Command.RENDER_BG_COLOR);
 			
-			CoreFacade.coreMediator.coreApp.bgColorUpdated(CoreFacade.coreProxy.bgColorIndex);
+			CoreFacade.coreMediator.coreApp.bgColorUpdated(CoreFacade.coreProxy.bgColorIndex, CoreFacade.coreProxy.bgColor);
 			
 			if (exec)
 			{

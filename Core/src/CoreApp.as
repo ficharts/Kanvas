@@ -45,6 +45,10 @@ package
 	 */
 	public class CoreApp extends MainUIBase implements IApp
 	{
+		/**
+		 * 产品版本号 
+		 */		
+		public static const VER:String = "1.0.1";
 		
 		
 		
@@ -244,8 +248,6 @@ package
 			return facade.coreProxy.exportZipData();
 		}
 		
-		
-		
 		/**
 		 * 所有图片资源的URL列表
 		 */		
@@ -322,10 +324,12 @@ package
 		/**
 		 * 背景颜色更新后通知外围程序
 		 */		
-		public function bgColorUpdated(colorIndex:uint):void
+		public function bgColorUpdated(colorIndex:int, color:uint):void
 		{
 			var evt:KVSEvent = new KVSEvent(KVSEvent.UPDATE_BG_COLOR);
 			evt.colorIndex = colorIndex;
+			evt.bgColor = color;
+			
 			this.dispatchEvent(evt);
 		}
 		

@@ -33,7 +33,7 @@ package view.elementSelector.customPoint
 		 */		
 		public function layout(style:Style):void
 		{
-			if (this.visible)
+			if (visible)
 			{
 				customShape.layoutCustomPoint(selector, style);
 			}
@@ -64,12 +64,16 @@ package view.elementSelector.customPoint
 			for each (var propertyName:String in customShape.propertyNameArray)
 				oldPropertyObj[propertyName] = selector.element.vo[propertyName];
 			
+			if (selector.element.isPage)
+				selector.element.vo.pageVO.thumbUpdatable = false;
 		}
 		
 		/**
 		 */			
 		public function stopMove():void
 		{
+			if (selector.element.isPage)
+				selector.element.vo.pageVO.thumbUpdatable = true;
 			var index:Vector.<int> = selector.coreMdt.autoLayerController.autoLayer(selector.element);
 			if (index)
 			{

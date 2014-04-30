@@ -9,13 +9,11 @@ package view.pagePanel
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.filters.GlowFilter;
 	
 	import model.CoreFacade;
 	import model.vo.PageVO;
 	
 	import modules.pages.PageEvent;
-	import modules.pages.PageUtil;
 	
 	import view.ui.MainUIBase;
 	
@@ -116,7 +114,7 @@ package view.pagePanel
 		 */		
 		private function updateThumb(evt:PageEvent = null):void
 		{
-			pageVO.bitmapData = CoreFacade.coreMediator.pageManager.getThumbByPageVO(pageVO, 480, 360, mainUI, CoreFacade.coreProxy.bgColor, true);
+			pageVO.bitmapData = CoreFacade.coreMediator.pageManager.getThumbByPageVO(pageVO, 480, 360, true);
 			
 			if (bmp && con.contains(bmp)) con.removeChild(bmp);
 			
@@ -262,13 +260,13 @@ package view.pagePanel
 		/**
 		 */		
 		private var normalTextStyle:XML = <label radius='0' vPadding='0' hPadding='0'>
-											<format color='#555555' font='华文细黑' size='12'/>
+											<format color='#555555' font='微软雅黑' size='12'/>
 										  </label>
 			
 		/**
 		 */		
 		private var selectedTextStyle:XML = <label radius='0' vPadding='0' hPadding='0'>
-											<format color='#ffffff' font='华文细黑' size='12'/>
+											<format color='#ffffff' font='微软雅黑' size='12'/>
 										  </label>
 		
 		/**

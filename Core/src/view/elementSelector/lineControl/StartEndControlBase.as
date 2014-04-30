@@ -2,18 +2,13 @@ package view.elementSelector.lineControl
 {
 	import com.kvs.ui.clickMove.ClickMoveControl;
 	import com.kvs.ui.clickMove.IClickMove;
-	import com.kvs.utils.MathUtil;
-	import com.kvs.utils.dec.NullPad;
 	
 	import commands.Command;
 	
-	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-	import model.vo.ElementVO;
 	import model.vo.LineVO;
 	
-	import util.CoreUtil;
 	import util.LayoutUtil;
 	
 	import view.elementSelector.ControlPointBase;
@@ -82,6 +77,9 @@ package view.elementSelector.lineControl
 			startY = selector.y + r * Math.sin(sRad);
 			
 			cacheOldProperty();
+			
+			if (selector.element.isPage)
+				selector.element.vo.pageVO.thumbUpdatable = false;
 		}
 		
 		/**
@@ -89,6 +87,8 @@ package view.elementSelector.lineControl
 		 */		
 		public function stopMove():void
 		{
+			if (selector.element.isPage)
+				selector.element.vo.pageVO.thumbUpdatable = true;
 			selector.coreMdt.sendNotification(Command.CHANGE_ELEMENT_PROPERTY, oldObj);
 			
 			var xDir:int = selector.coreMdt.coreApp.stage.mouseX - lastMouseX;
@@ -97,6 +97,7 @@ package view.elementSelector.lineControl
 			yDir = (yDir == 0) ? yDir : ((yDir > 0) ? 1 : -1);
 			
 			selector.coreMdt.autofitController.autofitElementPosition(selector.coreMdt.currentElement, xDir, yDir);
+			
 		}
 		
 		/**

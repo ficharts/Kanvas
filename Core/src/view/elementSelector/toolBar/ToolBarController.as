@@ -6,7 +6,6 @@
 	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
-	import com.kvs.utils.XMLConfigKit.style.States;
 	import com.kvs.utils.XMLConfigKit.style.Style;
 	
 	import commands.Command;
@@ -16,6 +15,8 @@
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	
+	import model.vo.PageVO;
 	
 	import view.elementSelector.ElementSelector;
 	
@@ -93,6 +94,7 @@
 		private function upLayerHandler(evt:MouseEvent):void
 		{
 			var index:uint = selector.element.index;
+			
 			if (index < selector.coreMdt.canvas.numChildren - 1) 
 				setLayer(index + 1);
 		}
@@ -114,6 +116,7 @@
 		{
 			var p:DisplayObjectContainer = selector.element.parent;
 			var index:uint = selector.element.index;
+			
 			if (index < p.numChildren - 1)
 				setLayer(p.numChildren - 1);
 		}
@@ -123,6 +126,7 @@
 		private function bottomLayer(evt:MouseEvent):void
 		{
 			var index:uint = selector.element.index;
+			
 			if (index > 1)
 				setLayer(1);
 		}
@@ -134,22 +138,41 @@
 			this.dispatchEvent(new KVSEvent(KVSEvent.LINK_CLICKED));
 		}
 		
-		
+		/**
+		 */		
 		private function setLayer(index:int):void
 		{
 			selector.coreMdt.sendNotification(Command.CHANGE_ELEMENT_LAYER, index);
 		}
 		
-		
+		/**
+		 */		
 		private function convertPageHandler(e:MouseEvent):void
 		{
 			selector.coreMdt.sendNotification(Command.CONVERT_ELEMENT_2_PAGE, selector.element);
 		}
 		
-		
+		/**
+		 */		
 		private function convertElementHandler(e:MouseEvent):void
 		{
 			selector.coreMdt.sendNotification(Command.CONVERT_PAGE_2_ELEMENT, selector.element);
+		}
+		
+		/**
+		 */		
+		private function zoomHandler(evt:MouseEvent):void
+		{
+			var selector:ElementSelector = selector;
+			
+			var pageVO:PageVO;
+			if (selector.element.isPage)
+				pageVO = selector.element.vo.pageVO;
+			else
+				pageVO = selector.element.vo as PageVO;
+				
+			selector.coreMdt.zoomMoveControl.zoomElement(pageVO);
+			selector.coreMdt.toUnSelectedMode();
 		}
 		
 		
@@ -258,6 +281,7 @@
 			for each(colorBtn in btns)
 				this.addBtn(colorBtn);
 		}
+		
 		
 		/**
 		 */		
@@ -538,13 +562,20 @@
 			bottomLayerBtn.doubleClickEnabled = true;
 			bottomLayerBtn.addEventListener(MouseEvent.DOUBLE_CLICK, bottomLayer, false, 0, true);
 			
-			convertPageBtn.tips = "转换为页面";
-			initBtnStyle(convertPageBtn, 'link');
-			convertPageBtn.addEventListener(MouseEvent.CLICK, convertPageHandler);
+			toPage;
+			eleToPageBtn.tips = "转换为页面";
+			initBtnStyle(eleToPageBtn, 'toPage');
+			eleToPageBtn.addEventListener(MouseEvent.CLICK, convertPageHandler);
 			
-			convertElementBtn.tips = '转换为元素';
-			initBtnStyle(convertElementBtn, 'link');
-			convertElementBtn.addEventListener(MouseEvent.CLICK, convertElementHandler);
+			toEle;
+			pageToEleBtn.tips = '转换为元素';
+			initBtnStyle(pageToEleBtn, 'toEle');
+			pageToEleBtn.addEventListener(MouseEvent.CLICK, convertElementHandler);
+			
+			zoom
+			zoomBtn.tips = '镜头缩放';
+			initBtnStyle(zoomBtn, 'zoom');
+			zoomBtn.addEventListener(MouseEvent.CLICK, zoomHandler, false, 0, true);
 			
 			styleBtn.tips = '颜色/样式';
 			this.styleBtn.w = btnWidth;
@@ -554,7 +585,6 @@
 			this.styleBtn.bgStatesXML = btnBGStyle;
 			
 			this.styleBtn.addEventListener(MouseEvent.CLICK, openColorsSelecterHandler, false, 0, true);
-			
 		}
 		
 		/**
@@ -601,9 +631,20 @@
 		 */		
 		public var styleBtn:StyleBtn = new StyleBtn;
 		
-		public var convertPageBtn:IconBtn = new IconBtn;
+		/**
+		 *  按下后将元素转化为页面
+		 */		
+		public var eleToPageBtn:IconBtn = new IconBtn;
 		
-		public var convertElementBtn:IconBtn = new IconBtn;
+		/**
+		 * 按下后，将页面转化为元素 
+		 */		
+		public var pageToEleBtn:IconBtn = new IconBtn;
+		
+		/**
+		 * 页面才会有，按下后页面自动对焦
+		 */		
+		public var zoomBtn:IconBtn = new IconBtn;
 		
 		/**
 		 * 注册点到工具面板的距离

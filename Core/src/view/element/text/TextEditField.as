@@ -27,6 +27,7 @@ package view.element.text
 	import view.element.state.IEditShapeState;
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.interact.autoGroup.IAutoGroupElement;
+	import view.ui.Debugger;
 	
 	
 	/**
@@ -43,7 +44,7 @@ package view.element.text
 			
 			textDrawer = new TextDrawer(this);
 			xmlData = <text/>;
-			
+			shape.visible = false;
 			
 		}
 		
@@ -247,11 +248,11 @@ package view.element.text
 		 */		
 		public function afterReRender():void
 		{
+			var bound:Rectangle = textManager.getContentBounds();
 			textVO.width  = textManager.compositionWidth;
 			textVO.height = textManager.compositionHeight;
-			
 			renderAfterLabelRender();
-			checkTextBm();
+			checkTextBm(true);
 		}
 		
 		/**
@@ -379,8 +380,16 @@ package view.element.text
 			if (__smooth!= value)
 			{
 				__smooth = value;
-				textCanvas.visible = smooth;
-				shape.visible = !smooth;
+				if (stageWidth > stage.stageWidth || stageHeight > stage.stageHeight)
+				{
+					textCanvas.visible = smooth;
+					shape.visible = !smooth;
+				}
+				else
+				{
+					textCanvas.visible = true;
+					shape.visible = false;
+				}
 			}
 		}
 		

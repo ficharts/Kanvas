@@ -9,10 +9,10 @@ package view.themePanel
 	import com.kvs.utils.XMLConfigKit.style.Style;
 	import com.kvs.utils.layout.VerticalLayouter;
 	
+	import control.InteractEvent;
+	
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	
-	import control.InteractEvent;
 	
 	import view.elementSelector.toolBar.StyleBtn;
 	
@@ -25,12 +25,30 @@ package view.themePanel
 		{
 			super();
 			
-			white_preview;
-			green_preview;
-			red_preview;
-			blue_preview;
-			yellow_preview;
-			black_preview;
+			style_1;
+			style_2;
+			style_3;
+			style_4;
+			style_5;
+			style_6;
+			style_7;
+			style_8;
+			style_9;
+			style_10;
+			style_11;
+			style_12;
+			style_13;
+			style_14;
+			style_15;
+			style_16;
+			style_17;
+			style_18;
+			style_19;
+			style_20;
+			style_21;
+			style_22;
+			style_23;
+			style_24;
 			
 			this.kvs = kvs;
 			this.kvs.kvsCore.addEventListener(KVSEvent.THEME_UPDATED, updateCurTheme); 
@@ -88,10 +106,21 @@ package view.themePanel
 		 */		
 		private function updateBGColor(evt:KVSEvent):void
 		{
-			colorPanel.setCurColor(evt.colorIndex);
-			
-			bgColorIcon.iconColor = colorPanel.curColorBtn.iconColor;
-			bgColorIcon.render();
+			if (evt.colorIndex == - 1)
+			{
+				if (colorPanel.curColorBtn)
+					colorPanel.curColorBtn.selected = false;
+				
+				bgColorIcon.iconColor = evt.bgColor;
+				bgColorIcon.render();
+			}
+			else
+			{
+				colorPanel.setCurColor(evt.colorIndex);
+				
+				bgColorIcon.iconColor = colorPanel.curColorBtn.iconColor;
+				bgColorIcon.render();
+			}
 		}
 		
 		/**
@@ -220,7 +249,7 @@ package view.themePanel
 									</style>
 			XMLVOMapper.fuck(panelBGStyleXML, panelBGStyle);
 			
-			var startX:uint = 28;
+			var startX:uint = 23;
 			var size:uint = 8;
 			
 			panelBGStyle.width = colorPanel.width - 1;
@@ -412,13 +441,13 @@ package view.themePanel
 				theme = new ThemeItem;
 				XMLVOMapper.fuck(themeXML, theme);
 				theme.styleXML = themeIconStyle;
-				theme.setIcons(theme.icon, theme.icon, theme.icon);
+				theme.setIcons(theme.themeID, theme.themeID, theme.themeID);
 				
 				theme.w = themePanelWidth;
 				theme.h = 80
 					
 				theme.iconW = 90;
-				theme.iconH = 65.45;
+				theme.iconH = 65;
 				
 				layouter.layout(theme);
 				themesContainer.addChild(theme);
@@ -475,12 +504,30 @@ package view.themePanel
 		/**
 		 */		
 		private var themesXML:XML = <themes>
-										<theme themeID='White' icon='white_preview'/>
-										<theme themeID='Green' icon='green_preview'/>
-										<theme themeID='Red' icon='red_preview'/>
-										<theme themeID='Blue' icon='blue_preview'/>
-										<theme themeID='Yellow' icon='yellow_preview'/>
-										<theme themeID='Black' icon='black_preview'/>
+										<theme themeID='style_1' icon='white_preview'/>
+										<theme themeID='style_2' icon='white_preview'/>
+										<theme themeID='style_3' icon='white_preview'/>
+										<theme themeID='style_4' icon='white_preview'/>
+										<theme themeID='style_5' icon='white_preview'/>
+										<theme themeID='style_6' icon='white_preview'/>
+										<theme themeID='style_7' icon='white_preview'/>
+										<theme themeID='style_8' icon='white_preview'/>
+										<theme themeID='style_9' icon='white_preview'/>
+										<theme themeID='style_10' icon='white_preview'/>
+										<theme themeID='style_11' icon='white_preview'/>
+										<theme themeID='style_12' icon='white_preview'/>
+										<theme themeID='style_13' icon='white_preview'/>
+										<theme themeID='style_14' icon='white_preview'/>
+										<theme themeID='style_15' icon='white_preview'/>
+										<theme themeID='style_16' icon='white_preview'/>
+										<theme themeID='style_17' icon='white_preview'/>
+										<theme themeID='style_18' icon='white_preview'/>
+										<theme themeID='style_19' icon='white_preview'/>
+										<theme themeID='style_20' icon='white_preview'/>
+										<theme themeID='style_21' icon='white_preview'/>
+										<theme themeID='style_22' icon='white_preview'/>
+										<theme themeID='style_23' icon='white_preview'/>
+										<theme themeID='style_24' icon='white_preview'/>
 									</themes>
 			
 		/**

@@ -1,5 +1,7 @@
 package view.interact
 {
+	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
+	
 	import commands.Command;
 	
 	import consts.ConstsTip;
@@ -23,7 +25,6 @@ package view.interact
 	import view.editor.EditorBase;
 	import view.element.ElementBase;
 	import view.element.GroupElement;
-	import view.element.PageElement;
 	import view.element.imgElement.ImgElement;
 	import view.element.text.TextEditField;
 	import view.elementSelector.ElementSelector;
@@ -442,12 +443,12 @@ package view.interact
 			
 			if (_isMulitySelectingMode)
 			{
-				Bubble.show(ConstsTip.TIP_TO_MULTI_STATE);
+				//Bubble.show(ConstsTip.TIP_TO_MULTI_STATE);
 				multiSelectControl.toMultiState();
 			}
 			else
 			{
-				Bubble.show(ConstsTip.TIP_TO_NORMAL_STATE);
+				//Bubble.show(ConstsTip.TIP_TO_NORMAL_STATE);
 				multiSelectControl.toNomalState();
 			}
 		}
@@ -582,7 +583,6 @@ package view.interact
 			//镜头绘制
 			cameraShotShape.visible = false;
 			coreApp.addChild(cameraShotShape);
-			currentMode.drawShotFrame();
 			coreApp.addEventListener(KVSEvent.UPATE_BOUND, renderBoundHandler);
 			
 			pageManager = new PageManager(this);
@@ -881,7 +881,18 @@ package view.interact
 			var ch:Number = bound.height * .5;
 			
 			cameraShotShape.graphics.clear();
-			cameraShotShape.graphics.lineStyle(8, 0, 0.6, false, 'none', 'square');
+			
+			//临时获取页面的颜色
+			var xml:Object = XMLVOMapper.getStyleXMLBy_ID("Page", "shape");
+			var page:PageVO = new PageVO;
+			var color:uint = 0;
+			if(xml)
+			{
+				XMLVOMapper.fuck(xml, page);
+				color = uint(page.style.getFill.color);
+			}
+			
+			cameraShotShape.graphics.lineStyle(8, color, 0.8, false, 'none', 'square');
 			
 			//左上角
 			cameraShotShape.graphics.moveTo(- cw, - ch + len);

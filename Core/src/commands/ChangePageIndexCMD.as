@@ -35,9 +35,12 @@ package commands
 			setIndex(newIndex);
 		}
 		
+		/**
+		 */		
 		private function setIndex(value:int):void
 		{
 			CoreFacade.coreMediator.pageManager.setPageIndex(pageVO, value, true);
+			this.dataChanged();
 		}
 		
 		private var oldIndex:int;

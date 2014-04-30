@@ -322,10 +322,19 @@ package util.textFlow
 			field.textManager.swfContext = fontInstance;
 			field.textLayoutFormat.fontLookup = FontLookup.EMBEDDED_CFF;
 			
-			// 没有一下这两句，嵌入字体即使加载完成后，他他妈的也不会自动重绘；
-			// 这两句缺一不可
+			//field.textManager.setText(field.text);
+			
+			if (field.ifMutiLine == false)
+			{
+				//防止文本vo定义的尺寸太小
+				var bd:Rectangle = updateSingleLineBound(field.text, field.textManager);
+				field.textManager.compositionWidth  = bd.width;
+				field.textManager.compositionHeight = bd.height;
+			}
+			
 			field.textManager.hostFormat = field.textLayoutFormat;
 			field.textManager.updateContainer();
+			
 			field.afterReRender();
 		}
 		
@@ -348,15 +357,15 @@ package util.textFlow
 			{
 				//防止文本vo定义的尺寸太小
 				var bd:Rectangle = updateSingleLineBound(textVO.text, field.textManager);
-				field.textManager.compositionWidth = bd.width;
+				field.textManager.compositionWidth  = bd.width;
 				field.textManager.compositionHeight = bd.height;
 				
-				textVO.width = bd.width;
+				textVO.width  = bd.width;
 				textVO.height = bd.height;
 			}
 			else
 			{
-				field.textManager.compositionWidth = textVO.width;
+				field.textManager.compositionWidth  = textVO.width;
 				field.textManager.compositionHeight = textVO.height;
 			}
 			

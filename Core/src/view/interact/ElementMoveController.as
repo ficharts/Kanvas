@@ -65,7 +65,7 @@ package view.interact
 			
 			selector.x = selectorStartX + disX;
 			selector.y = selectorStartY + disY;
-			coreMdt.currentMode.drawShotFrame();
+
 			
 			// 元素的移动是基于选择其的位置的
 			var elementPoint:Point = LayoutUtil.stagePointToElementPoint(selector.x, selector.y, selector.coreMdt.canvas);

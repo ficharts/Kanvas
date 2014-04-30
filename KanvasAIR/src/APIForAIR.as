@@ -15,7 +15,6 @@ package
 	import model.ConfigInitor;
 	import model.CoreFacade;
 	
-	import util.img.ImgInsertEvent;
 	import util.img.ImgLib;
 	
 	import view.element.ElementBase;
@@ -29,21 +28,9 @@ package
 		public function APIForAIR(core:CoreApp)
 		{
 			super(core);
-		}
-		
-		/**
-		 */		
-		private function imgLoaded(evt:ImgInsertEvent):void
-		{
 			
-		}
-		
-		/**
-		 */		
-		private function imgLoadError(e:ImgInsertEvent):void
-		{
 			
-		}
+		}		
 		
 		/**
 		 * 当前文件
@@ -164,10 +151,12 @@ package
 		 */		
 		private function writeFile():void
 		{
+			isSaving = true;
+			
 			PerformaceTest.start("save");
 			
-			var writer:ZipFileWriter = new ZipFileWriter();
-			
+			var writer:ZipFileWriter = new ZipFileWriter();// 这里每次都需要新建一个，全局writer的话第二次打开文件再保存会保存错误，将文件报废，再也打不开
+			writer.addEventListener("zipFileCreated", fileSaved, false, 0, true);
 			writer.openAsync(this.file);
 			
 			// file info
@@ -219,6 +208,18 @@ package
 			}
 			
 		}
+		
+		/**
+		 */		
+		private function fileSaved(evt:Event):void
+		{
+			isSaving = false;
+		}
+		
+		/**
+		 * 是否正在保存文件，此时不能退出程序 
+		 */		
+		private var isSaving:Boolean = false;
 		
 	}
 }
