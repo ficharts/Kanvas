@@ -29,6 +29,8 @@ package model.vo
 		override public function exportData(template:XML):XML
 		{
 			var template:XML = super.exportData(template);
+			template.@index = index;
+			
 			if (elementVO)
 				template.@elementID = elementVO.id;
 			return template;
