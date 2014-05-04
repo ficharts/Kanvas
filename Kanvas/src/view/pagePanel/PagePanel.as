@@ -265,6 +265,8 @@ package view.pagePanel
 		 */		
 		private function setCurrentPage(pageUI:PageUI):void
 		{
+			if (currentPage == pageUI) return;
+			
 			if (currentPage)
 			{
 				currentPage.selected = false;
