@@ -84,6 +84,7 @@ package modules.pages
 		{
 			pageQuene.addPage(pageVO);
 			__index = pageVO.index;
+			
 			return pageVO;
 		}
 		
