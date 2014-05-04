@@ -13,7 +13,6 @@ package control
 	import util.undoRedo.UndoRedoEvent;
 	
 	import view.element.text.TextEditField;
-	import view.ui.MainUIBase;
 
 	/**
 	 * 主程序交互控制器, 
@@ -113,7 +112,7 @@ package control
 			}
 			
 			TweenLite.to(app.toolBar, 0.5, {y: - app.toolBar.h});
-			TweenLite.to(app.pagePanel, 0.5, {x: - app.pagePanel.w - 5});
+			TweenLite.to(app.pagePanel, 0.5, {x: - app.pagePanel.w - 50/*防止滚动条可见，给的值稍大*/});
 		}
 		
 		/**
