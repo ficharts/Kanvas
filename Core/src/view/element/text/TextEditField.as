@@ -3,9 +3,6 @@ package view.element.text
 	import com.kvs.ui.label.TextDrawer;
 	import com.kvs.utils.XMLConfigKit.style.elements.TextFormatStyle;
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.text.engine.BreakOpportunity;
@@ -27,7 +24,6 @@ package view.element.text
 	import view.element.state.IEditShapeState;
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.interact.autoGroup.IAutoGroupElement;
-	import view.ui.Debugger;
 	
 	
 	/**
@@ -118,13 +114,14 @@ package view.element.text
 		override public function clone():ElementBase
 		{
 			var textVO:TextVO = new TextVO;
-			
+		
 			textVO.text = this.textVO.text;
 			textVO.ifMutiLine = this.textVO.ifMutiLine;
 			textVO.styleID = this.textVO.styleID;
 			textVO.isCustomColor = this.textVO.isCustomColor;
+			cloneVO(textVO);
 			
-			return new TextEditField(cloneVO(textVO) as TextVO);
+			return new TextEditField(textVO);
 		}
 		
 		

@@ -2,9 +2,9 @@
 <project name="Kanvas Builder" basedir="." default="发布">
 	
 	<property name="FLEX_HOME" value="/Users/wanglei/projects/sdk" />
-	<property name="WORK_SPACE" value="/Users/wanglei/projects/kanvas" />
+	<property name="WORK_SPACE" value="/Users/wanglei/projects/Kanvas" />
 	
-	<property name="VER" value="4.0" />
+	<property name="VER" value="1.0.2" />
 
 	<property name="controlFlowObfuscation" value="20"/>
 	<property name="dynamicCodeWrapping" value="1"/>
@@ -16,13 +16,7 @@
 
 	<!--发布-->
 	<target name="发布" 
-		depends="fresh release dir, Kanvas, KPlayer, KanvasLoader">
-
-		<copy overwrite="true" todir="${WORK_SPACE}/release">
-			<fileset dir="${WORK_SPACE}/KanvasWeb/src">
-				<include name="Kanvas.js" />
-			</fileset>
-		</copy>
+		depends="Kanvas, KPlayer">
 
 		<copy overwrite="true" todir="/Users/wanglei/Sites/Kanvas/web">
 			<fileset dir="${WORK_SPACE}/KanvasWeb/src">
@@ -30,15 +24,6 @@
 			</fileset>
 		</copy>
 		
-		<copy overwrite="true" todir="${WORK_SPACE}/release">
-					<fileset dir="${WORK_SPACE}/Kanvas/bin-debug">
-						<include name="FontLib.swf" />
-					</fileset>
-				</copy>
-
-		<zip destfile="${WORK_SPACE}/release/Kanvas(${VER}).zip"
-		       basedir="${WORK_SPACE}/release"
-		       update="true"/>
 	</target>
 	
 	<target name="KanvasLoader">

@@ -9,6 +9,13 @@ package commands
 	
 	import view.element.ElementBase;
 
+	/**
+	 *
+	 * 将页面转换为原件
+	 *  
+	 * @author wanglei
+	 * 
+	 */	
 	public final class ConvertPage2ElementCMD extends Command
 	{
 		public function ConvertPage2ElementCMD()
@@ -16,6 +23,8 @@ package commands
 			super();
 		}
 		
+		/**
+		 */		
 		override public function execute(notification:INotification):void
 		{
 			element = notification.getBody() as ElementBase;
@@ -37,6 +46,8 @@ package commands
 			convert();
 		}
 		
+		/**
+		 */		
 		private function convert(reverse:Boolean = false):void
 		{
 			if (reverse)
@@ -49,11 +60,13 @@ package commands
 				CoreFacade.coreMediator.pageManager.removePage(pageVO);
 				element.setPage(null);
 			}
+			
 			CoreFacade.coreMediator.selector.toolBar.resetToolbar();
 			dataChanged();
 		}
 		
-		
+		/**
+		 */		
 		private var element:ElementBase;
 		private var pageVO:PageVO;
 	}

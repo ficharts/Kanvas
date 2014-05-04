@@ -9,8 +9,6 @@ package view.editor.text
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
-	import model.CoreFacade;
-	import model.CoreProxy;
 	import model.vo.TextVO;
 	
 	import util.StyleUtil;
@@ -110,6 +108,8 @@ package view.editor.text
 				editor.textField.applyStyle(curStyleBtn.textVO);
 				
 				colorSelectBtn.render();
+				
+				this.dispatchEvent(new KVSEvent(KVSEvent.DATA_CHANGED));
 			}
 		}
 		
@@ -168,6 +168,8 @@ package view.editor.text
 			colorSelectBtn.render();
 			
 			editor.textField.updateColor(color);
+			
+			this.dispatchEvent(new KVSEvent(KVSEvent.DATA_CHANGED));
 		}
 		
 		/**
@@ -194,8 +196,6 @@ package view.editor.text
 				
 				StyleUtil.applyStyleToElement(textStyleBtn.textVO);
 				
-			
-			
 				addStyleBtn(textStyleBtn);
 				
 				if (textStyleBtn.id == 'Title')
