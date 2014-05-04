@@ -50,8 +50,8 @@ package commands
 			StyleUtil.applyStyleToElement(element.vo);
 			CoreFacade.addElement(element);
 			
-			if (element is PageElement)
-				CoreFacade.coreMediator.pageManager.addPage(element.vo as PageVO);
+			if (element.isPage)
+				CoreFacade.coreMediator.pageManager.addPageAt(element.vo.pageVO, element.vo.pageVO.index);
 			
 			elementIndex = element.index;
 			
@@ -67,8 +67,8 @@ package commands
 				length = groupElements.length;
 				for (var i:int = 0; i < length; i++)
 				{
-					if (groupElements[i] is PageElement)
-						CoreFacade.coreMediator.pageManager.addPage(groupElements[i].vo as PageVO);
+					if (groupElements[i].isPage)
+						CoreFacade.coreMediator.pageManager.addPageAt(groupElements[i].vo.pageVO, groupElements[i].vo.pageVO.index);
 					if (groupElements[i].screenshot)
 						CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(groupElements[i]);
 				}
@@ -92,14 +92,14 @@ package commands
 				{
 					elementIndexArray[i] = groupElements[i].index;
 					CoreFacade.removeElement(groupElements[i]);
-					if (groupElements[i] is PageElement)
-						CoreFacade.coreMediator.pageManager.removePage(groupElements[i].vo as PageVO);
+					if (groupElements[i].isPage)
+						CoreFacade.coreMediator.pageManager.removePage(groupElements[i].vo.pageVO);
 				}
 			}
 			
 			CoreFacade.removeElement(element);
-			if (element is PageElement)
-				CoreFacade.coreMediator.pageManager.removePage(element.vo as PageVO);
+			if (element.isPage)
+				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
 			
@@ -111,21 +111,16 @@ package commands
 		override public function redoHandler():void
 		{
 			CoreFacade.addElementAt(element, elementIndex);
-			if (element is PageElement)
-			{
-				var pageVO:PageVO = element.vo as PageVO;
-				CoreFacade.coreMediator.pageManager.addPageAt(pageVO, pageVO.index);
-			}
+			if (element.isPage)
+				CoreFacade.coreMediator.pageManager.addPageAt(element.vo.pageVO, element.vo.pageVO.index);
+			
 			if (autoGroupEnabled)
 			{
 				for (var i:int = 0; i < length; i++)
 				{
 					CoreFacade.addElementAt(groupElements[i], elementIndexArray[i]);
-					if (groupElements[i] is PageElement)
-					{
-						pageVO = groupElements[i].vo as PageVO;
-						CoreFacade.coreMediator.pageManager.addPageAt(pageVO, pageVO.index);
-					}
+					if (groupElements[i].isPage)
+						CoreFacade.coreMediator.pageManager.addPageAt(groupElements[i].vo.pageVO, groupElements[i].vo.pageVO.index);
 				}
 			}
 			

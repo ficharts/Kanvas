@@ -739,6 +739,7 @@ package view.element
 			{
 				newVO.pageVO = new PageVO;
 				ElementUtil.cloneVO(newVO.pageVO, vo.pageVO);
+				newVO.pageVO.index = vo.pageVO.index + 1;
 			}
 			
 			return newVO;

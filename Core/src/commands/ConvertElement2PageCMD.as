@@ -57,6 +57,7 @@ package commands
 				CoreFacade.coreMediator.pageManager.addPageAt(pageVO, pageVO.index);
 			}
 			CoreFacade.coreMediator.selector.toolBar.resetToolbar();
+			dataChanged();
 		}
 		
 		private var element:ElementBase;

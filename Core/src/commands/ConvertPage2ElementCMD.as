@@ -50,6 +50,7 @@ package commands
 				element.setPage(null);
 			}
 			CoreFacade.coreMediator.selector.toolBar.resetToolbar();
+			dataChanged();
 		}
 		
 		
