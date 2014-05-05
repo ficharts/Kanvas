@@ -20,7 +20,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <rect/>
+			xmlData = <rect/>;
 		}
 		
 		/**
@@ -52,23 +52,12 @@ package view.element.shapes
 		
 		/**
 		 */		
-		public function get propertyNameArray():Array
+		public function get customProperties():Array
 		{
 			return _propertyNameArray;
 		}
 		
 		private const _propertyNameArray:Array = ["radius"];
-		
-		/**
-		 */		
-		override public function clone():ElementBase
-		{
-			var rectVO:ShapeVO = new ShapeVO;
-			rectVO.radius = this.rectVO.radius;
-			var element:Rect = new Rect(cloneVO(rectVO) as ShapeVO);
-			element.copyFrom = this;
-			return element;
-		}
 		
 		/**
 		 */		

@@ -20,6 +20,14 @@ package model.vo
 			return vo;
 		}
 		
+		override public function exportData(template:XML):XML
+		{
+			template = super.exportData(template);
+			template.@radius    = radius;
+			template.@thickness = thickness;
+			return template;
+		}
+		
 		/**
 		 * 矩形的圆角，等边三角形的梯度，自定义三角形的顶点等
 		 * 

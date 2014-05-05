@@ -17,13 +17,13 @@ package view.element
 		public function GroupElement(vo:GroupVO)
 		{
 			super(vo);
+			xmlData = <group/>;
 		}
 		
 		/**
 		 */		
 		override public function exportData():XML
 		{
-			xmlData = <group/>;
 			super.exportData();
 			
 			for each(var element:ElementBase in childElements)
@@ -84,14 +84,11 @@ package view.element
 		 */		
 		override public function clone():ElementBase
 		{
-			var goupVO:GroupVO = new GroupVO;
-			var group:GroupElement = new GroupElement(cloneVO(goupVO) as GroupVO);
+			var group:GroupElement = super.clone() as GroupElement;
 			
-			var element:ElementBase;
-			var newElement:ElementBase;
-			for each (element in childElements)
+			for each (var element:ElementBase in childElements)
 			{
-				newElement = element.clone();
+				var newElement:ElementBase = element.clone();
 				newElement.toGroupState();
 				group.childElements.push(newElement);
 			}

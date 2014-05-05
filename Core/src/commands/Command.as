@@ -152,11 +152,6 @@ package commands
 		 */		
 		public static const DELETE_IMG:String = 'deleteIMG';
 		
-		/**
-		 * 删除页面
-		 */	
-		public static const DELETE_PAGE:String = "deletePage";
-		
 		
 		
 		//---------------------------------------------------------

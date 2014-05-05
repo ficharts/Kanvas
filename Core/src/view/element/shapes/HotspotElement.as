@@ -61,16 +61,6 @@ package view.element.shapes
 		
 		/**
 		 */		
-		override public function clone():ElementBase
-		{
-			var hotVO:ElementVO = new ElementVO;
-			var element:HotspotElement = new HotspotElement(cloneVO(hotVO));
-			element.copyFrom = this;
-			return element;
-		}
-		
-		/**
-		 */		
 		override public function showControlPoints(selector:ElementSelector):void
 		{
 			selector.frame.visible = true;

@@ -25,6 +25,6 @@ package view.elementSelector.customPoint
 		
 		/**
 		 */		
-		function get propertyNameArray():Array
+		function get customProperties():Array
 	}
 }

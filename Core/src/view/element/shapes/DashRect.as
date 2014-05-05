@@ -22,18 +22,6 @@ package view.element.shapes
 			dl = new DashLine(this, 1, 5);
 		}
 		
-		
-		/**
-		 */		
-		override public function clone():ElementBase
-		{
-			var rectVO:ShapeVO = new ShapeVO;
-			rectVO.radius = this.rectVO.radius;
-			var element:DashRect = new DashRect(cloneVO(rectVO) as ShapeVO);
-			element.copyFrom = this;
-			return element;
-		}
-		
 		/**
 		 * 渲染
 		 */

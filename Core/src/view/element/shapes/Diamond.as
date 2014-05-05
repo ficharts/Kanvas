@@ -15,16 +15,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <diamond/>
-		}
-		
-		/**
-		 */		
-		override public function clone():ElementBase
-		{
-			var element:Diamond = new Diamond(cloneVO(new ShapeVO) as ShapeVO);
-			element.copyFrom = this;
-			return element;
+			xmlData = <diamond/>;
 		}
 		
 		/**

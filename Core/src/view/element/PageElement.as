@@ -28,37 +28,17 @@ package view.element
 			xmlData = <page/>;
 			_screenshot = false;
 			_elementPageConvertable = false;
-			
-			mouseChildren = true;			
-			//vo.addEventListener(PageEvent.DELETE_PAGE_FROM_UI, deletePageHandler);
-			//vo.addEventListener(PageEvent.UPDATE_PAGE_INDEX, updatePageIndex);
+			mouseChildren = true		
 		}
 		
 		override public function disable():void
 		{
 			super.disable();
-			
 			//使得放大时，页面编号依旧可被点击
 			mouseChildren = true;
 		}
 		
-		/**
-		 */		
-		/*private function updatePageIndex(evt:PageEvent):void
-		{
-			drawPageNum();
-		}*/
 		
-		/**
-		 */		
-		override public function exportData():XML
-		{
-			super.exportData();
-			
-			xmlData.@index = pageVO.index;
-			
-			return xmlData;
-		}
 		
 		/**
 		 */		
@@ -79,8 +59,6 @@ package view.element
 			graphics.beginFill(0, 0);
 			graphics.drawRect(- width * .5, - height * .5, width, height);
 			graphics.endFill();
-			
-			//numShape.visible = false;
 		}
 		
 		/**
@@ -89,8 +67,7 @@ package view.element
 		{
 			super.returnFromPrevState();
 			
-			//numShape.visible = true;
-			this.render();
+			render();
 		}
 		
 		/**
@@ -151,101 +128,7 @@ package view.element
 				graphics.lineTo(right - frameSize * 2, top);
 				graphics.lineTo(right, top);
 				graphics.endFill();
-				
 			}
-			
-			//layoutPageNum();
-		}
-		
-		/**
-		 * 页面点击有可能会点击到页面编号
-		 */		
-		/*override public function clicked():void
-		{
-			if (clickMoveControl.clickTarget == numShape)
-			{
-				dispatchEvent(new PageEvent(PageEvent.PAGE_NUM_CLICKED, vo as PageVO, true));
-				pageVO.dispatchEvent(new PageEvent(PageEvent.PAGE_SELECTED, pageVO, false));
-			}
-			else
-			{
-				currentState.clicked();
-			}
-		}*/
-		
-		/**
-		 *  保证页面编号控制在和尺寸内
-		 * 
-		 */		
-		/*public function layoutPageNum(s:Number = NaN):void
-		{
-			var h:Number;
-			var s:Number;
-			
-			//尺寸缩放时需要临时取表象的信息
-			
-			if (isNaN(s))
-				s = vo.scale;
-			
-			numShape.width = numShape.height = height * .5;
-			var temSize:Number = numShape.width * s * parent.scaleX;
-			
-			if (temSize > maxNumSize)
-			{
-				var size:Number = maxNumSize / s / parent.scaleX;
-				
-				numShape.width  = size;
-				numShape.height = size;
-			}
-			
-			numShape.x = - width * .5 - numShape.width * .5;
-			numShape.y = - numShape.height;
-		}*/
-		
-		/**
-		 */		
-		/*private function drawPageNum(size:Number = 20):void
-		{
-			numShape.graphics.clear();
-			
-			numLabel.text = (pageVO.index + 1).toString();
-			numLabel.render();
-			numLabel.x = - numLabel.width  * .5;
-			numLabel.y = - numLabel.height * .5;
-				
-			numShape.graphics.lineStyle(1, 0, 0.8);
-			numShape.graphics.beginFill(0x555555, .8);
-			numShape.graphics.drawCircle(0, 0, size * .5);
-			numShape.graphics.endFill();
-		}*/
-		
-		/**
-		 */		
-		/*private var maxNumSize:uint = 26;
-		
-		private var numLabel:LabelUI = new LabelUI;*/
-		
-		/**
-		 * 用来绘制页面序号 
-		 */		
-		//private var numShape:Sprite = new Sprite;
-		
-		/**
-		 */		
-		override public function del():void
-		{
-			dispatchEvent(new ElementEvent(ElementEvent.DEL_PAGE, this));
-		}
-		
-		/**
-		 */		
-		override public function clone():ElementBase
-		{
-			var newVO:PageVO = new PageVO;
-			newVO.index = pageVO.parent.length;
-			newVO.type = pageVO.type;
-			
-			return new PageElement(cloneVO(newVO) as PageVO);
 		}
 		
 		override public function showToolBar(toolbar:ToolBarController):void

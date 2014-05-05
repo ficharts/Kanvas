@@ -24,7 +24,6 @@ package view.element
 	import modules.pages.PageEvent;
 	
 	import util.ElementCreator;
-	import util.ElementUtil;
 	import util.LayoutUtil;
 	
 	import view.element.state.*;
@@ -53,6 +52,16 @@ package view.element
 		}
 		
 		/**
+		 * 复制出一个新的自己
+		 */		
+		public function clone():ElementBase
+		{
+			var element:ElementBase = ElementCreator.getElementUI(vo.clone());
+			element.copyFrom = this;
+			return element;
+		}
+		
+		/**
 		 * 将元件的属性导出为XML数据
 		 */		
 		public function exportData():XML
@@ -64,9 +73,6 @@ package view.element
 		 * 数据导出时用到，将VO的各项属性转换为XML数据
 		 */		
 		public var xmlData:XML;
-		
-		
-		
 		
 		
 		
@@ -450,7 +456,6 @@ package view.element
 		 */		
 		public function updateView(check:Boolean = true):void
 		{
-			//PerformaceTest.start("ElementBase.updateView()")
 			if (check && stage)
 			{
 				var rect:Rectangle = LayoutUtil.getItemRect(parent as Canvas, this);
@@ -484,7 +489,6 @@ package view.element
 				super.x = tmpX * prtCos - tmpY * prtSin + parent.x;
 				super.y = tmpX * prtSin + tmpY * prtCos + parent.y;
 			}
-			//PerformaceTest.end("ElementBase.updateView()");
 		}
 		
 		/**
@@ -507,7 +511,7 @@ package view.element
 			if (isPage &&　numShape) numShape.visible = false;
 			if (renderable)
 			{
-				alpha   = 1;
+				alpha = 1;
 				super.visible = screenshot;
 				updateView(false);
 			}
@@ -609,16 +613,9 @@ package view.element
 			{
 				vo.pageVO = pageVO;
 				vo.pageVO.elementVO = vo;
-				vo.pageVO.thumbUpdatable = false;
-				vo.pageVO.x        = vo.x;
-				vo.pageVO.y        = vo.y;
-				vo.pageVO.width    = vo.width;
-				vo.pageVO.height   = vo.height;
-				vo.pageVO.scale    = vo.scale;
-				vo.pageVO.rotation = vo.rotation;
 				vo.pageVO.addEventListener(PageEvent.DELETE_PAGE_FROM_UI, deletePageHandler);
 				vo.pageVO.addEventListener(PageEvent.UPDATE_PAGE_INDEX, updatePageIndex);
-				vo.pageVO.thumbUpdatable = true;
+				vo.updatePageLayout();
 				drawPageNum();
 				layoutPageNum();
 			}
@@ -720,33 +717,6 @@ package view.element
 		 * 用来绘制页面序号 
 		 */		
 		private var numShape:Sprite;
-		
-		/**
-		 * 复制出一个新的自己
-		 */		
-		public function clone():ElementBase
-		{
-			var element:ElementBase = ElementCreator.getElementUI(vo.clone());
-			element.copyFrom = this;
-			return element;
-		}
-		
-		/**
-		 * 
-		 */		
-		protected function cloneVO(newVO:ElementVO):ElementVO
-		{
-			ElementUtil.cloneVO(newVO, vo);
-			
-			if (vo.pageVO && vo.pageVO != vo)
-			{
-				newVO.pageVO = new PageVO;
-				ElementUtil.cloneVO(newVO.pageVO, vo.pageVO);
-				newVO.pageVO.index = vo.pageVO.parent.length;
-			}
-			
-			return newVO;
-		}
 		
 		/**
 		 */		
@@ -1167,17 +1137,10 @@ package view.element
 		public function clicked():void
 		{
 			// 非选择状态下才会触发clicked
-			if (isPage)
+			if (isPage && clickMoveControl.clickTarget == numShape)
 			{
-				if (clickMoveControl.clickTarget == numShape)
-				{
-					dispatchEvent(new PageEvent(PageEvent.PAGE_NUM_CLICKED, vo.pageVO, true));
-					vo.pageVO.dispatchEvent(new PageEvent(PageEvent.PAGE_SELECTED, vo.pageVO, false));
-				}
-				else
-				{
-					currentState.clicked();
-				}
+				dispatchEvent(new PageEvent(PageEvent.PAGE_NUM_CLICKED, vo.pageVO, true));
+				vo.pageVO.dispatchEvent(new PageEvent(PageEvent.PAGE_SELECTED, vo.pageVO, false));
 			}
 			else
 			{
@@ -1189,13 +1152,6 @@ package view.element
 		 *  点击拖动控制 
 		 */		
 		protected var clickMoveControl:ClickMoveControl;
-		
-		/**
-		 * 从预览状态返回时 ，需要切换到之前的状态
-		 * 
-		 * 由每个状态负责向回切换，把向回切换的方法保存下来即可
-		 */		
-		public var returnFromPrevFun:Function; 
 		
 		/**
 		 * 元素能否在页面和普通元素之间互相转换。
@@ -1226,7 +1182,18 @@ package view.element
 		private var _vo:ElementVO;
 		
 		
+		/**
+		 * 如果该对象是复制而来，则该属性指向源对象。 
+		 */
 		public var copyFrom:ElementBase;
+		
+		/**
+		 * 从预览状态返回时 ，需要切换到之前的状态
+		 * 
+		 * 由每个状态负责向回切换，把向回切换的方法保存下来即可
+		 */		
+		public var returnFromPrevFun:Function; 
+		
 		
 		//绘制图形的画布
 		protected var graphicShape:Shape;

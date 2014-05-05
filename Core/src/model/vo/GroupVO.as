@@ -20,18 +20,18 @@ package model.vo
 		/**
 		 *  子元素ID集合
 		 */
-		public function get childs():Array
+		/*public function get childs():Array
 		{
 			return _childs;
-		}
+		}*/
 
 		/**
 		 * @private
 		 */
-		public function set childs(value:Array):void
+		/*public function set childs(value:Array):void
 		{
 			_childs = value;
-		}
+		}*/
 
 	}
 }

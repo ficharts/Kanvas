@@ -9,6 +9,7 @@ package view.interact.multiSelect
 	import model.CoreProxy;
 	import model.vo.ElementVO;
 	
+	import util.ElementUtil;
 	import util.StyleUtil;
 	
 	import view.element.ElementBase;
@@ -49,7 +50,7 @@ package view.interact.multiSelect
 		override public function clone():ElementBase
 		{
 			var newGroup:TemGroupElement = new TemGroupElement(control);
-			cloneVO(newGroup.vo);
+			ElementUtil.cloneVO(newGroup.vo, vo);
 			
 			return newGroup;
 		}

@@ -16,20 +16,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <doubleArrow/>
-		}
-		
-		/**
-		 */		
-		override public function clone():ElementBase
-		{
-			var arrowVO:ArrowVO = new ArrowVO;
-			arrowVO.arrowWidth = this.arrowVO.arrowWidth;
-			arrowVO.trailHeight = this.arrowVO.trailHeight;
-			
-			var element:DoubleArrow = new DoubleArrow(cloneVO(arrowVO) as ArrowVO);
-			element.copyFrom = this;
-			return element;
+			xmlData = <doubleArrow/>;
 		}
 		
 		/**

@@ -18,6 +18,14 @@ package model.vo
 			return vo;
 		}
 		
+		override public function exportData(template:XML):XML
+		{
+			template = super.exportData(template);
+			template.@arrowWidth  = arrowWidth;
+			template.@trailHeight = trailHeight;
+			return template;
+		}
+		
 		/**
 		 * 箭头的宽度
 		 */		
