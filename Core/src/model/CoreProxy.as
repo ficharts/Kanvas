@@ -329,17 +329,15 @@ package model
 			
 			//先设置总体样式风格
 			
-			var styleID:String = xml.header.@styleID;
-			if (themeConfigMap.containsKey(styleID) == false)//为了兼容旧数据，旧数据里面的style命名方式与现有的不同
-				styleID = "style_1";
+			var styleID:String = (themeConfigMap.containsKey(xml.header.@styleID)) ? xml.header.@styleID : "style_1";
 			
 			setCurrTheme(styleID);
 			
 			//更新文本编辑器样式属性
-			(CoreFacade.coreMediator.coreApp as CoreApp).textEditor.initStyle();
+			CoreFacade.coreMediator.coreApp.textEditor.initStyle();
 			// 通知UI更新
-			(CoreFacade.coreMediator.coreApp as CoreApp).themeUpdated(styleID);
-			(CoreFacade.coreMediator.coreApp as CoreApp).bgColorsUpdated(bgColorsXML);
+			CoreFacade.coreMediator.coreApp.themeUpdated(styleID);
+			CoreFacade.coreMediator.coreApp.bgColorsUpdated(bgColorsXML);
 			
 			//处理背景颜色绘制
 			XMLVOMapper.fuck(xml.bg, bgVO);

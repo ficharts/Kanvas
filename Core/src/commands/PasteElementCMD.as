@@ -29,9 +29,14 @@ package commands
 		{
 			sendNotification(Command.UN_SELECT_ELEMENT);
 			
+			var xOff:Number;
+			var yOff:Number;
+			
 			var pastElement:ElementBase = CoreFacade.coreMediator.getElementForPaste();
 			
 			if(!pastElement) return;
+			
+			pageElements = new Vector.<ElementBase>;
 			
 			element = pastElement.clone();
 			
@@ -43,15 +48,16 @@ package commands
 			element.vo.x = CoreApp.PAST_LOC.x; 
 			element.vo.y = CoreApp.PAST_LOC.y;
 			
+			
 			//复制元素与原始元素坐标差
-			var xOff:Number = element.vo.x - pastElement.vo.x;
-			var yOff:Number = element.vo.y - pastElement.vo.y;
+			xOff = element.vo.x - pastElement.vo.x;
+			yOff = element.vo.y - pastElement.vo.y;
 			
 			StyleUtil.applyStyleToElement(element.vo);
 			CoreFacade.addElement(element);
 			
-			if (element.isPage)
-				CoreFacade.coreMediator.pageManager.addPageAt(element.vo.pageVO, element.vo.pageVO.index);
+			if (element.isPage) 
+				pageElements.push(element);
 			
 			elementIndex = element.index;
 			
@@ -68,11 +74,16 @@ package commands
 				for (var i:int = 0; i < length; i++)
 				{
 					if (groupElements[i].isPage)
-						CoreFacade.coreMediator.pageManager.addPageAt(groupElements[i].vo.pageVO, groupElements[i].vo.pageVO.index);
+						pageElements.push(groupElements[i]);
 					if (groupElements[i].screenshot)
 						CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(groupElements[i]);
 				}
 			}
+			
+			pageElements.sort(sortOnPageIndex);
+			
+			for each (var element:ElementBase in pageElements)
+				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
 			v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
 			
@@ -92,13 +103,12 @@ package commands
 				{
 					elementIndexArray[i] = groupElements[i].index;
 					CoreFacade.removeElement(groupElements[i]);
-					if (groupElements[i].isPage)
-						CoreFacade.coreMediator.pageManager.removePage(groupElements[i].vo.pageVO);
 				}
 			}
 			
 			CoreFacade.removeElement(element);
-			if (element.isPage)
+			
+			for each (var element:ElementBase in pageElements)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
@@ -111,28 +121,36 @@ package commands
 		override public function redoHandler():void
 		{
 			CoreFacade.addElementAt(element, elementIndex);
-			if (element.isPage)
-				CoreFacade.coreMediator.pageManager.addPageAt(element.vo.pageVO, element.vo.pageVO.index);
 			
 			if (autoGroupEnabled)
 			{
 				for (var i:int = 0; i < length; i++)
-				{
 					CoreFacade.addElementAt(groupElements[i], elementIndexArray[i]);
-					if (groupElements[i].isPage)
-						CoreFacade.coreMediator.pageManager.addPageAt(groupElements[i].vo.pageVO, groupElements[i].vo.pageVO.index);
-				}
 			}
+			
+			for each (var element:ElementBase in pageElements)
+				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
 			
 			this.dataChanged();
 		}
 		
+		private function sortOnPageIndex(a:ElementBase, b:ElementBase):int
+		{
+			if (a.copyFrom.vo.pageVO.index < b.copyFrom.vo.pageVO.index)
+				return -1;
+			else if (a.copyFrom.vo.pageVO.index > b.copyFrom.vo.pageVO.index)
+				return 1;
+			else 
+				return 0;
+		}
+		
 		/**
 		 */		
 		private var groupElements:Vector.<ElementBase>;
 		private var length:int;
+		private var pageElements:Vector.<ElementBase>;
 		private var elementIndexArray:Array;
 		
 		private var elementIndex:int;

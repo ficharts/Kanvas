@@ -242,7 +242,7 @@ package view.element
 		override public function clone():ElementBase
 		{
 			var newVO:PageVO = new PageVO;
-			newVO.index = pageVO.index + 1;
+			newVO.index = pageVO.parent.length;
 			newVO.type = pageVO.type;
 			
 			return new PageElement(cloneVO(newVO) as PageVO);

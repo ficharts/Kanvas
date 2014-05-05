@@ -78,8 +78,9 @@ package view.element.shapes
 			var newVO:ArrowVO = new ArrowVO;
 			newVO.arrowWidth  = arrowVO.arrowWidth;
 			newVO.trailHeight = arrowVO.trailHeight;
-			
-			return new Arrow(cloneVO(newVO) as ArrowVO);
+			var arrow:Arrow = new Arrow(cloneVO(newVO) as ArrowVO);
+			arrow.copyFrom = this;
+			return arrow;
 		}
 		
 		/**

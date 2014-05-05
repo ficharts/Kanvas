@@ -27,7 +27,9 @@ package view.element.shapes
 			arrowVO.arrowWidth = this.arrowVO.arrowWidth;
 			arrowVO.trailHeight = this.arrowVO.trailHeight;
 			
-			return new DoubleArrow(cloneVO(arrowVO) as ArrowVO);
+			var element:DoubleArrow = new DoubleArrow(cloneVO(arrowVO) as ArrowVO);
+			element.copyFrom = this;
+			return element;
 		}
 		
 		/**

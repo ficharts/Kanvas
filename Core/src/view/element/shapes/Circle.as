@@ -25,7 +25,9 @@ package view.element.shapes
 		 */		
 		override public function clone():ElementBase
 		{
-			return new Circle(cloneVO(new ShapeVO) as ShapeVO);
+			var element:Circle = new Circle(cloneVO(new ShapeVO) as ShapeVO);
+			element.copyFrom = this;
+			return element;
 		}
 		
 		/**

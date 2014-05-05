@@ -65,7 +65,9 @@ package view.element.shapes
 		 */		
 		override public function clone():ElementBase
 		{
-			return new LineElement(cloneVO(new LineVO));
+			var element:LineElement = new LineElement(cloneVO(new LineVO));
+			element.copyFrom = this;
+			return element;
 		}
 		
 		/**

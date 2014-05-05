@@ -14,7 +14,7 @@ package util
 			target.colorIndex = source.colorIndex;
 			target.thickness  = source.thickness;
 			
-			StyleUtil.applyStyleToElement(source);  
+			StyleUtil.applyStyleToElement(target);  
 			
 			target.x        = source.x;
 			target.y        = source.y;

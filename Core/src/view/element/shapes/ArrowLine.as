@@ -26,7 +26,9 @@ package view.element.shapes
 		 */		
 		override public function clone():ElementBase
 		{
-			return new ArrowLine(cloneVO(new LineVO));
+			var arrowLine:ArrowLine = new ArrowLine(cloneVO(new LineVO));
+			arrowLine.copyFrom = this;
+			return arrowLine;
 		}
 		
 		/**

@@ -5,6 +5,9 @@ package model.vo
 	
 	import flash.events.EventDispatcher;
 	
+	import util.ElementCreator;
+	import util.ElementUtil;
+	
 	/**
 	 * 元素模型
 	 * 
@@ -293,6 +296,15 @@ package model.vo
 			template.@scale = scale;
 			
 			return template;
+		}
+		
+		public function clone():ElementVO
+		{
+			var target:ElementVO = ElementCreator.getElementVO(type);
+			ElementUtil.cloneVO(target, this);
+			if (pageVO && pageVO != this)
+				target.pageVO = PageVO(pageVO.clone());
+			return target;
 		}
 		
 		public var pageVO:PageVO;

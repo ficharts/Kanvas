@@ -31,6 +31,8 @@ package commands
 			if (!pastElement)
 				return;
 			
+			pageElements = new Vector.<ElementBase>;
+			
 			newGroup = pastElement.clone() as GroupElement;
 			
 			
@@ -59,12 +61,17 @@ package commands
 			for (var i:int = 0; i < length; i++)
 			{
 				CoreFacade.addElement(groupElements[i]);
-				if (groupElements[i] is PageElement)
-					CoreFacade.coreMediator.pageManager.addPage(groupElements[i].vo as PageVO);
+				if (groupElements[i].isPage)
+					pageElements.push(groupElements[i]);
 				
 				if (groupElements[i].screenshot)
 					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(groupElements[i]);
 			}
+			
+			pageElements.sort(sortOnPageIndex);
+			
+			for each (var element:ElementBase in pageElements)
+				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
 			v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
 			
@@ -81,13 +88,12 @@ package commands
 			sendNotification(Command.UN_SELECT_ELEMENT);
 			
 			for (var i:int = length - 1; i >= 0; i--)
-			{
 				CoreFacade.removeElement(groupElements[i]);
-				if (groupElements[i] is PageElement)
-					CoreFacade.coreMediator.pageManager.removePage(groupElements[i].vo as PageVO);
-			}
 			
 			CoreFacade.removeElement(newGroup);
+			
+			for each (var element:ElementBase in pageElements)
+				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
 			
@@ -101,14 +107,10 @@ package commands
 			CoreFacade.addElement(newGroup);
 			
 			for (var i:int = 0; i < length; i++)
-			{
 				CoreFacade.addElement(groupElements[i]);
-				if (groupElements[i] is PageElement)
-				{
-					var pageVO:PageVO = groupElements[i].vo as PageVO;
-					CoreFacade.coreMediator.pageManager.addPageAt(pageVO, pageVO.index);
-				}
-			}
+			
+			for each (var element:ElementBase in pageElements)
+				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
 			
@@ -117,11 +119,23 @@ package commands
 			this.dataChanged();
 		}
 		
+		private function sortOnPageIndex(a:ElementBase, b:ElementBase):int
+		{
+			if (a.copyFrom.vo.pageVO.index < b.copyFrom.vo.pageVO.index)
+				return -1;
+			else if (a.copyFrom.vo.pageVO.index > b.copyFrom.vo.pageVO.index)
+				return 1;
+			else 
+				return 0;
+		}
+		
 		/**
 		 */		
 		private var newGroup:GroupElement;
 		private var groupElements:Vector.<ElementBase>;
 		private var length:int;
+		private var pageElements:Vector.<ElementBase>;
+		
 		
 		private var v:Vector.<PageVO>;
 	}

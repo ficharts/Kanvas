@@ -64,8 +64,9 @@ package view.element.shapes
 		override public function clone():ElementBase
 		{
 			var hotVO:ElementVO = new ElementVO;
-			
-			return new HotspotElement(cloneVO(hotVO));
+			var element:HotspotElement = new HotspotElement(cloneVO(hotVO));
+			element.copyFrom = this;
+			return element;
 		}
 		
 		/**
