@@ -50,6 +50,11 @@ package
 		public static const DATA_CHANGED:String = "dataChanged";
 		
 		/**
+		 * 内核切换到页面编辑状态时，告知工具条也切换到相应状态 
+		 */		
+		public static const TO_PAGE_EDIT:String = "toPageEditMode";
+		
+		/**
 		 * 样式改变 
 		 */		
 		public static const THEME_CHANGED:String = "themeChanged";

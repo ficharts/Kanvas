@@ -180,11 +180,20 @@ package view.interact.interactMode
 		 */		
 		override public function toEditMode():void
 		{
-			mainMediator.showSelector();		
+			mainMediator.hideSelector();		
 			mainMediator.disableKeyboardControl();
 			mainMediator.currentMode = mainMediator.editMode;
+		}
+		
+		/**
+		 */		
+		override public function toPageEditMode():void
+		{
+			mainMediator.hideSelector();
+			mainMediator.disableKeyboardControl();
+			mainMediator.currentMode = mainMediator.pageEditMode;
 			
-			mainMediator.cameraShotShape.graphics.clear();
+			mainMediator.mainUI.dispatchEvent(new KVSEvent(KVSEvent.DATA_CHANGED));
 		}
 		
 		/**

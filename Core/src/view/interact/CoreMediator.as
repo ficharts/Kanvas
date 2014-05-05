@@ -364,6 +364,14 @@ package view.interact
 		}
 		
 		/**
+		 * 切换到页面编辑状态
+		 */		
+		public function toPageEditMode():void
+		{
+			currentMode.toPageEditMode();
+		}
+		
+		/**
 		 * 开始型变控制框，元素被选择后续执行的动作
 		 */		
 		public function openSelector():void
@@ -376,7 +384,7 @@ package view.interact
 		 * 
 		 * 文本框的编辑状态下是不显示型变框的）
 		 */		
-		public function showSelector():void
+		public function hideSelector():void
 		{
 			currentMode.hideSelector();
 		}
@@ -468,6 +476,8 @@ package view.interact
 		public var unSelectedMode:ModeBase;
 		public var preMode:ModeBase;
 		public var editMode:ModeBase;
+		public var pageEditMode:ModeBase;
+		
 		
 		/**
 		 * 图形元素 选择，拖动，取消选择等交互行为控制
@@ -550,6 +560,7 @@ package view.interact
 			selectedMode = new SelectedMode(this);
 			unSelectedMode = new UnSelectedMode(this);
 			editMode = new EditMode(this);
+			pageEditMode = new PageEditMode(this);
 			preMode = new PrevMode(this);
 			
 			currentMode = unSelectedMode;

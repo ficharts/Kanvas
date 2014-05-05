@@ -40,7 +40,13 @@ package control
 			
 			app.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler, false, 0, true);
 			app.addEventListener(InteractEvent.PREVIEW, previewPanelHandler, false, 0, true);
-			app.stage.addEventListener(FullScreenEvent.FULL_SCREEN, stageStateChangedHandler, false, 0, true);
+		}
+		
+		/**
+		 */		
+		public function toPageEditMode():void
+		{
+			
 		}
 		
 		/**
@@ -51,25 +57,6 @@ package control
 			if (evt.keyCode >= 112 && evt.keyCode <= 120)
 			{
 				toPreview();
-			}
-		}
-		
-		/**
-		 */		
-		private function stageStateChangedHandler(evt:FullScreenEvent):void
-		{
-			if (app.stage.displayState == StageDisplayState.NORMAL)
-			{
-				if (isThemPanelOpen)
-				{
-					_openThemePanel();
-				}
-				else if (isShapePanelOpen)
-				{
-					_openShapePanel();
-				}
-				
-				TweenLite.to(app.pagePanel, 0.5, {x: 0});
 			}
 		}
 		
@@ -91,29 +78,10 @@ package control
 			
 			app.stage.addEventListener(FullScreenEvent.FULL_SCREEN, closeFullScreenHandler);
 			
-			if (app.themePanel.isOpen)
-			{
-				isThemPanelOpen = true;
-				_closeThemPanel();
-			}
-			else
-			{
-				isThemPanelOpen = false;
-			}
-				
-			if (app.shapePanel.isOpen)
-			{
-				isShapePanelOpen = true;	
-				_closeShapePanel();
-			}
-			else
-			{
-				isShapePanelOpen = false;
-			}
-			
+			_closePanels();
 			TweenLite.to(app.toolBar, 0.5, {y: - app.toolBar.h});
-			TweenLite.to(app.pagePanel, 0.5, {x: - app.pagePanel.w - 50/*防止滚动条可见，给的值稍大*/});
 		}
+		
 		
 		/**
 		 */		
@@ -129,9 +97,10 @@ package control
 		{
 			app.stage.removeEventListener(FullScreenEvent.FULL_SCREEN, closeFullScreenHandler);
 			
+			_openPanels();
 			TweenLite.to(app.toolBar, 0.5, {y: 0});
-			app.updateKvsContenBound();
 			
+			app.updateKvsContenBound();
 			app.kvsCore.returnFromPrev();
 		}
 		
@@ -149,6 +118,53 @@ package control
 			autofit(1, 0);
 		}
 		
+		/**
+		 * 关闭除工具条以外的面板 
+		 * 
+		 */		
+		private function _closePanels():void
+		{
+			if (app.themePanel.isOpen)
+			{
+				isThemPanelOpen = true;
+				_closeThemPanel();
+			}
+			else
+			{
+				isThemPanelOpen = false;
+			}
+			
+			if (app.shapePanel.isOpen)
+			{
+				isShapePanelOpen = true;	
+				_closeShapePanel();
+			}
+			else
+			{
+				isShapePanelOpen = false;
+			}
+			
+			TweenLite.to(app.pagePanel, 0.5, {x: - app.pagePanel.w - 50/*防止滚动条可见，给的值稍大*/});
+		}
+		
+		/**
+		 */		
+		private function _openPanels():void
+		{
+			if (isThemPanelOpen)
+			{
+				_openThemePanel();
+			}
+			else if (isShapePanelOpen)
+			{
+				_openShapePanel();
+			}
+			
+			TweenLite.to(app.pagePanel, 0.5, {x: 0});
+		}
+		
+		/**
+		 */		
 		private function autofit(xDir:int = 0, yDir:int = 0):void
 		{
 			if (CoreFacade.coreMediator.currentElement)
