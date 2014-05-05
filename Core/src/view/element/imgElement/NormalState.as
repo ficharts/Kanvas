@@ -25,7 +25,7 @@ package view.element.imgElement
 			ElementUtil.cloneVO(imgVO, element.vo);
 			var newElement:ImgElement = new ImgElement(imgVO);
 			newElement.currLoadState = element.normalState;
-			
+			newElement.copyFrom = element;
 			newElement.toNomalState();
 			
 			return newElement;

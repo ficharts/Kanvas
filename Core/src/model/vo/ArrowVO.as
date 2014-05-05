@@ -10,6 +10,14 @@ package model.vo
 			super();
 		}
 		
+		override public function clone():ElementVO
+		{
+			var vo:ArrowVO = super.clone() as ArrowVO;
+			vo.arrowWidth  = arrowWidth;
+			vo.trailHeight = trailHeight;
+			return vo;
+		}
+		
 		/**
 		 * 箭头的宽度
 		 */		

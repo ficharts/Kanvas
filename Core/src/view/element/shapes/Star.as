@@ -161,8 +161,9 @@ package view.element.shapes
 		{
 			var starVO:StarVO = new StarVO;
 			starVO.innerRadius = (this.vo as StarVO).innerRadius;
-			
-			return new Star(cloneVO(starVO) as StarVO);
+			var element:Star = new Star(cloneVO(starVO) as StarVO);
+			element.copyFrom = this;
+			return element;
 		}
 		
 		/**

@@ -10,11 +10,11 @@ package util
 			target.styleType = source.styleType;
 			target.styleID = source.styleID;
 			
-			StyleUtil.applyStyleToElement(source);  
-			
 			target.color      = source.color;
 			target.colorIndex = source.colorIndex;
 			target.thickness  = source.thickness;
+			
+			StyleUtil.applyStyleToElement(target);  
 			
 			target.x        = source.x;
 			target.y        = source.y;

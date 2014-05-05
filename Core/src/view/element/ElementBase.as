@@ -23,6 +23,7 @@ package view.element
 	
 	import modules.pages.PageEvent;
 	
+	import util.ElementCreator;
 	import util.ElementUtil;
 	import util.LayoutUtil;
 	
@@ -725,7 +726,9 @@ package view.element
 		 */		
 		public function clone():ElementBase
 		{
-			return null;
+			var element:ElementBase = ElementCreator.getElementUI(vo.clone());
+			element.copyFrom = this;
+			return element;
 		}
 		
 		/**
@@ -739,6 +742,7 @@ package view.element
 			{
 				newVO.pageVO = new PageVO;
 				ElementUtil.cloneVO(newVO.pageVO, vo.pageVO);
+				newVO.pageVO.index = vo.pageVO.parent.length;
 			}
 			
 			return newVO;
@@ -1220,6 +1224,9 @@ package view.element
 		}
 		
 		private var _vo:ElementVO;
+		
+		
+		public var copyFrom:ElementBase;
 		
 		//绘制图形的画布
 		protected var graphicShape:Shape;

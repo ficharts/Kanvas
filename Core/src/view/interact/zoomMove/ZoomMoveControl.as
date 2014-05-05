@@ -132,7 +132,7 @@ package view.interact.zoomMove
 		
 		public var speedRotation:Number = 90;
 		
-		public var maxTweenTime:Number = 5;
+		public var maxTweenTime:Number = 4;
 		
 		public var minTweenTime:Number = 1;
 		

@@ -103,8 +103,9 @@ package view.element.shapes
 			rectVO.radius = this.dialogVO.radius;
 			rectVO.r = this.dialogVO.r;
 			rectVO.rAngle = this.dialogVO.rAngle;
-			
-			return new DialogUI(cloneVO(rectVO) as DialogVO);
+			var element:DialogUI = new DialogUI(cloneVO(rectVO) as DialogVO);
+			element.copyFrom = this;
+			return element;
 		}
 		
 		/**

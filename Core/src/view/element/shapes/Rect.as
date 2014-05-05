@@ -65,8 +65,9 @@ package view.element.shapes
 		{
 			var rectVO:ShapeVO = new ShapeVO;
 			rectVO.radius = this.rectVO.radius;
-			
-			return new Rect(cloneVO(rectVO) as ShapeVO);
+			var element:Rect = new Rect(cloneVO(rectVO) as ShapeVO);
+			element.copyFrom = this;
+			return element;
 		}
 		
 		/**

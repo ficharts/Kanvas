@@ -165,7 +165,7 @@ package view.interact.zoomMove
 		/**
 		 * 
 		 */		
-		private var speedScale:Number = 2;
+		private var speedScale:Number = 2.5;
 		private var speedRotation:Number = 90;
 		private var packer:CanvasLayoutPacker;
 	}

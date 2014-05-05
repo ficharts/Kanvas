@@ -2,7 +2,6 @@ package commands
 {
 	import com.kvs.utils.ImageExtractor;
 	
-	
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.filesystem.File;
@@ -13,8 +12,6 @@ package commands
 	
 	import org.puremvc.as3.interfaces.INotification;
 	
-	import util.img.ImgInsertEvent;
-	import util.img.ImgInsertor;
 	import util.img.ImgLib;
 
 	/**

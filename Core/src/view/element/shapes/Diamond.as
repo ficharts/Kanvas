@@ -22,7 +22,9 @@ package view.element.shapes
 		 */		
 		override public function clone():ElementBase
 		{
-			return new Diamond(cloneVO(new ShapeVO) as ShapeVO);
+			var element:Diamond = new Diamond(cloneVO(new ShapeVO) as ShapeVO);
+			element.copyFrom = this;
+			return element;
 		}
 		
 		/**

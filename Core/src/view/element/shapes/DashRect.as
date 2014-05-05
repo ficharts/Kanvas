@@ -29,8 +29,9 @@ package view.element.shapes
 		{
 			var rectVO:ShapeVO = new ShapeVO;
 			rectVO.radius = this.rectVO.radius;
-			
-			return new DashRect(cloneVO(rectVO) as ShapeVO);
+			var element:DashRect = new DashRect(cloneVO(rectVO) as ShapeVO);
+			element.copyFrom = this;
+			return element;
 		}
 		
 		/**

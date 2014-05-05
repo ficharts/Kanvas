@@ -34,7 +34,7 @@ package commands
 			
 			newGroup = pastElement.clone() as TemGroupElement;
 			
-			
+			pageElements = new Vector.<ElementBase>;
 			
 			//先1对1的克隆出临时组合中的单元--------------------------------------------------------------------------
 			var oldElement:ElementBase;
@@ -90,12 +90,19 @@ package commands
 			for (var i:int = 0; i < length; i++)
 			{
 				CoreFacade.addElement(groupElements[i]);
-				if (groupElements[i] is PageElement)
-					CoreFacade.coreMediator.pageManager.addPage(groupElements[i].vo as PageVO);
+				if (groupElements[i].isPage)
+					pageElements.push(groupElements[i]);
+				//根据元素检测需要刷新的页面并注册至刷新库以待刷新
 				if (groupElements[i].screenshot)
 					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(groupElements[i]);
 			}
-				
+			
+			//对要添加的页面进行排序
+			pageElements.sort(sortOnPageIndex);
+			
+			for each (var element:ElementBase in pageElements)
+				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
+			//刷新需要刷新的页面
 			v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
 			
 			sendNotification(Command.SElECT_ELEMENT, newGroup);
@@ -111,13 +118,12 @@ package commands
 			sendNotification(Command.UN_SELECT_ELEMENT);
 			
 			for (var i:int = length - 1; i >= 0; i--)
-			{
 				CoreFacade.removeElement(groupElements[i]);
-				if (groupElements[i] is PageElement)
-					CoreFacade.coreMediator.pageManager.removePage(groupElements[i].vo as PageVO);
-			}
 			
 			CoreFacade.removeElement(newGroup);
+			
+			for each (var element:ElementBase in pageElements)
+				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
 			
@@ -131,18 +137,24 @@ package commands
 			CoreFacade.addElement(newGroup);
 			
 			for (var i:int = 0; i < length; i++)
-			{
 				CoreFacade.addElement(groupElements[i]);
-				if (groupElements[i] is PageElement)
-				{
-					var pageVO:PageVO = groupElements[i].vo as PageVO;
-					CoreFacade.coreMediator.pageManager.addPageAt(pageVO, pageVO.index);
-				}
-			}
+			
+			for each (var element:ElementBase in pageElements)
+				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
 			
 			sendNotification(Command.SElECT_ELEMENT, newGroup);
+		}
+		
+		private function sortOnPageIndex(a:ElementBase, b:ElementBase):int
+		{
+			if (a.copyFrom.vo.pageVO.index < b.copyFrom.vo.pageVO.index)
+				return -1;
+			else if (a.copyFrom.vo.pageVO.index > b.copyFrom.vo.pageVO.index)
+				return 1;
+			else 
+				return 0;
 		}
 		
 		/**
@@ -150,6 +162,7 @@ package commands
 		private var newGroup:TemGroupElement;
 		private var groupElements:Vector.<ElementBase>;
 		private var length:int;
+		private var pageElements:Vector.<ElementBase>;
 		
 		private var v:Vector.<PageVO>;
 	}

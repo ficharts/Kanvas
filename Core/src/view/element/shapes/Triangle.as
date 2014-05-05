@@ -66,8 +66,9 @@ package view.element.shapes
 		{
 			var newVO:ShapeVO = new ShapeVO;
 			newVO.radius = (this.vo as ShapeVO).radius;
-			
-			return new Triangle(cloneVO(newVO) as ShapeVO);
+			var element:Triangle = new Triangle(cloneVO(newVO) as ShapeVO);
+			element.copyFrom = this;
+			return element;
 		}
 		
 		/**

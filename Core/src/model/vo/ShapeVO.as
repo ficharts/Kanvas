@@ -13,6 +13,13 @@ package model.vo
 			super();
 		}
 		
+		override public function clone():ElementVO
+		{
+			var vo:ShapeVO = super.clone() as ShapeVO;
+			vo.radius = radius;
+			return vo;
+		}
+		
 		/**
 		 * 矩形的圆角，等边三角形的梯度，自定义三角形的顶点等
 		 * 
