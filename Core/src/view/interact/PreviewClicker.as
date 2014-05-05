@@ -48,7 +48,7 @@ package view.interact
 					{
 						elementsHit.push(element);
 						
-						if (element["vo"] is PageVO)
+						if (element.isPage)
 							pagesHit.push(element);
 					}
 					/*if (element.shape.hitTestPoint(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY, true))
@@ -98,7 +98,7 @@ package view.interact
 					}
 					
 					if (nearPage)
-						mdt.setPageIndex((nearPage["vo"] as PageVO).index);
+						mdt.setPageIndex((nearPage["vo"].pageVO).index);
 				}
 				else
 				{

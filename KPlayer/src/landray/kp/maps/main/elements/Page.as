@@ -9,6 +9,11 @@ package landray.kp.maps.main.elements
 			super($vo);
 		}
 		
+		override public function get isPage():Boolean
+		{
+			return true;
+		}
+		
 		override public function render():void
 		{
 			if(!rendered)
