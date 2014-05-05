@@ -56,7 +56,7 @@ package com.kvs.ui.clickMove
 			{
 				ifMoving = (Math.pow(moveTarget.stage.mouseX - mouseDownX, 2) + Math.pow(moveTarget.stage.mouseY - mouseDownY, 2) > dragPreventClickDistance * dragPreventClickDistance);
 				if (ifMoving)
-					target.startMove();
+					target.startDragMove();
 			}
 			
 			if (ifMoving)
@@ -86,7 +86,7 @@ package com.kvs.ui.clickMove
 			if (ifMoving)
 			{
 				ifMoving = false;
-				target.stopMove();
+				target.stopDragMove();
 			}
 			else
 			{

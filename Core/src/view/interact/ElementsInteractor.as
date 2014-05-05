@@ -16,6 +16,7 @@ package view.interact
 	 * 交互模式也可看作是交互控制器，控制着不同交互状态（非选择，选择，编辑）下的行为；
 	 * 
 	 * 这里是交互消息分发的主出口
+	 * 
 	 */	
 	public class ElementsInteractor
 	{

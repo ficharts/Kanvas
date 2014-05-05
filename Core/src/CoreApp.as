@@ -422,6 +422,13 @@ package
 			CoreFacade.coreMediator.toPrevMode();
 		}
 		
+		/**
+		 */		
+		public function resetPage():void
+		{
+			CoreFacade.coreMediator.resetPage();
+		}
+		
 		
 		
 		

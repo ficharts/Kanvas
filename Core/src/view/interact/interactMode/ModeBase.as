@@ -60,6 +60,50 @@ package view.interact.interactMode
 		
 		/**
 		 */		
+		public function startMoveEle(e:ElementBase):void
+		{
+			mainMediator.multiSelectControl.startMoveElement(e);
+		}
+		
+		/**
+		 */		
+		public function stopMoveEle():void
+		{
+			mainMediator.multiSelectControl.stopMoveElement();
+		}
+		
+		
+		
+		/**
+		 * 按下了非选择状态的元件， 取消选择状态
+		 */		
+		public function unSelectElementDown(element:ElementBase):void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function unSelectElementClicked(element:ElementBase):void
+		{
+			
+		}
+		
+		/**
+		 * 点击了画布背景
+		 */		
+		public function stageBGClicked():void
+		{
+			
+		}
+		
+		
+		
+		
+		
+		
+		/**
+		 */		
 		public function addPage(index:uint):void
 		{
 			
@@ -232,24 +276,8 @@ package view.interact.interactMode
 		}
 		
 		/**
-		 * 按下了非选择状态的元件， 取消选择状态
 		 */		
-		public function unSelectElementDown(element:ElementBase):void
-		{
-			
-		}
-		
-		/**
-		 */		
-		public function unSelectElementClicked(element:ElementBase):void
-		{
-			
-		}
-		
-		/**
-		 * 点击了画布背景
-		 */		
-		public function stageBGClicked():void
+		public function resetPage():void
 		{
 			
 		}

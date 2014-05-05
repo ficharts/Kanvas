@@ -107,14 +107,14 @@ package view.interact.multiSelect
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			currState.startDragSelect();
 		}
 		
 		/**
 		 */			
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			currState.stopDragSelect();
 		}

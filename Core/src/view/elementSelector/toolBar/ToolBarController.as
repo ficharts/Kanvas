@@ -163,6 +163,13 @@
 		 */		
 		private function zoomHandler(evt:MouseEvent):void
 		{
+			_zoomPage();
+		}
+		
+		/**
+		 */		
+		private function _zoomPage():void
+		{
 			var selector:ElementSelector = selector;
 			
 			var pageVO:PageVO;
@@ -170,9 +177,20 @@
 				pageVO = selector.element.vo.pageVO;
 			else
 				pageVO = selector.element.vo as PageVO;
-				
+			
 			selector.coreMdt.zoomMoveControl.zoomElement(pageVO);
 			selector.coreMdt.toUnSelectedMode();
+		}
+		
+		/**
+		 * 页面缩放，并进入编辑状态
+		 */		
+		private function pageEditHandler(evt:MouseEvent):void
+		{
+			_zoomPage();
+			selector.coreMdt.toPageEditMode();
+			
+			selector.coreMdt.mainUI.dispatchEvent(new KVSEvent(KVSEvent.TO_PAGE_EDIT));
 		}
 		
 		
@@ -577,6 +595,10 @@
 			initBtnStyle(zoomBtn, 'zoom');
 			zoomBtn.addEventListener(MouseEvent.CLICK, zoomHandler, false, 0, true);
 			
+			pageEditBtn.tips = '页面动画';
+			initBtnStyle(pageEditBtn, 'zoom');
+			pageEditBtn.addEventListener(MouseEvent.CLICK, pageEditHandler, false, 0, true);
+			
 			styleBtn.tips = '颜色/样式';
 			this.styleBtn.w = btnWidth;
 			this.styleBtn.h = btnHeight;
@@ -645,6 +667,11 @@
 		 * 页面才会有，按下后页面自动对焦
 		 */		
 		public var zoomBtn:IconBtn = new IconBtn;
+		
+		/**
+		 * 页面才会有，按下后页面进入动画编辑模式 
+		 */		
+		public var pageEditBtn:IconBtn = new IconBtn;
 		
 		/**
 		 * 注册点到工具面板的距离

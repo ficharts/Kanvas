@@ -372,6 +372,15 @@ package view.interact
 		}
 		
 		/**
+		 * 取消页面内元素的动画设定
+		 * 
+		 */		
+		public function resetPage():void
+		{
+			currentMode.resetPage();
+		}
+		
+		/**
 		 * 开始型变控制框，元素被选择后续执行的动作
 		 */		
 		public function openSelector():void

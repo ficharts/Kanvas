@@ -186,17 +186,6 @@ package view.interact.interactMode
 		}
 		
 		/**
-		 */		
-		override public function toPageEditMode():void
-		{
-			mainMediator.hideSelector();
-			mainMediator.disableKeyboardControl();
-			mainMediator.currentMode = mainMediator.pageEditMode;
-			
-			mainMediator.mainUI.dispatchEvent(new KVSEvent(KVSEvent.DATA_CHANGED));
-		}
-		
-		/**
 		 * 单选模式时，取消选择当前元件
 		 */		
 		override public function unSelectElementDown(element:ElementBase):void

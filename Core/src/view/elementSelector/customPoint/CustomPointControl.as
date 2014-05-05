@@ -55,7 +55,7 @@ package view.elementSelector.customPoint
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			oldPropertyObj = {};
 			oldPropertyObj.x = selector.element.vo.x;
@@ -70,7 +70,7 @@ package view.elementSelector.customPoint
 		
 		/**
 		 */			
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			if (selector.element.isPage)
 				selector.element.vo.pageVO.thumbUpdatable = true;

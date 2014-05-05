@@ -20,6 +20,7 @@ package view.elementSelector.toolBar
 		{
 			toolBar.clear();
 			toolBar.addBtn(toolBar.zoomBtn);
+			toolBar.addBtn(toolBar.pageEditBtn);
 			toolBar.addBtn(toolBar.delBtn);
 		}
 	}

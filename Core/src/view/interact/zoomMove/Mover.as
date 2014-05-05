@@ -63,7 +63,7 @@ package view.interact.zoomMove
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			if (ifEnable)
 			{
@@ -75,7 +75,7 @@ package view.interact.zoomMove
 		
 		/**
 		 */		
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			control.isMoving = false;
 		}

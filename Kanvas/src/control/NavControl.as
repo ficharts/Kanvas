@@ -4,6 +4,7 @@ package control
 	import com.kvs.ui.Panel;
 	
 	import flash.display.StageDisplayState;
+	import flash.events.Event;
 	import flash.events.FullScreenEvent;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
@@ -40,13 +41,40 @@ package control
 			
 			app.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler, false, 0, true);
 			app.addEventListener(InteractEvent.PREVIEW, previewPanelHandler, false, 0, true);
+			
+			app.toolBar.centerBtnsC.addEventListener(MouseEvent.DOUBLE_CLICK, cancelPageEdit);
+			app.toolBar.customButtonContainer.addEventListener(MouseEvent.DOUBLE_CLICK, confirmPageEdit);
+		}
+		
+		/**
+		 * 
+		 */		
+		public function toPageEditMode():void
+		{
+			_closePanels();
+			app.toolBar.toPageEditMode();
+			
+			app.zoomToolBar.visible = false;
 		}
 		
 		/**
 		 */		
-		public function toPageEditMode():void
+		private function confirmPageEdit(evt:Event):void
 		{
+			_openPanels();
+			app.toolBar.toNormalMode();
+			app.zoomToolBar.visible = true;
+		}
+		
+		/**
+		 */		
+		private function cancelPageEdit(evt:Event):void
+		{
+			_openPanels();
 			
+			app.kvsCore.resetPage();
+			app.toolBar.toNormalMode();
+			app.zoomToolBar.visible = true;
 		}
 		
 		/**

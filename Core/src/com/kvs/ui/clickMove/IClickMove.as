@@ -24,10 +24,10 @@ package com.kvs.ui.clickMove
 		
 		/**
 		 */		
-		function startMove():void
+		function startDragMove():void
 			
 		/**
 		 */			
-		function stopMove():void;
+		function stopDragMove():void;
 	}
 }

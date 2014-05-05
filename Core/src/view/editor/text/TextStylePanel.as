@@ -298,13 +298,13 @@ package view.editor.text
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 		}
 			
 		/**
 		 */			
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			
 		}

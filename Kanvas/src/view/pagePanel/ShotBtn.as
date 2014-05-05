@@ -35,14 +35,14 @@ package view.pagePanel
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			pagePanel.startCreatePageByDrag();
 		}
 		
 		/**
 		 */			
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			pagePanel.endCreatePageByDrag();
 		}

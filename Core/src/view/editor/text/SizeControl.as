@@ -50,7 +50,7 @@ package view.editor.text
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			oldDis = getDis();
 			oldWidth = holder.editor.fieldWidth;
@@ -95,7 +95,7 @@ package view.editor.text
 		
 		/**
 		 */		
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			
 		}

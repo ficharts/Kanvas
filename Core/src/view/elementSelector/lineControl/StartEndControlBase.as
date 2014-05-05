@@ -62,7 +62,7 @@ package view.elementSelector.lineControl
 		/**
 		 * 获取起始点的全局相对坐标
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			//获取结束点的坐标
 			var rad:Number = lineRad;// 全局相对角度
@@ -85,7 +85,7 @@ package view.elementSelector.lineControl
 		/**
 		 * 结束控制点的移动
 		 */		
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			if (selector.element.isPage)
 				selector.element.vo.pageVO.thumbUpdatable = true;

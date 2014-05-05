@@ -1146,7 +1146,7 @@ package view.element
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			currentState.startMove();
 		}
@@ -1157,7 +1157,7 @@ package view.element
 		
 		/**
 		 */		
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			currentState.stopMove();
 		}

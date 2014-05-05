@@ -10,6 +10,7 @@ package view.toolBar
 	
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 
 	/**
@@ -20,7 +21,32 @@ package view.toolBar
 		public function ToolBar()
 		{
 			super();
+			
+			centerBtnsC.doubleClickEnabled = true;
+			customButtonContainer.doubleClickEnabled = true;
+			
 		}
+		
+		/**
+		 */		
+		public function toPageEditMode():void
+		{
+			centerBtnsC.mouseChildren = false;
+			customButtonContainer.mouseChildren = false;
+			
+			this.alpha = 0.8;
+		}
+		
+		/**
+		 */		
+		public function toNormalMode():void
+		{
+			centerBtnsC.mouseChildren = true;
+			customButtonContainer.mouseChildren = true;
+			
+			this.alpha = 1;
+		}
+		
 		
 		/**
 		 */		
@@ -72,7 +98,6 @@ package view.toolBar
 			prevBtn.tips = '预览';
 			addChild(prevBtn);
 			prevBtn.addEventListener(MouseEvent.CLICK, prevHandler, false, 0, true);
-			
 			
 			undo_up;
 			undo_over;
@@ -130,7 +155,7 @@ package view.toolBar
 			themeBtn.x = addBtn.x + addBtn.width + 20;
 			themeBtn.addEventListener(MouseEvent.CLICK, openThemeHandler, false, 0, true);
 			
-			addChild(customButtonContainer = new Sprite);
+			addChild(customButtonContainer);
 			
 			updateLayout();
 		}
@@ -193,7 +218,7 @@ package view.toolBar
 		/**
 		 * 中间按钮区域容器 
 		 */		
-		private var centerBtnsC:Sprite = new Sprite;
+		public var centerBtnsC:Sprite = new Sprite;
 		
 		/**
 		 * 自定义按钮之间的间距
@@ -238,7 +263,7 @@ package view.toolBar
 		/**
 		 * 自定义按钮的容器，自定义按钮由外部定义，位于工具条的右侧 
 		 */		
-		private var customButtonContainer:Sprite;
+		public var customButtonContainer:Sprite = new Sprite;
 		
 		
 		
