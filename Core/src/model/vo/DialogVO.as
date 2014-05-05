@@ -10,6 +10,14 @@ package model.vo
 			super();
 		}
 		
+		override public function clone():ElementVO
+		{
+			var vo:DialogVO = super.clone() as DialogVO;
+			vo.r = r;
+			vo.rAngle = rAngle;
+			return vo;
+		}
+		
 		/**
 		 */		
 		public var r:Number = 100;
