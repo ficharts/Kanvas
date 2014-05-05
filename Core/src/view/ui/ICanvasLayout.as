@@ -31,6 +31,8 @@ package view.ui
 		function get screenshot():Boolean
 			
 		function get index():int
+			
+		function get isPage():Boolean
 		
 		function updateView(check:Boolean = true):void
 		function toShotcut(renderable:Boolean = false):void

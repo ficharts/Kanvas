@@ -103,6 +103,11 @@ package landray.kp.maps.main.elements
 		//
 		//-----------------------------------------------------------
 		
+		public function get isPage():Boolean
+		{
+			return false;
+		}
+		
 		public function get index():int
 		{
 			return (parent) ? parent.getChildIndex(this) : -1;
@@ -395,6 +400,9 @@ package landray.kp.maps.main.elements
 		}
 		
 		private var __tipWidth:Number;
+		
+		
+		
 		
 		override public function get graphics():Graphics
 		{
