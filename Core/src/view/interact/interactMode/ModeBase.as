@@ -225,6 +225,13 @@ package view.interact.interactMode
 		}
 		
 		/**
+		 */		
+		public function toPageEditMode():void
+		{
+			
+		}
+		
+		/**
 		 * 按下了非选择状态的元件， 取消选择状态
 		 */		
 		public function unSelectElementDown(element:ElementBase):void

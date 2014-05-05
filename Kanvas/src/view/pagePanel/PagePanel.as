@@ -699,7 +699,7 @@ package view.pagePanel
 			pagesCtn.addEventListener(PagePanelEvent.PAGE_CLICKED, pageClicked);
 			
 			addPageBtn.addEventListener(MouseEvent.ROLL_OVER, showFrame);
-			addPageBtn.addEventListener(MouseEvent.MOUSE_OUT, hideFrame);
+			addPageBtn.addEventListener(MouseEvent.ROLL_OUT, hideFrame);
 			
 			updateLayout();
 			

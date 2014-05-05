@@ -144,7 +144,7 @@ package
 		 */		
 		public function hideSelector():void
 		{
-			facade.coreMediator.showSelector();
+			facade.coreMediator.hideSelector();
 		}
 		
 		/**
@@ -413,6 +413,13 @@ package
 		{
 			curScreenState.toNormalState();
 			CoreFacade.coreMediator.toUnSelectedMode();
+		}
+		
+		/**
+		 */		
+		public function toPageEdit():void
+		{
+			CoreFacade.coreMediator.toPrevMode();
 		}
 		
 		
