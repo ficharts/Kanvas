@@ -2,12 +2,8 @@ package view.interact
 {
 	import commands.Command;
 	
-	import flash.events.MouseEvent;
-	import flash.geom.Point;
-	
 	import modules.pages.PageEvent;
 	
-	import view.element.ElementBase;
 	import view.element.ElementEvent;
 
 	/**
@@ -57,18 +53,17 @@ package view.interact
 			mainUI.addEventListener(ElementEvent.PASTE_TEM_GROUP, pasteTemGroup);
 			mainUI.addEventListener(ElementEvent.PAST_GROUP, pasteGroup);
 			
-			mainUI.addEventListener(PageEvent.PAGE_NUM_CLICKED, zoomPage);
+			mainUI.addEventListener(PageEvent.PAGE_NUM_CLICKED, zoomPageByNum);
 			
 		}
 		
 		/**
 		 */		
-		private function zoomPage(evt:PageEvent):void
+		private function zoomPageByNum(evt:PageEvent):void
 		{
 			evt.stopPropagation();
 			
-			mainMediator.zoomMoveControl.zoomElement(evt.pageVO);
-			mainMediator.toUnSelectedMode();
+			mainMediator.currentMode.zoomPageByNum(evt.pageVO);
 		}
 		
 		/**
@@ -223,16 +218,7 @@ package view.interact
 		private function firstDownHandler(evt:ElementEvent):void
 		{
 			evt.stopPropagation();
-			mainMediator.multiSelectControl.unSelectElementDown(evt.element);
-		}
-		
-		/**
-		 * 选择元素被按下
-		 */		
-		private function reDownHandler(evt:ElementEvent):void
-		{
-			evt.stopPropagation();
-			mainMediator.multiSelectControl.selectedElementDown(evt.element);
+			mainMediator.multiSelectControl.unSelectElement(evt.element);
 		}
 		
 		/**
@@ -245,6 +231,15 @@ package view.interact
 			evt.stopPropagation();
 			
 			mainMediator.multiSelectControl.unSelectElementClicked(evt.element);
+		}
+		
+		/**
+		 * 选择元素被按下
+		 */		
+		private function reDownHandler(evt:ElementEvent):void
+		{
+			evt.stopPropagation();
+			mainMediator.multiSelectControl.selectedElementDown(evt.element);
 		}
 		
 		/**

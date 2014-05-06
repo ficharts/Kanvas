@@ -4,8 +4,6 @@ package view.interact
 	
 	import commands.Command;
 	
-	import consts.ConstsTip;
-	
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -34,7 +32,6 @@ package view.interact
 	import view.interact.multiSelect.MultiSelectControl;
 	import view.interact.multiSelect.TemGroupElement;
 	import view.interact.zoomMove.ZoomMoveControl;
-	import view.ui.Bubble;
 	import view.ui.Canvas;
 	import view.ui.IMainUIMediator;
 	import view.ui.MainUIBase;

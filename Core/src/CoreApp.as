@@ -417,6 +417,13 @@ package
 		
 		/**
 		 */		
+		public function toUnselect():void
+		{
+			CoreFacade.coreMediator.toUnSelectedMode();
+		}
+		
+		/**
+		 */		
 		public function toPageEdit():void
 		{
 			CoreFacade.coreMediator.toPrevMode();

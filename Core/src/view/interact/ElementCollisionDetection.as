@@ -2,7 +2,6 @@ package view.interact
 {
 	//import com.kvs.utils.HitTest;
 	
-	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	
 	import flash.display.DisplayObject;
@@ -150,7 +149,7 @@ package view.interact
 		
 		/**
 		 */		
-		private var elements:Vector.<ElementBase>;
+		public var elements:Vector.<ElementBase>;
 		
 	}
 }

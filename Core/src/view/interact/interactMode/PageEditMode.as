@@ -1,5 +1,7 @@
 package view.interact.interactMode
 {
+	import model.vo.PageVO;
+	
 	import view.element.ElementBase;
 	import view.interact.CoreMediator;
 	
@@ -15,6 +17,28 @@ package view.interact.interactMode
 		public function PageEditMode(mainMediator:CoreMediator)
 		{
 			super(mainMediator);
+		}
+		
+		/**
+		 * 
+		 * 传递页面类型的元素，根据其初始化编辑状态
+		 */		
+		public function init(element:ElementBase):void
+		{
+			mainMediator.collisionDetection
+		}
+		
+		/**
+		 */		
+		override public function zoomPageByNum(page:PageVO):void
+		{
+		}
+		
+		/**
+		 */		
+		override public function selectElement(element:ElementBase):void
+		{
+			
 		}
 		
 		/**

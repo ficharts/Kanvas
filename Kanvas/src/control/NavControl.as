@@ -47,7 +47,6 @@ package control
 		}
 		
 		/**
-		 * 
 		 */		
 		public function toPageEditMode():void
 		{
@@ -64,6 +63,8 @@ package control
 			_openPanels();
 			app.toolBar.toNormalMode();
 			app.zoomToolBar.visible = true;
+			
+			app.kvsCore.toUnselect();
 		}
 		
 		/**
@@ -75,6 +76,8 @@ package control
 			app.kvsCore.resetPage();
 			app.toolBar.toNormalMode();
 			app.zoomToolBar.visible = true;
+			
+			app.kvsCore.toUnselect();
 		}
 		
 		/**

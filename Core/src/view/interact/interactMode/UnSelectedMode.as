@@ -79,6 +79,8 @@ package view.interact.interactMode
 			mainMediator.currentMode = mainMediator.pageEditMode;
 			
 			mainMediator.zoomMoveControl.disable();
+			
+			
 		}
 		
 		/**
@@ -103,7 +105,7 @@ package view.interact.interactMode
 		/**
 		 * 单选模式时，取消选择当前元件
 		 */		
-		override public function unSelectElementDown(element:ElementBase):void
+		override public function unSelectElement(element:ElementBase):void
 		{
 			mainMediator.checkAutoGroup(element);
 		}
@@ -111,7 +113,7 @@ package view.interact.interactMode
 		/**
 		 * 多选模式下被调用，选择当前点击元件
 		 */		
-		override public function unSelectElementClicked(element:ElementBase):void
+		override public function multiSelectElement(element:ElementBase):void
 		{
 			mainMediator.sendNotification(Command.SElECT_ELEMENT, element);
 		}

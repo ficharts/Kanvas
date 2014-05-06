@@ -18,7 +18,9 @@
 	
 	import model.vo.PageVO;
 	
+	import view.element.ElementBase;
 	import view.elementSelector.ElementSelector;
+	import view.interact.interactMode.PageEditMode;
 	
 	/**
 	 * 快捷工具条主控制类, 不同类型组件有相应的工具条控制器，具体决定工具条内容和行为；
@@ -179,7 +181,7 @@
 				pageVO = selector.element.vo as PageVO;
 			
 			selector.coreMdt.zoomMoveControl.zoomElement(pageVO);
-			selector.coreMdt.toUnSelectedMode();
+			selector.coreMdt.sendNotification(Command.UN_SELECT_ELEMENT);
 		}
 		
 		/**
@@ -187,9 +189,12 @@
 		 */		
 		private function pageEditHandler(evt:MouseEvent):void
 		{
+			var pageEle:ElementBase = selector.element;
+			
 			_zoomPage();
 			selector.coreMdt.toPageEditMode();
 			
+			(selector.coreMdt.pageEditMode as PageEditMode).init(pageEle);//初始化页面编辑状态
 			selector.coreMdt.mainUI.dispatchEvent(new KVSEvent(KVSEvent.TO_PAGE_EDIT));
 		}
 		

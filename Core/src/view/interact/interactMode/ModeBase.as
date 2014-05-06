@@ -5,6 +5,7 @@ package view.interact.interactMode
 	import flash.geom.Point;
 	
 	import model.CoreFacade;
+	import model.vo.PageVO;
 	
 	import view.element.ElementBase;
 	import view.interact.CoreMediator;
@@ -62,29 +63,42 @@ package view.interact.interactMode
 		 */		
 		public function startMoveEle(e:ElementBase):void
 		{
-			mainMediator.multiSelectControl.startMoveElement(e);
+			mainMediator.elementMoveController.startMove(e);
 		}
 		
 		/**
 		 */		
 		public function stopMoveEle():void
 		{
-			mainMediator.multiSelectControl.stopMoveElement();
+			mainMediator.elementMoveController.stopMove();
 		}
 		
-		
+		/**
+		 */		
+		public function zoomPageByNum(page:PageVO):void
+		{
+			mainMediator.zoomMoveControl.zoomElement(page);
+			mainMediator.sendNotification(Command.UN_SELECT_ELEMENT);
+		}
 		
 		/**
 		 * 按下了非选择状态的元件， 取消选择状态
 		 */		
-		public function unSelectElementDown(element:ElementBase):void
+		public function unSelectElement(element:ElementBase):void
 		{
 			
 		}
 		
 		/**
 		 */		
-		public function unSelectElementClicked(element:ElementBase):void
+		public function selectElement(element:ElementBase):void
+		{
+			mainMediator.sendNotification(Command.SElECT_ELEMENT, element);
+		}
+		
+		/**
+		 */		
+		public function multiSelectElement(element:ElementBase):void
 		{
 			
 		}
