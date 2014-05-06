@@ -43,7 +43,9 @@ package landray.kp.command
 			{
 				try 
 				{
-					config.kp_internal::theme = provider.dataXML.header[0].@styleID;
+					var theme:String = (config.kp_internal::themes.containsKey(provider.dataXML.header[0].@styleID)) 
+						? provider.dataXML.header[0].@styleID : "style_1";
+					config.kp_internal::theme = theme;
 					config.kp_internal::viewer.theme = config.kp_internal::theme;
 				} 
 				catch (e:Error) {}
