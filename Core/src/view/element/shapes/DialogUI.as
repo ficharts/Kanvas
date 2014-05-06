@@ -30,19 +30,6 @@ package view.element.shapes
 		 
 		/**
 		 */		
-		override public function exportData():XML
-		{
-			xmlData = super.exportData();
-			
-			xmlData.@r = dialogVO.r;
-			xmlData.@rAngle = dialogVO.rAngle;
-			xmlData.@radius = dialogVO.radius;
-			
-			return xmlData;
-		}
-		
-		/**
-		 */		
 		public function customRender(selector:ElementSelector, control:CustomPointControl):void
 		{
 			var scale:Number = selector.layoutInfo.transformer.canvasScale * vo.scale;
@@ -88,25 +75,12 @@ package view.element.shapes
 		
 		/**
 		 */		
-		public function get propertyNameArray():Array
+		public function get customProperties():Array
 		{
 			return _propertyNameArray;
 		}
 		
 		private const _propertyNameArray:Array = ["radius", 'r', 'rAngle'];
-		
-		/**
-		 */		
-		override public function clone():ElementBase
-		{
-			var rectVO:DialogVO = new DialogVO;
-			rectVO.radius = this.dialogVO.radius;
-			rectVO.r = this.dialogVO.r;
-			rectVO.rAngle = this.dialogVO.rAngle;
-			var element:DialogUI = new DialogUI(cloneVO(rectVO) as DialogVO);
-			element.copyFrom = this;
-			return element;
-		}
 		
 		/**
 		 */		

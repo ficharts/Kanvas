@@ -22,19 +22,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <arrow/>
-		}
-		
-		/**
-		 */		
-		override public function exportData():XML
-		{
-			xmlData = super.exportData();
-			
-			xmlData.@arrowWidth = arrowVO.arrowWidth;
-			xmlData.@trailHeight = arrowVO.trailHeight;
-			
-			return xmlData;
+			xmlData = <arrow/>;
 		}
 		
 		/**
@@ -64,24 +52,12 @@ package view.element.shapes
 			selector.customPointControl.y = - arrowVO.trailHeight * .5 * style.scale;
 		}
 		
-		public function get propertyNameArray():Array
+		public function get customProperties():Array
 		{
 			return _propertyNameArray;
 		}
 		
 		private const _propertyNameArray:Array = ["arrowWidth", "trailHeight"];
-		
-		/**
-		 */		
-		override public function clone():ElementBase
-		{
-			var newVO:ArrowVO = new ArrowVO;
-			newVO.arrowWidth  = arrowVO.arrowWidth;
-			newVO.trailHeight = arrowVO.trailHeight;
-			var arrow:Arrow = new Arrow(cloneVO(newVO) as ArrowVO);
-			arrow.copyFrom = this;
-			return arrow;
-		}
 		
 		/**
 		 */		

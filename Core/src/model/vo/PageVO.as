@@ -26,6 +26,13 @@ package model.vo
 			this.type = "page";
 		}
 		
+		override public function clone():ElementVO
+		{
+			var vo:PageVO = super.clone() as PageVO;
+			vo.index = (parent) ? parent.length : -1;
+			return vo;
+		}
+		
 		override public function exportData(template:XML):XML
 		{
 			var template:XML = super.exportData(template);

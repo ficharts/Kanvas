@@ -114,8 +114,6 @@ package view.element
 		public static const DEL_IMG:String = 'deleteIMG';
 		
 		
-		public static const DEL_PAGE:String = "deletePage";
-		
 		public static const CONVERT_PAGE_2_ELEMENT:String = "convertPage2Element";
 		
 		

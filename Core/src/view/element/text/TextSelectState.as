@@ -59,10 +59,10 @@ package view.element.text
 		 */		
 		public function toEditState():void
 		{
-			element.currentState = (element as TextEditField).editTextState as ElementStateBase;
+			element.currentState = TextEditField(element).editTextState as ElementStateBase;
 			
 			element.dispatchEvent(new ElementEvent(ElementEvent.EDIT_TEXT, element));
-			(element as TextEditField).clearText();
+			TextEditField(element).clearText();
 			element.disable();
 		}
 	}

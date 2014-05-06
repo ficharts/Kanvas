@@ -4,7 +4,6 @@ package view.element.shapes
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.style.Style;
 	
-	import model.vo.ElementVO;
 	import model.vo.StarVO;
 	
 	import view.element.ElementBase;
@@ -73,7 +72,7 @@ package view.element.shapes
 		
 		/**
 		 */		
-		public function get propertyNameArray():Array
+		public function get customProperties():Array
 		{
 			return _propertyNameArray;
 		}
@@ -154,30 +153,5 @@ package view.element.shapes
 		{
 			return vo as StarVO;
 		}
-			
-		/**
-		 */		
-		override public function clone():ElementBase
-		{
-			var starVO:StarVO = new StarVO;
-			starVO.innerRadius = (this.vo as StarVO).innerRadius;
-			var element:Star = new Star(cloneVO(starVO) as StarVO);
-			element.copyFrom = this;
-			return element;
-		}
-		
-		/**
-		 */		
-		override protected function cloneVO(newVO:ElementVO):ElementVO
-		{
-			super.cloneVO(newVO);
-			
-			newVO.type = vo.type;
-			newVO.styleID = vo.styleID;
-			
-			
-			return newVO;
-		}
-		
 	}
 }

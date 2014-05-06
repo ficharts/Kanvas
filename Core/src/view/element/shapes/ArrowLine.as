@@ -19,16 +19,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <arrowLine/>
-		}
-		
-		/**
-		 */		
-		override public function clone():ElementBase
-		{
-			var arrowLine:ArrowLine = new ArrowLine(cloneVO(new LineVO));
-			arrowLine.copyFrom = this;
-			return arrowLine;
+			xmlData = <arrowLine/>;
 		}
 		
 		/**

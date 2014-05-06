@@ -51,23 +51,12 @@ package view.element.shapes
 		}
 		
 		
-		public function get propertyNameArray():Array
+		public function get customProperties():Array
 		{
 			return _propertyNameArray;
 		}
 		
 		private const _propertyNameArray:Array = ["radius"];
-		
-		/**
-		 */		
-		override public function clone():ElementBase
-		{
-			var newVO:ShapeVO = new ShapeVO;
-			newVO.radius = this.shapeVO.radius;
-			var element:StepTriangle = new StepTriangle(cloneVO(newVO) as ShapeVO);
-			element.copyFrom = this;
-			return element;
-		}
 		
 		/**
 		 * 渲染

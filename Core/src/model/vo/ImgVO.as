@@ -17,6 +17,23 @@ package model.vo
 			styleType = 'img';
 		}
 		
+		override public function clone():ElementVO
+		{
+			var vo:ImgVO = super.clone() as ImgVO;
+			vo.url = url;
+			vo.sourceData = sourceData;
+			vo.imgID = imgID;
+			return vo;
+		}
+		
+		override public function exportData(template:XML):XML
+		{
+			template = super.exportData(template);
+			template.@url = url;
+			template.@imgID = imgID;
+			return template;
+		}
+		
 		/**
 		 * 图片上传至服务器后，分配url, 后继再编辑时
 		 * 

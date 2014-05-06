@@ -41,16 +41,12 @@ package view.element.shapes
 			{
 				xmlData.@borderColor = vo.style.getBorder.color.toString(16);
 				xmlData.@borderAlpha = vo.style.getBorder.alpha;
-				
-				xmlData.@fillAlpha = vo.style.getFill.alpha;
+				xmlData.@fillAlpha   = vo.style.getFill.alpha;
 			}
 			else
 			{
 				
 			}
-			
-			xmlData.@thickness = vo.thickness;
-			xmlData.@radius = shapeVO.radius;
 			
 			return xmlData;
 		}
@@ -75,17 +71,6 @@ package view.element.shapes
 			{
 				toolbar.setCurToolBar(toolbar.defaultShape);
 			}
-		}
-		
-		/**
-		 */		
-		override protected function cloneVO(newVO:ElementVO):ElementVO
-		{
-			super.cloneVO(newVO);
-			
-			newVO.type = vo.type;
-			
-			return newVO;
 		}
 		
 		/**

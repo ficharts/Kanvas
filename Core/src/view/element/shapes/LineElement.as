@@ -61,27 +61,6 @@ package view.element.shapes
 			}
 		}
 		
-		/**
-		 */		
-		override public function clone():ElementBase
-		{
-			var element:LineElement = new LineElement(cloneVO(new LineVO));
-			element.copyFrom = this;
-			return element;
-		}
-		
-		/**
-		 */		
-		override protected function cloneVO(newVO:ElementVO):ElementVO
-		{
-			super.cloneVO(newVO);
-			
-			newVO.type = vo.type;
-			newVO.styleID = vo.styleID;
-			(newVO as LineVO).arc = lineVO.arc;
-			
-			return newVO;
-		}
 		
 		/**
 		 */		

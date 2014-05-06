@@ -1,7 +1,6 @@
 package view.element.text
 {
 	import com.kvs.ui.label.TextDrawer;
-	import com.kvs.utils.XMLConfigKit.style.elements.TextFormatStyle;
 	
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
@@ -38,16 +37,11 @@ package view.element.text
 		{
 			super(vo);
 			
-			textDrawer = new TextDrawer(this);
 			xmlData = <text/>;
+			textDrawer = new TextDrawer(this);
 			shape.visible = false;
 			
 		}
-		
-		/**
-		 * 负责将文本绘制为位图 
-		 */		
-		private var textDrawer:TextDrawer;
 		
 		/**
 		 */		
@@ -64,23 +58,15 @@ package view.element.text
 			}
 		}
 		
-		private var minRenderSize:Number = 5;
 		
 		/**
 		 */		
 		override public function toPreview(renderable:Boolean = false):void
 		{
 			super.toPreview(renderable);
-			
-			/*if (renderable)
-			{
-				if (visible && stageWidth > minRenderSize && stageHeight > minRenderSize)
-				{
-					checkTextBm();
-				}
-				
-			}*/
 		}
+		
+		
 		
 		/**
 		 */			
@@ -88,43 +74,6 @@ package view.element.text
 		{
 			toolbar.setCurToolBar(toolbar.text);
 		}
-		
-		/**
-		 */		
-		override public function exportData():XML
-		{
-			xmlData = <text/>;
-			xmlData = super.exportData();
-			
-			xmlData.@ifMutiLine = textVO.ifMutiLine;
-			xmlData.@isCustomColor = textVO.isCustomColor;
-			
-			//防止文本有特殊字符
-			if (textVO.text && textVO.text != "")
-				xmlData.appendChild(XML('<text><![CDATA[' + textVO.text + ']]></text>'));
-			
-			xmlData.@font = (textVO.label.format as TextFormatStyle).font;
-			xmlData.@size = textVO.size;
-			
-			return xmlData;
-		}
-		
-		/**
-		 */		
-		override public function clone():ElementBase
-		{
-			var textVO:TextVO = new TextVO;
-		
-			textVO.text = this.textVO.text;
-			textVO.ifMutiLine = this.textVO.ifMutiLine;
-			textVO.styleID = this.textVO.styleID;
-			textVO.isCustomColor = this.textVO.isCustomColor;
-			cloneVO(textVO);
-			
-			return new TextEditField(textVO);
-		}
-		
-		
 		
 		
 		
@@ -142,7 +91,7 @@ package view.element.text
 		 */		
 		override public function toSelectedState():void
 		{
-			curTextState.toSelected();
+			currentState.toSelected();
 		}
 		
 		/**
@@ -150,7 +99,7 @@ package view.element.text
 		 */
 		override public function toUnSelectedState():void
 		{
-			curTextState.toUnSelected();
+			currentState.toUnSelected();
 		}
 		
 		/**
@@ -158,7 +107,7 @@ package view.element.text
 		 */
 		public function toEditState():void
 		{
-			curTextState.toEditState();
+			IEditShapeState(currentState).toEditState();
 		}
 		
 		/**
@@ -175,19 +124,20 @@ package view.element.text
 			currentState = unSelectedState;
 		}
 		
-		/**
-		 */		
-		private function get curTextState():IEditShapeState
-		{
-			return currentState as IEditShapeState
-		}
 		
 		/**
 		 * 编辑状态
 		 */
 		internal var editTextState:IEditShapeState;
 		
-		
+		/**
+		 */		
+		public function clearText():void
+		{
+			textManager.setText("");
+			textManager.updateContainer();
+			graphics.clear();
+		}
 		
 		
 		
@@ -225,8 +175,6 @@ package view.element.text
 			FlowTextManager.renderTextVOLabel(this, textVO);
 			renderAfterLabelRender();
 			checkTextBm(true);// 文本渲染时要强制重新截图
-			
-			
 		}
 		
 		/**
@@ -358,14 +306,7 @@ package view.element.text
 			return vo as TextVO;
 		}
 		
-		/**
-		 */		
-		public function clearText():void
-		{
-			textManager.setText("");
-			textManager.updateContainer();
-			graphics.clear();
-		}
+		
 		
 		public function get smooth():Boolean
 		{
@@ -389,11 +330,21 @@ package view.element.text
 				}
 			}
 		}
-		
 		private var __smooth:Boolean = true;
+		
+		
+		
 		
 		/**
 		 */		
 		private var textCanvas:Sprite = new Sprite;
+		
+		/**
+		 * 负责将文本绘制为位图 
+		 */		
+		private var textDrawer:TextDrawer;
+		
+		
+		private var minRenderSize:Number = 5;
 	}
 }

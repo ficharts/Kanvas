@@ -61,7 +61,7 @@ package view.elementSelector.customPoint
 			oldPropertyObj.x = selector.element.vo.x;
 			oldPropertyObj.y = selector.element.vo.y;
 			
-			for each (var propertyName:String in customShape.propertyNameArray)
+			for each (var propertyName:String in customShape.customProperties)
 				oldPropertyObj[propertyName] = selector.element.vo[propertyName];
 			
 			if (selector.element.isPage)

@@ -2,6 +2,7 @@ package model.vo
 {
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
+	import com.kvs.utils.XMLConfigKit.style.elements.TextFormatStyle;
 	
 	import flash.text.TextFormat;
 	
@@ -18,6 +19,30 @@ package model.vo
 			
 			this.styleType = 'text';
 			this.type = 'text';
+		}
+		
+		override public function clone():ElementVO
+		{
+			var vo:TextVO = super.clone() as TextVO;
+			vo.text = text;
+			vo.ifMutiLine = ifMutiLine;
+			vo.styleID = styleID;
+			vo.isCustomColor = isCustomColor;
+			return vo;
+		}
+		
+		override public function exportData(template:XML):XML
+		{
+			template = super.exportData(template);
+			template.@ifMutiLine    = ifMutiLine;
+			template.@isCustomColor = isCustomColor;
+			template.@font =(label.format as TextFormatStyle).font;
+			template.@size = size;
+			//防止文本有特殊字符
+			if (text && text != "")
+				template.appendChild(XML('<text><![CDATA[' + text + ']]></text>'));
+			
+			return template;
 		}
 		
 		/**
@@ -57,15 +82,6 @@ package model.vo
 		 */		
 		public function set text(value:String):void
 		{
-			/*
-			//防止此字符导致的崩溃
-			if (value.indexOf('\r') != -1)
-				value = value.split('\r').join('');
-			
-			//防止此字符导致的崩溃
-			if (value.indexOf('\n') != -1)
-				value = value.split('\n').join('');
-			*/
 			_text = value;
 		}
 		

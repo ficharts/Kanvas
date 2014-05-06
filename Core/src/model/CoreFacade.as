@@ -187,7 +187,6 @@ package model
 			registerCommand(Command.DELETE_ElEMENT, DeleteElementCMD);
 			registerCommand(Command.DELETE_IMG, delImgCommad);
 			registerCommand(Command.DELETE_TEXT, DeleteTextCMD);
-			registerCommand(Command.DELETE_PAGE, DeletePageCMD);
 			registerCommand(Command.DELETE_CHILD_IN_TEM_GROUP, DeleteChildInTemGroupCMD);
 			registerCommand(Command.DELETE_BG_IMG, DelBgImgCMD);
 			

@@ -16,57 +16,66 @@ package model.vo
 			this.styleType = 'line';
 		}
 		
+		override public function clone():ElementVO
+		{
+			var vo:LineVO = super.clone() as LineVO;
+			vo.arc = arc;
+			return vo;
+		}
+		
+		override public function exportData(template:XML):XML
+		{
+			template = super.exportData(template);
+			template.@arc = arc;
+			template.@thickness = thickness;
+			if (style && style.getBorder)
+				template.@borderAlpha = style.getBorder.alpha;
+			return template;
+		}
+		
+		override public function updatePageLayout():void
+		{
+			if (pageVO) 
+			{
+				var p:Point = new Point(0, scale * .5 * arc);
+				var radian:Number = MathUtil.angleToRadian(rotation);
+				var cos:Number = Math.cos(radian);
+				var sin:Number = Math.sin(radian);
+				var rx:Number = p.x * cos - p.y * sin;
+				var ry:Number = p.x * sin + p.y * cos;
+				p.x = rx;
+				p.y = ry;
+				p.x += x;
+				p.y += y;
+				pageVO.x = p.x;
+				pageVO.y = p.y;
+				pageVO.height = height + Math.abs(arc);
+				pageVO.rotation = rotation;
+			}
+		}
+		
 		override public function set x(value:Number):void
 		{
 			_x = value;
-			if (pageVO)
-			{
-				updatePosition();
-			}
+			updatePageLayout();
 		}
 		
 		override public function set y(value:Number):void
 		{
 			_y = value;
-			if (pageVO) 
-			{
-				updatePosition();
-			}
+			updatePageLayout();
 		}
 		
 		override public function set height(value:Number):void
 		{
 			_height = value;
-			if (pageVO) 
-			{
-				pageVO.height = height + Math.abs(arc);
-			}
+			updatePageLayout();
 		}
 		
 		override public function set rotation(value:Number):void
 		{
 			_rotation = value;
-			if (pageVO)
-			{
-				updatePosition();
-			}
-		}
-		
-		private function updatePosition():void
-		{
-			var p:Point = new Point(0, scale * .5 * arc);
-			var radian:Number = MathUtil.angleToRadian(rotation);
-			var cos:Number = Math.cos(radian);
-			var sin:Number = Math.sin(radian);
-			var rx:Number = p.x * cos - p.y * sin;
-			var ry:Number = p.x * sin + p.y * cos;
-			p.x = rx;
-			p.y = ry;
-			p.x += x;
-			p.y += y;
-			pageVO.x = p.x;
-			pageVO.y = p.y;
-			pageVO.rotation = rotation;
+			updatePageLayout();
 		}
 		
 		/**
@@ -79,11 +88,7 @@ package model.vo
 		public function set arc(value:Number):void
 		{
 			_arc = value;
-			if (pageVO) 
-			{
-				pageVO.height = height + Math.abs(value);
-				updatePosition();
-			}
+			updatePageLayout();
 		}
 		private var _arc:Number = 0;
 		
