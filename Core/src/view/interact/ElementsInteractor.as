@@ -167,8 +167,7 @@ package view.interact
 		{
 			evt.stopPropagation();
 			
-			mainUI.hoverEffect.element = evt.element;
-			mainUI.hoverEffect.show();
+			mainMediator.currentMode.overEle(evt.element);
 		}
 		
 		/**
@@ -177,7 +176,7 @@ package view.interact
 		{
 			evt.stopPropagation();
 			
-			mainUI.hoverEffect.hide();
+			mainMediator.currentMode.outEle();
 		}
 		
 		/**

@@ -18,6 +18,7 @@ package view.element
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
+	import model.flashes.Flasher;
 	import model.vo.ElementVO;
 	import model.vo.PageVO;
 	
@@ -700,6 +701,8 @@ package view.element
 			numShape.graphics.endFill();
 		}
 		
+		/**
+		 */		
 		private function clearPageNum():void
 		{
 			if (numLabel)
@@ -714,7 +717,9 @@ package view.element
 		 */		
 		private var maxNumSize:uint = 26;
 		
-		private var numLabel:LabelUI;
+		/**
+		 */		
+		public var numLabel:LabelUI;
 		
 		/**
 		 * 用来绘制页面序号 
@@ -779,9 +784,18 @@ package view.element
 			return (parent) ? parent.getChildIndex(this) : -1;
 		}
 		
+		/**
+		 */		
 		override public function get graphics():Graphics
 		{
 			return graphicShape.graphics;
+		}
+		
+		/**
+		 */		
+		public function get canvas():DisplayObject
+		{
+			return shape;
 		}
 		
 		/**
@@ -991,8 +1005,17 @@ package view.element
 		public function toPrevState():void
 		{
 			currentState.toPrevState();
+			
 			if (isPage)
+			{
 				numShape.visible = false;
+				
+				this.vo.pageVO.flashIndex = 0;
+				var flasher:Flasher;
+				
+				for each (flasher in vo.pageVO.flashers)
+					flasher.start();
+			}
 		}
 		
 		/**
@@ -1000,8 +1023,17 @@ package view.element
 		public function returnFromPrevState():void
 		{
 			currentState.returnFromPrevState();
+			
 			if (isPage)
+			{
 				numShape.visible = true;
+				
+				this.vo.pageVO.flashIndex = 0;
+				var flasher:Flasher;
+				
+				for each (flasher in vo.pageVO.flashers)
+					flasher.end();
+			}
 		}
 		
 		/**
@@ -1223,9 +1255,12 @@ package view.element
 			_vo = value;
 		}
 		
+		/**
+		 */		
 		private var _vo:ElementVO;
 		
-		
+		/**
+		 */		
 		public var copyFrom:ElementBase;
 		
 		//绘制图形的画布

@@ -61,6 +61,21 @@ package view.interact.interactMode
 		
 		/**
 		 */		
+		public function overEle(ele:ElementBase):void
+		{
+			(mainMediator.mainUI as CoreApp).hoverEffect.element = ele;
+			(mainMediator.mainUI as CoreApp).hoverEffect.show();
+		}
+		
+		/**
+		 */		
+		public function outEle():void
+		{
+			(mainMediator.mainUI as CoreApp).hoverEffect.hide();
+		}
+		
+		/**
+		 */		
 		public function startMoveEle(e:ElementBase):void
 		{
 			mainMediator.elementMoveController.startMove(e);
@@ -90,6 +105,7 @@ package view.interact.interactMode
 		}
 		
 		/**
+		 * 非选择状态的原件被按下并释放后
 		 */		
 		public function selectElement(element:ElementBase):void
 		{

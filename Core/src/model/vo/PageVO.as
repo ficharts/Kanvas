@@ -2,6 +2,8 @@ package model.vo
 {
 	import flash.display.BitmapData;
 	
+	import model.flashes.Flasher;
+	
 	import modules.pages.PageEvent;
 	import modules.pages.PageQuene;
 	import modules.pages.pg_internal;
@@ -26,6 +28,18 @@ package model.vo
 			this.type = "page";
 		}
 		
+		/**
+		 * 当前动画序号，播放 
+		 */		
+		public var flashIndex:uint = 0;
+		
+		/**
+		 * 应用在页面内容元素上的动画
+		 */		
+		public var flashers:Vector.<Flasher>;
+		
+		/**
+		 */		
 		override public function exportData(template:XML):XML
 		{
 			var template:XML = super.exportData(template);
@@ -33,6 +47,7 @@ package model.vo
 			
 			if (elementVO)
 				template.@elementID = elementVO.id;
+			
 			return template;
 		}
 		

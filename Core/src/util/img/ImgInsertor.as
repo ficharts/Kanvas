@@ -201,7 +201,15 @@ package util.img
 			this.imgID = imgID;
 			
 			fileReference.addEventListener(Event.SELECT, onFileSelected);
-			fileReference.browse([new FileFilter("Images", "*.jpg;*.png")]);
+			
+			try
+			{
+				fileReference.browse([new FileFilter("Images", "*.jpg;*.png")]);
+			} 
+			catch(e:Error) 
+			{
+				//同时只能进行一个窗口选择
+			}
 		}
 		
 		/**

@@ -3,6 +3,7 @@ package view.element.text
 	import com.kvs.ui.label.TextDrawer;
 	import com.kvs.utils.XMLConfigKit.style.elements.TextFormatStyle;
 	
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.text.engine.BreakOpportunity;
@@ -300,7 +301,9 @@ package view.element.text
 		{
 			super.preRender();
 			
-			addChild(textCanvas = new Sprite);
+			_canvas.addChild(shape);
+			_canvas.addChild(textCanvas = new Sprite);
+			addChild(_canvas);
 			
 			textManager = new TextContainerManager(textCanvas);
 			textManager.editingMode = EditingMode.READ_ONLY;
@@ -312,6 +315,17 @@ package view.element.text
 			
 			textManager.hostFormat = textLayoutFormat;
 		}
+		
+		/**
+		 */		
+		override public function get canvas():DisplayObject
+		{
+			return _canvas;
+		}
+		
+		/**
+		 */		
+		private var _canvas:Sprite = new Sprite;
 		
 		/**
 		 */		

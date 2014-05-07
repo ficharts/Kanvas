@@ -94,7 +94,6 @@ package view.interact.interactMode
 			prevElements();
 			
 			if (mainMediator.pageManager.length > 0)
-				
 				mainMediator.pageManager.indexWithZoom = mainMediator.pageManager.index;//进入多页面播放模式
 			else
 				mainMediator.zoomMoveControl.zoomAuto();
