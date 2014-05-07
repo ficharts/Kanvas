@@ -2,7 +2,7 @@ package model.vo
 {
 	import flash.display.BitmapData;
 	
-	import model.flashes.Flasher;
+	import modules.pages.flash.Flasher;
 	
 	import modules.pages.PageEvent;
 	import modules.pages.PageQuene;

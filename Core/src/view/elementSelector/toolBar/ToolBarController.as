@@ -189,12 +189,12 @@
 		 */		
 		private function pageEditHandler(evt:MouseEvent):void
 		{
-			var pageEle:ElementBase = selector.element;
+			//先设定好当前页面， 页面缩放结束后在初始化页面动画
+			(selector.coreMdt.pageEditMode as PageEditMode).curPage = selector.element;
 			
 			_zoomPage();
 			selector.coreMdt.toPageEditMode();
 			
-			(selector.coreMdt.pageEditMode as PageEditMode).init(pageEle);//初始化页面编辑状态
 			selector.coreMdt.mainUI.dispatchEvent(new KVSEvent(KVSEvent.TO_PAGE_EDIT));
 		}
 		

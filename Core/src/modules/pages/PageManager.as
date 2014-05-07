@@ -17,7 +17,7 @@ package modules.pages
 	import model.CoreFacade;
 	import model.CoreProxy;
 	import model.ElementProxy;
-	import model.flashes.Flasher;
+	import modules.pages.flash.Flasher;
 	import model.vo.PageVO;
 	
 	import util.LayoutUtil;

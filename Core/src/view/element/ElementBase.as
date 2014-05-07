@@ -18,7 +18,7 @@ package view.element
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import model.flashes.Flasher;
+	import modules.pages.flash.Flasher;
 	import model.vo.ElementVO;
 	import model.vo.PageVO;
 	
