@@ -42,8 +42,6 @@ package control
 			app.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler, false, 0, true);
 			app.addEventListener(InteractEvent.PREVIEW, previewPanelHandler, false, 0, true);
 			
-			app.toolBar.centerBtnsC.addEventListener(MouseEvent.DOUBLE_CLICK, cancelPageEdit);
-			app.toolBar.customButtonContainer.addEventListener(MouseEvent.DOUBLE_CLICK, confirmPageEdit);
 		}
 		
 		/**
@@ -58,22 +56,40 @@ package control
 		
 		/**
 		 */		
+		public function cancelPageEditFromCore():void
+		{
+			app.kvsCore.cancelPageEdit();
+			_confirmPageEdit();
+		}
+		
+		/**
+		 */		
+		public function confirmPageEditFromCore():void
+		{
+			_confirmPageEdit();
+		}
+		
+		/**
+		 */		
 		private function confirmPageEdit(evt:Event):void
 		{
-			_openPanels();
-			app.toolBar.toNormalMode();
-			app.zoomToolBar.visible = true;
-			
-			app.kvsCore.toUnselect();
+			_confirmPageEdit();
 		}
 		
 		/**
 		 */		
 		private function cancelPageEdit(evt:Event):void
 		{
+			app.kvsCore.cancelPageEdit();
+			_confirmPageEdit();
+		}
+		
+		/**
+		 * 退出页面编辑状态并保存数据
+		 */		
+		private function _confirmPageEdit():void
+		{
 			_openPanels();
-			
-			app.kvsCore.resetPage();
 			app.toolBar.toNormalMode();
 			app.zoomToolBar.visible = true;
 			

@@ -17,7 +17,7 @@ package modules.pages
 	import model.CoreFacade;
 	import model.CoreProxy;
 	import model.ElementProxy;
-	import modules.pages.flash.Flasher;
+	import modules.pages.flash.FlashIn;
 	import model.vo.PageVO;
 	
 	import util.LayoutUtil;
@@ -232,7 +232,7 @@ package modules.pages
 			{
 				//没到达一个新页面时，页面中的动画都要初始化
 				var pageVO:PageVO = getPageAt(pageIndex);
-				var flasher:Flasher; 
+				var flasher:FlashIn; 
 				
 				for each (flasher in pageVO.flashers)
 					flasher.start();

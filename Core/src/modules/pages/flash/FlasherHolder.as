@@ -1,15 +1,7 @@
 package modules.pages.flash
 {
-	import com.kvs.utils.dec.NullPad;
-	
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.filters.DropShadowFilter;
-	import flash.geom.Point;
-	
-	import org.osmf.net.ABRUtils;
-	
-	import util.LayoutUtil;
 	
 	import view.element.ElementBase;
 	import view.interact.CoreMediator;
@@ -51,9 +43,9 @@ package modules.pages.flash
 		public function rework():void
 		{
 			if (flasher)
-			{
 				setFlasherIcon();
-			}
+			else
+				unsetFlashIcon();
 		}
 		
 		/**
@@ -99,7 +91,7 @@ package modules.pages.flash
 			}
 			else
 			{
-				var f:Flasher = new Flasher();
+				var f:FlashIn = new FlashIn();
 				f.element = ele;
 				f.elementID = ele.vo.id;
 				
@@ -158,7 +150,7 @@ package modules.pages.flash
 		
 		/**
 		 */		
-		public var flasher:Flasher;
+		public var flasher:FlashIn;
 		
 		/**
 		 */		
