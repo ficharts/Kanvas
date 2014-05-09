@@ -22,7 +22,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <arrow/>;
+			vo.xml = <arrow/>;
 		}
 		
 		/**

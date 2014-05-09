@@ -20,7 +20,11 @@ package landray.kp.maps.main.elements
 				super.render();
 				
 				StyleManager.setShapeStyle( shapeVO.style, graphics, shapeVO );
-				graphics.drawEllipse( shapeVO.style.tx, shapeVO.style.ty, shapeVO.width, shapeVO.height );
+				graphics.drawEllipse( 
+					shapeVO.style.tx, 
+					shapeVO.style.ty, 
+					shapeVO.style.width, 
+					shapeVO.style.height );
 				graphics.endFill();
 			}
 		}

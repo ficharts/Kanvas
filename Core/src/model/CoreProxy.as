@@ -304,7 +304,7 @@ package model
 			
 			for each (var vo:PageVO in CoreFacade.coreMediator.pageManager.pages)
 			{
-				pageNode.appendChild(vo.exportData(<page/>));
+				pageNode.appendChild(vo.exportData());
 			}
 			
 			xml.appendChild(pageNode);
@@ -360,7 +360,7 @@ package model
 				
 				if (element is GroupElement)
 				{
-					element.xmlData = item;
+					element.vo.xml = item;
 					groupElements.push(element);
 				}
 			}

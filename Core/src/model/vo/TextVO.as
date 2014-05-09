@@ -31,18 +31,18 @@ package model.vo
 			return vo;
 		}
 		
-		override public function exportData(template:XML):XML
+		override public function exportData():XML
 		{
-			template = super.exportData(template);
-			template.@ifMutiLine    = ifMutiLine;
-			template.@isCustomColor = isCustomColor;
-			template.@font =(label.format as TextFormatStyle).font;
-			template.@size = size;
+			xml = super.exportData();
+			xml.@ifMutiLine    = ifMutiLine;
+			xml.@isCustomColor = isCustomColor;
+			xml.@font =(label.format as TextFormatStyle).font;
+			xml.@size = size;
 			//防止文本有特殊字符
 			if (text && text != "")
-				template.appendChild(XML('<text><![CDATA[' + text + ']]></text>'));
+				xml.appendChild(XML('<text><![CDATA[' + text + ']]></text>'));
 			
-			return template;
+			return xml;
 		}
 		
 		/**

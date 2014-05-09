@@ -25,7 +25,7 @@ package view.element
 		{
 			super(vo);
 			
-			xmlData = <page/>;
+			vo.xml = <page/>;
 			_screenshot = false;
 			_elementPageConvertable = false;
 			mouseChildren = true		

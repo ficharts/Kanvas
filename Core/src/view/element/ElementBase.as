@@ -66,7 +66,7 @@ package view.element
 		 */		
 		public function exportData():XML
 		{
-			return vo.exportData(xmlData);
+			return vo.exportData();
 		}
 		
 		/**

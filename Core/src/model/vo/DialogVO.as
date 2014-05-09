@@ -18,12 +18,12 @@ package model.vo
 			return vo;
 		}
 		
-		override public function exportData(template:XML):XML
+		override public function exportData():XML
 		{
-			template = super.exportData(template);
-			template.@r = r;
-			template.@rAngle = rAngle;
-			return template;
+			xml = super.exportData();
+			xml.@r = r;
+			xml.@rAngle = rAngle;
+			return xml;
 		}
 		
 		/**

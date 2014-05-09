@@ -24,7 +24,7 @@ package view.element.imgElement
 		public function ImgElement(vo:ImgVO)
 		{
 			super(vo);
-			xmlData = <img/>;
+			vo.xml = <img/>;
 			
 			autoGroupChangable = false;
 			
@@ -92,18 +92,6 @@ package view.element.imgElement
 		override public function del():void
 		{
 			dispatchEvent(new ElementEvent(ElementEvent.DEL_IMG, this));
-		}
-		
-		/**
-		 */		
-		override public function exportData():XML
-		{
-			xmlData = super.exportData();
-			
-			xmlData.@url = imgVO.url;
-			xmlData.@imgID = imgVO.imgID;
-			
-			return xmlData;
 		}
 		
 		/**

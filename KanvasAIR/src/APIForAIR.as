@@ -127,7 +127,14 @@ package
 		{
 			if (file)
 			{
-				writeFile();
+				try {
+					writeFile();
+				}
+				catch (e:Error)
+				{
+					file.addEventListener(Event.SELECT, selectFileForSave);
+					file.browseForSave("保存kanvas文件");
+				}
 			}
 			else
 			{
@@ -142,7 +149,8 @@ package
 		private function selectFileForSave(evt:Event):void
 		{
 			file.removeEventListener(Event.SELECT, selectFileForSave);
-				
+			
+			
 			file = new File(file.nativePath + ".kvs")
 			writeFile();
 		}

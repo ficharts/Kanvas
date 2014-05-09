@@ -20,7 +20,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <triangle/>
+			vo.xml = <triangle/>;
 		}
 		
 		/**

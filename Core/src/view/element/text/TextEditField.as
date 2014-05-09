@@ -37,7 +37,7 @@ package view.element.text
 		{
 			super(vo);
 			
-			xmlData = <text/>;
+			vo.xml = <text/>;
 			textDrawer = new TextDrawer(this);
 			shape.visible = false;
 			

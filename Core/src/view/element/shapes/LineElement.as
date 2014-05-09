@@ -25,7 +25,7 @@ package view.element.shapes
 		public function LineElement(vo:ElementVO)
 		{
 			super(vo);
-			xmlData = <line/>;
+			vo.xml = <line/>;
 		}
 		
 		/**
@@ -36,20 +36,6 @@ package view.element.shapes
 		}
 		
 		private const _propertyNameArray:Array = ["arc"];
-		
-		
-		/**
-		 */		
-		override public function exportData():XML
-		{
-			xmlData = super.exportData();
-			
-			xmlData.@thickness = vo.thickness;
-			xmlData.@borderAlpha = vo.style.getBorder.alpha;
-			xmlData.@arc = lineVO.arc;
-			
-			return xmlData;
-		}
 		
 		override public function setPage(pageVO:PageVO):void
 		{

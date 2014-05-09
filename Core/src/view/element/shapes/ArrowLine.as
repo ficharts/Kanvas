@@ -19,7 +19,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <arrowLine/>;
+			vo.xml = <arrowLine/>;
 		}
 		
 		/**

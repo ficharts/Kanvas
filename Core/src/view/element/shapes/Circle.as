@@ -18,7 +18,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <circle/>
+			vo.xml = <circle/>;
 		}
 		
 		/**

@@ -24,6 +24,7 @@ package model.vo
 			pageVO = this;
 			this.styleType = "shape";
 			this.type = "page";
+			xml = <page/>;
 		}
 		
 		override public function clone():ElementVO
@@ -33,14 +34,14 @@ package model.vo
 			return vo;
 		}
 		
-		override public function exportData(template:XML):XML
+		override public function exportData():XML
 		{
-			var template:XML = super.exportData(template);
-			template.@index = index;
+			xml = super.exportData();
+			xml.@index = index;
 			
 			if (elementVO)
-				template.@elementID = elementVO.id;
-			return template;
+				xml.@elementID = elementVO.id;
+			return xml;
 		}
 		
 		override public function set x(value:Number):void

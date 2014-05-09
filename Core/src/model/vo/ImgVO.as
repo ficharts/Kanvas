@@ -26,12 +26,12 @@ package model.vo
 			return vo;
 		}
 		
-		override public function exportData(template:XML):XML
+		override public function exportData():XML
 		{
-			template = super.exportData(template);
-			template.@url = url;
-			template.@imgID = imgID;
-			return template;
+			xml = super.exportData();
+			xml.@url = url;
+			xml.@imgID = imgID;
+			return xml;
 		}
 		
 		/**

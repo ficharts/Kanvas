@@ -22,20 +22,9 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <star/>
+			vo.xml = <star/>;
 		}
 		
-		
-		/**
-		 */		
-		override public function exportData():XML
-		{
-			xmlData = super.exportData();
-			
-			xmlData.@innerRadius = starVO.innerRadius;
-			
-			return xmlData;
-		}
 		
 		/**
 		 */		
