@@ -1,12 +1,13 @@
 package view.interact.interactMode
 {
-	import com.kvs.utils.Map;
-	
+	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
 	
 	import model.vo.PageVO;
 	
-	import modules.pages.flash.Flasher;
+	import modules.pages.flash.FlashIn;
 	import modules.pages.flash.FlasherHolder;
 	
 	import util.LayoutUtil;
@@ -100,8 +101,7 @@ package view.interact.interactMode
 		 */		
 		public function init():void
 		{
-			curPage.numLabel.mouseEnabled = curPage.numLabel.mouseChildren = curPage.numLabel.buttonMode = false;
-			
+			ifConfirmData = true;
 			flasherHolders.length = 0;
 			
 			var elements:Vector.<ElementBase> = mainMediator.collisionDetection.elements;
@@ -135,7 +135,7 @@ package view.interact.interactMode
 			//将页面的动画抓取出来, 匹配到元素动画管理器上
 			if (curPage.vo.pageVO.flashers)
 			{
-				for each (var f:Flasher in curPage.vo.pageVO.flashers)
+				for each (var f:FlashIn in curPage.vo.pageVO.flashers)
 				{
 					for each (fh in flasherHolders)
 					{
@@ -151,18 +151,49 @@ package view.interact.interactMode
 				
 			}
 			
+			//点击或者esc按键方式取消页面动画编辑
+			mainMediator.mainUI.canvas.addEventListener(MouseEvent.CLICK, canvasClickHandler, false, 0, true);
+			mainMediator.mainUI.stage.addEventListener(KeyboardEvent.KEY_UP, escHandler, false, 0, true);
 		}
+		
+		/**
+		 */		
+		override public function resetPageEdit():void
+		{
+			for each (var fh:FlasherHolder in flasherHolders)
+			{
+				fh.flasher = null;
+				fh.rework();
+			}
+		}
+		
+		/**
+		 * 把旧的页面动画数据重新付给当前holders
+		 */		
+		override public function cancelPageEdit():void
+		{
+			ifConfirmData = false;
+		}
+		
+		/**
+		 * 默认退出时都会确认页面动画，如果用户取消页面编辑，则不确认
+		 */		
+		private var ifConfirmData:Boolean = false;
 		
 		/**
 		 */		
 		override public function toUnSelectedMode():void
 		{
-			var holders:Vector.<FlasherHolder> = freshIndex();
 			var fh:FlasherHolder;
 			
-			curPage.vo.pageVO.flashers = new Vector.<Flasher>;
-			for each (fh in holders)
-				curPage.vo.pageVO.flashers.push(fh.flasher);
+			if (ifConfirmData)
+			{
+				var holders:Vector.<FlasherHolder> = freshIndex();
+				curPage.vo.pageVO.flashers = new Vector.<FlashIn>;
+				
+				for each (fh in holders)
+					curPage.vo.pageVO.flashers.push(fh.flasher);
+			}
 			
 			//重设页面的动画
 			if (flasherHolders.length)
@@ -176,14 +207,36 @@ package view.interact.interactMode
 			}
 			
 			flasherHolders.length = 0;
-			
-			curPage.numLabel.mouseEnabled = curPage.numLabel.mouseChildren = true;
 			curPage = null;
 			
 			mainMediator.enableKeyboardControl();
 			mainMediator.currentMode = mainMediator.unSelectedMode;
 			
 			mainMediator.zoomMoveControl.enable();
+			
+			mainMediator.mainUI.canvas.removeEventListener(MouseEvent.CLICK, canvasClickHandler);
+			mainMediator.mainUI.stage.removeEventListener(KeyboardEvent.KEY_UP, escHandler);
+			
+			mainMediator.resetCanvasState();
+		}
+		
+		/**
+		 */		
+		private function canvasClickHandler(evt:MouseEvent):void
+		{
+			var point:Point = new Point(evt.stageX, evt.stageY);
+			
+			//如果鼠标点击到页面区域以外，推出页面编辑状态
+			if(curPage.hitTestPoint(point.x, point.y) == false)
+				mainMediator.mainUI.dispatchEvent(new KVSEvent(KVSEvent.CONFIRM_PAGE_EDIT));
+		}
+		
+		/**
+		 */		
+		private function escHandler(evt:KeyboardEvent):void
+		{
+			if (evt.keyCode == Keyboard.ESCAPE)
+				mainMediator.mainUI.dispatchEvent(new KVSEvent(KVSEvent.CANCEL_PAGE_EDIT));
 		}
 		
 		/**

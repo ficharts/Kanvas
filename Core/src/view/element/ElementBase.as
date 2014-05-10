@@ -18,7 +18,7 @@ package view.element
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import modules.pages.flash.Flasher;
+	import modules.pages.flash.FlashIn;
 	import model.vo.ElementVO;
 	import model.vo.PageVO;
 	
@@ -606,6 +606,7 @@ package view.element
 				vo.pageVO.removeEventListener(PageEvent.DELETE_PAGE_FROM_UI, deletePageHandler);
 				vo.pageVO.removeEventListener(PageEvent.UPDATE_PAGE_INDEX, updatePageIndex);
 			}
+			
 			if (pageVO)
 			{
 				vo.pageVO = pageVO;
@@ -1011,7 +1012,7 @@ package view.element
 				numShape.visible = false;
 				
 				this.vo.pageVO.flashIndex = 0;
-				var flasher:Flasher;
+				var flasher:FlashIn;
 				
 				for each (flasher in vo.pageVO.flashers)
 					flasher.start();
@@ -1029,7 +1030,7 @@ package view.element
 				numShape.visible = true;
 				
 				this.vo.pageVO.flashIndex = 0;
-				var flasher:Flasher;
+				var flasher:FlashIn;
 				
 				for each (flasher in vo.pageVO.flashers)
 					flasher.end();

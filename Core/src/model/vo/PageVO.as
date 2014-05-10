@@ -2,10 +2,9 @@ package model.vo
 {
 	import flash.display.BitmapData;
 	
-	import modules.pages.flash.Flasher;
-	
 	import modules.pages.PageEvent;
 	import modules.pages.PageQuene;
+	import modules.pages.flash.FlashIn;
 	import modules.pages.pg_internal;
 	
 	[Event(name="updateThumb", type="modules.pages.PageEvent")]
@@ -36,7 +35,7 @@ package model.vo
 		/**
 		 * 应用在页面内容元素上的动画
 		 */		
-		public var flashers:Vector.<Flasher>;
+		public var flashers:Vector.<FlashIn>;
 		
 		/**
 		 */		

@@ -307,7 +307,14 @@ package view.interact.interactMode
 		
 		/**
 		 */		
-		public function resetPage():void
+		public function resetPageEdit():void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function cancelPageEdit():void
 		{
 			
 		}

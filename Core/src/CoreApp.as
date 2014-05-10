@@ -48,7 +48,7 @@ package
 		/**
 		 * 产品版本号 
 		 */		
-		public static const VER:String = "1.0.1";
+		public static const VER:String = "1.2.0";
 		
 		
 		
@@ -416,10 +416,19 @@ package
 		}
 		
 		/**
+		 * 取消，不应用动画编辑的内容
 		 */		
-		public function toUnselect():void
+		public function cancelPageEdit():void
 		{
-			CoreFacade.coreMediator.toUnSelectedMode();
+			CoreFacade.coreMediator.cancelPageEdit();
+		}
+		
+		/**
+		 * 清空所有页面动画
+		 */		
+		public function resetPage():void
+		{
+			CoreFacade.coreMediator.resetPageEdit();
 		}
 		
 		/**
@@ -431,9 +440,9 @@ package
 		
 		/**
 		 */		
-		public function resetPage():void
+		public function toUnselect():void
 		{
-			CoreFacade.coreMediator.resetPage();
+			CoreFacade.coreMediator.toUnSelectedMode();
 		}
 		
 		

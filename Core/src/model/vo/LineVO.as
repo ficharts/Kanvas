@@ -14,8 +14,12 @@ package model.vo
 			
 			this.type = 'line';
 			this.styleType = 'line';
+			
+			this.thickness = 12;
 		}
 		
+		/**
+		 */		
 		override public function set x(value:Number):void
 		{
 			_x = value;

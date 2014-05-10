@@ -15,6 +15,7 @@ package view.interact
 	import model.vo.PageVO;
 	
 	import modules.pages.PageManager;
+	import modules.pages.Scene;
 	
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
@@ -372,9 +373,16 @@ package view.interact
 		 * 取消页面内元素的动画设定
 		 * 
 		 */		
-		public function resetPage():void
+		public function resetPageEdit():void
 		{
-			currentMode.resetPage();
+			currentMode.resetPageEdit();
+		}
+		
+		/**
+		 */		
+		public function cancelPageEdit():void
+		{
+			currentMode.cancelPageEdit();
 		}
 		
 		/**
@@ -466,6 +474,29 @@ package view.interact
 				multiSelectControl.toNomalState();
 			}
 		}
+		
+		/**
+		 * 记录画布的尺寸位置状态
+		 */		
+		public function restoryCanvasState():void
+		{
+			curCanvasState.x = mainUI.canvas.x;
+			curCanvasState.y = mainUI.canvas.y;
+			curCanvasState.rotation = mainUI.canvas.rotation;
+			curCanvasState.scale = mainUI.canvas.scaleX;
+		}
+		
+		/**
+		 * 返回上一次记录的画布状态
+		 */		
+		public function resetCanvasState():void
+		{
+			zoomMoveControl.zoomRotateMoveTo(curCanvasState.scale, curCanvasState.rotation, curCanvasState.x, curCanvasState.y);
+		}
+		
+		/**
+		 */		
+		private var curCanvasState:Scene = new Scene;
 		
 		/**
 		 * 多选控制器，总共有两种选择模式：单选模式和多选模式

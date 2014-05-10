@@ -2,10 +2,6 @@ package view.interact.interactMode
 {
 	import commands.Command;
 	
-	import flash.geom.Point;
-	
-	import model.CoreFacade;
-	
 	import view.element.ElementBase;
 	import view.interact.CoreMediator;
 	
@@ -79,8 +75,6 @@ package view.interact.interactMode
 			mainMediator.currentMode = mainMediator.pageEditMode;
 			
 			mainMediator.zoomMoveControl.disable();
-			
-			
 		}
 		
 		/**
@@ -89,6 +83,7 @@ package view.interact.interactMode
 		{
 			//切换之预览模式时需清除镜头框
 			mainMediator.cameraShotShape.graphics.clear();
+			mainMediator.restoryCanvasState();
 			
 			mainMediator.currentMode = mainMediator.preMode;
 			prevElements();

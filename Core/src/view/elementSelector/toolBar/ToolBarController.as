@@ -191,6 +191,7 @@
 		{
 			//先设定好当前页面， 页面缩放结束后在初始化页面动画
 			(selector.coreMdt.pageEditMode as PageEditMode).curPage = selector.element;
+			selector.coreMdt.restoryCanvasState();
 			
 			_zoomPage();
 			selector.coreMdt.toPageEditMode();
