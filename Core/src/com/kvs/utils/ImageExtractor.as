@@ -335,9 +335,9 @@ package com.kvs.utils
 		private var tempo:ByteArray;
 		
 		/**
-		 * 支持的最大图片尺寸，宽与高的乘积，目前最大支持4096*4096 。
+		 * 支持的最大图片尺寸，宽与高的乘积，目前最大支持8000*8000 。
 		 */
-		public  static const MAX_SUPPORTED_SIZE  :Number = 16777216;
+		public  static const MAX_SUPPORTED_SIZE  :Number = 64000000//16777216;
 		
 		public  static const MAX_SUPPORTED_WIDTH :Number = 8000;
 		
