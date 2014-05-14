@@ -1,6 +1,7 @@
 package modules.pages.flash
 {
 	import view.element.ElementBase;
+	import view.element.IElement;
 
 	/**
 	 * 
@@ -21,8 +22,8 @@ package modules.pages.flash
 		function next():void
 		function prev():void
 
-		function get element():ElementBase;
-		function set element(value:ElementBase):void;
+		function get element():IElement;
+		function set element(value:IElement):void;
 		
 		function get elementID():uint
 		function set elementID(value:uint):void

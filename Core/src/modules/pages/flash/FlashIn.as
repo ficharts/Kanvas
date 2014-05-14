@@ -3,6 +3,7 @@ package modules.pages.flash
 	import com.greensock.TweenLite;
 	
 	import view.element.ElementBase;
+	import view.element.IElement;
 
 	/**
 	 *
@@ -69,11 +70,7 @@ package modules.pages.flash
 		 */		
 		public function expertData():XML
 		{
-			var result:XML = <flashIn elementID={elementID} index={index}/>;
-			
-			
-			
-			return result;
+			return <flashIn elementID={elementID} index={index}/>;;
 		}
 		
 		/**
@@ -110,12 +107,12 @@ package modules.pages.flash
 		
 		/**
 		 */		
-		private var _element:ElementBase;
+		private var _element:IElement;
 
 		/**
 		 * 动画播放的对象 
 		 */
-		public function get element():ElementBase
+		public function get element():IElement
 		{
 			return _element;
 		}
@@ -123,7 +120,7 @@ package modules.pages.flash
 		/**
 		 * @private
 		 */
-		public function set element(value:ElementBase):void
+		public function set element(value:IElement):void
 		{
 			_element = value;
 		}

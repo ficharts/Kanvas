@@ -1,6 +1,9 @@
 package modules.pages.flash
 {
+	import com.greensock.TweenLite;
+	
 	import view.element.ElementBase;
+	import view.element.IElement;
 	
 	/**
 	 *
@@ -49,33 +52,45 @@ package modules.pages.flash
 		 */		
 		public function start():void
 		{
+			element.canvas.alpha = 1;
 		}
 		
+		/**
+		 */		
 		public function end():void
 		{
+			element.canvas.alpha = 1;
 		}
 		
+		/**
+		 */		
 		public function next():void
 		{
+			TweenLite.to(element.canvas, FlashIn.TIME, {alpha: 0});
 		}
 		
+		/**
+		 */		
 		public function prev():void
 		{
+			TweenLite.to(element.canvas, FlashIn.TIME, {alpha: 1});
 		}
 		
-		public function get element():ElementBase
+		/**
+		 */		
+		public function get element():IElement
 		{
 			return _ele;
 		}
 		
-		public function set element(value:ElementBase):void
+		public function set element(value:IElement):void
 		{
 			_ele = value;
 		}
 		
 		/**
 		 */		
-		private var _ele:ElementBase;
+		private var _ele:IElement;
 		
 		/**
 		 */		

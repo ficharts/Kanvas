@@ -7,8 +7,8 @@ package view.interact.interactMode
 	
 	import model.vo.PageVO;
 	
-	import modules.pages.flash.FlashIn;
 	import modules.pages.flash.FlasherHolder;
+	import modules.pages.flash.IFlash;
 	
 	import util.LayoutUtil;
 	
@@ -27,8 +27,6 @@ package view.interact.interactMode
 		public function PageEditMode(mainMediator:CoreMediator)
 		{
 			super(mainMediator);
-			
-			
 		}
 		
 		/**
@@ -50,7 +48,6 @@ package view.interact.interactMode
 		}
 		
 		/**
-		 * 
 		 * 删除当前动画，重新排列其余动画的index
 		 */		
 		public function removeFlash(fhr:FlasherHolder):void
@@ -120,12 +117,13 @@ package view.interact.interactMode
 				{
 					fh = new FlasherHolder(eleInPage, mainMediator, this);
 					
-					
 					var point:Point = LayoutUtil.elementPointToStagePoint(ele.vo.x, ele.vo.y, mainMediator.canvas);
 					fh.x = point.x;
 					fh.y = point.y;
-					fh.w = ele.scaledWidth * mainMediator.canvas.scale;
-					fh.h = ele.scaledHeight * mainMediator.canvas.scale;
+					fh.w = ele.scaledWidth * mainMediator.canvas.scaleX;
+					fh.h = ele.scaledHeight * mainMediator.canvas.scaleY;
+					fh.rotation = ele.vo.rotation;
+					fh.render();
 					
 					flasherHolders.push(fh);
 					mainMediator.mainUI.addChild(fh);
@@ -135,7 +133,7 @@ package view.interact.interactMode
 			//将页面的动画抓取出来, 匹配到元素动画管理器上
 			if (curPage.vo.pageVO.flashers)
 			{
-				for each (var f:FlashIn in curPage.vo.pageVO.flashers)
+				for each (var f:IFlash in curPage.vo.pageVO.flashers)
 				{
 					for each (fh in flasherHolders)
 					{
@@ -189,7 +187,7 @@ package view.interact.interactMode
 			if (ifConfirmData)
 			{
 				var holders:Vector.<FlasherHolder> = freshIndex();
-				curPage.vo.pageVO.flashers = new Vector.<FlashIn>;
+				curPage.vo.pageVO.flashers = new Vector.<IFlash>;
 				
 				for each (fh in holders)
 					curPage.vo.pageVO.flashers.push(fh.flasher);

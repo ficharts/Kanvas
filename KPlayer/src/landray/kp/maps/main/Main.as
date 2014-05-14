@@ -1,17 +1,16 @@
 package landray.kp.maps.main
 {
-	import flash.geom.Rectangle;
-	
+	import landray.kp.core.KPConfig;
+	import landray.kp.core.kp_internal;
 	import landray.kp.maps.main.elements.*;
 	import landray.kp.maps.main.util.MainUtil;
 	import landray.kp.utils.CoreUtil;
 	import landray.kp.view.Graph;
 	
 	import model.vo.ElementVO;
-	import model.vo.ImgVO;
 	
-	import util.LayoutUtil;
-	
+	/**
+	 */	
 	public final class Main extends Graph
 	{
 		public function Main()
@@ -20,6 +19,8 @@ package landray.kp.maps.main
 			initialize();
 		}
 		
+		/**
+		 */		
 		private function initialize():void
 		{
 			elements = new Vector.<Element>;
@@ -27,6 +28,8 @@ package landray.kp.maps.main
 			images   = new Vector.<Image>;
 		}
 		
+		/**
+		 */		
 		override public function flashPlay():void
 		{
 			for each (var image:Image in images)
@@ -35,6 +38,8 @@ package landray.kp.maps.main
 				label.smooth = false;
 		}
 		
+		/**
+		 */		
 		override public function flashStop():void
 		{
 			for each (var image:Image in images)
@@ -43,6 +48,8 @@ package landray.kp.maps.main
 				label.smooth = true;
 		}
 		
+		/**
+		 */		
 		override public function flashTrek():void
 		{
 			for each (var label:Label in labels)
@@ -52,14 +59,20 @@ package landray.kp.maps.main
 			}
 		}
 		
+		/**
+		 */		
 		override public function set dataProvider(value:XML):void
 		{
 			//clear
 			for each (var element:Element in elements)
 				viewer.canvas.removeChild(element);
+				
 			elements.length = labels.length = images.length = 0;
 			
 			//create vos and elements
+			var config:KPConfig = KPConfig.instance;
+			config.kp_internal::elementMap.clear();
+			
 			var list:XMLList = value.children();
 			for each (var xml:XML in list) 
 			{
@@ -75,7 +88,10 @@ package landray.kp.maps.main
 						CoreUtil.mapping(xml, vo);
 						element.render();
 						viewer.canvas.addChild(element);
+						
 						elements.push(element);
+						config.kp_internal::elementMap.put(element.vo.id.toString(), element);
+						
 						if (element is Label) labels.push(Label(element));
 						if (element is Image) images.push(Image(element));
 					}

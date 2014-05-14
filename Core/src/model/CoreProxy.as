@@ -11,16 +11,12 @@ package model
 	
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
-	import flash.sampler.NewObjectSample;
 	import flash.utils.ByteArray;
-	import flash.xml.XMLDocument;
-	import flash.xml.XMLNode;
 	
 	import model.vo.BgVO;
 	import model.vo.ElementVO;
 	import model.vo.ImgVO;
 	import model.vo.PageVO;
-	import model.vo.TextVO;
 	
 	import modules.pages.PageEvent;
 	import modules.pages.flash.FlashIn;
@@ -42,7 +38,6 @@ package model
 	import view.element.GroupElement;
 	import view.element.PageElement;
 	import view.element.imgElement.ImgElement;
-	import view.element.text.TextEditField;
 	
 	/**
 	 * 负责数据，样式整体控制;
@@ -401,8 +396,8 @@ package model
 			{
 				var pageVO:PageVO = (createVO(item) as PageVO);
 				
-				if (pageVO.elementID > 0 && temElementMap.containsKey([pageVO.elementID]))//代理页面设定
-					(temElementMap.getValue([pageVO.elementID]) as ElementBase).setPage(pageVO);//页面id与元素各自独立
+				if (pageVO.elementID > 0 && temElementMap.containsKey(pageVO.elementID.toString()))//代理页面设定
+					(temElementMap.getValue(pageVO.elementID.toString()) as ElementBase).setPage(pageVO);//页面id与元素各自独立
 				else
 					element = createElement(pageVO);//拍摄页面
 				
@@ -454,7 +449,7 @@ package model
 		{
 			if (pageXML.hasOwnProperty("flashes"))
 			{
-				page.flashers = new Vector.<FlashIn>;
+				page.flashers = new Vector.<IFlash>;
 				
 				var f:IFlash;
 				var fxml:XML;

@@ -17,8 +17,9 @@ package modules.pages
 	import model.CoreFacade;
 	import model.CoreProxy;
 	import model.ElementProxy;
-	import modules.pages.flash.FlashIn;
 	import model.vo.PageVO;
+	
+	import modules.pages.flash.FlashIn;
 	
 	import util.LayoutUtil;
 	
@@ -177,7 +178,6 @@ package modules.pages
 				}
 				else
 				{
-					curPage.flashIndex = 0;
 					resetPageFlash(nextIndex);
 				}
 			}
@@ -210,34 +210,20 @@ package modules.pages
 				}
 				else
 				{
-					if (curPage.flashIndex == curPage.flashers.length)
-						curPage.flashIndex = curPage.flashers.length - 1;
-						
-					curPage.flashers[curPage.flashIndex].prev();
 					curPage.flashIndex -= 1;
+					curPage.flashers[curPage.flashIndex].prev();
 				}
 			}
 			else
 			{
 				resetPageFlash(prevIndex);
 			}
-			
 		}
 		
 		/**
 		 */		
 		private function resetPageFlash(pageIndex:int):void
 		{
-			if (pageIndex != - 1)
-			{
-				//没到达一个新页面时，页面中的动画都要初始化
-				var pageVO:PageVO = getPageAt(pageIndex);
-				var flasher:FlashIn; 
-				
-				for each (flasher in pageVO.flashers)
-					flasher.start();
-			}
-			
 			indexWithZoom = pageIndex;
 		}
 		

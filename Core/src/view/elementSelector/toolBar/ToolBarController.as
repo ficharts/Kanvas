@@ -18,7 +18,6 @@
 	
 	import model.vo.PageVO;
 	
-	import view.element.ElementBase;
 	import view.elementSelector.ElementSelector;
 	import view.interact.interactMode.PageEditMode;
 	
@@ -346,6 +345,7 @@
 			clear();
 			if (curToolBar)
 				curToolBar.render();
+			
 			renderBG();
 		}
 		
@@ -601,8 +601,9 @@
 			initBtnStyle(zoomBtn, 'zoom');
 			zoomBtn.addEventListener(MouseEvent.CLICK, zoomHandler, false, 0, true);
 			
+			flash;
 			pageEditBtn.tips = '页面动画';
-			initBtnStyle(pageEditBtn, 'zoom');
+			initBtnStyle(pageEditBtn, 'flash');
 			pageEditBtn.addEventListener(MouseEvent.CLICK, pageEditHandler, false, 0, true);
 			
 			styleBtn.tips = '颜色/样式';

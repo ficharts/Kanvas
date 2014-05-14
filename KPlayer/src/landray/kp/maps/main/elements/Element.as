@@ -239,7 +239,7 @@ package landray.kp.maps.main.elements
 		{
 			if (check && stage)
 			{
-				var rect:Rectangle = LayoutUtil.getItemRect(canvas, this);
+				var rect:Rectangle = LayoutUtil.getItemRect(canvasCtner, this);
 				if (rect.width < 1 || rect.height < 1)
 				{
 					super.visible = false;
@@ -401,15 +401,23 @@ package landray.kp.maps.main.elements
 		
 		private var __tipWidth:Number;
 		
+		/**
+		 */		
+		public function get canvas():DisplayObject
+		{
+			return shape;
+		}
 		
-		
-		
+		/**
+		 */		
 		override public function get graphics():Graphics
 		{
 			return _shape.graphics;
 		}
 		
-		private function get canvas():Canvas
+		/**
+		 */		
+		private function get canvasCtner():Canvas
 		{
 			return (parent is Canvas) ? parent as Canvas : null;
 		}

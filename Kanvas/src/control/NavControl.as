@@ -42,6 +42,8 @@ package control
 			app.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler, false, 0, true);
 			app.addEventListener(InteractEvent.PREVIEW, previewPanelHandler, false, 0, true);
 			
+			app.toolBar.cancelBtn.addEventListener(MouseEvent.CLICK, cancelPageEdit);
+			app.toolBar.confirmBtn.addEventListener(MouseEvent.CLICK, confirmPageEdit);
 		}
 		
 		/**

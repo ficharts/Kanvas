@@ -18,11 +18,12 @@ package view.element
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import modules.pages.flash.FlashIn;
 	import model.vo.ElementVO;
 	import model.vo.PageVO;
 	
 	import modules.pages.PageEvent;
+	import modules.pages.flash.FlashIn;
+	import modules.pages.flash.IFlash;
 	
 	import util.ElementCreator;
 	import util.ElementUtil;
@@ -1012,7 +1013,7 @@ package view.element
 				numShape.visible = false;
 				
 				this.vo.pageVO.flashIndex = 0;
-				var flasher:FlashIn;
+				var flasher:IFlash;
 				
 				for each (flasher in vo.pageVO.flashers)
 					flasher.start();
@@ -1030,7 +1031,7 @@ package view.element
 				numShape.visible = true;
 				
 				this.vo.pageVO.flashIndex = 0;
-				var flasher:FlashIn;
+				var flasher:IFlash;
 				
 				for each (flasher in vo.pageVO.flashers)
 					flasher.end();

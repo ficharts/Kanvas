@@ -2,6 +2,7 @@ package view.toolBar
 {
 	import com.kvs.ui.FiUI;
 	import com.kvs.ui.button.IconBtn;
+	import com.kvs.ui.button.LabelBtn;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.Style;
@@ -124,6 +125,23 @@ package view.toolBar
 		public function get themeBtn():IconBtn{
 			return (normalState as NormalState).themeBtn;
 		}
+		
+		/**
+		 */		
+		public function get confirmBtn():LabelBtn
+		{
+			return (pageEditState as PageEditState).confirmBtn;
+		}
+		
+		/**
+		 */		
+		public function get cancelBtn():LabelBtn
+		{
+			return (pageEditState as PageEditState).cancelBtn;
+		}
+		
+		
+		
 		
 		
 		//---------------------------------------------------
