@@ -20,6 +20,9 @@ package view.interact.interactMode
 			mainMediator.currentMode.drawShotFrame();
 				
 			mainMediator.zoomMoveControl.zoomAuto();
+			
+			mainMediator.coreApp.clearDrawMode();
+			mainMediator.coreApp.prevDrawMode = false;
 			returnFromPrevState();
 			
 			mainMediator.previewCliker.enable = false;

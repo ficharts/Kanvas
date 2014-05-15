@@ -152,21 +152,25 @@ package modules.pages
 		 */
 		public function setPageIndex(pageVO:PageVO, index:int, sendEvent:Boolean = false):void
 		{
+			coreMdt.coreApp.clearDrawMode();
 			pageQuene.setPageIndex(pageVO, index, sendEvent);
 		}
 		
 		public function next():void
 		{
+			coreMdt.coreApp.clearDrawMode();
 			indexWithZoom = (index + 1 >= pageQuene.length) ? -1 : index + 1;
 		}
 		
 		public function prev():void
 		{
+			coreMdt.coreApp.clearDrawMode();
 			indexWithZoom = (index - 1 < -1) ? pageQuene.length - 1 : index - 1;
 		}
 		
 		public function reset():void
 		{
+			coreMdt.coreApp.clearDrawMode();
 			__index = -1;
 		}
 		

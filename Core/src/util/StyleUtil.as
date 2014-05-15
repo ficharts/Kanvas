@@ -49,6 +49,12 @@ package util
 				//如果文本采用了自定义颜色，则不随样式模版
 				if (elementVO is TextVO)
 				{
+					if(!xml)
+					{
+						elementVO.styleID = "Body";
+						xml = XMLVOMapper.getStyleXMLBy_ID(elementVO.styleID, elementVO.styleType);
+						XMLVOMapper.fuck(xml, elementVO);
+					}
 					if ((elementVO as TextVO).isCustomColor)
 					{
 						elementVO.colorIndex = colorIndex;

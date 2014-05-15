@@ -13,6 +13,8 @@ package commands
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import util.img.ImgLib;
+	
+	import view.ui.Bubble;
 
 	/**
 	 * 
@@ -48,8 +50,15 @@ package commands
 			var bytes:ByteArray = new ByteArray;
 			filestream.readBytes(bytes, 0, file.size);
 				
-			imgExtractor = new ImageExtractor(bytes);
-			imgExtractor.addEventListener(Event.COMPLETE, imgLoaded);
+			try
+			{
+				imgExtractor = new ImageExtractor(bytes);
+				imgExtractor.addEventListener(Event.COMPLETE, imgLoaded);
+			}
+			catch (e:Error)
+			{
+				Bubble.show(e.message);
+			}
 		}
 		
 		/**

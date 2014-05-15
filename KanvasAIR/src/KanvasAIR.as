@@ -23,8 +23,10 @@ package
 	import flash.utils.ByteArray;
 	
 	import model.CoreFacade;
+	import model.CoreProxy;
 	import model.vo.PageVO;
 	
+	import modules.PreziDataImporter;
 	import modules.pages.PageManager;
 	
 	import util.textFlow.FlowTextManager;
@@ -90,6 +92,11 @@ package
 			FlowTextManager.loadFont("FontLib.swf");
 			addChild(updater = new AIRUpdater);
 			updater.update(AIR_CLIENT_URL, "check");
+			
+			
+			/*var data:XML = XML(ByteArray(new PreziData.Content1).toString());
+			var temp:XML = PreziDataImporter.convertData(data);
+			CoreFacade.coreProxy.importData(temp);*/
 		}
 		
 		/**
@@ -121,7 +128,7 @@ package
 		 */		
 		private function dataChanged(evt:KVSEvent):void
 		{
-			this.saveBtn.selected = false;
+			saveBtn.selected = false;
 		}
 		
 		/**

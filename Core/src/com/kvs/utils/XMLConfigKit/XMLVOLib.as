@@ -396,7 +396,9 @@ package com.kvs.utils.XMLConfigKit
 			
 			if (partXMLLib.containsKey(type))
 			{
-				value = partXMLLib.getValue(type)[key];
+				var temp:* = partXMLLib.getValue(type);
+				if (temp)
+					value = temp[key];
 				
 				if (value)
 					return value;

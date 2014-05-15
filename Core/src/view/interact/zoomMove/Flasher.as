@@ -82,7 +82,7 @@ package view.interact.zoomMove
 			if (isNaN(time))
 			{
 				var timeScale:Number = getScalePlus(canvasMiddleScale);
-				var timeRotation:Number = Math.abs(canvasTargetRotation - packer.rotation) / speedRotation;
+				var timeRotation:Number = Math.abs(canvasTargetRotation - packer.rotation) / control.speedRotation;
 				time = Math.min(Math.max(timeScale, timeRotation, control.minTweenTime), control.maxTweenTime);
 			}
 			
@@ -104,7 +104,7 @@ package view.interact.zoomMove
 			var log2E:Number = MathUtil.log2(canvasTargetScale);
 			var log2M:Number = MathUtil.log2(canvasMiddleScale);
 			
-			return ((isNaN(log2M)) ? Math.abs(log2E - log2S) : (Math.abs(log2E - log2M) + Math.abs(log2M - log2S))) / speedScale;
+			return ((isNaN(log2M)) ? Math.abs(log2E - log2S) : (Math.abs(log2E - log2M) + Math.abs(log2M - log2S))) / control.speedScale;
 		}
 		
 		/**
@@ -165,8 +165,6 @@ package view.interact.zoomMove
 		/**
 		 * 
 		 */		
-		private var speedScale:Number = 2.5;
-		private var speedRotation:Number = 90;
 		private var packer:CanvasLayoutPacker;
 	}
 }

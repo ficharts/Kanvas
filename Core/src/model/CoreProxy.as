@@ -74,7 +74,7 @@ package model
 		{
 			for each (var element:ElementBase in this.elements)
 			{
-				applyStyleToElement(element.vo);
+				StyleUtil.applyStyleToElement(element.vo);
 				element.render();
 			}
 		}
@@ -171,17 +171,6 @@ package model
 		 * 全局样式模板
 		 */		
 		private var themeConfigMap:Map = new Map;
-		
-		/**
-		 * 根据元素的局部样式ID, 获取样式定义，同步至元件上;
-		 * 
-		 * 先应用样式模板，然后再应用颜色，因为有些元素除了样式模板外还有自定义颜色
-		 */		
-		public function applyStyleToElement(elementVO:ElementVO, styleID:String = null):void
-		{
-			StyleUtil.applyStyleToElement(elementVO, styleID);
-		}
-
 		
 		
 		
@@ -385,8 +374,6 @@ package model
 				if (pageVO.elementID > 0 && dic[pageVO.elementID])
 				{
 					dic[pageVO.elementID].setPage(pageVO);
-					//pageVO.elementVO = vos[pageVO.elementID];
-					//pageVO.elementVO.pageVO = pageVO;
 				}
 				else
 				{
@@ -454,10 +441,13 @@ package model
 			var vo:ElementVO = ElementCreator.getElementVO(item.name().toString());
 			
 			XMLVOMapper.fuck(item, vo);
-			applyStyleToElement(vo);
+			StyleUtil.applyStyleToElement(vo);
+			
+			vo.colorIndex = item.@colorIndex;
+			vo.color = item.@color;
 			
 			//再次应用xml中的属性，为了兼容旧数据的颜色，字体大小等属性；
-			XMLVOMapper.fuck(item, vo);
+			//XMLVOMapper.fuck(item, vo);
 			
 			ElementCreator.setID(vo.id);
 			
