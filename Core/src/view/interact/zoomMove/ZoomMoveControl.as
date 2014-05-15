@@ -28,6 +28,28 @@ package view.interact.zoomMove
 		}
 		
 		/**
+		 * 开启滚动拖放 
+		 */		
+		public function enable():void
+		{
+			_enable = true;
+			enableBGInteract();
+		}
+		
+		/**
+		 * 关闭滚动拖放, 此时画布不可以被拖动，缩放 
+		 */		
+		public function disable():void
+		{
+			_enable = false;
+			disableBgInteract();
+		}
+		
+		/**
+		 */		
+		private var _enable:Boolean = true;
+		
+		/**
 		 * 将镜头对焦到元素上
 		 */		
 		public function zoomElement(elementVO:ElementVO):void
@@ -81,21 +103,24 @@ package view.interact.zoomMove
 		 */		
 		public function zoomIn(isMouseCenter:Boolean = false):void
 		{
-			zoomer.zoomIn(isMouseCenter);
+			if (_enable)
+				zoomer.zoomIn(isMouseCenter);
 		}
 		
 		/**
 		 */		
 		public function zoomOut(isMouseCenter:Boolean = false):void
 		{
-			zoomer.zoomOut(isMouseCenter);
+			if (_enable)
+				zoomer.zoomOut(isMouseCenter);
 		}
 		
 		/**
 		 */		
 		public function zoomAuto(originalScale:Boolean = false):void
 		{
-			zoomer.zoomAuto(originalScale);
+			if (_enable)
+				zoomer.zoomAuto(originalScale);
 		}
 		
 		/**

@@ -5,6 +5,7 @@ package view.interact.interactMode
 	import flash.geom.Point;
 	
 	import model.CoreFacade;
+	import model.vo.PageVO;
 	
 	import view.element.ElementBase;
 	import view.interact.CoreMediator;
@@ -57,6 +58,79 @@ package view.interact.interactMode
 		{
 			this.mainMediator = mainMediator;
 		}
+		
+		/**
+		 */		
+		public function overEle(ele:ElementBase):void
+		{
+			(mainMediator.mainUI as CoreApp).hoverEffect.element = ele;
+			(mainMediator.mainUI as CoreApp).hoverEffect.show();
+		}
+		
+		/**
+		 */		
+		public function outEle():void
+		{
+			(mainMediator.mainUI as CoreApp).hoverEffect.hide();
+		}
+		
+		/**
+		 */		
+		public function startMoveEle(e:ElementBase):void
+		{
+			mainMediator.elementMoveController.startMove(e);
+		}
+		
+		/**
+		 */		
+		public function stopMoveEle():void
+		{
+			mainMediator.elementMoveController.stopMove();
+		}
+		
+		/**
+		 */		
+		public function zoomPageByNum(page:PageVO):void
+		{
+			mainMediator.zoomMoveControl.zoomElement(page);
+			mainMediator.sendNotification(Command.UN_SELECT_ELEMENT);
+		}
+		
+		/**
+		 * 按下了非选择状态的元件， 取消选择状态
+		 */		
+		public function unSelectElement(element:ElementBase):void
+		{
+			
+		}
+		
+		/**
+		 * 非选择状态的原件被按下并释放后
+		 */		
+		public function selectElement(element:ElementBase):void
+		{
+			mainMediator.sendNotification(Command.SElECT_ELEMENT, element);
+		}
+		
+		/**
+		 */		
+		public function multiSelectElement(element:ElementBase):void
+		{
+			
+		}
+		
+		/**
+		 * 点击了画布背景
+		 */		
+		public function stageBGClicked():void
+		{
+			
+		}
+		
+		
+		
+		
+		
 		
 		/**
 		 */		
@@ -225,24 +299,22 @@ package view.interact.interactMode
 		}
 		
 		/**
-		 * 按下了非选择状态的元件， 取消选择状态
 		 */		
-		public function unSelectElementDown(element:ElementBase):void
+		public function toPageEditMode():void
 		{
 			
 		}
 		
 		/**
 		 */		
-		public function unSelectElementClicked(element:ElementBase):void
+		public function resetPageEdit():void
 		{
 			
 		}
 		
 		/**
-		 * 点击了画布背景
 		 */		
-		public function stageBGClicked():void
+		public function cancelPageEdit():void
 		{
 			
 		}

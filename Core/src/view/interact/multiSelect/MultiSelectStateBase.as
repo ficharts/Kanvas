@@ -109,14 +109,14 @@ package view.interact.multiSelect
 		/**
 		 * 单选模式下会用到
 		 */		
-		public function unSelectElementDown(element:ElementBase):void
+		public function unSelectElement(element:ElementBase):void
 		{
 		}
 		
 		/**
 		 * 选择元件或者添加元件到临时组合中
 		 */		
-		public function unSelectElementClicked(element:ElementBase):void
+		public function undSelectElementClicked(element:ElementBase):void
 		{
 		}
 		

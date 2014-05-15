@@ -38,7 +38,10 @@ package
 			
 			kvsCore.externalUI = uiContainer;
 			kvsCore.addEventListener(KVSEvent.READY, kvsReadyHandler);
-		
+			kvsCore.addEventListener(KVSEvent.TO_PAGE_EDIT, toPageEditMode);
+			kvsCore.addEventListener(KVSEvent.CANCEL_PAGE_EDIT, cancelPageEdit);
+			kvsCore.addEventListener(KVSEvent.CONFIRM_PAGE_EDIT, confirmPageEdit);
+			
 			addChild(kvsCore);
 			addChild(uiContainer);
 			
@@ -67,6 +70,29 @@ package
 				zoomToolBar.controller = CoreFacade.coreMediator.zoomMoveControl;
 		}
 		
+		/**
+		 */		
+		private function toPageEditMode(evt:KVSEvent):void
+		{
+			evt.stopPropagation();
+			mainNavControl.toPageEditMode();
+		}
+		
+		/**
+		 */		
+		private function cancelPageEdit(evt:KVSEvent):void
+		{
+			evt.stopPropagation();
+			mainNavControl.cancelPageEditFromCore();
+		}
+		
+		/**
+		 */		
+		private function confirmPageEdit(evt:KVSEvent):void
+		{
+			evt.stopPropagation();
+			mainNavControl.confirmPageEditFromCore();
+		}
 		
 		/**
 		 */		

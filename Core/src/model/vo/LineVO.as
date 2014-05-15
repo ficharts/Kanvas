@@ -14,6 +14,8 @@ package model.vo
 			
 			this.type = 'line';
 			this.styleType = 'line';
+			
+			this.thickness = 12;
 		}
 		
 		override public function clone():ElementVO

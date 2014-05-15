@@ -107,14 +107,14 @@ package view.interact.multiSelect
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			currState.startDragSelect();
 		}
 		
 		/**
 		 */			
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			currState.stopDragSelect();
 		}
@@ -421,9 +421,9 @@ package view.interact.multiSelect
 		/**
 		 * 按下了非选择状态的元件
 		 */		
-		public function unSelectElementDown(element:ElementBase):void
+		public function unSelectElement(element:ElementBase):void
 		{
-			currState.unSelectElementDown(element);
+			currState.unSelectElement(element);
 		}
 		
 		/**
@@ -431,7 +431,7 @@ package view.interact.multiSelect
 		 */		
 		public function unSelectElementClicked(element:ElementBase):void
 		{
-			currState.unSelectElementClicked(element);
+			currState.undSelectElementClicked(element);
 		}
 		
 		/**

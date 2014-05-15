@@ -20,17 +20,15 @@ package view.interact.multiSelect
 		 */		
 		override public function startMoveElement(ele:ElementBase):void
 		{
-			control.coreMdt.elementMoveController.startMove(ele);
+			control.coreMdt.currentMode.startMoveEle(ele);
 		}
 		
 		/**
 		 */		
 		override public function stopMoveElement():void
 		{
-			control.coreMdt.elementMoveController.stopMove();
+			control.coreMdt.currentMode.stopMoveEle();
 		}
-		
-		
 		
 		/**
 		 */		
@@ -94,17 +92,17 @@ package view.interact.multiSelect
 		/**
 		 * 单选模式时，取消选择当前元件
 		 */		
-		override public function unSelectElementDown(element:ElementBase):void
+		override public function unSelectElement(element:ElementBase):void
 		{
-			control.coreMdt.currentMode.unSelectElementDown(element);
+			control.coreMdt.currentMode.unSelectElement(element);
 		}
 		
 		/**
 		 * 选择当前点击的元件
 		 */		
-		override public function unSelectElementClicked(element:ElementBase):void
+		override public function undSelectElementClicked(element:ElementBase):void
 		{
-			control.coreMdt.sendNotification(Command.SElECT_ELEMENT, element);
+			control.coreMdt.currentMode.selectElement(element);
 		}
 		
 		/**

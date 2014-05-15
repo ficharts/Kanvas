@@ -19,6 +19,8 @@ package modules.pages
 	import model.ElementProxy;
 	import model.vo.PageVO;
 	
+	import modules.pages.flash.FlashIn;
+	
 	import util.LayoutUtil;
 	
 	import view.element.ElementBase;
@@ -155,21 +157,85 @@ package modules.pages
 			pageQuene.setPageIndex(pageVO, index, sendEvent);
 		}
 		
+		/**
+		 *  下一页，如果页面中有动画则先把动画播放完再切换至下一页 
+		 * 
+		 */		
 		public function next():void
 		{
-			indexWithZoom = (index + 1 >= pageQuene.length) ? -1 : index + 1;
+			var curPage:PageVO;
+			if (index != - 1)
+				 curPage = getPageAt(index);
+			
+			var nextIndex:int = (index + 1 >= pageQuene.length) ? -1 : index + 1;
+			
+			if (curPage && curPage.flashers && curPage.flashers.length)
+			{
+				if (curPage.flashIndex < curPage.flashers.length)
+				{
+					curPage.flashers[curPage.flashIndex].next();
+					curPage.flashIndex += 1;
+				}
+				else
+				{
+					resetPageFlash(nextIndex);
+				}
+			}
+			else
+			{
+				resetPageFlash(nextIndex);
+			}
+			
 		}
 		
+		/**
+		 *
+		 * 上一页， 
+		 * 
+		 */		
 		public function prev():void
 		{
-			indexWithZoom = (index - 1 < -1) ? pageQuene.length - 1 : index - 1;
+			var curPage:PageVO;
+			
+			if (index != - 1)
+				curPage = getPageAt(index);
+			
+			var prevIndex:int = (index - 1 < -1) ? pageQuene.length - 1 : index - 1;
+			
+			if (curPage && curPage.flashers && curPage.flashers.length)
+			{
+				if (curPage.flashIndex == 0)
+				{
+					resetPageFlash(prevIndex);
+				}
+				else
+				{
+					curPage.flashIndex -= 1;
+					curPage.flashers[curPage.flashIndex].prev();
+				}
+			}
+			else
+			{
+				resetPageFlash(prevIndex);
+			}
 		}
 		
+		/**
+		 */		
+		private function resetPageFlash(pageIndex:int):void
+		{
+			indexWithZoom = pageIndex;
+		}
+		
+		/**
+		 */		
 		public function reset():void
 		{
 			__index = -1;
 		}
 		
+		/**
+		 */		
 		private function defaultHandler(e:PageEvent):void
 		{
 			dispatchEvent(e);

@@ -180,17 +180,15 @@ package view.interact.interactMode
 		 */		
 		override public function toEditMode():void
 		{
-			mainMediator.showSelector();		
+			mainMediator.hideSelector();		
 			mainMediator.disableKeyboardControl();
 			mainMediator.currentMode = mainMediator.editMode;
-			
-			mainMediator.cameraShotShape.graphics.clear();
 		}
 		
 		/**
 		 * 单选模式时，取消选择当前元件
 		 */		
-		override public function unSelectElementDown(element:ElementBase):void
+		override public function unSelectElement(element:ElementBase):void
 		{
 			mainMediator.sendNotification(Command.UN_SELECT_ELEMENT);
 			mainMediator.checkAutoGroup(element);
@@ -199,7 +197,7 @@ package view.interact.interactMode
 		/**
 		 * 多选模式下被调用，将当前点击元件添加到临时组合
 		 */		
-		override public function unSelectElementClicked(element:ElementBase):void
+		override public function multiSelectElement(element:ElementBase):void
 		{
 			mainMediator.multiSelectControl.addToTemGroup(element);
 		}

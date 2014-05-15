@@ -26,8 +26,10 @@ package model.vo
 		{
 			var target:ElementVO = ElementCreator.getElementVO(type);
 			ElementUtil.cloneVO(target, this);
+			
 			if (pageVO && pageVO != this)
 				target.pageVO = PageVO(pageVO.clone());
+			
 			return target;
 		}
 		

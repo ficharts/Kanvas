@@ -2,6 +2,7 @@ package landray.kp.maps.main.elements
 {
 	import com.kvs.ui.label.TextDrawer;
 	
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.text.engine.BreakOpportunity;
 	import flash.text.engine.CFFHinting;
@@ -28,11 +29,26 @@ package landray.kp.maps.main.elements
 			init();
 		}
 		
+		/**
+		 */		
+		override public function get canvas():DisplayObject
+		{
+			return _canvas;
+		}
+		
+		/**
+		 */		
+		private var _canvas:Sprite = new Sprite;
+		
+		/**
+		 */		
 		private function init():void
 		{
-			textDrawer = new TextDrawer(this);
-			addChild(textCanvas = new Sprite);
+			_canvas.addChild(shape);
+			_canvas.addChild(textCanvas = new Sprite);
+			addChild(_canvas);
 			
+			textDrawer = new TextDrawer(this);
 			textManager = new TextContainerManager(textCanvas);
 			textManager.editingMode = EditingMode.READ_ONLY;
 			
@@ -44,6 +60,8 @@ package landray.kp.maps.main.elements
 			textManager.hostFormat = textLayoutFormat;
 		}
 		
+		/**
+		 */		
 		public function check():void
 		{
 			if (visible)

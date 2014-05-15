@@ -1,14 +1,9 @@
 package view.element
 {
-	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	
-	import flash.display.Sprite;
-	
 	import model.vo.PageVO;
-	
-	import modules.pages.PageEvent;
 	
 	import view.element.state.ElementPrevState;
 	import view.elementSelector.ElementSelector;

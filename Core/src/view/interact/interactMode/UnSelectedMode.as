@@ -2,10 +2,6 @@ package view.interact.interactMode
 {
 	import commands.Command;
 	
-	import flash.geom.Point;
-	
-	import model.CoreFacade;
-	
 	import view.element.ElementBase;
 	import view.interact.CoreMediator;
 	
@@ -68,8 +64,17 @@ package view.interact.interactMode
 		{
 			mainMediator.currentMode = mainMediator.selectedMode;
 			mainMediator.currentMode.showSelector();
+		}
+		
+		/**
+		 * 
+		 */		
+		override public function toPageEditMode():void
+		{
+			mainMediator.disableKeyboardControl();
+			mainMediator.currentMode = mainMediator.pageEditMode;
 			
-			mainMediator.currentMode.drawShotFrame();
+			mainMediator.zoomMoveControl.disable();
 		}
 		
 		/**
@@ -78,20 +83,15 @@ package view.interact.interactMode
 		{
 			//切换之预览模式时需清除镜头框
 			mainMediator.cameraShotShape.graphics.clear();
+			mainMediator.restoryCanvasState();
 			
 			mainMediator.currentMode = mainMediator.preMode;
 			prevElements();
 			
-			
 			if (mainMediator.pageManager.length > 0)
-			{
-				//进入多页面播放模式
-				mainMediator.pageManager.indexWithZoom = mainMediator.pageManager.index;
-			}
+				mainMediator.pageManager.indexWithZoom = mainMediator.pageManager.index;//进入多页面播放模式
 			else
-			{
 				mainMediator.zoomMoveControl.zoomAuto();
-			}
 			
 			mainMediator.previewCliker.enable = true;
 		}
@@ -99,7 +99,7 @@ package view.interact.interactMode
 		/**
 		 * 单选模式时，取消选择当前元件
 		 */		
-		override public function unSelectElementDown(element:ElementBase):void
+		override public function unSelectElement(element:ElementBase):void
 		{
 			mainMediator.checkAutoGroup(element);
 		}
@@ -107,7 +107,7 @@ package view.interact.interactMode
 		/**
 		 * 多选模式下被调用，选择当前点击元件
 		 */		
-		override public function unSelectElementClicked(element:ElementBase):void
+		override public function multiSelectElement(element:ElementBase):void
 		{
 			mainMediator.sendNotification(Command.SElECT_ELEMENT, element);
 		}
