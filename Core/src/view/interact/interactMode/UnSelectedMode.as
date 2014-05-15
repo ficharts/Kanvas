@@ -94,6 +94,8 @@ package view.interact.interactMode
 				mainMediator.zoomMoveControl.zoomAuto();
 			
 			mainMediator.previewCliker.enable = true;
+			
+			mainMediator.mouseController.autoHide = true;
 		}
 		
 		/**

@@ -46,6 +46,7 @@ package model.vo
 			
 			delete xml.*;
 			//template.@property = property;
+			xml.@id = id;
 			xml.@type = type;
 			xml.@styleType = styleType;
 			xml.@styleID = styleID;
