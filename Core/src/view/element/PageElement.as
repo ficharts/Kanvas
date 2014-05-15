@@ -12,7 +12,7 @@ package view.element
 	
 	
 	/**
-	 * 页面
+	 * 页面, 虚框
 	 */	
 	public final class PageElement extends ElementBase implements IAutoGroupElement
 	{
@@ -26,6 +26,16 @@ package view.element
 			mouseChildren = true		
 		}
 		
+		/**
+		 * 非选择状态下的页面，从左侧页面列表也可以删除
+		 */		
+		override public function del():void
+		{
+			this.dispatchEvent(new ElementEvent(ElementEvent.DEL_SHAPE, this));
+		}
+		
+		/**
+		 */		
 		override public function disable():void
 		{
 			super.disable();
