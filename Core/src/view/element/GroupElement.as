@@ -17,7 +17,7 @@ package view.element
 		public function GroupElement(vo:GroupVO)
 		{
 			super(vo);
-			xmlData = <group/>;
+			vo.xml = <group/>;
 		}
 		
 		/**
@@ -27,9 +27,9 @@ package view.element
 			super.exportData();
 			
 			for each(var element:ElementBase in childElements)
-				xmlData.appendChild(<{element.vo.type} id={element.vo.id}/>);
+				vo.xml.appendChild(<{element.vo.type} id={element.vo.id}/>);
 				
-			return xmlData;
+			return vo.xml;
 		}
 		
 		override public function toShotcut(renderable:Boolean=false):void

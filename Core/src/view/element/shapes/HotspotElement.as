@@ -18,7 +18,7 @@ package view.element.shapes
 		{
 			super(vo);
 			_screenshot = false;
-			xmlData = <hotspot/>;
+			vo.xml = <hotspot/>;
 		}
 		
 		/**

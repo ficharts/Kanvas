@@ -16,7 +16,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <doubleArrow/>;
+			vo.xml = <doubleArrow/>;
 		}
 		
 		/**

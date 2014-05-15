@@ -10,6 +10,7 @@ package
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
@@ -206,6 +207,7 @@ package
 			facade.coreMediator.paste();
 		}
 		
+				
 		/**
 		 */		
 		public function exportData():XML
@@ -652,7 +654,102 @@ package
 		
 		
 		
+		//-------------------------------------------------------
 		
+		
+		/**
+		 * 预览模式下的画笔模式
+		 */
+		public function get prevDrawMode():Boolean
+		{
+			return __prevDrawMode;
+		}
+		
+		public function set prevDrawMode(value:Boolean):void
+		{
+			if (__prevDrawMode!= value)
+			{
+				__prevDrawMode = value;
+				mouseEnabled = mouseChildren = !value;
+				autoAlignUI.graphics.clear();
+				if (value)
+				{
+					autoAlignUI.graphics.beginFill(0, 0);
+					autoAlignUI.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+					autoAlignUI.graphics.endFill();
+					stage.addEventListener(MouseEvent.MOUSE_DOWN, drawMouseDown);
+				}
+				else
+				{
+					stage.removeEventListener(MouseEvent.MOUSE_DOWN, drawMouseDown);
+				}
+			}
+		}
+		
+		private var __prevDrawMode:Boolean;
+		
+		public function clearDrawMode():void
+		{
+			if (prevDrawMode)
+			{
+				autoAlignUI.graphics.clear();
+				drawMouseUp(null);
+			}
+		}
+		
+		private function drawMouseDown(e:MouseEvent):void
+		{
+			addEventListener(Event.ENTER_FRAME, drawEnterFrame);
+			stage.addEventListener(MouseEvent.MOUSE_UP, drawMouseUp);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, drawMouseMove);
+			autoAlignUI.graphics.lineStyle(thickness, color, drawAlpha);
+		}
+		
+		private function drawMouseMove(e:MouseEvent):void
+		{
+			if (lastMouseX!= mouseX || 
+				lastMouseY!= mouseY)
+			{
+				if (!isNaN(lastMouseX) && !isNaN(lastMouseY))
+				{
+					autoAlignUI.graphics.moveTo(lastMouseX, lastMouseY);
+					autoAlignUI.graphics.lineTo(mouseX, mouseY);
+				}
+				lastMouseX = mouseX;
+				lastMouseY = mouseY;
+			}
+		}
+		private function drawEnterFrame(e:Event):void
+		{
+			if (lastMouseX!= mouseX || 
+				lastMouseY!= mouseY)
+			{
+				if (!isNaN(lastMouseX) && !isNaN(lastMouseY))
+				{
+					autoAlignUI.graphics.moveTo(lastMouseX, lastMouseY);
+					autoAlignUI.graphics.lineTo(mouseX, mouseY);
+				}
+				lastMouseX = mouseX;
+				lastMouseY = mouseY;
+			}
+		}
+		
+		private function drawMouseUp(e:MouseEvent):void
+		{
+			lastMouseX = NaN;
+			lastMouseY = NaN;
+			removeEventListener(Event.ENTER_FRAME, drawEnterFrame);
+			stage.removeEventListener(MouseEvent.MOUSE_UP, drawMouseUp);
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE, drawMouseMove);
+		}
+		
+		private var lastMouseX:Number;
+		private var lastMouseY:Number;
+		
+		private var thickness:Number = 10;
+		private var color:uint = 0xeff20f;
+		private var drawAlpha:Number = 1;
+
 		
 		
 		//-------------------------------------------------------

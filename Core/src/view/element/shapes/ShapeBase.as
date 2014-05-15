@@ -27,28 +27,28 @@ package view.element.shapes
 		 */		
 		override public function exportData():XML
 		{
-			xmlData = super.exportData();
+			super.exportData();
 			
 			if (vo.styleType == 'fill')
 			{
-				xmlData.@fillAlpha = vo.style.getFill.alpha;
+				vo.xml.@fillAlpha = vo.style.getFill.alpha;
 			}
 			else if (vo.styleType == 'border' || vo.styleType == 'line')
 			{
-				xmlData.@borderAlpha = vo.style.getBorder.alpha;
+				vo.xml.@borderAlpha = vo.style.getBorder.alpha;
 			}
 			else if (vo.styleType == 'shape')
 			{
-				xmlData.@borderColor = vo.style.getBorder.color.toString(16);
-				xmlData.@borderAlpha = vo.style.getBorder.alpha;
-				xmlData.@fillAlpha   = vo.style.getFill.alpha;
+				vo.xml.@borderColor = vo.style.getBorder.color.toString(16);
+				vo.xml.@borderAlpha = vo.style.getBorder.alpha;
+				vo.xml.@fillAlpha   = vo.style.getFill.alpha;
 			}
 			else
 			{
 				
 			}
 			
-			return xmlData;
+			return vo.xml;
 		}
 		
 		/**

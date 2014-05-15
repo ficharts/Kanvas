@@ -31,7 +31,7 @@ package commands
 			
 			pageVO = new PageVO;
 			pageVO.id = ElementCreator.id;
-			pageVO.index = CoreFacade.coreMediator.pageManager.index + 1;
+			pageVO.index = CoreFacade.coreMediator.pageManager.length
 			pageVO.styleType = "shape";
 			StyleUtil.applyStyleToElement(pageVO, "Page");
 			

@@ -25,7 +25,7 @@ package util
 		 */		
 		public static function getElementVO(type:String):ElementVO
 		{
-			var element:ElementVO = new (voMap.getValue(type) as Class) as ElementVO;
+ 			var element:ElementVO = new (voMap.getValue(type) as Class) as ElementVO;
 			
 			if (element == null)
 				element = new ShapeVO;

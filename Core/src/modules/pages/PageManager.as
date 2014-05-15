@@ -154,6 +154,7 @@ package modules.pages
 		 */
 		public function setPageIndex(pageVO:PageVO, index:int, sendEvent:Boolean = false):void
 		{
+			coreMdt.coreApp.clearDrawMode();
 			pageQuene.setPageIndex(pageVO, index, sendEvent);
 		}
 		
@@ -163,6 +164,8 @@ package modules.pages
 		 */		
 		public function next():void
 		{
+			coreMdt.coreApp.clearDrawMode();
+			
 			var curPage:PageVO;
 			if (index != - 1)
 				 curPage = getPageAt(index);
@@ -195,6 +198,7 @@ package modules.pages
 		 */		
 		public function prev():void
 		{
+			coreMdt.coreApp.clearDrawMode();
 			var curPage:PageVO;
 			
 			if (index != - 1)
@@ -231,6 +235,7 @@ package modules.pages
 		 */		
 		public function reset():void
 		{
+			coreMdt.coreApp.clearDrawMode();
 			__index = -1;
 		}
 		

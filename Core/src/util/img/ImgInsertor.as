@@ -20,6 +20,8 @@ package util.img
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.utils.ByteArray;
+	
+	import view.ui.Bubble;
 
 	/**
 	 * 图片插入器, 负责从客户端选取图片，并上传至指定服务器
@@ -241,9 +243,16 @@ package util.img
 			//OS.memoryGc();
 			fileReference.removeEventListener(Event.COMPLETE, onFileLoaded);
 			
+			try
+			{
+				imageExtractor = new ImageExtractor(fileReference.data);
+				imageExtractor.addEventListener(Event.COMPLETE, bmdLoadedFromLocalHandler);
+			}
+			catch (o:Error)
+			{
+				Bubble.show(o.message);
+			}
 			
-			imageExtractor = new ImageExtractor(fileReference.data);
-			imageExtractor.addEventListener(Event.COMPLETE, bmdLoadedFromLocalHandler);
 		}
 		
 		/**
