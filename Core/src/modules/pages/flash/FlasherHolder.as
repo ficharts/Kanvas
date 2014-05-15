@@ -191,9 +191,6 @@ package modules.pages.flash
 		 */		
 		private function overEle(evt:MouseEvent):void
 		{
-			if (this.parent)
-				this.parent.addChild(this);//防止被其他元素遮盖住
-			
 			if (!flasher)
 				showTemIcon();
 			
