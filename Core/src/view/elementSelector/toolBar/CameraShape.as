@@ -19,8 +19,9 @@ package view.elementSelector.toolBar
 		override public function render():void
 		{
 			toolBar.clear();
-			toolBar.addBtn(toolBar.zoomBtn);
+			
 			toolBar.addBtn(toolBar.pageEditBtn);
+			toolBar.addBtn(toolBar.zoomBtn);
 			toolBar.addBtn(toolBar.delBtn);
 		}
 	}

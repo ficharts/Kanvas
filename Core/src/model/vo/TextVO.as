@@ -6,6 +6,8 @@ package model.vo
 	
 	import flash.text.TextFormat;
 	
+	import util.StyleUtil;
+	
 	/**
 	 * 文字数据
 	 */
@@ -21,16 +23,26 @@ package model.vo
 			this.type = 'text';
 		}
 		
+		/**
+		 */		
 		override public function clone():ElementVO
 		{
 			var vo:TextVO = super.clone() as TextVO;
+			
 			vo.text = text;
 			vo.ifMutiLine = ifMutiLine;
 			vo.styleID = styleID;
 			vo.isCustomColor = isCustomColor;
+			
+			//防止文本复制时，自定义颜色不能复制
+			vo.colorIndex = this.colorIndex;
+			StyleUtil.applyStyleToElement(vo);  
+			
 			return vo;
 		}
 		
+		/**
+		 */		
 		override public function exportData():XML
 		{
 			xml = super.exportData();
