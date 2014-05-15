@@ -21,7 +21,7 @@ package view.toolBar
 			
 			title.text = "点击页面中的原件，为其添加动画效果";
 			title.styleXML = <label radius='0' vPadding='5' hPadding='5'>
-									<format color='#eeeeee' font='华文细黑' size='12'/>
+									<format color='#eeeeee' font='微软雅黑' size='12'/>
 								  </label>
 			title.render();
 			this.ctner.addChild(title);
@@ -40,7 +40,7 @@ package view.toolBar
 									</states>
 				
 			confirmBtn.labelStyleXML = <label vAlign="center" vPadding='8'>
-							                <format color='ffffff' font='黑体' size='12' letterSpacing="3"/>
+							                <format color='ffffff' font='微软雅黑' size='12' letterSpacing="3"/>
 							            </label>
 				
 			confirmBtn.render();
@@ -59,7 +59,7 @@ package view.toolBar
 									</states>
 				
 			cancelBtn.labelStyleXML = <label vAlign="center" vPadding='8'>
-							                <format color='ffffff' font='黑体' size='12' letterSpacing="3"/>
+							                <format color='ffffff' font='微软雅黑' size='12' letterSpacing="3"/>
 							            </label>
 				
 			cancelBtn.text = "取消";

@@ -133,8 +133,18 @@ package
 			{
 				file = new File;
 				file.addEventListener(Event.SELECT, selectFileForSave);
+				file.addEventListener(Event.CANCEL, cancelSelectFile);
 				file.browseForSave("保存kanvas文件");
 			}
+		}
+		
+		/**
+		 * 初次选择文件时可能取消，这时要删除文件，不然下次保存时不知道文件保存到哪里去了
+		 */		
+		private function cancelSelectFile(evt:Event):void
+		{
+			(core as KanvasAIR).saveBtn.selected = false;
+			file = null;
 		}
 		
 		/**

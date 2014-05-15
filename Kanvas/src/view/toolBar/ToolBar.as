@@ -61,7 +61,9 @@ package view.toolBar
 		 */		
 		public function updateLayout():void
 		{
-			currentState.updateLayout();
+			normalState.updateLayout();
+			pageEditState.updateLayout();	
+			
 		}
 		
 		/**
