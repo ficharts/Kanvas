@@ -26,6 +26,8 @@ package view.interact.interactMode
 			returnFromPrevState();
 			
 			mainMediator.previewCliker.enable = false;
+			
+			mainMediator.resetCanvasState();
 		}
 	}
 }

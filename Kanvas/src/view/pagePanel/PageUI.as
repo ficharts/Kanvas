@@ -82,7 +82,7 @@ package view.pagePanel
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			this.dispatchEvent(new PagePanelEvent(PagePanelEvent.START_DRAG_PAGE, this));
 		}
@@ -101,7 +101,7 @@ package view.pagePanel
 			
 		/**
 		 */			
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			label.visible = true;
 			this.statesControl.toDown();

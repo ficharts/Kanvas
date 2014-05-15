@@ -23,9 +23,9 @@ package view.elementSelector.sizeControl
 		
 		/**
 		 */		
-		override public function startMove():void
+		override public function startDragMove():void
 		{
-			super.startMove();
+			super.startDragMove();
 			
 			//记录开始变换前的属性
 			oldSize = holder.element.vo.height;
@@ -42,9 +42,9 @@ package view.elementSelector.sizeControl
 		}
 		
 		
-		override public function stopMove():void
+		override public function stopDragMove():void
 		{
-			super.stopMove();
+			super.stopDragMove();
 			
 			if (align && ! isNaN(align.x) && ! isNaN(align.y))
 			{

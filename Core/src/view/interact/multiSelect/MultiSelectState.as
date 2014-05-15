@@ -70,9 +70,9 @@ package view.interact.multiSelect
 		/**
 		 * 非选状态时选择当前点击元件，选择模式下创建临时组合或者添加元件到临时组合
 		 */		
-		override public function unSelectElementClicked(element:ElementBase):void
+		override public function undSelectElementClicked(element:ElementBase):void
 		{
-			mainMediator.currentMode.unSelectElementClicked(element);
+			mainMediator.currentMode.multiSelectElement(element);
 		}
 		
 		/**

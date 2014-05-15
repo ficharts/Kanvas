@@ -49,7 +49,7 @@ package
 		/**
 		 * 产品版本号 
 		 */		
-		public static const VER:String = "1.0.1";
+		public static const VER:String = "1.2.0";
 		
 		
 		
@@ -145,7 +145,7 @@ package
 		 */		
 		public function hideSelector():void
 		{
-			facade.coreMediator.showSelector();
+			facade.coreMediator.hideSelector();
 		}
 		
 		/**
@@ -414,6 +414,36 @@ package
 		public function returnFromPrev():void
 		{
 			curScreenState.toNormalState();
+			CoreFacade.coreMediator.toUnSelectedMode();
+		}
+		
+		/**
+		 * 取消，不应用动画编辑的内容
+		 */		
+		public function cancelPageEdit():void
+		{
+			CoreFacade.coreMediator.cancelPageEdit();
+		}
+		
+		/**
+		 * 清空所有页面动画
+		 */		
+		public function resetPage():void
+		{
+			CoreFacade.coreMediator.resetPageEdit();
+		}
+		
+		/**
+		 */		
+		public function toPageEdit():void
+		{
+			CoreFacade.coreMediator.toPrevMode();
+		}
+		
+		/**
+		 */		
+		public function toUnselect():void
+		{
 			CoreFacade.coreMediator.toUnSelectedMode();
 		}
 		

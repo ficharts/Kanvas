@@ -25,7 +25,7 @@ package view.elementSelector.lineControl
 		/**
 		 * 获取起始点的全局相对坐标
 		 */		
-		override public function startMove():void
+		override public function startDragMove():void
 		{
 			cacheOldProperty();
 			if (selector.element.isPage)

@@ -5,6 +5,7 @@ package view.element.imgElement
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	
 	import landray.kp.ui.Loading;
@@ -32,8 +33,13 @@ package view.element.imgElement
 			loadingState = new LoadingState(this);
 			normalState = new NormalState(this);
 			currLoadState = loadingState;
+			
+			_canvas.addChild(graphicShape);
+			addChild(_canvas);
 		}
 		
+		/**
+		 */		
 		public function showBmp():void
 		{
 			if (bmpLarge && bmpSmall)
@@ -136,6 +142,7 @@ package view.element.imgElement
 		{
 			if(!loading) 
 				addChild(loading = new Loading);
+			
 			loading.play();
 		}
 		
@@ -177,7 +184,8 @@ package view.element.imgElement
 				bmpLarge.x = -.5 * vo.width;
 				bmpLarge.y = -.5 * vo.height;
 				bmpLarge.smoothing = true;
-				addChild(bmpLarge);
+				_canvas.addChild(bmpLarge);
+				
 				if(!bmdSmall)
 				{
 					var ow:Number = bmdLarge.width;
@@ -201,11 +209,24 @@ package view.element.imgElement
 					bmpSmall.x = -.5 * vo.width;
 					bmpSmall.y = -.5 * vo.height;
 					bmpSmall.smoothing = true;
-					addChild(bmpSmall);
+					_canvas.addChild(bmpSmall);
 				}
 			}
 		}
 		
+		/**
+		 */		
+		override public function get canvas():DisplayObject
+		{
+			return _canvas;
+		}
+		
+		/**
+		 */		
+		private var _canvas:Sprite = new Sprite;
+		
+		/**
+		 */		
 		public function checkBmdRender():void
 		{
 			var renderBmdNeeded:Boolean = (stageWidth > minSize && stageHeight > minSize)
@@ -263,6 +284,8 @@ package view.element.imgElement
 			return vo.height * vo.scale;
 		}
 		
+		/**
+		 */		
 		override public function get shape():DisplayObject
 		{
 			return this;

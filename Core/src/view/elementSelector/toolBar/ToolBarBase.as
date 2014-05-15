@@ -134,6 +134,7 @@ package view.elementSelector.toolBar
 				{
 					toolBar.addBtn(toolBar.pageToEleBtn)
 					toolBar.addBtn(toolBar.zoomBtn);
+					toolBar.addBtn(toolBar.pageEditBtn);
 				}
 				else
 				{

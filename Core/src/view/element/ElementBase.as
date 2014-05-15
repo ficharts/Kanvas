@@ -22,6 +22,7 @@ package view.element
 	import model.vo.PageVO;
 	
 	import modules.pages.PageEvent;
+	import modules.pages.flash.IFlash;
 	
 	import util.ElementCreator;
 	import util.LayoutUtil;
@@ -609,6 +610,7 @@ package view.element
 				vo.pageVO.removeEventListener(PageEvent.DELETE_PAGE_FROM_UI, deletePageHandler);
 				vo.pageVO.removeEventListener(PageEvent.UPDATE_PAGE_INDEX, updatePageIndex);
 			}
+			
 			if (pageVO)
 			{
 				vo.pageVO = pageVO;
@@ -697,6 +699,8 @@ package view.element
 			numShape.graphics.endFill();
 		}
 		
+		/**
+		 */		
 		private function clearPageNum():void
 		{
 			if (numLabel)
@@ -711,7 +715,9 @@ package view.element
 		 */		
 		private var maxNumSize:uint = 26;
 		
-		private var numLabel:LabelUI;
+		/**
+		 */		
+		public var numLabel:LabelUI;
 		
 		/**
 		 * 用来绘制页面序号 
@@ -749,9 +755,18 @@ package view.element
 			return (parent) ? parent.getChildIndex(this) : -1;
 		}
 		
+		/**
+		 */		
 		override public function get graphics():Graphics
 		{
 			return graphicShape.graphics;
+		}
+		
+		/**
+		 */		
+		public function get canvas():DisplayObject
+		{
+			return shape;
 		}
 		
 		/**
@@ -961,8 +976,17 @@ package view.element
 		public function toPrevState():void
 		{
 			currentState.toPrevState();
+			
 			if (isPage)
+			{
 				numShape.visible = false;
+				
+				this.vo.pageVO.flashIndex = 0;
+				var flasher:IFlash;
+				
+				for each (flasher in vo.pageVO.flashers)
+					flasher.start();
+			}
 		}
 		
 		/**
@@ -970,8 +994,17 @@ package view.element
 		public function returnFromPrevState():void
 		{
 			currentState.returnFromPrevState();
+			
 			if (isPage)
+			{
 				numShape.visible = true;
+				
+				this.vo.pageVO.flashIndex = 0;
+				var flasher:IFlash;
+				
+				for each (flasher in vo.pageVO.flashers)
+					flasher.end();
+			}
 		}
 		
 		/**
@@ -1116,7 +1149,7 @@ package view.element
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			currentState.startMove();
 		}
@@ -1127,7 +1160,7 @@ package view.element
 		
 		/**
 		 */		
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			currentState.stopMove();
 		}
@@ -1179,8 +1212,9 @@ package view.element
 			_vo = value;
 		}
 		
+		/**
+		 */		
 		private var _vo:ElementVO;
-		
 		
 		/**
 		 * 如果该对象是复制而来，则该属性指向源对象。 

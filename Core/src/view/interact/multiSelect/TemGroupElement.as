@@ -122,14 +122,14 @@ package view.interact.multiSelect
 		
 		/**
 		 */		
-		override public function startMove():void
+		override public function startDragMove():void
 		{
 			dispatchEvent(new ElementEvent(ElementEvent.START_MOVE, this))
 		}
 		
 		/**
 		 */		
-		override public function stopMove():void
+		override public function stopDragMove():void
 		{
 			dispatchEvent(new ElementEvent(ElementEvent.STOP_MOVE, this));
 		}

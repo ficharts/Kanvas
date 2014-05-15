@@ -4,6 +4,8 @@ package model.vo
 	
 	import modules.pages.PageEvent;
 	import modules.pages.PageQuene;
+	import modules.pages.flash.FlashIn;
+	import modules.pages.flash.IFlash;
 	import modules.pages.pg_internal;
 	
 	[Event(name="updateThumb", type="modules.pages.PageEvent")]
@@ -34,6 +36,18 @@ package model.vo
 			return vo;
 		}
 		
+		/**
+		 * 当前动画序号，播放 
+		 */		
+		public var flashIndex:int = 0;
+		
+		/**
+		 * 应用在页面内容元素上的动画
+		 */		
+		public var flashers:Vector.<IFlash>;
+		
+		/**
+		 */		
 		override public function exportData():XML
 		{
 			xml = super.exportData();
@@ -41,9 +55,12 @@ package model.vo
 			
 			if (elementVO)
 				xml.@elementID = elementVO.id;
+			
 			return xml;
 		}
 		
+		/**
+		 */		
 		override public function set x(value:Number):void
 		{
 			if (_x!= value)

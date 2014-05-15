@@ -47,7 +47,7 @@ package view.editor.text
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			curScale = scaleHolder.editor.textField.scaleX;
 			curDis = dis;
@@ -73,7 +73,7 @@ package view.editor.text
 		
 		/**
 		 */		
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 		}
 	}

@@ -2,7 +2,6 @@ package view.interact
 {
 	//import com.kvs.utils.HitTest;
 	
-	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	
 	import flash.display.DisplayObject;
@@ -49,6 +48,7 @@ package view.interact
 		public function checkAutoGroup(current:ElementBase, autoGroupControl:AutoGroupController, ifAll:Boolean = false):void
 		{
 			if (autoGroupControl.enabled == false) return;
+			
 			//当前选择是文本的话不进行智能组合
 			if (current is IAutoGroupElement && !(current is TextEditField))
 			{
@@ -58,28 +58,41 @@ package view.interact
 					if (element.canAutoGrouped && (element is IAutoGroupElement || ifAll) && element != current)
 					{
 						//要确保被检测元件的中心点与参考元件实际性碰撞，而非仅与其轮廓矩形相碰撞
-						var ifHit:Boolean = (current is PageElement)
-							? RectangleUtil.rectWithin(
-								LayoutUtil.getItemRect(coreMdt.canvas, element, false, false, false), 
-								LayoutUtil.getItemRect(coreMdt.canvas, current, false, false, false))
-							: ifHitElement(element, current.shape);
+						var ele:ElementBase = ifElementIn(element, current);
 						
 						//碰撞
-						if (ifHit)
-						{
-							if (element is LineElement)
-							{
-								if (element.scaledWidth / 2 < current.scaledWidth && element.scaledHeight < current.scaledHeight)
-									autoGroupControl.pushElement(element as IAutoGroupElement);
-							}
-							else if (element.scaledWidth < current.scaledWidth && element.scaledHeight < current.scaledHeight)
-							{
-								autoGroupControl.pushElement(element as IAutoGroupElement);
-							}
-						}
+						if (ele)
+							autoGroupControl.pushElement(ele as IAutoGroupElement);
 					}
 				}
 			}
+		}
+		
+		/**
+		 * 如果小的元素在大的元素内，则返回小的元素
+		 */		
+		public function ifElementIn(small:ElementBase, large:ElementBase):ElementBase
+		{
+			var ifHit:Boolean = (large is PageElement)
+				? RectangleUtil.rectWithin(
+					LayoutUtil.getItemRect(coreMdt.canvas, small, false, false, false), 
+					LayoutUtil.getItemRect(coreMdt.canvas, large, false, false, false))
+				: ifHitElement(small, large.shape);
+			
+			if (ifHit)
+			{
+				if (small is LineElement)
+				{
+					if (small.scaledWidth / 2 < large.scaledWidth && small.scaledHeight < large.scaledHeight)
+						return small;
+				}
+				else if (small.scaledWidth < large.scaledWidth && small.scaledHeight < large.scaledHeight)
+				{
+					return small;
+				}
+			}
+			
+			return null;
 		}
 		
 		/**
@@ -106,6 +119,7 @@ package view.interact
 			var h:Number = stage.height;
 			var minLineInteractSizeSquare:Number = minInteractSize * minInteractSize * .25;
 			var maxLineInteractSizeSquare:Number = w * w;
+			
 			//PerformaceTest.start("ElementCollisionDetection.updateAfterZoomMove()")
 			for each (var element:ElementBase in elements)
 			{
@@ -150,7 +164,7 @@ package view.interact
 		
 		/**
 		 */		
-		private var elements:Vector.<ElementBase>;
+		public var elements:Vector.<ElementBase>;
 		
 	}
 }

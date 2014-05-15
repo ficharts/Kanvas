@@ -25,7 +25,8 @@ package landray.kp.core
 		public  static const instance:KPConfig = new KPConfig;
 		private static var   created :Boolean;
 		
-		
+		/**
+		 */		
 		public function KPConfig()
 		{
 			if(!created) 
@@ -65,6 +66,7 @@ package landray.kp.core
 		kp_internal var toolBarZoom:ToolBarZoom;
 		kp_internal var toolBarSlid:ToolBarSlide;
 		kp_internal var toolTip    :ElementToolTip;
+		kp_internal var elementMap :Map = new Map;
 		kp_internal var pageManager:ManagerPage;
 		kp_internal var debugger   :Debugger;
 		

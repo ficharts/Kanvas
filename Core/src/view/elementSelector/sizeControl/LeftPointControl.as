@@ -24,9 +24,9 @@ package view.elementSelector.sizeControl
 		
 		/**
 		 */		
-		override public function startMove():void
+		override public function startDragMove():void
 		{
-			super.startMove();
+			super.startDragMove();
 			
 			oldSize = holder.element.vo.width;
 			oldPropertyObj = {};
@@ -41,9 +41,9 @@ package view.elementSelector.sizeControl
 			lastMouseY = holder.coreMdt.coreApp.stage.mouseY;
 		}
 		
-		override public function stopMove():void
+		override public function stopDragMove():void
 		{
-			super.stopMove();
+			super.stopDragMove();
 			
 			if (align && ! isNaN(align.x) && ! isNaN(align.y))
 			{

@@ -106,7 +106,7 @@ package view.element.state
 		 */		
 		public function disable():void
 		{
-			element.alpha = 0.6;
+			element.alpha = 0.8;
 			element.mouseChildren = element.mouseEnabled = false;
 			element.clearHoverEffect();
 		}

@@ -2,11 +2,10 @@ package landray.kp.maps.main.elements
 {
 	import com.kvs.utils.graphic.BitmapUtil;
 	
-	import fl.motion.Source;
-	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.Shape;
+	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	
 	import landray.kp.ui.Loading;
@@ -18,8 +17,6 @@ package landray.kp.maps.main.elements
 	import util.img.ImgInsertEvent;
 	import util.img.ImgInsertor;
 	
-	import view.ui.Debugger;
-	
 	/**
 	 * 
 	 */	
@@ -28,7 +25,21 @@ package landray.kp.maps.main.elements
 		public function Image($vo:ElementVO)
 		{
 			super($vo);
+			
+			_canvas.addChild(shape);
+			addChild(_canvas);
 		}
+		
+		/**
+		 */		
+		override public function get canvas():DisplayObject
+		{
+			return _canvas;
+		}
+		
+		/**
+		 */		
+		private var _canvas:Sprite = new Sprite;
 		
 		/**
 		 */		
@@ -43,6 +54,7 @@ package landray.kp.maps.main.elements
 					bmpDispl = tmpDispl;
 					bmpDispl.visible = true;
 				}
+				
 				if (bmpDispl.smoothing!= smooth)
 					bmpDispl.smoothing = smooth;
 			}
@@ -104,7 +116,7 @@ package landray.kp.maps.main.elements
 				bmpLarge.x = -.5 * vo.width;
 				bmpLarge.y = -.5 * vo.height;
 				bmpLarge.smoothing = true;
-				addChild(bmpLarge);
+				_canvas.addChild(bmpLarge);
 				if(!bmdSmall)
 				{
 					var ow:Number = bmdLarge.width;
@@ -121,6 +133,7 @@ package landray.kp.maps.main.elements
 					{
 						bmdSmall = bmdLarge;
 					}
+					
 					bmpSmall = new Bitmap(bmdSmall);
 					bmpSmall.visible = false;
 					bmpSmall.width  =  vo.width;
@@ -128,23 +141,29 @@ package landray.kp.maps.main.elements
 					bmpSmall.x = -.5 * vo.width;
 					bmpSmall.y = -.5 * vo.height;
 					bmpSmall.smoothing = true;
-					addChild(bmpSmall);
+					_canvas.addChild(bmpSmall);
 				}
 			}
 		}
 		
+		/**
+		 */		
 		private function createLoading():void
 		{
 			if(!loading) 
 				addChild(loading = new Loading);
 			loading.play();
 		}
+		
+		/**
+		 */		
 		private function removeLoading():void
 		{
 			if (loading) 
 			{
 				if (contains(loading)) 
 					removeChild(loading);
+				
 				loading.stop();
 				loading = null;
 			}

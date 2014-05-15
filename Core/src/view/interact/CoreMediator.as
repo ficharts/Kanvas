@@ -4,8 +4,6 @@ package view.interact
 	
 	import commands.Command;
 	
-	import consts.ConstsTip;
-	
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -17,6 +15,7 @@ package view.interact
 	import model.vo.PageVO;
 	
 	import modules.pages.PageManager;
+	import modules.pages.Scene;
 	
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
@@ -34,7 +33,6 @@ package view.interact
 	import view.interact.multiSelect.MultiSelectControl;
 	import view.interact.multiSelect.TemGroupElement;
 	import view.interact.zoomMove.ZoomMoveControl;
-	import view.ui.Bubble;
 	import view.ui.Canvas;
 	import view.ui.IMainUIMediator;
 	import view.ui.MainUIBase;
@@ -364,6 +362,30 @@ package view.interact
 		}
 		
 		/**
+		 * 切换到页面编辑状态
+		 */		
+		public function toPageEditMode():void
+		{
+			currentMode.toPageEditMode();
+		}
+		
+		/**
+		 * 取消页面内元素的动画设定
+		 * 
+		 */		
+		public function resetPageEdit():void
+		{
+			currentMode.resetPageEdit();
+		}
+		
+		/**
+		 */		
+		public function cancelPageEdit():void
+		{
+			currentMode.cancelPageEdit();
+		}
+		
+		/**
 		 * 开始型变控制框，元素被选择后续执行的动作
 		 */		
 		public function openSelector():void
@@ -376,7 +398,7 @@ package view.interact
 		 * 
 		 * 文本框的编辑状态下是不显示型变框的）
 		 */		
-		public function showSelector():void
+		public function hideSelector():void
 		{
 			currentMode.hideSelector();
 		}
@@ -454,6 +476,29 @@ package view.interact
 		}
 		
 		/**
+		 * 记录画布的尺寸位置状态
+		 */		
+		public function restoryCanvasState():void
+		{
+			curCanvasState.x = mainUI.canvas.x;
+			curCanvasState.y = mainUI.canvas.y;
+			curCanvasState.rotation = mainUI.canvas.rotation;
+			curCanvasState.scale = mainUI.canvas.scaleX;
+		}
+		
+		/**
+		 * 返回上一次记录的画布状态
+		 */		
+		public function resetCanvasState():void
+		{
+			zoomMoveControl.zoomRotateMoveTo(curCanvasState.scale, curCanvasState.rotation, curCanvasState.x, curCanvasState.y);
+		}
+		
+		/**
+		 */		
+		private var curCanvasState:Scene = new Scene;
+		
+		/**
 		 * 多选控制器，总共有两种选择模式：单选模式和多选模式
 		 * 
 		 * 选择相关交互先经由multiSelectControl，再分发到currentMode;
@@ -468,6 +513,8 @@ package view.interact
 		public var unSelectedMode:ModeBase;
 		public var preMode:ModeBase;
 		public var editMode:ModeBase;
+		public var pageEditMode:ModeBase;
+		
 		
 		/**
 		 * 图形元素 选择，拖动，取消选择等交互行为控制
@@ -550,6 +597,7 @@ package view.interact
 			selectedMode = new SelectedMode(this);
 			unSelectedMode = new UnSelectedMode(this);
 			editMode = new EditMode(this);
+			pageEditMode = new PageEditMode(this);
 			preMode = new PrevMode(this);
 			
 			currentMode = unSelectedMode;
@@ -796,6 +844,10 @@ package view.interact
 					(element as TextEditField).smooth = true;
 				}
 			}
+			
+			//动画结束后再初始化页面动画，防止位置计算偏差，因为动画会让画布布局改变一下
+			if (currentMode == pageEditMode)
+				(pageEditMode as PageEditMode).init();
 		}
 		
 		/**

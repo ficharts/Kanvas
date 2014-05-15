@@ -146,7 +146,7 @@ package
 		/**
 		 * 暂存按钮 
 		 */		
-		private var saveBtn:IconBtn = new IconBtn;
+		internal var saveBtn:IconBtn = new IconBtn;
 		
 		/**
 		 */		

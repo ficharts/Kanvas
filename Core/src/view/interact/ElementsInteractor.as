@@ -2,12 +2,8 @@ package view.interact
 {
 	import commands.Command;
 	
-	import flash.events.MouseEvent;
-	import flash.geom.Point;
-	
 	import modules.pages.PageEvent;
 	
-	import view.element.ElementBase;
 	import view.element.ElementEvent;
 
 	/**
@@ -16,6 +12,7 @@ package view.interact
 	 * 交互模式也可看作是交互控制器，控制着不同交互状态（非选择，选择，编辑）下的行为；
 	 * 
 	 * 这里是交互消息分发的主出口
+	 * 
 	 */	
 	public class ElementsInteractor
 	{
@@ -55,18 +52,17 @@ package view.interact
 			mainUI.addEventListener(ElementEvent.PASTE_TEM_GROUP, pasteTemGroup);
 			mainUI.addEventListener(ElementEvent.PAST_GROUP, pasteGroup);
 			
-			mainUI.addEventListener(PageEvent.PAGE_NUM_CLICKED, zoomPage);
+			mainUI.addEventListener(PageEvent.PAGE_NUM_CLICKED, zoomPageByNum);
 			
 		}
 		
 		/**
 		 */		
-		private function zoomPage(evt:PageEvent):void
+		private function zoomPageByNum(evt:PageEvent):void
 		{
 			evt.stopPropagation();
 			
-			mainMediator.zoomMoveControl.zoomElement(evt.pageVO);
-			mainMediator.toUnSelectedMode();
+			mainMediator.currentMode.zoomPageByNum(evt.pageVO);
 		}
 		
 		/**
@@ -164,8 +160,7 @@ package view.interact
 		{
 			evt.stopPropagation();
 			
-			mainUI.hoverEffect.element = evt.element;
-			mainUI.hoverEffect.show();
+			mainMediator.currentMode.overEle(evt.element);
 		}
 		
 		/**
@@ -174,7 +169,7 @@ package view.interact
 		{
 			evt.stopPropagation();
 			
-			mainUI.hoverEffect.hide();
+			mainMediator.currentMode.outEle();
 		}
 		
 		/**
@@ -215,16 +210,7 @@ package view.interact
 		private function firstDownHandler(evt:ElementEvent):void
 		{
 			evt.stopPropagation();
-			mainMediator.multiSelectControl.unSelectElementDown(evt.element);
-		}
-		
-		/**
-		 * 选择元素被按下
-		 */		
-		private function reDownHandler(evt:ElementEvent):void
-		{
-			evt.stopPropagation();
-			mainMediator.multiSelectControl.selectedElementDown(evt.element);
+			mainMediator.multiSelectControl.unSelectElement(evt.element);
 		}
 		
 		/**
@@ -237,6 +223,15 @@ package view.interact
 			evt.stopPropagation();
 			
 			mainMediator.multiSelectControl.unSelectElementClicked(evt.element);
+		}
+		
+		/**
+		 * 选择元素被按下
+		 */		
+		private function reDownHandler(evt:ElementEvent):void
+		{
+			evt.stopPropagation();
+			mainMediator.multiSelectControl.selectedElementDown(evt.element);
 		}
 		
 		/**
