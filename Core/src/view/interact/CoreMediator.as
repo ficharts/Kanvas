@@ -552,7 +552,7 @@ package view.interact
 		
 		public var autoLayerController:ElementAutoLayerController;
 		
-		//public var mouseController:MouseController;
+		public var mouseController:MouseController;
 		
 		public var pageManager:PageManager;
 		
@@ -630,7 +630,7 @@ package view.interact
 			//层级自动控制
 			autoLayerController = new ElementAutoLayerController(this);
 			
-			//mouseController = new MouseController(mainUI.stage);
+			mouseController = new MouseController(mainUI.stage);
 			
 			//镜头绘制
 			cameraShotShape.visible = false;

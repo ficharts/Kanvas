@@ -27,7 +27,7 @@ package view.interact.interactMode
 			
 			mainMediator.previewCliker.enable = false;
 			
-			//mainMediator.mouseController.autoHide = false;
+			mainMediator.mouseController.autoHide = false;
 			
 			mainMediator.resetCanvasState();
 		}

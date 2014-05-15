@@ -50,6 +50,7 @@ package model.vo
 			xml.@isCustomColor = isCustomColor;
 			xml.@font =(label.format as TextFormatStyle).font;
 			xml.@size = size;
+			
 			//防止文本有特殊字符
 			if (text && text != "")
 				xml.appendChild(XML('<text><![CDATA[' + text + ']]></text>'));

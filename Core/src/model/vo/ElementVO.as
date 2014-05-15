@@ -63,6 +63,8 @@ package model.vo
 			return xml;
 		}
 		
+		/**
+		 */		
 		public function updatePageLayout():void
 		{
 			if (pageVO && pageVO != this) 

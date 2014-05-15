@@ -95,7 +95,7 @@ package view.interact.interactMode
 			
 			mainMediator.previewCliker.enable = true;
 			
-			//mainMediator.mouseController.autoHide = true;
+			mainMediator.mouseController.autoHide = true;
 		}
 		
 		/**
