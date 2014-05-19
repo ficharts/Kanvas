@@ -16,7 +16,7 @@
 
 	<!--发布-->
 	<target name="发布" 
-		depends="Kanvas, KPlayer">
+		depends="KanvasWeb, KanvasLoader, KPlayer">
 
 		<copy overwrite="true" todir="/Users/wanglei/Sites/Kanvas/web">
 			<fileset dir="${WORK_SPACE}/KanvasWeb/src">
@@ -27,7 +27,7 @@
 	</target>
 	
 	<target name="KanvasLoader">
-			<mxmlc file="${WORK_SPACE}/Kanvas/src/KanvasLoader.as" output="${WORK_SPACE}/release/KanvasLoader.swf" 
+			<mxmlc file="${WORK_SPACE}/KanvasWeb/src/KanvasLoader.as" output="${WORK_SPACE}/release/KanvasLoader.swf" 
 				actionscript-file-encoding="UTF-8" keep-generated-actionscript="false" incremental="false"
 				static-link-runtime-shared-libraries="true">
 				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
@@ -40,10 +40,16 @@
 				<library-path dir="${FLEX_HOME}/frameworks/libs" includes="framework.swc"/>
 				<compiler.debug>false</compiler.debug>
 			</mxmlc>
+
+			<copy overwrite="true" todir="/Users/wanglei/Sites/Kanvas/web">
+			<fileset dir="${WORK_SPACE}/release">
+				<include name="KanvasLoader.swf" />
+			</fileset>
+		</copy>
 	</target>
 
-	<target name="Kanvas">
-		<mxmlc file="${WORK_SPACE}/KanvasWeb/src/KanvasWeb.as" output="${WORK_SPACE}/release/Kanvas.swf" 
+	<target name="KanvasWeb">
+		<mxmlc file="${WORK_SPACE}/KanvasWeb/src/KanvasWeb.as" output="${WORK_SPACE}/release/KanvasWeb.swf" 
 			actionscript-file-encoding="UTF-8" keep-generated-actionscript="false" incremental="false"
 			static-link-runtime-shared-libraries="true">
 			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
@@ -97,11 +103,9 @@
 		
 		<copy overwrite="true" todir="/Users/wanglei/Sites/Kanvas/web">
 			<fileset dir="${WORK_SPACE}/release">
-				<include name="Kanvas.swf" />
+				<include name="KanvasWeb.swf" />
 			</fileset>
 		</copy>
-		
-		<rename src="/Users/wanglei/Sites/Kanvas/web/Kanvas.swf" dest="/Users/wanglei/Sites/Kanvas/web/KanvasWeb.swf"/>
 	</target>
 
 	<target name="KPlayer">

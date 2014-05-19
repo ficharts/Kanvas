@@ -212,6 +212,8 @@ package
 			writer.close();
 			PerformaceTest.end("save");
 			
+			
+			
 			return;
 			
 			var pageData:ByteArray = core.thumbManager.getPageBytes(960, 720);
@@ -232,6 +234,8 @@ package
 		private function fileSaved(evt:Event):void
 		{
 			isSaving = false;
+			
+			readFile();
 		}
 		
 		/**

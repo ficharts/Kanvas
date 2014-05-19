@@ -44,22 +44,28 @@ package view.interact.autoGroup
 		{
 			_elements.length = 0;
 			
-			elementsCopied.sort(sortOnIndex);
-			
-			for each (var element:ElementBase in this.elementsCopied)
+			if (elementsCopied)
 			{
-				var newElement:ElementBase = element.clone();
-				StyleUtil.applyStyleToElement(newElement.vo);
+				elementsCopied.sort(sortOnIndex);
 				
-				newElement.vo.x += xOff;
-				newElement.vo.y += yOff;
-				
-				CoreFacade.addElement(newElement);
-				
-				_elements.push(newElement);
+				for each (var element:ElementBase in this.elementsCopied)
+				{
+					var newElement:ElementBase = element.clone();
+					StyleUtil.applyStyleToElement(newElement.vo);
+					
+					newElement.vo.x += xOff;
+					newElement.vo.y += yOff;
+					
+					CoreFacade.addElement(newElement);
+					
+					_elements.push(newElement);
+				}
 			}
+			
 		}
 		
+		/**
+		 */		
 		private function sortOnIndex(a:ElementBase, b:ElementBase):int
 		{
 			if (a.index < b.index)

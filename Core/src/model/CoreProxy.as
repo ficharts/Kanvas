@@ -288,7 +288,7 @@ package model
 			var pagesNode:XML = <pages/>;
 			for each (item in elementsWidthIndex)
 			{
-				if(!(item is PageElement))
+				if(item && !(item is PageElement))// 有时候会多出一个位置，但是此为止的element为null
 					mainNode.appendChild(item.exportData());
 			}
 			
