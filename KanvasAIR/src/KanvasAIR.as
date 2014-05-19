@@ -203,12 +203,12 @@ package
 			if (filesArray.length)
 			{
 				var f:File = filesArray[0];
-				
-				if (f.extension == "kvs")
+				var extension:String = f.extension.toLowerCase();
+				if (extension == "kvs" || extension == "pez")
 				{
-					airAPI.openFile(f);
+					airAPI.openFile(f, extension);
 				}
-				else if (f.extension == "jpg" || f.extension == "png")
+				else if (extension == "jpg" || extension == "png")
 				{
 					
 				}

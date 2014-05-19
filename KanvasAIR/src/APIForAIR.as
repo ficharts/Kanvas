@@ -19,6 +19,7 @@ package
 	
 	import view.element.ElementBase;
 	import view.element.imgElement.ImgElement;
+	import view.ui.Bubble;
 
 	/**
 	 * air客户端的api
@@ -40,12 +41,13 @@ package
 		/**
 		 * 打开文件 
 		 */		
-		public function openFile(newfile:File = null):void
+		public function openFile(newfile:File = null, extension:String = "kvs"):void
 		{
 			if (newfile)
 			{
 				this.file = newfile;
-				readFile();
+				if (extension == "kvs") readFileKVS();
+				else if (extension == "pez") readFilePEZ();
 			}
 			else
 			{
@@ -59,13 +61,13 @@ package
 		 */		
 		private function fileSelected(evt:Event):void
 		{
-			readFile();
+			readFileKVS();
 			file.removeEventListener(Event.SELECT, fileSelected);
 		}
 		
 		/**
 		 */		
-		private function readFile():void
+		private function readFileKVS():void
 		{
 			var reader:ZipFileReader = new ZipFileReader();
 			reader.open(file);
@@ -78,6 +80,61 @@ package
 			var imgID:String;
 			var imgIDsInKvs:Array = new Array;
 				
+			var imgData:ByteArray;
+			
+			for each(var entry:ZipEntry in list)
+			{
+				if(entry.getFilename() == "kvs.xml")
+				{
+					xml = reader.unzip(entry).toString();
+				}
+				else
+				{
+					imgData = reader.unzip(entry);
+					imgID = entry.getFilename().split('.')[0].toString();
+					
+					if (uint(imgID) != 0)
+					{
+						ImgLib.register(imgID, imgData);
+						imgIDsInKvs.push(imgID);
+					}
+				}
+			}
+			
+			this.setXMLData(xml);
+			reader.close();
+			
+			//这里需要清理冗余的图片数据
+			var imgIDsInXML:Array = [];
+			for each (var element:ElementBase in CoreFacade.coreProxy.elements)
+			{
+				if (element is ImgElement)
+					imgIDsInXML.push((element as ImgElement).imgVO.imgID);
+			}
+			
+			//如果数据中的图片id不存在于xml中，则说明此图片是多余图片，删除
+			for each (var id:uint in imgIDsInKvs)
+			{
+				if (imgIDsInXML.indexOf(id) == - 1)
+					ImgLib.unRegister(id);
+			}
+			
+			PerformaceTest.end();
+		}
+		
+		private function readFilePEZ():void
+		{
+			var reader:ZipFileReader = new ZipFileReader();
+			reader.open(file);
+			
+			PerformaceTest.ifRun = true;
+			PerformaceTest.start();
+			
+			var list:Array = reader.getEntries();
+			var xml:String;
+			var imgID:String;
+			var imgIDsInKvs:Array = new Array;
+			
 			var imgData:ByteArray;
 			
 			for each(var entry:ZipEntry in list)
@@ -160,8 +217,9 @@ package
 		{
 			file.removeEventListener(Event.SELECT, selectFileForSave);
 			
+			var s:String = file.nativePath;
 			
-			file = new File(file.nativePath + ".kvs")
+			file = new File((s.indexOf(".kvs") > -1) ? s : (s + ".kvs"));
 			writeFile();
 		}
 		
@@ -173,48 +231,55 @@ package
 			
 			PerformaceTest.start("save");
 			
-			var writer:ZipFileWriter = new ZipFileWriter();// 这里每次都需要新建一个，全局writer的话第二次打开文件再保存会保存错误，将文件报废，再也打不开
-			writer.addEventListener("zipFileCreated", fileSaved, false, 0, true);
-			writer.openAsync(this.file);
-			
-			// file info
-			var fileData:ByteArray = new ByteArray();
-			fileData.writeUTFBytes(this.getXMLData());
-			writer.addBytes(fileData,"kvs.xml");
-			//fileData.clear();
-			
-			//图片相关
-			var imgIDs:Array = ImgLib.imgKeys;
-			var imgDataBytes:ByteArray;
-			
-			//缩略图
-			var bmd:BitmapData = core.thumbManager.getShotCut(ConfigInitor.THUMB_WIDTH, ConfigInitor.THUMB_HEIGHT);
-			if (bmd)
+			try
 			{
-				imgDataBytes = bmd.encode(bmd.rect, new PNGEncoderOptions);
-				writer.addBytes(imgDataBytes,"preview.png");
-			}
-			
-			// 添加图片资源数据
-			var imgBytes:ByteArray;
-			for each (var imgID:uint in imgIDs)
-			{
-				//imgDataBytes.clear();
-				imgDataBytes = new ByteArray();
-				imgBytes = ImgLib.getData(imgID);
-				imgBytes.position = 0;
-				imgDataBytes.writeBytes(imgBytes, 0, imgBytes.bytesAvailable);
-				imgDataBytes.position = 0;
+				var writer:ZipFileWriter = new ZipFileWriter();// 这里每次都需要新建一个，全局writer的话第二次打开文件再保存会保存错误，将文件报废，再也打不开
+				writer.addEventListener("zipFileCreated", fileSaved, false, 0, true);
+				writer.openAsync(this.file);
 				
-				writer.addBytes(imgDataBytes,imgID.toString() + '.png');
+				// file info
+				var fileData:ByteArray = new ByteArray();
+				fileData.writeUTFBytes(this.getXMLData());
+				writer.addBytes(fileData,"kvs.xml");
+				//fileData.clear();
+				
+				//图片相关
+				var imgIDs:Array = ImgLib.imgKeys;
+				var imgDataBytes:ByteArray;
+				
+				//缩略图
+				var bmd:BitmapData = core.thumbManager.getShotCut(ConfigInitor.THUMB_WIDTH, ConfigInitor.THUMB_HEIGHT);
+				if (bmd)
+				{
+					imgDataBytes = bmd.encode(bmd.rect, new PNGEncoderOptions);
+					writer.addBytes(imgDataBytes,"preview.png");
+				}
+				
+				// 添加图片资源数据
+				var imgBytes:ByteArray;
+				for each (var imgID:uint in imgIDs)
+				{
+					//imgDataBytes.clear();
+					imgDataBytes = new ByteArray();
+					imgBytes = ImgLib.getData(imgID);
+					imgBytes.position = 0;
+					imgDataBytes.writeBytes(imgBytes, 0, imgBytes.bytesAvailable);
+					imgDataBytes.position = 0;
+					
+					writer.addBytes(imgDataBytes,imgID.toString() + '.png');
+				}
+				
+				writer.close();
+				PerformaceTest.end("save");
 			}
-			
-			writer.close();
-			PerformaceTest.end("save");
+			catch (e:Error)
+			{
+				Bubble.show("保存数据出错，请重试！");
+			}
 			
 			return;
 			
-			var pageData:ByteArray = core.thumbManager.getPageBytes(960, 720);
+			/*var pageData:ByteArray = core.thumbManager.getPageBytes(960, 720);
 			if (pageData)
 			{
 				var vector:Vector.<ByteArray> = core.thumbManager.resolvePageData(pageData);
@@ -223,7 +288,7 @@ package
 				{
 					writer.addBytes(bytes, "pages/" + (flag++) + ".jpg");
 				}
-			}
+			}*/
 			
 		}
 		

@@ -184,6 +184,12 @@
 			<description>Kvs file for Kanvas.</description>
 			<contentType>application</contentType>
 		</fileType>
+		<fileType>
+			<name>prezi.pez</name>
+			<extension>pez</extension>
+			<description>Prezi file for Kanvas.</description>
+			<contentType>application</contentType>
+		</fileType>
 	</fileTypes>
 
     <!-- iOS specific capabilities -->
