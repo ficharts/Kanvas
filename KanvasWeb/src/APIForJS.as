@@ -4,7 +4,6 @@ package
 	import com.kvs.utils.ExternalUtil;
 	import com.kvs.utils.net.Post;
 	
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.JPEGEncoderOptions;
 	import flash.events.Event;
@@ -250,7 +249,8 @@ package
 				var bytes:ByteArray = bmd.encode(bmd.rect, jpegEncoderOptions);
 			}
 			
-			var pages:ByteArray = core.thumbManager.getPageBytes();
+			//var pages:ByteArray = core.thumbManager.getPageBytes();
+			
 			var data:Object = {};
 			data.docid  = ConfigInitor.DOC_ID;
 			data.thumbW = ConfigInitor.THUMB_WIDTH .toString();
@@ -258,7 +258,7 @@ package
 			data.thumbData = bytes;
 			data.data = Base64.encode(getXMLData());
 			
-			if (pages) data.pageImgData = pages;
+			//if (pages) data.pageImgData = pages;
 			
 			if (dataUpLoader)
 			{

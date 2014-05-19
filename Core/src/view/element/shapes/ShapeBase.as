@@ -21,6 +21,8 @@ package view.element.shapes
 		public function ShapeBase(vo:ShapeVO)
 		{
 			super(vo);
+			
+			//this.cacheAsBitmap = true;
 		}
 		
 		/**

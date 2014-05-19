@@ -124,7 +124,7 @@ package
 		
 		private function readFilePEZ():void
 		{
-			var reader:ZipFileReader = new ZipFileReader();
+			/*var reader:ZipFileReader = new ZipFileReader();
 			reader.open(file);
 			
 			PerformaceTest.ifRun = true;
@@ -174,7 +174,7 @@ package
 					ImgLib.unRegister(id);
 			}
 			
-			PerformaceTest.end();
+			PerformaceTest.end();*/
 		}
 		
 		/**
@@ -277,6 +277,8 @@ package
 				Bubble.show("保存数据出错，请重试！");
 			}
 			
+			writer.close();
+			PerformaceTest.end("save");
 			return;
 			
 			/*var pageData:ByteArray = core.thumbManager.getPageBytes(960, 720);
@@ -297,6 +299,8 @@ package
 		private function fileSaved(evt:Event):void
 		{
 			isSaving = false;
+			
+			readFileKVS();
 		}
 		
 		/**
