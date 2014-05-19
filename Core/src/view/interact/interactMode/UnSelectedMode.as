@@ -2,6 +2,8 @@ package view.interact.interactMode
 {
 	import commands.Command;
 	
+	import flash.ui.Mouse;
+	
 	import view.element.ElementBase;
 	import view.interact.CoreMediator;
 	
@@ -94,8 +96,8 @@ package view.interact.interactMode
 				mainMediator.zoomMoveControl.zoomAuto();
 			
 			mainMediator.previewCliker.enable = true;
-			
 			mainMediator.mouseController.autoHide = true;
+			Mouse.hide();
 		}
 		
 		/**

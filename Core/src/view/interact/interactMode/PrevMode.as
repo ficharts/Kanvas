@@ -1,5 +1,7 @@
 package view.interact.interactMode
 {
+	import flash.ui.Mouse;
+	
 	import view.interact.CoreMediator;
 	
 	/**
@@ -26,8 +28,8 @@ package view.interact.interactMode
 			returnFromPrevState();
 			
 			mainMediator.previewCliker.enable = false;
-			
 			mainMediator.mouseController.autoHide = false;
+			Mouse.show();
 			
 			mainMediator.resetCanvasState();
 		}
