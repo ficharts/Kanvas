@@ -1,11 +1,10 @@
 package com.kvs.charts.chart2D.encry
 {
-	import flash.display.Sprite;
 	
 	/**
 	 * License信息
 	 */	
-	public class LM extends Sprite
+	public class LM
 	{
 		
 		/**

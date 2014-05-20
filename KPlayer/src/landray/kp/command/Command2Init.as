@@ -11,6 +11,8 @@ package landray.kp.command
 	import landray.kp.mediator.MediatorViewer;
 	import landray.kp.view.Viewer;
 	
+	import model.DecForKvs;
+	
 	import view.interact.PreviewClicker;
 	import view.interact.zoomMove.ZoomMoveControl;
 	
@@ -22,27 +24,36 @@ package landray.kp.command
 		{
 			super();
 		}
+		
+		/**
+		 */		
 		override public function execute():void
 		{
 			executeStart();
-			//init templete
-			initTemplete();
+		
 			//init views
 			initViews();
 		}
 		
-		private function initTemplete():void
-		{
-			if(!provider.styleXML) 
-				provider.styleXML = StyleEmbeder.styleXML;
-		}
+		/**
+		 */		
+		private var dec:DecForKvs;
 		
+		
+		/**
+		 */		
 		private function initViews():void
 		{
 			//加载字体
 			//FlowTextManager.loadFont("FontLib.swf");
 			
 			config.kp_internal::viewer      = new Viewer;
+			
+			//解析配置文件， 后面在验证
+			dec = new DecForKvs(config.kp_internal::viewer);
+			if(!provider.styleXML) 
+				provider.styleXML = dec.c;
+			
 			config.kp_internal::mediator    = new MediatorViewer;
 			config.kp_internal::controller  = new ZoomMoveControl(config.kp_internal::mediator);
 			
@@ -61,6 +72,7 @@ package landray.kp.command
 			}, false, 0, true);
 			
 			config.kp_internal::container.addChildAt(config.kp_internal::viewer, 0);
+			dec.verify();
 		}
 	}
 }

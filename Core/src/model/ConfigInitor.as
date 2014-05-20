@@ -32,11 +32,6 @@ package model
 		 */		
 		public function ConfigInitor(core:CoreApp)
 		{
-			for each (var item:XML in StyleEmbeder.styleXML.child('template').children())
-				XMLVOLib.registWholeXML(item.@id, item, item.name().toString());
-			
-			CoreFacade.coreProxy.initThemeConfig(XML(StyleEmbeder.styleXML.child('themes').toXMLString()));
-			core.ready();
 		}
 	}
 }

@@ -33,6 +33,7 @@ package
 	import view.ui.Bubble;
 	import view.ui.MainUIBase;
 	import view.ui.ThumbManager;
+	import model.DecForKvs;
 
 	
 	[Event(name="ready", type="KVSEvent")]
@@ -49,7 +50,7 @@ package
 		/**
 		 * 产品版本号 
 		 */		
-		public static const VER:String = "1.2.0";
+		public static const VER:String = "1.2.1";
 		
 		
 		
@@ -482,11 +483,24 @@ package
 			initUI();
 			initMVC();
 			
-			new ConfigInitor(this);
+			//验证模块初始化
+			dec = new DecForKvs(this);
+			dec.verify();
+			
+			for each (var item:XML in dec.c.child('template').children())
+				XMLVOLib.registWholeXML(item.@id, item, item.name().toString());
+			
+			CoreFacade.coreProxy.initThemeConfig(XML(dec.c.child('themes').toXMLString()));
+			
+			this.ready();
 			
 			// 加载嵌入子体
 			//FlowTextManager.loadFont("./FontLib.swf");
 		}
+		
+		/**
+		 */		
+		public var dec:DecForKvs;
 		
 		/**
 		 */		
@@ -528,7 +542,6 @@ package
 			
 			//自动对齐划线的UI
 			addChild(autoAlignUI);
-			
 			addChild(dragSlectUI);
 			
 			// 文本编辑器
@@ -810,5 +823,7 @@ package
 		 * 是否为AIR桌面程序，此属性在客户端中设置为true。
 		 */
 		public static var isAIR:Boolean;
+		
+		
 	}
 }
