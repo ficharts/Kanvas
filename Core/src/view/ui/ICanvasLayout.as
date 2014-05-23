@@ -25,7 +25,8 @@ package view.ui
 			
 		function get visible():Boolean
 		function set visible(value:Boolean):void
-			
+		
+		function get alpha():Number
 		function set alpha(value:Number):void
 			
 		function get screenshot():Boolean
