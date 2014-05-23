@@ -4,6 +4,7 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.charts.chart2D.core.events.FiChartsEvent;
 	import com.kvs.charts.common.IChart;
 	import com.kvs.charts.common.Menu;
+	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.ExternalUtil;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.StageUtil;
@@ -12,7 +13,6 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
-	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.csv.CSVLoader;
 	import com.kvs.utils.csv.CSVParseEvent;
 	import com.kvs.utils.graphic.ImgSaver;
@@ -90,8 +90,7 @@ package com.kvs.charts.chart2D.encry
 		
 		/**
 		 */		
-		protected var dec:Dec;
-		
+		protected var dec:DecChart;
 		
 		/**
 		 * 注入图表的基础配置文件�此配置文件包含默认的样式模板, 菜单语言配置等；

@@ -1,6 +1,7 @@
 package modules.pages
 {
 	import flash.events.EventDispatcher;
+	
 	import model.vo.PageVO;
 
 	[Event(name="pageAdded", type="modules.pages.PageEvent")]
@@ -29,10 +30,8 @@ package modules.pages
 		public function addPage(pageVO:PageVO):PageVO
 		{
 			registPageVO(pageVO, length);
-			pages.push(pageVO);
-			
-			dispatchEvent(new PageEvent(PageEvent.PAGE_ADDED, pageVO));
-			dispatchEvent(new PageEvent(PageEvent.UPDATE_PAGES_LAYOUT));
+			pages[pages.length] = pageVO;//1.65
+			dispatchEvent(new PageEvent(PageEvent.PAGE_ADDED, pageVO));//.7
 			
 			return pageVO;
 		}
@@ -47,11 +46,10 @@ package modules.pages
 				if (pageVO.parent != this)
 				{
 					registPageVO(pageVO, index);
-					pages.splice(index, 0, pageVO);
-					udpatePageIndex(index, length);
+					pages.splice(index, 0, pageVO);//1.6
+					udpatePageIndex(index, length);//.3
 					
-					dispatchEvent(new PageEvent(PageEvent.PAGE_ADDED, pageVO));
-					dispatchEvent(new PageEvent(PageEvent.UPDATE_PAGES_LAYOUT));
+					dispatchEvent(new PageEvent(PageEvent.PAGE_ADDED, pageVO));//1s
 				}
 				else
 				{
@@ -154,13 +152,14 @@ package modules.pages
 			return null;
 		}
 		
+		/**
+		 */		
 		public function removeAllPages():void
 		{
 			pages.length = 0;
 			dispatchEvent(new PageEvent(PageEvent.PAGE_DELETED));
 			dispatchEvent(new PageEvent(PageEvent.UPDATE_PAGES_LAYOUT));
 		}
-		
 		
 		/**
 		 * 设定某页的顺序

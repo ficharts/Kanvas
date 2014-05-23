@@ -35,14 +35,17 @@ package
 			
 			//从网页获取ID参数
 			appID = (loaderInfo.parameters.id) ? loaderInfo.parameters.id : "0";
+			
 			//安全沙箱
 			Security.allowDomain("*");
+			
 			//添加JS回调函数,通知JS 初始化完毕，可以传递数据。
 			if (ExternalUtil.initCallBack(this))
 				ExternalUtil.kanvasReady();
 		}
 	
-	
+		/**
+		 */	
 		private function initDebugger():void
 		{
 			var debug:Boolean = (loaderInfo.parameters.debug) ? loaderInfo.parameters.debug == "true" : false;
@@ -58,6 +61,8 @@ package
 		 */
 		public var appID:String;
 		
+		/**
+		 */		
 		private var debugger:Debugger;
 	}
 }

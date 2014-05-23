@@ -3,10 +3,6 @@ package com.kvs.ui.clickMove
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
-	import org.gestouch.core.GestureState;
-	import org.gestouch.events.GestureEvent;
-	import org.gestouch.gestures.TransformGesture;
-
 	/**
 	 * 控制元素的拖动，当元件被拖动后，鼠标释放时，告知原件被点击；
 	 */	

@@ -139,7 +139,7 @@ package view.pagePanel
 			pageUI.styleXML = pageStyleXML;
 			
 			pagesCtn.addChild(pageUI);
-			pages.push(pageUI);
+			pages[pages.length] = pageUI;
 			
 			setCurrentPage(pageUI);
 		}
