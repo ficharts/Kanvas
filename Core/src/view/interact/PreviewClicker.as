@@ -57,7 +57,8 @@ package view.interact
 					for each (element in elements)
 					{
 						var bound:Rectangle = LayoutUtil.getItemRect(mdt.mainUI.canvas, element);
-						if (element.alpha >= 1 && bound.width > 20 && bound.height > 20 &&　bound.contains(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY))
+						
+						if (Object(element).canvas.alpha >= 1 && bound.width > 20 && bound.height > 20 &&　bound.contains(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY))
 						{
 							elementsHit.push(element);
 							
