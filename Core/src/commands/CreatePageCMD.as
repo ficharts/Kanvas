@@ -62,6 +62,8 @@ package commands
 			pageVO.scale = layoutTransformer.compensateScale;
 			
 			CoreFacade.coreMediator.pageManager.addPageAt(pageVO, pageProxy.index);
+			CoreFacade.coreMediator.pageManager.layoutPages();
+			
 			CoreFacade.addElement(element);
 			
 			//放置拖动创建时 当前原件未被指定 
@@ -125,7 +127,9 @@ package commands
 			CoreFacade.addElement(element);
 			if (indexChangeElements)
 				CoreFacade.coreMediator.autoLayerController.swapElements(indexChangeElements, newIndex);
+			
 			CoreFacade.coreMediator.pageManager.addPageAt(element.vo as PageVO, pageIndex);
+			CoreFacade.coreMediator.pageManager.layoutPages();
 			
 			this.dataChanged();
 		}

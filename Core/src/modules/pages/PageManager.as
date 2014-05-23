@@ -102,6 +102,15 @@ package modules.pages
 		}
 		
 		/**
+		 * 通知页面面板更新布局 
+		 * 
+		 */		
+		public function layoutPages():void
+		{
+			this.dispatchEvent(new PageEvent(PageEvent.UPDATE_PAGES_LAYOUT));
+		}
+		
+		/**
 		 * 判断pageVO是否在队列
 		 */
 		public function contains(pageVO:PageVO):Boolean

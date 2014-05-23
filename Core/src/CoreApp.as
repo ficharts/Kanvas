@@ -221,14 +221,11 @@ package
 		public function importData(xml:XML):void
 		{
 			facade.coreProxy.importData(xml);
+			
 			if (stage && stage.stageWidth && stage.stageHeight)
-			{
 				autoZoom();
-			}
 			else
-			{
 				stage.addEventListener(Event.RESIZE, stageInitResizeHandler);
-			}
 		}
 		
 		/**

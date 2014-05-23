@@ -99,8 +99,12 @@ package
 				}
 			}
 			
-			this.setXMLData(xml);
 			reader.close();
+			PerformaceTest.end("文件解压缩结束");
+			
+			
+			PerformaceTest.start("解析xml");
+			this.setXMLData(xml);
 			
 			//这里需要清理冗余的图片数据
 			var imgIDsInXML:Array = [];
@@ -117,7 +121,7 @@ package
 					ImgLib.unRegister(id);
 			}
 			
-			PerformaceTest.end();
+			PerformaceTest.end("xml解析结束");
 		}
 		
 		/**
@@ -210,9 +214,6 @@ package
 			}
 			
 			writer.close();
-			PerformaceTest.end("save");
-			
-			
 			
 			return;
 			
@@ -235,7 +236,7 @@ package
 		{
 			isSaving = false;
 			
-			readFile();
+			PerformaceTest.end("save");
 		}
 		
 		/**
