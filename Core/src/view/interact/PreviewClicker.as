@@ -87,10 +87,6 @@ package view.interact
 						}
 						mdt.zoomElement(targetElement["vo"]);
 					}
-					else
-					{
-						mdt.zoomAuto();
-					}
 				}
 			}
 		}
