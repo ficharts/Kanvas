@@ -127,6 +127,8 @@ package control
 			
 			app.stage.addEventListener(FullScreenEvent.FULL_SCREEN, closeFullScreenHandler);
 			
+			app.zoomToolBar.y = 10000;
+			
 			_closePanels();
 			TweenLite.to(app.toolBar, 0.5, {y: - app.toolBar.h});
 		}
@@ -148,6 +150,8 @@ package control
 			
 			_openPanels();
 			TweenLite.to(app.toolBar, 0.5, {y: 0});
+			
+			app.zoomToolBar.y = (app.stage.stageHeight - app.zoomToolBar.height) * .5;
 			
 			app.updateKvsContenBound();
 			app.kvsCore.returnFromPrev();

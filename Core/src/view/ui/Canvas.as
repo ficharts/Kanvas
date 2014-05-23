@@ -33,6 +33,7 @@ package view.ui
 		{
 			if (doubleClickActived)
 			{
+				doubleClickActived = false;
 				dispatchEvent(new MouseEvent(MouseEvent.DOUBLE_CLICK));
 			}
 			else
