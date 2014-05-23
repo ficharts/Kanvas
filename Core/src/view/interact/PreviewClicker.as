@@ -71,16 +71,21 @@ package view.interact
 					{
 						elementsHit.sort(sortOnSize);
 						var targetElement:ICanvasLayout = elementsHit[0];
-						mdt.zoomElement(targetElement["vo"]);
 						
 						//点击区域的最小尺寸页面 ＝ 当前页面
 						if (pagesHit.length)
 						{
-							var nearPage:ICanvasLayout;//离点击区域最近的页面元素
+							//离点击区域最近的页面元素
 							pagesHit.sort(sortOnSize);
-							nearPage = pagesHit[0];
+							var nearPage:ICanvasLayout = pagesHit[0];
 							mdt.setPageIndex((nearPage["vo"].pageVO).index);
+							//mdt.zoomElement(nearPage["vo"]);
 						}
+						else
+						{
+							//mdt.zoomElement(targetElement["vo"]);
+						}
+						mdt.zoomElement(targetElement["vo"]);
 					}
 					else
 					{
@@ -109,18 +114,6 @@ package view.interact
 						if (element.isPage)
 							pagesHit.push(element);
 					}
-					/*var temp:Object = element;
-					try
-					{
-					if (DisplayObject(temp.shape).hitTestPoint(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY, true))
-					{
-					elementsHit.push(element);
-					
-					if (element.isPage)
-					pagesHit.push(element);
-					}
-					}
-					catch (e:Error) {}*/
 				}
 				//选出最适合缩放的原件
 				if (elementsHit.length)
@@ -170,26 +163,6 @@ package view.interact
 				{
 					mdt.zoomAuto();
 				}
-				
-				/*if (history.length > 1) {
-					history.pop();
-					history.pop();
-				}
-				if (history.length > 1)
-				{
-					var current:ElementVO = history.pop();
-					while (history.length > 1 && (getSize(history[history.length - 1]) <= getSize(current)))
-						history.pop();
-					if (history.length)
-						mdt.zoomElement(history[history.length - 1]);
-					else
-						mdt.zoomAuto();
-				}
-				else
-				{
-					clearHistory();
-					mdt.zoomAuto();
-				}*/
 			}
 		}
 		
