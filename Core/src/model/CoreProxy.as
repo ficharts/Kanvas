@@ -2,6 +2,7 @@ package model
 {
 	import com.adobe.images.PNGEncoder;
 	import com.kvs.utils.Map;
+	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
@@ -352,6 +353,8 @@ package model
 			
 			CoreFacade.clear();
 			
+			//PerformaceTest.start("渲染");
+			
 			//先创建所有元素，再匹配组合关系
 			var groupElements:Array = [];
 			var item:XML;
@@ -400,9 +403,10 @@ package model
 			for (var i:int = 0; i < l; i++)
 			{
 				pages[i].index = i;
-				CoreFacade.coreMediator.pageManager.addPageAt(pages[i], pages[i].index);
+				CoreFacade.coreMediator.pageManager.addPage(pages[i]);
 			}
 			
+			CoreFacade.coreMediator.pageManager.layoutPages();
 			
 			//调整当前页为第一页
 			if (pages.length)
@@ -416,8 +420,10 @@ package model
 			groupElements.length = 0;
 			groupElements = null;
 			
-			for each (element in this.elements)
-				element.render();
+			//for each (element in this.elements)
+				//element.render();
+				
+			//PerformaceTest.end("渲染结束");
 			
 			//背景图片加载
 			bgImgLoader.addEventListener(ImgInsertEvent.IMG_LOADED, initializeBgImgLoaded);
@@ -497,11 +503,9 @@ package model
 			XMLVOMapper.fuck(item, vo);
 			StyleUtil.applyStyleToElement(vo);
 			
+			//再次应用xml中的属性，为了兼容旧数据的颜色，字体大小等属性；
 			vo.colorIndex = item.@colorIndex;
 			vo.color = item.@color;
-			
-			//再次应用xml中的属性，为了兼容旧数据的颜色，字体大小等属性；
-			//XMLVOMapper.fuck(item, vo);
 			
 			ElementCreator.setID(vo.id);
 			
@@ -589,7 +593,7 @@ package model
 		 */
 		public function addElement(value:ElementBase):void
 		{
-			elements.push(value);
+			elements[elements.length] = value;
 		}
 		
 		public function addElementAt(element:ElementBase, index:int):void
