@@ -29,13 +29,13 @@ package view.interact.zoomMove
 			
 			page = $page;
 			
-			/*
+			
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
 			mainUI.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
 			mainUI.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
 			mainUI.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
-			*/
+			
 		}
 		
 		private function onTouchBegin(e:TouchEvent):void
@@ -68,6 +68,7 @@ package view.interact.zoomMove
 				{
 					//swip mode
 					//trace("onTouchBegin: swipe mode");
+					return;
 					startSwipe = center.clone();
 				}
 			}
@@ -117,6 +118,7 @@ package view.interact.zoomMove
 			else if (touchesCount > 2)
 			{
 				//swipe mode
+				return;
 				if(!swipePageStared)
 				{
 					setCanvasInteract(false);
@@ -166,6 +168,7 @@ package view.interact.zoomMove
 			}
 			if (touchesCount > 2)
 			{
+				return;
 				startSwipe = center.clone();
 			}
 			else if (touchesCount == 2)

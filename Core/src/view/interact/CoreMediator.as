@@ -20,9 +20,6 @@ package view.interact
 	import modules.pages.PageManager;
 	import modules.pages.Scene;
 	
-	import org.gestouch.core.GestureState;
-	import org.gestouch.events.GestureEvent;
-	import org.gestouch.gestures.TransformGesture;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import util.layout.LayoutTransformer;
