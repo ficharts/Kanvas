@@ -5,9 +5,12 @@ package view.interact
 	import commands.Command;
 	
 	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import model.CoreFacade;
@@ -17,6 +20,9 @@ package view.interact
 	import modules.pages.PageManager;
 	import modules.pages.Scene;
 	
+	import org.gestouch.core.GestureState;
+	import org.gestouch.events.GestureEvent;
+	import org.gestouch.gestures.TransformGesture;
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
 	import util.layout.LayoutTransformer;
@@ -32,6 +38,7 @@ package view.interact
 	import view.interact.keyboard.*;
 	import view.interact.multiSelect.MultiSelectControl;
 	import view.interact.multiSelect.TemGroupElement;
+	import view.interact.zoomMove.GestureControl;
 	import view.interact.zoomMove.ZoomMoveControl;
 	import view.ui.Canvas;
 	import view.ui.IMainUIMediator;
@@ -527,6 +534,11 @@ package view.interact
 		public var zoomMoveControl:ZoomMoveControl;
 		
 		/**
+		 * 画布交互手势控制
+		 */
+		public var gestureControl:GestureControl;
+		
+		/**
 		 * 预览时鼠标点击控制 
 		 */		
 		public var previewCliker:PreviewClicker;
@@ -569,7 +581,6 @@ package view.interact
 		
 		
 		
-		
 		//------------------------------------------------------------
 		//
 		//
@@ -584,6 +595,11 @@ package view.interact
 		override public function onRegister():void
 		{
 			zoomMoveControl = new ZoomMoveControl(this);
+			
+			pageManager = new PageManager(this);
+			
+			gestureControl = new GestureControl(this, zoomMoveControl, pageManager);
+			
 			previewCliker = new PreviewClicker(this);
 			elementsInteractControl = new ElementsInteractor(coreApp, this);
 			elementMoveController = new ElementMoveController(this);
@@ -637,7 +653,7 @@ package view.interact
 			coreApp.addChild(cameraShotShape);
 			coreApp.addEventListener(KVSEvent.UPATE_BOUND, renderBoundHandler);
 			
-			pageManager = new PageManager(this);
+			
 		}
 		
 		/**
@@ -724,6 +740,7 @@ package view.interact
 		 *当前键盘状态 
 		 */
 		public var currentKeyboardState:KeyboardStateBase;
+		
 		
 		
 		
@@ -836,6 +853,11 @@ package view.interact
 		 */		
 		public function flashStop():void
 		{
+			mainUI.curScreenState.enableCanvas();
+			zoomMoveControl.enableBGInteract();
+			gestureControl.enabled = true;
+			
+			
 			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
 			for each (var element:ElementBase in elements)
 			{

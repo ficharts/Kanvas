@@ -165,6 +165,7 @@ package modules.pages
 		public function next():void
 		{
 			coreMdt.coreApp.clearDrawMode();
+			coreMdt.previewCliker.clearHistory();
 			
 			var curPage:PageVO;
 			if (index != - 1)
@@ -199,6 +200,8 @@ package modules.pages
 		public function prev():void
 		{
 			coreMdt.coreApp.clearDrawMode();
+			coreMdt.previewCliker.clearHistory();
+			
 			var curPage:PageVO;
 			
 			if (index != - 1)
@@ -236,6 +239,8 @@ package modules.pages
 		public function reset():void
 		{
 			coreMdt.coreApp.clearDrawMode();
+			coreMdt.previewCliker.clearHistory();
+			
 			__index = -1;
 		}
 		

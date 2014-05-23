@@ -4,7 +4,10 @@ package view.ui
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
+	import flash.utils.Timer;
 	
 	import util.LayoutUtil;
 	
@@ -22,7 +25,28 @@ package view.ui
 			items  = new Vector.<ICanvasLayout>;
 			
 			addChild(interactorBG);
+			
+			addEventListener(MouseEvent.CLICK, doubleClickRetriver);
 		}
+		
+		private function doubleClickRetriver(e:MouseEvent):void
+		{
+			if (doubleClickActived)
+			{
+				dispatchEvent(new MouseEvent(MouseEvent.DOUBLE_CLICK));
+			}
+			else
+			{
+				doubleClickActived = true;
+				var timer:Timer = new Timer(500, 1);
+				timer.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:TimerEvent):void{
+					doubleClickActived = false;
+					timer = null;
+				}, false, 0, true);
+				timer.start();
+			}
+		}
+		private var doubleClickActived:Boolean;
 		
 		/**
 		 */		
@@ -110,8 +134,6 @@ package view.ui
 				__y = $y;
 				__scaleX = __scaleY = $scale;
 				__rotation = $rotation;
-				
-				page 
 				
 				for each (var item:ICanvasLayout in items)
 				{

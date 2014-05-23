@@ -244,7 +244,6 @@ package view.interact
 			mainMediator.multiSelectControl.selectedElementClicked(evt.element);
 		}
 		
-		
 		/**
 		 */		
 		private var mainMediator:CoreMediator;

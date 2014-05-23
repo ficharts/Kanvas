@@ -87,8 +87,10 @@ package view.interact.zoomMove
 		{
 			if (ifEnable)
 			{
+				
 				flasher.canvasTargetX += xOff;
 				flasher.canvasTargetY += yOff;
+				//trace("mouse-canvas:", flasher.canvasTargetX , flasher.canvasTargetY);
 				flasher.flash(0.15);
 			}
 		}

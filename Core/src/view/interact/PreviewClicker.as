@@ -4,8 +4,10 @@ package view.interact
 	import com.kvs.ui.clickMove.IClickMove;
 	
 	import flash.display.DisplayObject;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	
+	import model.vo.ElementVO;
 	import model.vo.PageVO;
 	
 	import util.LayoutUtil;
@@ -27,6 +29,8 @@ package view.interact
 			this.mdt = mdt;
 			
 			clickControl = new ClickMoveControl(this, mdt.mainUI.canvas);
+			mdt.mainUI.canvas.addEventListener(MouseEvent.DOUBLE_CLICK, doubleClickHandler);
+
 		}
 		
 		/**
@@ -51,13 +55,18 @@ package view.interact
 						if (element.isPage)
 							pagesHit.push(element);
 					}
-					/*if (element.shape.hitTestPoint(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY, true))
+					/*var temp:Object = element;
+					try
 					{
-						elementsHit.push(element);
-						
-						if (element.vo is PageVO)
-							pagesHit.push(element);
-					}*/
+						if (DisplayObject(temp.shape).hitTestPoint(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY, true))
+						{
+							elementsHit.push(element);
+							
+							if (element.isPage)
+								pagesHit.push(element);
+						}
+					}
+					catch (e:Error) {}*/
 				}
 				
 				//选出最适合缩放的原件
@@ -73,13 +82,14 @@ package view.interact
 						else
 						{
 							//尺寸小的元素优先
-							if (getSize(element) < getSize(targetElement) && element.index > targetElement.index)
+							if (getSize(element["vo"]) < getSize(targetElement["vo"]) && element.index > targetElement.index)
 								targetElement = element;
 						}
 					}
 					
 					mdt.zoomElement(targetElement["vo"]);
-					
+						
+					history.push(targetElement["vo"]);
 					
 					//点击区域的最小尺寸页面 ＝ 当前页面
 					var nearPage:ICanvasLayout;//离点击区域最近的页面元素
@@ -92,7 +102,7 @@ package view.interact
 						else
 						{
 							//尺寸小的元素优先
-							if (getSize(element) < getSize(nearPage))
+							if (getSize(element["vo"]) < getSize(nearPage["vo"]))
 								nearPage = element;
 						}
 					}
@@ -103,19 +113,52 @@ package view.interact
 				else
 				{
 					mdt.zoomAuto();
+					clearHistory();
 				}
 				
+			}
+		}
+		
+		private function doubleClickHandler(evt:MouseEvent):void
+		{
+			if (enable)
+			{
+				if (history.length > 1) {
+					history.pop();
+					history.pop();
+				}
+				if (history.length > 1)
+				{
+					var current:ElementVO = history.pop();
+					while (history.length > 1 && (getSize(history[history.length - 1]) <= getSize(current)))
+						history.pop();
+					if (history.length)
+						mdt.zoomElement(history[history.length - 1]);
+					else
+						mdt.zoomAuto();
+				}
+				else
+				{
+					clearHistory();
+					mdt.zoomAuto();
+				}
 			}
 		}
 		
 		/**
 		 * 以最小尺寸为标准
 		 */		
-		private function getSize(element:ICanvasLayout):Number
+		private function getSize(element:ElementVO):Number
 		{
-			var w:Number = (element as ICanvasLayout).scaledWidth;
-			var h:Number = (element as ICanvasLayout).scaledHeight;
-			
+			if (element)
+			{
+				var w:Number = element.width  * element.scale;
+				var h:Number = element.height * element.scale;
+			}
+			else
+			{
+				w = h = 0;
+			}
 			return w * h;
 		}
 		
@@ -185,5 +228,12 @@ package view.interact
 			_enable = value;
 		}
 		
+		public function clearHistory():void
+		{
+			history.length = 0;
+		}
+		
+		
+		private var history:Array = [];
 	}
 }

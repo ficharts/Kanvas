@@ -111,17 +111,16 @@ package view.interact.zoomMove
 		 */		
 		private function updated():void
 		{
-			if (packer) packer.modCanvasPosition();
-			
-			control.mainUI.synBgImageToCanvas();
-			
-			control.uiMediator.flashTrek();
-			
 			if (isFlashing == false)
 			{
 				control.uiMediator.flashPlay();
 				isFlashing = true;
 			}
+			if (packer) packer.modCanvasPosition();
+			
+			control.mainUI.synBgImageToCanvas();
+			
+			control.uiMediator.flashTrek();
 		}
 		
 		/**

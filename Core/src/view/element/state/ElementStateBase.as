@@ -76,6 +76,11 @@ package view.element.state
 			element.dispatchEvent(new ElementEvent(ElementEvent.OUT_ELEMENT, element));
 		}
 		
+		public function doubleClick():void
+		{
+			element.dispatchEvent(new ElementEvent(ElementEvent.DOUBLE_CLICK, element));
+		}
+		
 		/**
 		 */		
 		public function startMove():void

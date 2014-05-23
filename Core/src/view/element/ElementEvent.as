@@ -93,6 +93,8 @@ package view.element
 		 */		
 		public static const OUT_ELEMENT:String = 'outElement'; 
 		
+		public static const DOUBLE_CLICK:String = "doubleClick";
+		
 		/**
 		 * 编辑文本 
 		 */		

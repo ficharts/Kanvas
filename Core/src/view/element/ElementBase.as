@@ -50,6 +50,8 @@ package view.element
 			
 			initState();
 			StageUtil.initApplication(this, init);
+			
+			doubleClickEnabled = true;
 		}
 		
 		/**

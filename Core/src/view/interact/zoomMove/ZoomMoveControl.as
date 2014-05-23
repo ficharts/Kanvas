@@ -101,18 +101,18 @@ package view.interact.zoomMove
 		
 		/**
 		 */		
-		public function zoomIn(isMouseCenter:Boolean = false):void
+		public function zoomIn(center:* = false):void
 		{
 			if (_enable)
-				zoomer.zoomIn(isMouseCenter);
+				zoomer.zoomIn(center);
 		}
 		
 		/**
 		 */		
-		public function zoomOut(isMouseCenter:Boolean = false):void
+		public function zoomOut(center:* = false):void
 		{
 			if (_enable)
-				zoomer.zoomOut(isMouseCenter);
+				zoomer.zoomOut(center);
 		}
 		
 		/**
@@ -142,6 +142,11 @@ package view.interact.zoomMove
 		public function get isTweening():Boolean
 		{
 			return flasher.isFlashing;
+		}
+		
+		public function set isTweening(value:Boolean):void
+		{
+			flasher.isFlashing = value;
 		}
 		
 		/**
