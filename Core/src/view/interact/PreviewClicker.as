@@ -141,11 +141,6 @@ package view.interact
 						
 					}
 					
-					if (targetElement)
-						mdt.zoomElement(targetElement["vo"]);
-					else
-						mdt.zoomAuto();
-					
 					//点击区域的最小尺寸页面 ＝ 当前页面
 					var nearPage:ICanvasLayout;//离点击区域最近的页面元素
 					pagesHit.sort(sortOnSize);
@@ -159,7 +154,17 @@ package view.interact
 					}
 					
 					if (nearPage)
+					{
 						mdt.setPageIndex((nearPage["vo"].pageVO).index);
+						mdt.zoomElement(nearPage["vo"]);
+					}
+					else
+					{
+						if (targetElement)
+							mdt.zoomElement(targetElement["vo"]);
+						else
+							mdt.zoomAuto();
+					}
 				}
 				else
 				{

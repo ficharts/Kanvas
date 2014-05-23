@@ -756,7 +756,7 @@ package
 		private var lastMouseX:Number;
 		private var lastMouseY:Number;
 		
-		private var thickness:Number = 10;
+		private var thickness:Number = 2.5;
 		private var color:uint = 0xeff20f;
 		private var drawAlpha:Number = 1;
 
