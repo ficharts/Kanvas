@@ -40,26 +40,24 @@ package view.interact
 		{
 			if (enable)
 			{
-				var element:ICanvasLayout;
-				var elements:Vector.<ICanvasLayout> = mdt.mainUI.canvas.elements;
-				elementsHit.length = pagesHit.length = 0;
-				
-				//先将碰撞的原件放到一起，然后在从里面挑选出最符合要求的
-				for each (element in elements)
+				if (mdt.pages.length && mdt.mainUI.stage.mouseX < 100 || mdt.mainUI.stage.mouseX > (mdt.mainUI.stage.stageWidth - 100))
 				{
-					var bound:Rectangle = LayoutUtil.getItemRect(mdt.mainUI.canvas, element);
-					if (bound.width > 20 && bound.height > 20 &&　bound.contains(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY))
-						
+					if (mdt.mainUI.stage.mouseX < 100)
+						mdt.pages.prev();
+					else
+						mdt.pages.next();
+				}
+				else
+				{
+					var element:ICanvasLayout;
+					var elements:Vector.<ICanvasLayout> = mdt.mainUI.canvas.elements;
+					elementsHit.length = pagesHit.length = 0;
+					
+					//先将碰撞的原件放到一起，然后在从里面挑选出最符合要求的
+					for each (element in elements)
 					{
-						elementsHit.push(element);
-						
-						if (element.isPage)
-							pagesHit.push(element);
-					}
-					/*var temp:Object = element;
-					try
-					{
-						if (DisplayObject(temp.shape).hitTestPoint(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY, true))
+						var bound:Rectangle = LayoutUtil.getItemRect(mdt.mainUI.canvas, element);
+						if (bound.width > 20 && bound.height > 20 &&　bound.contains(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY))
 						{
 							elementsHit.push(element);
 							
@@ -67,63 +65,28 @@ package view.interact
 								pagesHit.push(element);
 						}
 					}
-					catch (e:Error) {}*/
-				}
-				
-				//选出最适合缩放的原件
-				if (elementsHit.length)
-				{
-					elementsHit.sort(sortOnSize);
-					var targetElement:ICanvasLayout = elementsHit[0];
-					/*var targetElement:ICanvasLayout;
-					for each (element in elementsHit)
-					{
-						if (targetElement == null)
-						{
-							targetElement = element;
-						}
-						else
-						{
-							//尺寸小的元素优先
-							if (getSize(element["vo"]) < getSize(targetElement["vo"]) && element.index > targetElement.index)
-								targetElement = element;
-						}
-					}*/
 					
-					mdt.zoomElement(targetElement["vo"]);
+					//选出最适合缩放的原件
+					if (elementsHit.length)
+					{
+						elementsHit.sort(sortOnSize);
+						var targetElement:ICanvasLayout = elementsHit[0];
+						mdt.zoomElement(targetElement["vo"]);
 						
-					//点击区域的最小尺寸页面 ＝ 当前页面
-					if (pagesHit.length)
-					{
-						var nearPage:ICanvasLayout;//离点击区域最近的页面元素
-						pagesHit.sort(sortOnSize);
-						nearPage = pagesHit[0];
-						mdt.setPageIndex((nearPage["vo"].pageVO).index);
-					}
-					
-					
-					/*for each (element in pagesHit)
-					{
-						if (nearPage == null)
+						//点击区域的最小尺寸页面 ＝ 当前页面
+						if (pagesHit.length)
 						{
-							nearPage = element;
-						}
-						else
-						{
-							//尺寸小的元素优先
-							if (getSize(element["vo"]) < getSize(nearPage["vo"]))
-								nearPage = element;
+							var nearPage:ICanvasLayout;//离点击区域最近的页面元素
+							pagesHit.sort(sortOnSize);
+							nearPage = pagesHit[0];
+							mdt.setPageIndex((nearPage["vo"].pageVO).index);
 						}
 					}
-					
-					if (nearPage)
-						mdt.setPageIndex((nearPage["vo"].pageVO).index);*/
+					else
+					{
+						mdt.zoomAuto();
+					}
 				}
-				else
-				{
-					mdt.zoomAuto();
-				}
-				
 			}
 		}
 		

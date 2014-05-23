@@ -22,6 +22,8 @@ package landray.kp.mediator
 	import model.vo.BgVO;
 	import model.vo.ElementVO;
 	
+	import modules.pages.IPageManager;
+	
 	import util.LayoutUtil;
 	import util.img.ImgInsertEvent;
 	import util.img.ImgInsertor;
@@ -62,13 +64,6 @@ package landray.kp.mediator
 		public function zoomAuto():void
 		{
 			config.kp_internal::controller.zoomAuto();
-		}
-		
-		/**
-		 */		
-		public function get mainUI():MainUIBase
-		{
-			return this.viewer;
 		}
 		
 		/**
@@ -385,6 +380,17 @@ package landray.kp.mediator
 			lastHeight = thisHeight;
 		}
 		
+		/**
+		 */		
+		public function get mainUI():MainUIBase
+		{
+			return this.viewer;
+		}
+		
+		public function get pages():IPageManager
+		{
+			return config.kp_internal::pageManager;
+		}
 		
 		private function get background():BgVO
 		{

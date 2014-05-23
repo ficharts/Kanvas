@@ -17,6 +17,7 @@ package view.interact
 	import model.vo.ElementVO;
 	import model.vo.PageVO;
 	
+	import modules.pages.IPageManager;
 	import modules.pages.PageManager;
 	import modules.pages.Scene;
 	
@@ -564,6 +565,11 @@ package view.interact
 		public var mouseController:MouseController;
 		
 		public var pageManager:PageManager;
+		
+		public function get pages():IPageManager
+		{
+			return pageManager;
+		}
 		
 		/**
 		 * 属性控制器 , 快捷属性编辑, 工具条，型变控制都由其负责

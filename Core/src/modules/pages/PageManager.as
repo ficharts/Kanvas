@@ -36,7 +36,7 @@ package modules.pages
 	/**
 	 * 负责页面的创建，编辑，删除等
 	 */	
-	public final class PageManager extends EventDispatcher
+	public final class PageManager extends EventDispatcher implements IPageManager
 	{
 		/**
 		 * 
@@ -303,7 +303,7 @@ package modules.pages
 		/**
 		 * 获取总页数
 		 */
-		public function get length():int
+		public function get length():uint
 		{
 			return pageQuene.length;
 		}

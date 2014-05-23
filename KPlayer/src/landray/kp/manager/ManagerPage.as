@@ -9,6 +9,7 @@ package landray.kp.manager
 	
 	import model.vo.PageVO;
 	
+	import modules.pages.IPageManager;
 	import modules.pages.PageQuene;
 	import modules.pages.flash.FlashIn;
 	import modules.pages.flash.FlashOut;
@@ -18,7 +19,7 @@ package landray.kp.manager
 
 	/**
 	 */	
-	public final class ManagerPage
+	public final class ManagerPage implements IPageManager
 	{
 		public  static const instance:ManagerPage = new ManagerPage;
 		private static var   created :Boolean;
@@ -171,7 +172,7 @@ package landray.kp.manager
 		
 		/**
 		 */		
-		public function get length():int
+		public function get length():uint
 		{
 			return quene.length;
 		}
