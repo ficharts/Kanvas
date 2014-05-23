@@ -48,7 +48,8 @@ package view.interact
 				for each (element in elements)
 				{
 					var bound:Rectangle = LayoutUtil.getItemRect(mdt.mainUI.canvas, element);
-					if (bound.contains(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY))
+					if (bound.width > 20 && bound.height > 20 &&　bound.contains(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY))
+						
 					{
 						elementsHit.push(element);
 						
@@ -72,7 +73,9 @@ package view.interact
 				//选出最适合缩放的原件
 				if (elementsHit.length)
 				{
-					var targetElement:ICanvasLayout;
+					elementsHit.sort(sortOnSize);
+					var targetElement:ICanvasLayout = elementsHit[0];
+					/*var targetElement:ICanvasLayout;
 					for each (element in elementsHit)
 					{
 						if (targetElement == null)
@@ -85,15 +88,21 @@ package view.interact
 							if (getSize(element["vo"]) < getSize(targetElement["vo"]) && element.index > targetElement.index)
 								targetElement = element;
 						}
-					}
+					}*/
 					
 					mdt.zoomElement(targetElement["vo"]);
 						
-					history.push(targetElement["vo"]);
-					
 					//点击区域的最小尺寸页面 ＝ 当前页面
-					var nearPage:ICanvasLayout;//离点击区域最近的页面元素
-					for each (element in pagesHit)
+					if (pagesHit.length)
+					{
+						var nearPage:ICanvasLayout;//离点击区域最近的页面元素
+						pagesHit.sort(sortOnSize);
+						nearPage = pagesHit[0];
+						mdt.setPageIndex((nearPage["vo"].pageVO).index);
+					}
+					
+					
+					/*for each (element in pagesHit)
 					{
 						if (nearPage == null)
 						{
@@ -108,12 +117,11 @@ package view.interact
 					}
 					
 					if (nearPage)
-						mdt.setPageIndex((nearPage["vo"].pageVO).index);
+						mdt.setPageIndex((nearPage["vo"].pageVO).index);*/
 				}
 				else
 				{
 					mdt.zoomAuto();
-					clearHistory();
 				}
 				
 			}
@@ -123,7 +131,79 @@ package view.interact
 		{
 			if (enable)
 			{
-				if (history.length > 1) {
+				var element:ICanvasLayout;
+				var elements:Vector.<ICanvasLayout> = mdt.mainUI.canvas.elements;
+				elementsHit.length = pagesHit.length = 0;
+				
+				//先将碰撞的原件放到一起，然后在从里面挑选出最符合要求的
+				for each (element in elements)
+				{
+					var bound:Rectangle = LayoutUtil.getItemRect(mdt.mainUI.canvas, element);
+					if (bound.width > 20 && bound.height > 20 &&　bound.contains(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY))
+					{
+						elementsHit.push(element);
+						
+						if (element.isPage)
+							pagesHit.push(element);
+					}
+					/*var temp:Object = element;
+					try
+					{
+					if (DisplayObject(temp.shape).hitTestPoint(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY, true))
+					{
+					elementsHit.push(element);
+					
+					if (element.isPage)
+					pagesHit.push(element);
+					}
+					}
+					catch (e:Error) {}*/
+				}
+				//选出最适合缩放的原件
+				if (elementsHit.length)
+				{
+					elementsHit.sort(sortOnSize);
+					var targetElement:ICanvasLayout;
+					var screenSize:Number = mdt.mainUI.bound.width * mdt.mainUI.bound.height;
+					var multiple:Number = Math.pow(mdt.mainUI.canvas.scaleX, 2);
+					for each (element in elementsHit)
+					{
+						
+						//尺寸小的元素优先
+						if (getSize(element["vo"]) * multiple > screenSize)
+						{
+							targetElement = element;
+							break;
+						}
+						
+					}
+					
+					if (targetElement)
+						mdt.zoomElement(targetElement["vo"]);
+					else
+						mdt.zoomAuto();
+					
+					//点击区域的最小尺寸页面 ＝ 当前页面
+					var nearPage:ICanvasLayout;//离点击区域最近的页面元素
+					pagesHit.sort(sortOnSize);
+					for each (element in pagesHit)
+					{
+						if (getSize(element["vo"]) * multiple > screenSize)
+						{
+							nearPage = element;
+							break;
+						}
+					}
+					
+					if (nearPage)
+						mdt.setPageIndex((nearPage["vo"].pageVO).index);
+				}
+				else
+				{
+					mdt.zoomAuto();
+				}
+				
+				/*if (history.length > 1) {
 					history.pop();
 					history.pop();
 				}
@@ -141,7 +221,7 @@ package view.interact
 				{
 					clearHistory();
 					mdt.zoomAuto();
-				}
+				}*/
 			}
 		}
 		
@@ -231,6 +311,18 @@ package view.interact
 		public function clearHistory():void
 		{
 			history.length = 0;
+		}
+		
+		private function sortOnSize(a:Object, b:Object):int
+		{
+			var sizea:Number = getSize(a.vo);
+			var sizeb:Number = getSize(b.vo);
+			if (sizea < sizeb)
+				return -1;
+			else if (sizea == sizeb)
+				return 0;
+			else 
+				return 1;
 		}
 		
 		
