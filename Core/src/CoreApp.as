@@ -13,10 +13,12 @@ package
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.system.Security;
 	import flash.utils.ByteArray;
 	
 	import model.ConfigInitor;
 	import model.CoreFacade;
+	import model.DecForKvs;
 	import model.ElementProxy;
 	
 	import util.LayoutUtil;
@@ -33,7 +35,6 @@ package
 	import view.ui.Bubble;
 	import view.ui.MainUIBase;
 	import view.ui.ThumbManager;
-	import model.DecForKvs;
 
 	
 	[Event(name="ready", type="KVSEvent")]

@@ -374,7 +374,7 @@ package model
 			//匹配组合关系
 			for each(var groupElement:GroupElement in groupElements)
 			{
-				for each(item in groupElement.xmlData.children())
+				for each(item in groupElement.vo.xml.children())
 				{
 					element = temElementMap.getValue(item.@id.toString());		
 					element.toGroupState();
