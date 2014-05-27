@@ -105,7 +105,7 @@ package
 		{
 			super.kvsReadyHandler(evt);
 			
-			this.api = new APIForAIR(kvsCore);
+			this.api = new APIForAIR(kvsCore, this);
 			
 			save_up;
 			save_over;

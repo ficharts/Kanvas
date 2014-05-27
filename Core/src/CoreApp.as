@@ -17,6 +17,7 @@ package
 	
 	import model.ConfigInitor;
 	import model.CoreFacade;
+	import model.DecForKvs;
 	import model.ElementProxy;
 	
 	import util.LayoutUtil;
@@ -31,9 +32,9 @@ package
 	import view.elementSelector.ElementHover;
 	import view.ui.BgColorFlasher;
 	import view.ui.Bubble;
+	import view.ui.Interact;
 	import view.ui.MainUIBase;
 	import view.ui.ThumbManager;
-	import model.DecForKvs;
 
 	
 	[Event(name="ready", type="KVSEvent")]
@@ -541,6 +542,8 @@ package
 			addChild(autoAlignUI);
 			addChild(dragSlectUI);
 			
+			addChild(interact);
+			
 			// 文本编辑器
 			textEditor = TextEditor.instance;
 			textEditor.layoutTransformer = this.layoutTransformer;
@@ -662,6 +665,9 @@ package
 		 */	
 		public var autoAlignUI:Shape = new Shape;
 		
+		public var interact:Interact = new Interact;
+		
+		
 		
 		
 		//-------------------------------------------------------
@@ -713,6 +719,7 @@ package
 			stage.addEventListener(MouseEvent.MOUSE_UP, drawMouseUp);
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, drawMouseMove);
 			autoAlignUI.graphics.lineStyle(thickness, color, drawAlpha);
+			mouseStart = new Point(mouseX, mouseY);
 		}
 		
 		private function drawMouseMove(e:MouseEvent):void
@@ -746,8 +753,16 @@ package
 		
 		private function drawMouseUp(e:MouseEvent):void
 		{
+			var mouse:Point = new Point(mouseX, mouseY);
+			
+			if (mouseStart && mouse.x < 100 && mouse.y > (stage.stageHeight - 100) && Point.distance(mouse, mouseStart) < 5)
+			{
+				interact.show(0, (stage.stageHeight - 100), 100, 100);
+				prevDrawMode = false;
+			}
 			lastMouseX = NaN;
 			lastMouseY = NaN;
+			
 			removeEventListener(Event.ENTER_FRAME, drawEnterFrame);
 			stage.removeEventListener(MouseEvent.MOUSE_UP, drawMouseUp);
 			stage.removeEventListener(MouseEvent.MOUSE_MOVE, drawMouseMove);
@@ -755,6 +770,8 @@ package
 		
 		private var lastMouseX:Number;
 		private var lastMouseY:Number;
+		
+		private var mouseStart:Point;
 		
 		private var thickness:Number = 2.5;
 		private var color:uint = 0xeff20f;

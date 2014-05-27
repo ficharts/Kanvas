@@ -4,14 +4,18 @@ package view.interact
 	import com.kvs.ui.clickMove.IClickMove;
 	
 	import flash.display.DisplayObject;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
+	import flash.utils.Timer;
 	
 	import model.vo.ElementVO;
 	import model.vo.PageVO;
 	
 	import util.LayoutUtil;
 	
+	import view.interact.zoomMove.GestureControl;
 	import view.ui.ICanvasLayout;
 	import view.ui.IMainUIMediator;
 
@@ -38,14 +42,29 @@ package view.interact
 		 */		
 		public function clicked():void
 		{
-			if (enable)
+			if (enable && !GestureControl.gestureControl)
 			{
-				if (mdt.pages.length && mdt.mainUI.stage.mouseX < 100 || mdt.mainUI.stage.mouseX > (mdt.mainUI.stage.stageWidth - 100))
+				if (mdt.pages.length && mdt.mainUI.stage.mouseX < 150 || mdt.mainUI.stage.mouseX > (mdt.mainUI.stage.stageWidth - 150))
 				{
-					if (mdt.mainUI.stage.mouseX < 100)
-						mdt.pages.prev();
+					if (mdt.mainUI.stage.mouseX < 150)
+					{
+						if (mdt.mainUI.stage.mouseX > 100 || mdt.mainUI.stage.mouseY < (mdt.mainUI.stage.stageHeight - 100))
+						{
+							try{
+								Object(mdt.mainUI).interact.show(0, 0, 150, mdt.mainUI.stage.stageHeight);
+							} catch (e:Error) { }
+							callLater(mdt.pages.prev);
+							//mdt.pages.prev();
+						}
+					}
 					else
-						mdt.pages.next();
+					{
+						try{
+							Object(mdt.mainUI).interact.show((mdt.mainUI.stage.stageWidth - 150), 0, 150, mdt.mainUI.stage.stageHeight);
+						} catch (e:Error) { }
+						callLater(mdt.pages.next);
+						//mdt.pages.next();
+					}
 				}
 				else
 				{
@@ -67,28 +86,32 @@ package view.interact
 						}
 					}
 					
-					//选出最适合缩放的原件
-					if (elementsHit.length)
-					{
-						elementsHit.sort(sortOnSize);
-						var targetElement:ICanvasLayout = elementsHit[0];
-						
-						//点击区域的最小尺寸页面 ＝ 当前页面
-						if (pagesHit.length)
-						{
-							//离点击区域最近的页面元素
-							pagesHit.sort(sortOnSize);
-							var nearPage:ICanvasLayout = pagesHit[0];
-							mdt.setPageIndex((nearPage["vo"].pageVO).index);
-							//mdt.zoomElement(nearPage["vo"]);
-						}
-						else
-						{
-							//mdt.zoomElement(targetElement["vo"]);
-						}
-						mdt.zoomElement(targetElement["vo"]);
-					}
+					callLater(viewHit);
 				}
+			}
+		}
+		
+		private function viewHit():void
+		{
+			if (elementsHit.length)
+			{
+				elementsHit.sort(sortOnSize);
+				var targetElement:ICanvasLayout = elementsHit[0];
+				
+				//点击区域的最小尺寸页面 ＝ 当前页面
+				if (pagesHit.length)
+				{
+					//离点击区域最近的页面元素
+					pagesHit.sort(sortOnSize);
+					var nearPage:ICanvasLayout = pagesHit[0];
+					mdt.setPageIndex((nearPage["vo"].pageVO).index);
+					//mdt.zoomElement(nearPage["vo"]);
+				}
+				else
+				{
+					//mdt.zoomElement(targetElement["vo"]);
+				}
+				mdt.zoomElement(targetElement["vo"]);
 			}
 		}
 		
@@ -96,6 +119,7 @@ package view.interact
 		{
 			if (enable)
 			{
+				callCancel();
 				var element:ICanvasLayout;
 				var elements:Vector.<ICanvasLayout> = mdt.mainUI.canvas.elements;
 				elementsHit.length = pagesHit.length = 0;
@@ -162,6 +186,40 @@ package view.interact
 				}
 			}
 		}
+		
+		private function callLater(op:Function):void
+		{
+			if (!timer)
+			{
+				operation = op;
+				timer = new Timer(500, 1);
+				timer.addEventListener(TimerEvent.TIMER_COMPLETE, timerComplete);
+				timer.start();
+			}
+		}
+		
+		private function callCancel():void
+		{
+			if (timer)
+			{
+				timer.removeEventListener(TimerEvent.TIMER_COMPLETE, timerComplete);
+				timer = null;
+				operation = null;
+			}
+		}
+		
+		private function timerComplete(e:Event):void
+		{
+			timer.removeEventListener(TimerEvent.TIMER_COMPLETE, timerComplete);
+			timer = null;
+			if (operation != null) 
+			{
+				operation();
+			}
+		}
+		
+		private var timer:Timer;
+		
 		
 		/**
 		 * 以最小尺寸为标准
@@ -265,5 +323,7 @@ package view.interact
 		
 		
 		private var history:Array = [];
+		
+		private var operation:Function;
 	}
 }

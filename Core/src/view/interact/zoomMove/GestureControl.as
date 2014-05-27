@@ -1,15 +1,12 @@
 package view.interact.zoomMove
 {
-	import com.greensock.easing.Linear;
-	import com.kvs.utils.MathUtil;
 	import com.kvs.utils.PointUtil;
 	
-	import flash.events.TouchEvent;
 	import flash.geom.Point;
-	import flash.ui.Multitouch;
-	import flash.ui.MultitouchInputMode;
 	
-	import modules.pages.PageManager;
+	import org.gestouch.core.gestouch_internal;
+	import org.gestouch.events.GestureEvent;
+	import org.gestouch.gestures.TransformGesture;
 	
 	import util.LayoutUtil;
 	
@@ -19,7 +16,7 @@ package view.interact.zoomMove
 	
 	public final class GestureControl
 	{
-		public function GestureControl($mediator:IMainUIMediator, $control:ZoomMoveControl, $page:PageManager)
+		public function GestureControl($mediator:IMainUIMediator, $control:ZoomMoveControl)
 		{
 			mediator = $mediator;
 			mainUI = mediator.mainUI;
@@ -27,204 +24,86 @@ package view.interact.zoomMove
 			
 			control = $control;
 			
-			page = $page;
-			
-			
-			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
-			
-			mainUI.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
-			mainUI.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
-			mainUI.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
-			
+			gesture = new TransformGesture(mainUI);
+			gesture.addEventListener(GestureEvent.GESTURE_BEGAN, onBegin);
+			gesture.addEventListener(GestureEvent.GESTURE_POSSIBLE, onPossible);
 		}
 		
-		private function onTouchBegin(e:TouchEvent):void
+		private function onBegin(e:GestureEvent):void
 		{
-			//trace("onTouchBegin: ", e.touchPointID, touchesCount + 1);
-			//update touches
-			if(!touchesMap[e.touchPointID])
+			trace("onBegin")
+			gesture.addEventListener(GestureEvent.GESTURE_CHANGED, onChange);
+			gesture.addEventListener(GestureEvent.GESTURE_POSSIBLE, onPossible);
+		}
+		
+		private function onPossible(e:GestureEvent):void
+		{
+			gesture.removeEventListener(GestureEvent.GESTURE_CHANGED, onChange);
+			gesture.removeEventListener(GestureEvent.GESTURE_POSSIBLE, onPossible);
+			trace("onEnd")
+			if (started)
 			{
-				var touch:Touch = new Touch;
-				touch.id = e.touchPointID;
-				touch.location.x = e.stageX;
-				touch.location.y = e.stageY;
-				touchesMap[e.touchPointID] = touch;
-				touchesCount++;
-				updateCenter();
+				setCanvasInteract(true);
+				started = false;
 			}
-			if(!enabled) return;
-			if (touchesCount > 1)
+		}
+		
+		private function onChange(e:GestureEvent):void
+		{
+			if (e.newState.gestouch_internal::isEndState)
 			{
-				//disable mouse interact
-				//trace("onTouchBegin: disable mouse interact");
-				setCanvasInteract(false);
-				if (touchesCount == 2)
+				gesture.removeEventListener(GestureEvent.GESTURE_CHANGED, onChange);
+				gesture.removeEventListener(GestureEvent.GESTURE_POSSIBLE, onPossible);
+				setCanvasInteract(true);
+				started = false;
+			}
+			else
+			{
+				gestureControl = (gesture.touchesCount == 2);
+				if (gesture.touchesCount == 2)
 				{
-					//scale rotate mode
-					//trace("onTouchBegin: scale rotate mode");
-					recordStartCanvasLayout();
+					if(!started)
+					{
+						started = true;
+						setCanvasInteract(false);
+						canvasCenter = LayoutUtil.stagePointToElementPoint(gesture.location.x, gesture.location.y, canvas);
+						offsetScale = canvas.scaleX;
+						offsetRotation = canvas.rotation;
+					}
+					else
+					{
+						offsetScale *= gesture.scale;
+						offsetRotation += gesture.rotation;
+						
+						//canvas.scaleX = canvas.scaleY = offsetScale;
+						
+						var temp:Point = canvasCenter.clone();
+						PointUtil.multiply(temp, offsetScale);
+						//PointUtil.rotate(temp, MathUtil.angleToRadian(r));
+						//canvas.x = gesture.location.x - temp.x;
+						//canvas.y = gesture.location.y - temp.y;
+						control.zoomRotateMoveTo(offsetScale, canvas.rotation, gesture.location.x - temp.x, gesture.location.y - temp.y, null, 0);
+					}
 				}
 				else
-				{
-					//swip mode
-					//trace("onTouchBegin: swipe mode");
-					return;
-					startSwipe = center.clone();
-				}
-			}
-		}
-		
-		private function onTouchMove(e:TouchEvent):void
-		{
-			//trace("onTouchMove: ", e.touchPointID, touchesCount);
-			//update touches
-			if (touchesMap[e.touchPointID])
-			{
-				var touch:Touch = touchesMap[e.touchPointID];
-				touch.prevLocation.setTo(touch.location.x, touch.location.y);
-				touch.location.x = e.stageX;
-				touch.location.y = e.stageY;
-				updateCenter();
-			}
-			if(!enabled) return;
-			if (touchesCount == 2)
-			{
-				//scale rotate mode
-				//trace("onTouchMove: scale rotate mode");
-				var touches:Vector.<Touch> = new Vector.<Touch>;
-				for each(touch in touchesMap)
-					touches[touches.length] = touch;
-				
-				var currtVector:Point = touches[1].location.subtract(touches[0].location);
-				//CoreUtil.clear();
-				//CoreUtil.drawLine(0x0000FF, touches[1].prevLocation, touches[0].prevLocation);
-				//CoreUtil.drawLine(0xFF0000, touches[1].location, touches[0].location);
-				var scale:Number = currtVector.length / startVector.length;
-				//trace("onTouchMove: ", scale)
-				var s:Number = startScale * scale;
-				var r:Number = startRotation + MathUtil.radianToAngle(Math.atan2(currtVector.y, currtVector.x) - Math.atan2(startVector.y, startVector.x));
-				//move canvasCenter to new center of touches
-				var temp:Point = canvasCenter.clone();
-				PointUtil.multiply(temp, s);
-				PointUtil.rotate(temp, MathUtil.angleToRadian(r));
-				var x:Number = center.x - temp.x;
-				var y:Number = center.y - temp.y;
-				canvas.x = x;
-				canvas.y = y;
-				canvas.scaleX = canvas.scaleY = s;
-				canvas.rotation = r;
-				//control.zoomRotateMoveTo(s, r, x, y, Linear.easeOut, .15);
-			}
-			else if (touchesCount > 2)
-			{
-				//swipe mode
-				return;
-				if(!swipePageStared)
-				{
-					setCanvasInteract(false);
-					if(!startSwipe)
-						startSwipe = center.clone();
-					var swipe:Point = center.subtract(startSwipe);
-					//trace("onTouchMove: swipe mode", swipe);
-					if (swipe.x >= 5 || swipe.x <= -5)
-					{
-						enabled = false;
-						if (swipe.x < 0) 
-							page.next();
-						else
-							page.prev();
-						startSwipe = null;
-						swipePageStared = true;
-					}
-					else if (swipe.y >= 5 || swipe.y <= -5)
-					{
-						enabled = false;
-						if (swipe.y < 0)
-							page.next();
-						else
-							page.prev();
-						startSwipe = null;
-						swipePageStared = true;
-					}
-				}
-			}
-		}
-		
-		private function onTouchEnd(e:TouchEvent):void
-		{
-			//trace("onTouchEnd:", e.touchPointID, touchesCount - 1)
-			//update touches
-			if (touchesMap[e.touchPointID])
-			{
-				delete touchesMap[e.touchPointID];
-				touchesCount--;
-				updateCenter();
-			}
-			//trace("onTouchEnd: enabled", enabled)
-			if(!enabled)
-			{
-				swipePageStared = false;
-				return;
-			}
-			if (touchesCount > 2)
-			{
-				return;
-				startSwipe = center.clone();
-			}
-			else if (touchesCount == 2)
-			{
-				//from swipe mode to scale rotate mode
-				//trace("onTouchEnd: from swipe to scale rotate mode");
-				recordStartCanvasLayout();
-			}
-			else if (touchesCount <= 1)
-			{
-				//use mouse interact
-				
-				if(!swipePageStared)
 				{
 					setCanvasInteract(true);
-				}
-				else
-				{
-					swipePageStared = false;
+					started = false;
 				}
 			}
 		}
 		
-		private function updateCenter():void
-		{
-			center.x = center.y = 0;
-			for each (var touch:Touch in touchesMap)
-			{
-				center.x += touch.location.x;
-				center.y += touch.location.y;
-			}
-			center.x /= touchesCount;
-			center.y /= touchesCount;
-		}
-		
-		/**
-		 * 记录变换前的canvas起始相对于手势的中心位置。
-		 */
-		private function recordStartCanvasLayout():void
-		{
-			canvasCenter = LayoutUtil.stagePointToElementPoint(center.x, center.y, canvas);
-			startScale = canvas.scaleX;
-			startRotation = canvas.rotation;
-			
-			var touches:Vector.<Touch> = new Vector.<Touch>;
-			for each(var touch:Touch in touchesMap)
-				touches[touches.length] = touch;
-			startVector = touches[1].location.subtract(touches[0].location);
-		}
+		private var gesture:TransformGesture;
+		private var started:Boolean;
+		private var offsetScale:Number;
+		private var offsetRotation:Number;
 		
 		private function setCanvasInteract(value:Boolean):void
 		{
-			//trace("setCanvasInteract:", value);
-			canvasInterract = value;
-			if (canvasInterract)
+			if (value)
 			{
+				gesture.reset();
+				gestureControl = false;
 				control.enableBGInteract();
 				control.mainUI.curScreenState.enableCanvas();
 			}
@@ -234,9 +113,7 @@ package view.interact.zoomMove
 				control.mainUI.curScreenState.disableCanvas();
 			}
 		}
-		private var canvasInterract:Boolean = true;
 		
-		public var enabled:Boolean = true;
 		
 		private var mainUI:MainUIBase;
 		
@@ -246,48 +123,8 @@ package view.interact.zoomMove
 		
 		private var control:ZoomMoveControl;
 		
-		/**
-		 * 当前手势的中心点
-		 */
-		private var center:Point = new Point;
-		
-		/**
-		 * 上一次移动的手势中心点
-		 */
-		
-		/**
-		 * 开始scale,rotate时手势中心点对应的canvas画布上的点
-		 */
 		private var canvasCenter:Point;
 		
-		private var startScale:Number;
-		
-		private var startRotation:Number;
-		
-		private var startVector:Point;
-		
-		private var startSwipe:Point = new Point;
-		
-		private var swipePageStared:Boolean;
-		
-		/**
-		 * 存储触控点的字典
-		 */
-		private var touchesMap:Object = {};
-		
-		/**
-		 * 当前触摸点的数目
-		 */
-		private var touchesCount:uint = 0;
-		
-		private var page:PageManager;
+		public static var gestureControl:Boolean = false;
 	}
-}
-import flash.geom.Point;
-
-class Touch
-{
-	public var id:uint;
-	public var location:Point = new Point;
-	public var prevLocation:Point = new Point;
 }

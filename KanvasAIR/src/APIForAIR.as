@@ -26,17 +26,19 @@ package
 	 */	
 	public class APIForAIR extends KanvasAPI
 	{
-		public function APIForAIR(core:CoreApp)
+		public function APIForAIR(core:CoreApp, $kanvasAIR:KanvasAIR)
 		{
 			super(core);
 			
-			
+			kanvasAIR = $kanvasAIR;
 		}		
 		
 		/**
 		 * 当前文件
 		 */		
 		public var file:File;
+		
+		private var kanvasAIR:KanvasAIR;
 		
 		/**
 		 * 打开文件 
@@ -128,6 +130,11 @@ package
 		
 		private function readFilePEZ():void
 		{
+			
+			
+			
+			
+			
 			/*var reader:ZipFileReader = new ZipFileReader();
 			reader.open(file);
 			
@@ -211,7 +218,7 @@ package
 		 */		
 		private function cancelSelectFile(evt:Event):void
 		{
-			(core as KanvasAIR).saveBtn.selected = false;
+			kanvasAIR.saveBtn.selected = false;
 			file = null;
 		}
 		
@@ -275,14 +282,14 @@ package
 				
 				writer.close();
 				PerformaceTest.end("save");
+				
 			}
 			catch (e:Error)
 			{
 				Bubble.show("保存数据出错，请重试！");
 			}
 			
-			writer.close();
-			PerformaceTest.end("save");
+			
 			return;
 			
 			/*var pageData:ByteArray = core.thumbManager.getPageBytes(960, 720);
