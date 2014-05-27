@@ -64,36 +64,48 @@ package view.interact.zoomMove
 				MathUtil.equals(canvas.y, canvasTargetY))
 				return;
 			
-			if (Math.max(canvasTargetScale / canvas.scaleX, canvas.scaleX / canvasTargetScale) > 1.0005)
-				control.mainUI.curScreenState.disableCanvas();
-			
-			if(!easeFlash)
-				easeFlash = Cubic.easeInOut;
-			
-			if(!packer) 
-				packer = new CanvasLayoutPacker(control.mainUI);
-			else
-				TweenMax.killTweensOf(packer, false);
-			
-			canvasTargetRotation = MathUtil.modTargetRotation(packer.rotation, canvasTargetRotation);
-			
-			var canvasMiddleScale:Number = packer.modCanvasPositionStart(canvasTargetX, canvasTargetY, canvasTargetScale, canvasTargetRotation);
-			
-			if (isNaN(time))
+			if (time == 0)
 			{
-				var timeScale:Number = getScalePlus(canvasMiddleScale);
-				var timeRotation:Number = Math.abs(canvasTargetRotation - packer.rotation) / control.speedRotation;
-				time = Math.min(Math.max(timeScale, timeRotation, control.minTweenTime), control.maxTweenTime);
+				canvas.scaleX = canvas.scaleY = canvasTargetScale;
+				canvas.rotation = canvasTargetRotation;
+				canvas.x = canvasTargetX;
+				canvas.y = canvasTargetY;
+				control.mainUI.synBgImageToCanvas();
+				updated();
+				finishZoom();
 			}
-			
-			TweenMax.to(packer, time, {
-				progress:1, 
-				rotation:canvasTargetRotation, 
-				ease:easeFlash, 
-				onUpdate:updated, 
-				onComplete:finishZoom
-			});
-			
+			else
+			{
+				if (Math.max(canvasTargetScale / canvas.scaleX, canvas.scaleX / canvasTargetScale) > 1.0005)
+					control.mainUI.curScreenState.disableCanvas();
+				
+				if(!easeFlash)
+					easeFlash = Cubic.easeInOut;
+				
+				if(!packer) 
+					packer = new CanvasLayoutPacker(control.mainUI);
+				else
+					TweenMax.killTweensOf(packer, false);
+				
+				canvasTargetRotation = MathUtil.modTargetRotation(packer.rotation, canvasTargetRotation);
+				
+				var canvasMiddleScale:Number = packer.modCanvasPositionStart(canvasTargetX, canvasTargetY, canvasTargetScale, canvasTargetRotation);
+				
+				if (isNaN(time))
+				{
+					var timeScale:Number = getScalePlus(canvasMiddleScale);
+					var timeRotation:Number = Math.abs(canvasTargetRotation - packer.rotation) / control.speedRotation;
+					time = Math.min(Math.max(timeScale, timeRotation, control.minTweenTime), control.maxTweenTime);
+				}
+				
+				TweenMax.to(packer, time, {
+					progress:1, 
+					rotation:canvasTargetRotation, 
+					ease:easeFlash, 
+					onUpdate:updated, 
+					onComplete:finishZoom
+				});
+			}
 		}
 		
 		/**

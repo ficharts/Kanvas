@@ -601,7 +601,7 @@ package view.interact
 			
 			pageManager = new PageManager(this);
 			
-			gestureControl = new GestureControl(this, zoomMoveControl, pageManager);
+			gestureControl = new GestureControl(this, zoomMoveControl);
 			
 			previewCliker = new PreviewClicker(this);
 			elementsInteractControl = new ElementsInteractor(coreApp, this);
@@ -858,8 +858,6 @@ package view.interact
 		{
 			mainUI.curScreenState.enableCanvas();
 			zoomMoveControl.enableBGInteract();
-			gestureControl.enabled = true;
-			
 			
 			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
 			for each (var element:ElementBase in elements)

@@ -168,6 +168,8 @@ package view.interact.zoomMove
 		
 		public var plusScale:Number = .5;
 		
+		public var gestureControl:Boolean = false;
+		
 		/**
 		 * 默认不管画布中的元素有多大都自动对焦， 关闭后则
 		 * 

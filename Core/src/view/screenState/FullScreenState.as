@@ -1,5 +1,6 @@
 package view.screenState
 {
+	import view.ui.IMainUIMediator;
 	import view.ui.MainUIBase;
 
 	/**
@@ -16,6 +17,15 @@ package view.screenState
 		override public function toNormalState():void
 		{
 			mainUI.curScreenState = mainUI.normalState;
+		}
+		
+		override public function bgClicked(mediator:IMainUIMediator):void
+		{
+			if (mediator.mainUI.stage.mouseX < 100 && mediator.mainUI.stage.mouseY > (mediator.mainUI.stage.stageHeight - 100))
+			{
+				CoreApp(mediator.mainUI).interact.show(0, (mediator.mainUI.stage.stageHeight - 100), 100, 100);
+				CoreApp(mediator.mainUI).prevDrawMode = true;
+			}
 		}
 	}
 }
