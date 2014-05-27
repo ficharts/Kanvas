@@ -542,6 +542,7 @@ package
 			//自动对齐划线的UI
 			addChild(autoAlignUI);
 			addChild(dragSlectUI);
+			addChild(writeShape);
 			
 			addChild(interact);
 			
@@ -666,6 +667,12 @@ package
 		 */	
 		public var autoAlignUI:Shape = new Shape;
 		
+		/**
+		 */		
+		public var writeShape:Shape = new Shape;
+		
+		/**
+		 */		
 		public var interact:Interact = new Interact;
 		
 		
@@ -688,12 +695,12 @@ package
 			{
 				__prevDrawMode = value;
 				mouseEnabled = mouseChildren = !value;
-				autoAlignUI.graphics.clear();
+				writeShape.graphics.clear();
 				if (value)
 				{
-					autoAlignUI.graphics.beginFill(0, 0);
-					autoAlignUI.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
-					autoAlignUI.graphics.endFill();
+					writeShape.graphics.beginFill(0, 0);
+					writeShape.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+					writeShape.graphics.endFill();
 					stage.addEventListener(MouseEvent.MOUSE_DOWN, drawMouseDown);
 				}
 				else
@@ -709,7 +716,7 @@ package
 		{
 			if (prevDrawMode)
 			{
-				autoAlignUI.graphics.clear();
+				writeShape.graphics.clear();
 				drawMouseUp(null);
 			}
 		}
@@ -719,7 +726,7 @@ package
 			addEventListener(Event.ENTER_FRAME, drawEnterFrame);
 			stage.addEventListener(MouseEvent.MOUSE_UP, drawMouseUp);
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, drawMouseMove);
-			autoAlignUI.graphics.lineStyle(thickness, color, drawAlpha);
+			writeShape.graphics.lineStyle(thickness, color, drawAlpha);
 			mouseStart = new Point(mouseX, mouseY);
 		}
 		
@@ -730,13 +737,14 @@ package
 			{
 				if (!isNaN(lastMouseX) && !isNaN(lastMouseY))
 				{
-					autoAlignUI.graphics.moveTo(lastMouseX, lastMouseY);
-					autoAlignUI.graphics.lineTo(mouseX, mouseY);
+					writeShape.graphics.moveTo(lastMouseX, lastMouseY);
+					writeShape.graphics.lineTo(mouseX, mouseY);
 				}
 				lastMouseX = mouseX;
 				lastMouseY = mouseY;
 			}
 		}
+		
 		private function drawEnterFrame(e:Event):void
 		{
 			if (lastMouseX!= mouseX || 
@@ -744,8 +752,8 @@ package
 			{
 				if (!isNaN(lastMouseX) && !isNaN(lastMouseY))
 				{
-					autoAlignUI.graphics.moveTo(lastMouseX, lastMouseY);
-					autoAlignUI.graphics.lineTo(mouseX, mouseY);
+					writeShape.graphics.moveTo(lastMouseX, lastMouseY);
+					writeShape.graphics.lineTo(mouseX, mouseY);
 				}
 				lastMouseX = mouseX;
 				lastMouseY = mouseY;
@@ -775,7 +783,14 @@ package
 		private var mouseStart:Point;
 		
 		private var thickness:Number = 2.5;
-		private var color:uint = 0xeff20f;
+		
+		/**
+		 * 画笔颜色
+		 */		
+		private var color:uint = 0x000000;
+		
+		/**
+		 */		
 		private var drawAlpha:Number = 1;
 
 		
