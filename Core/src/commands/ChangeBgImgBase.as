@@ -58,6 +58,7 @@ package commands
 			{
 				for each (var vo:PageVO in CoreFacade.coreMediator.pageManager.pages)
 				CoreFacade.coreMediator.pageManager.registUpdateThumbVO(vo);
+				
 				v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
 			}
 			else

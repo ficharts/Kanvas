@@ -139,6 +139,8 @@ package model
 			ElementCreator.registerElement('text', TextEditField, TextVO);
 			
 			ElementCreator.registerElement('img', ImgElement, ImgVO);
+			ElementCreator.registerElement('image', ImgElement, ImgVO);
+			
 			ElementCreator.registerElement('hotspot', HotspotElement, ElementVO);
 			ElementCreator.registerElement('group', GroupElement, GroupVO);
 			ElementCreator.registerElement('dashRect', DashRect, ShapeVO);

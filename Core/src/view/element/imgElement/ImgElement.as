@@ -25,7 +25,7 @@ package view.element.imgElement
 		public function ImgElement(vo:ImgVO)
 		{
 			super(vo);
-			vo.xml = <img/>;
+			vo.xml = <image/>;
 			
 			autoGroupChangable = false;
 			

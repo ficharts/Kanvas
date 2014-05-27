@@ -31,6 +31,7 @@ package model.vo
 			xml = super.exportData();
 			xml.@url = url;
 			xml.@imgID = imgID;
+			
 			return xml;
 		}
 		

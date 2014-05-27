@@ -550,6 +550,11 @@ package model
 			bgVO.imgData = evt.bitmapData;
 			CoreFacade.coreMediator.coreApp.drawBGImg(evt.bitmapData);
 			coreApp.bgImgUpdated(evt.bitmapData);
+			
+			for each (var vo:PageVO in CoreFacade.coreMediator.pageManager.pages)
+				CoreFacade.coreMediator.pageManager.registUpdateThumbVO(vo);
+				
+			CoreFacade.coreMediator.pageManager.refreshVOThumbs();
 		}
 		
 		/**

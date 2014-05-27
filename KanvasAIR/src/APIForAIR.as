@@ -104,7 +104,6 @@ package
 			reader.close();
 			PerformaceTest.end("文件解压缩结束");
 			
-			
 			PerformaceTest.start("解析xml");
 			this.setXMLData(xml);
 			
@@ -113,14 +112,17 @@ package
 			for each (var element:ElementBase in CoreFacade.coreProxy.elements)
 			{
 				if (element is ImgElement)
-					imgIDsInXML.push((element as ImgElement).imgVO.imgID);
+					imgIDsInXML.push((element as ImgElement).imgVO.imgID.toString());
 			}
 			
+			//不能忘记背景图
+			imgIDsInXML.push(CoreFacade.coreProxy.bgVO.imgID.toString());
+			
 			//如果数据中的图片id不存在于xml中，则说明此图片是多余图片，删除
-			for each (var id:uint in imgIDsInKvs)
+			for each (var id:String in imgIDsInKvs)
 			{
 				if (imgIDsInXML.indexOf(id) == - 1)
-					ImgLib.unRegister(id);
+					ImgLib.unRegister(uint(id));
 			}
 			
 			PerformaceTest.end("xml解析结束");

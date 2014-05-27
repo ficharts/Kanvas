@@ -72,6 +72,8 @@ package commands
 			
 		}
 		
+		/**
+		 */		
 		private function imgLoaded(evt:Event):void
 		{
 			if (handler != null)
