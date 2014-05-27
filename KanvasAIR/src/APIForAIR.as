@@ -250,6 +250,8 @@ package
 				
 				// file info
 				var fileData:ByteArray = new ByteArray();
+				
+				
 				fileData.writeUTFBytes(this.getXMLData());
 				writer.addBytes(fileData,"kvs.xml");
 				//fileData.clear();
@@ -289,7 +291,6 @@ package
 				Bubble.show("保存数据出错，请重试！");
 			}
 			
-			
 			return;
 			
 			/*var pageData:ByteArray = core.thumbManager.getPageBytes(960, 720);
@@ -310,9 +311,6 @@ package
 		private function fileSaved(evt:Event):void
 		{
 			isSaving = false;
-			
-			readFileKVS();
-			PerformaceTest.end("save");
 		}
 		
 		/**

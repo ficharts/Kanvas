@@ -13,6 +13,7 @@ package
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.system.Security;
 	import flash.utils.ByteArray;
 	
 	import model.ConfigInitor;

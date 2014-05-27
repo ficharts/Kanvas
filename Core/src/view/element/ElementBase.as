@@ -72,10 +72,6 @@ package view.element
 			return vo.exportData();
 		}
 		
-		/**
-		 * 数据导出时用到，将VO的各项属性转换为XML数据
-		 */		
-		public var xmlData:XML;
 		
 		
 		
