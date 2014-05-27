@@ -59,13 +59,36 @@ package view.ui
 			{
 				var scale:Number = ((vw / vh) > (cw / ch)) ? vh / ch : vw / cw;
 				var rotation:Number = 0;
+				var radian  :Number = MathUtil.angleToRadian(rotation);
+				var cos:Number = Math.cos(radian);
+				var sin:Number = Math.sin(radian);
 				var tp:Point = new Point(rect.x, rect.y);
 				LayoutUtil.convertPointCanvas2Stage(tp, -(vw - cw * scale) * .5, -(vh - ch * scale) * .5, scale, rotation);
-				canvas.toShotcutState(-tp.x, -tp.y, scale, 0);
+				
+				var offsetX:Number = .5 * (w - core.stage.stageWidth);
+				var offsetY:Number = .5 * (h - core.stage.stageHeight);
+				
+				tp.offset(offsetX, offsetY);
+				rect = new Rectangle(-offsetX, -offsetY, w, h);
+				canvas.toShotcutState(-tp.x, -tp.y, scale, 0, rect);
 				core.synBgImageToCanvas();
-				var bmd:BitmapData = BitmapUtil.drawWithSize(canvas, vw, vh, false, CoreFacade.coreProxy.bgColor);
+				
+				var mat:Matrix = new Matrix;
+				mat.scale(core.bgImageCanvas.scaleX, core.bgImageCanvas.scaleY);
+				mat.rotate(core.bgImageCanvas.rotation);
+				mat.translate(core.bgImageCanvas.x +　offsetX, core.bgImageCanvas.y + offsetY);
+				var bg:BitmapData = BitmapUtil.drawWithSize(core.bgImageCanvas, w, h, false, CoreFacade.coreProxy.bgColor, mat);
+				
+				mat = new Matrix;
+				mat.translate(offsetX, offsetY);
+				var im:BitmapData = BitmapUtil.drawWithSize(canvas, vw, vh, true, 0, mat);
+				
 				canvas.toPreviewState();
 				core.synBgImageToCanvas();
+				
+				var bmd:BitmapData = new BitmapData(w, h, false, CoreFacade.coreProxy.bgColor);
+				bmd.draw(bg, null, null, null, null, true);
+				bmd.draw(im, null, null, null, null, true);
 			}
 			else
 			{

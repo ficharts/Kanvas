@@ -292,9 +292,18 @@ package landray.kp.mediator
 		 */
 		kp_internal function setBackground(value:BgVO):void
 		{
-			loader = new ImgInsertor;
-			loader.addEventListener(ImgInsertEvent.IMG_LOADED, loaded, false, 0, true);
-			loader.loadImgBytes(CoreUtil.imageLibGetData(value.imgID));
+			if (CoreUtil.imageLibHasData(value.imgID))
+			{
+				loader = new ImgInsertor;
+				loader.addEventListener(ImgInsertEvent.IMG_LOADED, loaded, false, 0, true);
+				loader.loadImgBytes(CoreUtil.imageLibGetData(value.imgID));
+			}
+			else if (CoreUtil.ifHasText(value.imgURL))
+			{
+				loader = new ImgInsertor;
+				loader.addEventListener(ImgInsertEvent.IMG_LOADED, loaded, false, 0, true);
+				loader.loadImg(value.imgURL);
+			}
 		}
 		
 		/**

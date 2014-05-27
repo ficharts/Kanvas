@@ -477,13 +477,9 @@ package modules.pages
 			mat.translate(offsetX, offsetY);
 			var im:BitmapData = BitmapUtil.drawWithSize(mainUI.canvas, w, h, true, 0, mat, smooth);
 			
-			var sp:Sprite = new Sprite;
-			sp.addChild(new Bitmap(bg));
-			sp.addChild(new Bitmap(im));
-			//mainUI.parent.addChild(sp);
-			
 			var bmd:BitmapData = new BitmapData(w, h, false, bgColor);
-			bmd.draw(sp, null, null, null, null, true);
+			bmd.draw(bg, null, null, null, null, true);
+			bmd.draw(im, null, null, null, null, true);
 			
 			mainUI.canvas.toPreviewState();
 			mainUI.synBgImageToCanvas();
