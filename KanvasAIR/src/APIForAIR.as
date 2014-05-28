@@ -31,7 +31,21 @@ package
 			super(core);
 			
 			kanvasAIR = $kanvasAIR;
-		}		
+			
+			core.stage.nativeWindow.addEventListener(Event.CLOSING,closing);
+		}	
+		
+		/**
+		 */		
+		private function closing(evt:Event):void
+		{
+			if (isSaving)
+			{
+				evt.preventDefault();
+				
+				Bubble.show("文档保存中，请稍后关闭...");
+			}
+		}
 		
 		/**
 		 * 当前文件
