@@ -3,6 +3,7 @@
 	<type>web</type>
 	<servers>
 		<url>www.kanvas.cn</url>
+		<url>kanvas.cn</url>
 	</servers>
 	<desc></desc>
 </license>
