@@ -85,12 +85,12 @@ package view.interact.zoomMove
 		 */		
 		public function moveOff(xOff:Number, yOff:Number):void
 		{
-			if (ifEnable)
+			if (ifEnable && !GestureControl.gestureControl)
 			{
 				
 				flasher.canvasTargetX += xOff;
 				flasher.canvasTargetY += yOff;
-				//trace("mouse-canvas:", flasher.canvasTargetX , flasher.canvasTargetY);
+				trace("mouse-canvas:", flasher.canvasTargetX , flasher.canvasTargetY);
 				flasher.flash(0.15);
 			}
 		}

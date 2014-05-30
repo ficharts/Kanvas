@@ -432,6 +432,8 @@ package model
 			else if (RexUtil.ifHasText(bgVO.imgURL) && bgVO.imgURL != 'null')
 				bgImgLoader.loadImg(bgVO.imgURL);
 			
+			CoreFacade.coreMediator.coreApp.dispatchEvent(new KVSEvent(KVSEvent.IMPORT_DATA_COMPLETE));
+			
 		}
 		
 		/**

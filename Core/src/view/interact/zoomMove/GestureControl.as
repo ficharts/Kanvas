@@ -31,18 +31,19 @@ package view.interact.zoomMove
 		
 		private function onBegin(e:GestureEvent):void
 		{
-			trace("onBegin")
+			
 			gesture.addEventListener(GestureEvent.GESTURE_CHANGED, onChange);
 			gesture.addEventListener(GestureEvent.GESTURE_POSSIBLE, onPossible);
+			
 		}
 		
 		private function onPossible(e:GestureEvent):void
 		{
 			gesture.removeEventListener(GestureEvent.GESTURE_CHANGED, onChange);
 			gesture.removeEventListener(GestureEvent.GESTURE_POSSIBLE, onPossible);
-			trace("onEnd")
 			if (started)
 			{
+				trace("onEnd:possible")
 				setCanvasInteract(true);
 				started = false;
 			}
@@ -56,14 +57,15 @@ package view.interact.zoomMove
 				gesture.removeEventListener(GestureEvent.GESTURE_POSSIBLE, onPossible);
 				setCanvasInteract(true);
 				started = false;
+				trace("onEnd:end state")
 			}
 			else
 			{
-				gestureControl = (gesture.touchesCount == 2);
 				if (gesture.touchesCount == 2)
 				{
 					if(!started)
 					{
+						trace("onBegin:2 p")
 						started = true;
 						setCanvasInteract(false);
 						canvasCenter = LayoutUtil.stagePointToElementPoint(gesture.location.x, gesture.location.y, canvas);
@@ -75,20 +77,25 @@ package view.interact.zoomMove
 						offsetScale *= gesture.scale;
 						offsetRotation += gesture.rotation;
 						
-						//canvas.scaleX = canvas.scaleY = offsetScale;
-						
 						var temp:Point = canvasCenter.clone();
 						PointUtil.multiply(temp, offsetScale);
 						//PointUtil.rotate(temp, MathUtil.angleToRadian(r));
-						//canvas.x = gesture.location.x - temp.x;
-						//canvas.y = gesture.location.y - temp.y;
-						control.zoomRotateMoveTo(offsetScale, canvas.rotation, gesture.location.x - temp.x, gesture.location.y - temp.y, null, 0);
+						canvas.scaleX = canvas.scaleY = offsetScale;
+						canvas.x = gesture.location.x - temp.x;
+						canvas.y = gesture.location.y - temp.y;
+						mediator.mainUI.synBgImageToCanvas();
+						mediator.flashTrek();
+						//control.zoomRotateMoveTo(offsetScale, canvas.rotation, gesture.location.x - temp.x, gesture.location.y - temp.y, null, 0);
 					}
 				}
 				else
 				{
-					setCanvasInteract(true);
-					started = false;
+					if (started)
+					{
+						trace("onEnd:1 p")
+						setCanvasInteract(true);
+						started = false;
+					}
 				}
 			}
 		}
@@ -106,11 +113,14 @@ package view.interact.zoomMove
 				gestureControl = false;
 				control.enableBGInteract();
 				control.mainUI.curScreenState.enableCanvas();
+				mediator.flashStop();
 			}
 			else
 			{
+				gestureControl = true;
 				control.disableBgInteract();
 				control.mainUI.curScreenState.disableCanvas();
+				mediator.flashPlay();
 			}
 		}
 		

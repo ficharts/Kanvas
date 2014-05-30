@@ -801,16 +801,21 @@ package view.interact
 		 */		
 		public function flashPlay():void
 		{
-			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-			for each (var element:ElementBase in elements)
+			if(!treking)
 			{
-				if (element is ImgElement)
+				trace("flashPlay")
+				treking = true;
+				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
+				for each (var element:ElementBase in elements)
 				{
-					(element as ImgElement).smooth = false;
-				}
-				else if (element is TextEditField)
-				{
-					(element as TextEditField).smooth = false;
+					if (element is ImgElement)
+					{
+						(element as ImgElement).smooth = false;
+					}
+					else if (element is TextEditField)
+					{
+						(element as TextEditField).smooth = false;
+					}
 				}
 			}
 		}
@@ -819,63 +824,65 @@ package view.interact
 		 */		
 		public function flashTrek():void
 		{
-			if (currentMode != preMode) 
+			if (treking)
 			{
-				currentMode.updateSelector();
-				collisionDetection.updateAfterZoomMove();
-				
-				coreApp.updatePastPoint();
-			}
-		
-			
-			//检测，重绘文本， 以达到像素精度不失真
-			//PerformaceTest.start("CoreMediator.flashTrek()")
-			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-			for each (var element:ElementBase in elements)
-			{
-				if (element.visible)
+				if (currentMode != preMode) 
 				{
-					if (element.isPage)
+					currentMode.updateSelector();
+					collisionDetection.updateAfterZoomMove();
+					coreApp.updatePastPoint();
+				}
+				//检测，重绘文本， 以达到像素精度不失真
+				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
+				for each (var element:ElementBase in elements)
+				{
+					if (element.visible)
 					{
-						element.layoutPageNum();
+						if (element.isPage)
+						{
+							element.layoutPageNum();
+						}
+						if (element is TextEditField)
+						{
+							(element as TextEditField).checkTextBm();
+						}
 					}
-					if (element is TextEditField)
-					{
-						(element as TextEditField).checkTextBm();
-					}
-					//刷新页面编号尺寸，防止太大
-					
 				}
 			}
-			//PerformaceTest.end("CoreMediator.flashTrek()")
-			//mainUI.drawBgInteractorShape();
-			
 		}
 		
 		/**
 		 */		
 		public function flashStop():void
 		{
-			mainUI.curScreenState.enableCanvas();
-			zoomMoveControl.enableBGInteract();
-			
-			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-			for each (var element:ElementBase in elements)
+			if (treking)
 			{
-				if (element is ImgElement)
+				trace("flashStop")
+				treking = false;
+				mainUI.curScreenState.enableCanvas();
+				zoomMoveControl.enableBGInteract();
+				
+				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
+				for each (var element:ElementBase in elements)
 				{
-					(element as ImgElement).smooth = true;
+					if (element is ImgElement)
+					{
+						(element as ImgElement).smooth = true;
+					}
+					else if (element is TextEditField)
+					{
+						(element as TextEditField).smooth = true;
+					}
 				}
-				else if (element is TextEditField)
-				{
-					(element as TextEditField).smooth = true;
-				}
+				
+				//动画结束后再初始化页面动画，防止位置计算偏差，因为动画会让画布布局改变一下
+				if (currentMode == pageEditMode)
+					(pageEditMode as PageEditMode).init();
 			}
-			
-			//动画结束后再初始化页面动画，防止位置计算偏差，因为动画会让画布布局改变一下
-			if (currentMode == pageEditMode)
-				(pageEditMode as PageEditMode).init();
 		}
+		
+		private var treking:Boolean = false;
+		
 		
 		/**
 		 */		

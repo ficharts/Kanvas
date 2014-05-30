@@ -39,7 +39,7 @@ package view.ui
 			else
 			{
 				doubleClickActived = true;
-				var timer:Timer = new Timer(500, 1);
+				var timer:Timer = new Timer(300, 1);
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:TimerEvent):void{
 					doubleClickActived = false;
 					timer = null;

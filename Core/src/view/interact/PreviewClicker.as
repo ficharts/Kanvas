@@ -117,7 +117,7 @@ package view.interact
 		
 		private function doubleClickHandler(evt:MouseEvent):void
 		{
-			if (enable)
+			if (enable && !GestureControl.gestureControl)
 			{
 				callCancel();
 				var element:ICanvasLayout;
@@ -192,7 +192,7 @@ package view.interact
 			if (!timer)
 			{
 				operation = op;
-				timer = new Timer(500, 1);
+				timer = new Timer(300, 1);
 				timer.addEventListener(TimerEvent.TIMER_COMPLETE, timerComplete);
 				timer.start();
 			}

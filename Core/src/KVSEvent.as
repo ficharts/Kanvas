@@ -74,6 +74,8 @@ package
 		 */	
 		public static const SAVE:String = "save";
 		
+		public static const IMPORT_DATA_COMPLETE:String = "importDataComplete";
+		
 		/**
 		 */		
 		public function KVSEvent(type:String)

@@ -41,6 +41,7 @@ package
 			kvsCore.addEventListener(KVSEvent.TO_PAGE_EDIT, toPageEditMode);
 			kvsCore.addEventListener(KVSEvent.CANCEL_PAGE_EDIT, cancelPageEdit);
 			kvsCore.addEventListener(KVSEvent.CONFIRM_PAGE_EDIT, confirmPageEdit);
+			kvsCore.addEventListener(KVSEvent.IMPORT_DATA_COMPLETE, importDataComplete);
 			
 			addChild(kvsCore);
 			addChild(uiContainer);
@@ -92,6 +93,12 @@ package
 		{
 			evt.stopPropagation();
 			mainNavControl.confirmPageEditFromCore();
+		}
+		
+		private function importDataComplete(evt:KVSEvent):void
+		{
+			evt.stopPropagation();
+			
 		}
 		
 		/**
