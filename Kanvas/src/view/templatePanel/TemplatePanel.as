@@ -14,13 +14,13 @@ package view.templatePanel
 		{
 			super();
 			core = $core;
-			
-				
 		}
 		
 		override protected function init():void
 		{
 			super.init();
+			
+			title = "模板";
 			
 			w = 600;
 			h = 400;
