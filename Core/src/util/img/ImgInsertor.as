@@ -2,7 +2,7 @@ package util.img
 {
 	import com.adobe.images.PNGEncoder;
 	import com.greensock.loading.ImageLoader;
-	import com.kvs.utils.ImageExtractor;
+	import com.kvs.utils.extractor.ImageExtractor;
 	import com.kvs.utils.system.OS;
 	
 	import flash.display.Bitmap;
@@ -206,7 +206,7 @@ package util.img
 			
 			try
 			{
-				fileReference.browse([new FileFilter("Images", "*.jpg;*.png")]);
+				fileReference.browse([new FileFilter("Images", "*.jpg;*.png;*.swf")]);
 			} 
 			catch(e:Error) 
 			{
@@ -245,8 +245,9 @@ package util.img
 			
 			try
 			{
-				imageExtractor = new ImageExtractor(fileReference.data);
+				imageExtractor = new ImageExtractor();
 				imageExtractor.addEventListener(Event.COMPLETE, bmdLoadedFromLocalHandler);
+				imageExtractor.init(fileReference.data);
 			}
 			catch (o:Error)
 			{
@@ -282,7 +283,7 @@ package util.img
 				var req:URLRequest = new URLRequest(IMG_UPLOAD_URL);
 				req.method = URLRequestMethod.POST;
 				req.contentType = "application/octet-stream";  
-				req.data = imageExtractor.bytes;
+				req.data = imageExtractor.fileBytes;
 				
 				//发送图片数据流质服务器
 				imgUpLoader.load(req);

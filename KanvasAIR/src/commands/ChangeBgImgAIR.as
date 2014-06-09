@@ -1,6 +1,6 @@
 package commands
 {
-	import com.kvs.utils.ImageExtractor;
+	import com.kvs.utils.extractor.ImageExtractor;
 	
 	import flash.display.BitmapData;
 	import flash.events.Event;
@@ -62,8 +62,9 @@ package commands
 			
 			try
 			{
-				imgExtractor = new ImageExtractor(bytes);
+				imgExtractor = new ImageExtractor();
 				imgExtractor.addEventListener(Event.COMPLETE, imgLoaded);
+				imgExtractor.init(bytes);
 			}
 			catch (e:Error)
 			{
@@ -96,7 +97,7 @@ package commands
 			
 			setBgImg(newImgObj, true);
 			
-			ImgLib.register(imgID.toString(), imgExtractor.bytes);
+			ImgLib.register(imgID.toString(), imgExtractor.fileBytes);
 			
 			UndoRedoMannager.register(this);
 		}

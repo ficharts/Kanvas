@@ -23,6 +23,7 @@ package model.vo
 			vo.url = url;
 			vo.sourceData = sourceData;
 			vo.imgID = imgID;
+			
 			return vo;
 		}
 		
@@ -43,9 +44,25 @@ package model.vo
 		public var url:String = '';
 		
 		/**
-		 * 图片的原始数据
 		 */		
-		public var sourceData:BitmapData;
+		private var _sourceData:Object;
+
+		/**
+		 * 图片的原始数据
+		 */
+		public function get sourceData():Object
+		{
+			return _sourceData;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set sourceData(value:Object):void
+		{
+			_sourceData = value;
+		}
+
 		
 		/**
 		 * 图片的原始数据id, 复制时，原始ID不变，

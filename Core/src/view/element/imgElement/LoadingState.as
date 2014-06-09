@@ -2,8 +2,6 @@ package view.element.imgElement
 {
 	import com.kvs.utils.graphic.BitmapUtil;
 	
-	import flash.display.Shape;
-	
 	import util.img.ImgInsertEvent;
 	import util.img.ImgInsertor;
 	import util.img.ImgLib;
@@ -12,7 +10,7 @@ package view.element.imgElement
 
 	public class LoadingState extends ImgLoadStateBase
 	{
-		public function LoadingState(host:ImgElement)
+		public function LoadingState(host:ImgElementBase)
 		{
 			super(host);
 		}
