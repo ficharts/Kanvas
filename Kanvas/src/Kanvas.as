@@ -16,6 +16,7 @@ package
 	
 	import view.pagePanel.PagePanel;
 	import view.shapePanel.ShapePanel;
+	import view.templatePanel.TemplatePanel;
 	import view.themePanel.ThemePanel;
 	import view.toolBar.ToolBar;
 	import view.toolBar.ZoomToolBar;
@@ -131,6 +132,10 @@ package
 			//多页面列表
 			pagePanel = new PagePanel(this);
 			pagePanel.bgStyleXML = panelBGStyleXML;
+			
+			//模板
+			templatePanel = new TemplatePanel(this);
+			
 		}
 		
 		/**
@@ -250,6 +255,8 @@ package
 		/**
 		 */		
 		public var pagePanel:PagePanel;
+		
+		public var templatePanel:TemplatePanel;
 		
 		/**
 		 * 工具条

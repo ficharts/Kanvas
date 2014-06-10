@@ -15,6 +15,8 @@ package
 	import model.ConfigInitor;
 	import model.CoreFacade;
 	
+	import modules.PreziDataImporter;
+	
 	import util.img.ImgLib;
 	
 	import view.element.ElementBase;
@@ -147,34 +149,29 @@ package
 		
 		private function readFilePEZ():void
 		{
-			
-			
-			
-			
-			
-			/*var reader:ZipFileReader = new ZipFileReader();
+			var reader:ZipFileReader = new ZipFileReader();
 			reader.open(file);
 			
-			PerformaceTest.ifRun = true;
-			PerformaceTest.start();
-			
 			var list:Array = reader.getEntries();
-			var xml:String;
-			var imgID:String;
 			var imgIDsInKvs:Array = new Array;
-			
-			var imgData:ByteArray;
 			
 			for each(var entry:ZipEntry in list)
 			{
-				if(entry.getFilename() == "kvs.xml")
+				var name:String = entry.getFilename();
+				if( name == "prezi/content.xml")
 				{
-					xml = reader.unzip(entry).toString();
+					var xml:String = reader.unzip(entry).toString();
 				}
-				else
+				else if (
+					name != "prezi/preview.png" && (
+					name.indexOf(".jpg" ) > 0 || 
+					name.indexOf(".png" ) > 0 || 
+					name.indexOf(".jpe" ) > 0 || 
+					name.indexOf(".jpeg") > 0 || 
+					name.indexOf(".gif" ) > 0))
 				{
-					imgData = reader.unzip(entry);
-					imgID = entry.getFilename().split('.')[0].toString();
+					var imgData:ByteArray = reader.unzip(entry);
+					var imgID:String = (name.split('.')[0].toString()).split("/")[2];
 					
 					if (uint(imgID) != 0)
 					{
@@ -183,8 +180,7 @@ package
 					}
 				}
 			}
-			
-			this.setXMLData(xml);
+			setXMLData(PreziDataImporter.convertData(XML(xml)));
 			reader.close();
 			
 			//这里需要清理冗余的图片数据
@@ -202,7 +198,8 @@ package
 					ImgLib.unRegister(id);
 			}
 			
-			PerformaceTest.end();*/
+			PerformaceTest.end();
+			file = null;
 		}
 		
 		/**

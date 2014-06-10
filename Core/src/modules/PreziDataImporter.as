@@ -344,14 +344,29 @@ package modules
 		
 		private function rearrangeID():void
 		{
-			for each (var xml:XML in kanvas.main.children())
+			var list:XMLList = kanvas.main[0].children();
+			if (list)
 			{
-				var id:uint = ++countEle;
-				var temp:String = xml.@id;
-				xml.@id = id;
-				var page:XMLList = kanvas.pages.children().(@elementID == temp);
-				if (page && page.length() == 1)
-					page[0].@elementID = id;
+				for each (var xml:XML in list)
+				{
+					var id:String = "tempo" + ( ++ countEle);
+					var temp:String = xml.@id;
+					xml.@id = id;
+					var page:XMLList = kanvas.pages.children().(@elementID == temp);
+					if (page && page.length() > 0) 
+					{
+						page[0].@elementID = id;
+					}
+				}
+			}
+			
+			for each (xml in list)
+				xml.@id = String(xml.@id).substr(5);
+				
+			for each (xml in kanvas.pages.children())
+			{
+				if (xml.@elementID)
+					xml.@elementID = String(xml.@elementID).substr(5);
 			}
 		}
 		
