@@ -23,6 +23,6 @@ package view.element
 		/**
 		 * 
 		 */		
-		//function getChilds(group:Vector.<IElement>):Vector.<IElement>
+		function getChilds(group:Vector.<IElement>):Vector.<IElement>
 	}
 }

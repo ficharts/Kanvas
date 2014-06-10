@@ -490,9 +490,14 @@ package model
 		}
 		
 		/**
+		 * 
+		 * 基本元素与组合的集合
+		 * 
 		 * 数据导入时，辅助组合将子元素纳入组合中
 		 * 
 		 * 辅助页面与原件的匹配，辅助动画与原件的匹配
+		 * 
+		 * 
 		 */		
 		private var temElementMap:Map = new Map;
 		

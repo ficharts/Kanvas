@@ -915,7 +915,7 @@ package view.element
 		 * 
 		 * 智能组合获取时，自身和组合的子元素一并被获取
 		 */		
-		public function getChilds(group:Vector.<ElementBase>):Vector.<ElementBase>
+		public function getChilds(group:Vector.<IElement>):Vector.<IElement>
 		{
 			group.push(this);
 			

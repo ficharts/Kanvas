@@ -41,10 +41,10 @@ package model
 		}
 		/**
 		 */		
-		public static function addElement(element:ElementBase):void
+		public static function addElement(element:IElement):void
 		{
-			instance._coreMediator.addElement(element);
-			instance._coreProxy.addElement(element);
+			instance._coreMediator.addElement(element as ElementBase);
+			instance._coreProxy.addElement(element as ElementBase);
 		}
 		
 		/**
@@ -57,10 +57,10 @@ package model
 		
 		/**
 		 */		
-		public static function removeElement(element:ElementBase):void
+		public static function removeElement(element:IElement):void
 		{
-			instance._coreMediator.removeElementFromView(element);
-			instance._coreProxy.removeElement(element);
+			instance._coreMediator.removeElementFromView(element as ElementBase);
+			instance._coreProxy.removeElement(element as ElementBase);
 		}
 		
 		public static function getElementIndex(element:ElementBase):int
