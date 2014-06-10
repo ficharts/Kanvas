@@ -1,8 +1,9 @@
 package commands 
 {
-	import com.kvs.utils.ImageExtractor;
+	import com.kvs.utils.extractor.ExtractorBase;
+	import com.kvs.utils.extractor.ImageExtractor;
+	import com.kvs.utils.extractor.SWFExtractor;
 	
-	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
@@ -36,7 +37,7 @@ package commands
 		{
 			super.execute(notification);
 			
-			file.browse([new FileFilter("Images", "*.jpg;*.png")]);
+			file.browse([new FileFilter("Images", "*.jpg;*.png;*.swf")]);
 			file.addEventListener(Event.SELECT, fileSelected);
 		}
 		
@@ -50,10 +51,16 @@ package commands
 			var bytes:ByteArray = new ByteArray;
 			filestream.readBytes(bytes, 0, file.size);
 				
+			if (file.extension == "swf")
+				imgExtractor = new SWFExtractor();
+			else
+				imgExtractor = new ImageExtractor();
+			
+			imgExtractor.addEventListener(Event.COMPLETE, imgLoaded);
+			
 			try
 			{
-				imgExtractor = new ImageExtractor(bytes);
-				imgExtractor.addEventListener(Event.COMPLETE, imgLoaded);
+				imgExtractor.init(bytes);
 			}
 			catch (e:Error)
 			{
@@ -65,19 +72,17 @@ package commands
 		 */		
 		private function imgLoaded(evt:Event):void
 		{
-			var bmd:BitmapData = imgExtractor.bitmapData;
 			var imgID:uint = ImgLib.imgID;
 			
-			createImg(bmd, imgID);
-			
-			ImgLib.register(imgID.toString(), imgExtractor.bytes);
+			createImg(imgExtractor.view, imgID, imgExtractor.fileBytes);
+			ImgLib.register(imgID.toString(), imgExtractor.fileBytes);
 				
 			element.toNomalState();
 		}
 		
 		/**
 		 */		
-		private var imgExtractor:ImageExtractor;
+		private var imgExtractor:ExtractorBase;
 		
 		/**
 		 */		

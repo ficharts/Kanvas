@@ -1,22 +1,16 @@
 package view.element.imgElement
 {
+	import flash.utils.ByteArray;
+	
 	import view.element.ElementBase;
 
 	/**
 	 */	
 	public class ImgLoadStateBase
 	{
-		public function ImgLoadStateBase(host:ImgElement)
+		public function ImgLoadStateBase(host:ImgElementBase)
 		{
 			this.element = host;
-		}
-		
-		/**
-		 * 加载状态下是无法复制的
-		 */		
-		public function clone():ElementBase
-		{
-			return null;
 		}
 		
 		/**
@@ -36,6 +30,6 @@ package view.element.imgElement
 		
 		/**
 		 */		
-		protected var element:ImgElement;
+		protected var element:ImgElementBase;
 	}
 }

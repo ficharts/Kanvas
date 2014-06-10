@@ -1,24 +1,25 @@
 package util.img
 {
-	import com.adobe.images.PNGEncoder;
-	import com.greensock.loading.ImageLoader;
-	import com.kvs.utils.ImageExtractor;
+	import com.kvs.utils.extractor.ExtractorBase;
+	import com.kvs.utils.extractor.ImageExtractor;
+	import com.kvs.utils.extractor.SWFExtractor;
 	import com.kvs.utils.system.OS;
 	
+	import flash.display.AVM1Movie;
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
-	import flash.geom.Rectangle;
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
 	
 	import view.ui.Bubble;
@@ -117,7 +118,16 @@ package util.img
 			
 			try
 			{
-				imgLoader.loadBytes(bytes);
+				var loaderContext:LoaderContext = new LoaderContext(); 
+				
+				if (CoreApp.isAIR)
+				{
+					loaderContext.allowLoadBytesCodeExecution = true; 
+					loaderContext.allowCodeImport = true;
+				}
+				
+				loaderContext.applicationDomain = ApplicationDomain.currentDomain;
+				imgLoader.loadBytes(bytes, loaderContext);
 			} 
 			catch(error:Error) 
 			{
@@ -140,10 +150,7 @@ package util.img
 		 */		
 		private function imageLoaedFromLocal(evt:Event):void
 		{
-			this.dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, (imgLoader.content as Bitmap).bitmapData));
-			
-			imgLoader.unload();
-			isLoading = false;
+			imgLoaded();
 			
 			imgLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, imageLoaedFromLocal);
 			imgLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, imageLoadErrorFromLocal);
@@ -154,13 +161,43 @@ package util.img
 		 */		
 		private function imgloadedFromServer(evt:Event):void
 		{
-			this.dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, (imgLoader.content as Bitmap).bitmapData));
-			
-			imgLoader.unload();
-			isLoading = false;
+			imgLoaded();
 			
 			imgLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, imgloadedFromServer);
 			imgLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, loadImgErrorFormServer);
+		}
+		
+		/**
+		 */		
+		private function imgLoaded():void
+		{
+			var data:Object;
+			if (imgLoader.content is Bitmap)
+				data = (imgLoader.content as Bitmap).bitmapData;
+			else
+				data = imgLoader.content;
+			
+			_fileBytes = imgLoader.contentLoaderInfo.bytes;
+			imgLoader.unload();
+			isLoading = false;
+			
+			//将加载的旧版本的swf转换为最新版本的
+			if (data is AVM1Movie)
+			{
+				var swfExtractor:SWFExtractor = new SWFExtractor();
+				swfExtractor.addEventListener(Event.COMPLETE, function(evt:Event):void {
+				
+					data = swfExtractor.view;
+					dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, data));
+				});
+				
+				swfExtractor.init(_fileBytes);
+			}
+			else
+			{
+				this.dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, data));
+			}
+			
 		}
 		
 		/**
@@ -206,7 +243,7 @@ package util.img
 			
 			try
 			{
-				fileReference.browse([new FileFilter("Images", "*.jpg;*.png")]);
+				fileReference.browse([new FileFilter("Images", "*.jpg;*.png;*.swf")]);
 			} 
 			catch(e:Error) 
 			{
@@ -245,8 +282,14 @@ package util.img
 			
 			try
 			{
-				imageExtractor = new ImageExtractor(fileReference.data);
+				var type:String = fileReference.name.split('.')[1].toString();
+				if (type == "swf")
+					imageExtractor = new SWFExtractor();
+				else
+					imageExtractor = new ImageExtractor();
+				
 				imageExtractor.addEventListener(Event.COMPLETE, bmdLoadedFromLocalHandler);
+				imageExtractor.init(fileReference.data);
 			}
 			catch (o:Error)
 			{
@@ -259,11 +302,28 @@ package util.img
 		 */		
 		private function bmdLoadedFromLocalHandler(evt:Event):void
 		{
+			_fileBytes = imageExtractor.fileBytes;
+			
 			imageExtractor.removeEventListener(Event.COMPLETE, bmdLoadedFromLocalHandler);
 			
-			this.dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED_TO_LOCAL, imageExtractor.bitmapData, imgID));
+			this.dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED_TO_LOCAL, imageExtractor.view, imgID, null, _fileBytes));
 			sendImgDataToServer();
 		}
+		
+		/**
+		 * 图片文件原始数据
+		 */		
+		public function get fileBytes():ByteArray
+		{
+			return _fileBytes;
+		}
+		
+		/**
+		 */		
+		private var _fileBytes:ByteArray;
+		
+			
+		
 		
 		/**
 		 * 将图片的字节数据发送至服务器, 成功后注册图片到图片库中
@@ -275,14 +335,14 @@ package util.img
 			//服务地址没有配置时，直接显示图片
 			if (IMG_UPLOAD_URL == null)
 			{
-				imgOK(imageExtractor.bitmapData);
+				imgOK(imageExtractor.view);
 			}
 			else
 			{
 				var req:URLRequest = new URLRequest(IMG_UPLOAD_URL);
 				req.method = URLRequestMethod.POST;
 				req.contentType = "application/octet-stream";  
-				req.data = imageExtractor.bytes;
+				req.data = imageExtractor.fileBytes;
 				
 				//发送图片数据流质服务器
 				imgUpLoader.load(req);
@@ -311,7 +371,7 @@ package util.img
 		 */		
 		private function imgUploadHandler(evt:Event):void
 		{
-			imgOK(imageExtractor.bitmapData);
+			imgOK(imageExtractor.view);
 		}
 		
 		/**
@@ -329,7 +389,7 @@ package util.img
 		
 		/**
 		 */		
-		private function imgOK(bmd:BitmapData = null):void
+		private function imgOK(bmd:Object = null):void
 		{
 			imgUpLoader.removeEventListener(IOErrorEvent.IO_ERROR, imgUploadError);
 			imgUpLoader.removeEventListener(Event.COMPLETE, imgUploadHandler);
@@ -374,7 +434,7 @@ package util.img
 		/**
 		 * 负责图片压缩优化 
 		 */		
-		private var imageExtractor:ImageExtractor;
+		private var imageExtractor:ExtractorBase;
 		
 		/**
 		 */		

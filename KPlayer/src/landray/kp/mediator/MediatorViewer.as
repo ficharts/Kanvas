@@ -3,6 +3,7 @@ package landray.kp.mediator
 	import com.kvs.utils.Map;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	
+	import flash.display.BitmapData;
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
@@ -269,7 +270,7 @@ package landray.kp.mediator
 		 */
 		private function loaded(e:ImgInsertEvent):void
 		{
-			viewer.drawBGImg(e.bitmapData);
+			viewer.drawBGImg(e.viewData as BitmapData);
 		}
 		
 		/**
