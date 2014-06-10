@@ -1,8 +1,6 @@
 package modules
 {
-	import flash.geom.Point;
 	
-	import model.vo.ElementVO;
 
 	public final class PreziDataImporter
 	{
@@ -23,17 +21,27 @@ package modules
 			analyzeInit();
 			analyzeCSS (xml.style.toString());
 			analyzeHead(xml);
+			createPage (xml.descendants("s"));
 			analyzeObj (xml["zui-table"].object);
-			analyzePage(xml.descendants("s"));
+			analyzePage();
 			rearrangeID();
 			return kanvas;
 		}
 		
 		private function analyzeInit():void
 		{
+			kanvas = 
+				<kanvas>
+					<bg colorIndex='-1'/>
+					<header version = {CoreApp.VER} styleID='style_1'/>
+					<main/>
+					<pages/>
+				</kanvas>;
 			fonts  = {};
 			comman = {};
 			custom = {};
+			tempo  = [];
+			countPage = countEle = 0;
 		}
 		
 		private function analyzeCSS(data:String):void
@@ -63,7 +71,25 @@ package modules
 							comman[b[0].substr(1)] = c;
 							break;
 						default:
-							custom[b[0]] = c;
+							var d:Array = b[0].split(".");
+							if (d.length > 1)
+							{
+								(custom[d[0]])
+									? custom[d[0]][d[1]] = c
+									: custom[d[0]] = c;
+							}
+							else
+							{
+								if (custom[b[0]])
+								{
+									for (var name:String in c)
+										custom[b[0]][name] = c[name];
+								}
+								else
+								{
+									custom[b[0]] = c;
+								}
+							}
 							break;
 					}
 				}
@@ -75,7 +101,7 @@ package modules
 			kanvas.header.@preziVersion = xml.version;
 			if (xml.background.layer && xml.background.layer.length() > 0)
 			{
-				kanvas.bg.@imgID = ++countImage;
+				kanvas.bg.@imgID = xml.background.layer[0].object.resource.id;
 				kanvas.bg.@imgURL = xml.background.layer[0].object.resource.url;
 			}
 			if (custom["Background"])
@@ -92,7 +118,7 @@ package modules
 				{
 					var type :String = (xml.@type == "button") ? xml.type : xml.@type;
 					var style:String = (type == "shape") ? xml.geom.@type : type;
-					var color:String = getColor(xml["@class"]);
+					var color:String = getColor(xml["@class"], type);
 					switch (type)
 					{
 						case "bracket":
@@ -123,6 +149,9 @@ package modules
 						case "text":
 							createObj(xml, "text", xml["@class"], color);
 							break;
+						case "textwithplaceholder":
+							createObj(xml, "text", xml["@class"], color, true);
+							break;
 						case "image":
 							createObj(xml, "img", "img", color);
 							break;
@@ -133,42 +162,7 @@ package modules
 			}
 		}
 		
-		private function getColor(type:String):String
-		{
-			var css:Object;
-			for (var name:String in comman)
-			{
-				if (name.indexOf(type) > -1)
-				{
-					css = comman[name];
-					break;
-				}
-			}
-			if (!css)
-			{
-				for (name in custom)
-				{
-					if (name.indexOf(type) > -1)
-					{
-						css = custom[name];
-						break;
-					}
-				}
-			}
-			if (css)
-			{
-				if (css.color)
-					return css.color;
-				else if (css.borderColor)
-					return css.borderColor;
-				else if (css.gradStartColor)
-					return css.gradStartColor;
-			}
-			
-			return "#000000";
-		}
-		
-		private function createObj(data:XML, type:String, style:String, color:String = "000000"):void
+		private function createObj(data:XML, type:String, style:String, color:String = "000000", template:Boolean = false):void
 		{
 			var xml:XML = new XML("<" + type + "/>");
 			xml.@id        = data.@id;
@@ -182,6 +176,7 @@ package modules
 			xml.@scale    = data.@s;
 			xml.@rotation = data.@r;
 			xml.@color    = color;
+			xml.invisible = (data["@class"] == "invisible");
 			switch (type)
 			{
 				case "circle":
@@ -200,7 +195,7 @@ package modules
 					convertArrowline(xml, data, style);
 					break;
 				case "text":
-					convertText(xml, data, style);
+					convertText(xml, data, style, template);
 					break;
 				case "img":
 					convertImage(xml, data, style);
@@ -230,6 +225,7 @@ package modules
 		
 		private function convertRect(target:XML, source:XML, style:String):void
 		{
+			
 			if (style == "border")
 			{
 				target.@width  = source.size.w;
@@ -297,47 +293,152 @@ package modules
 			}
 		}
 		
-		private function convertText(target:XML, source:XML, style:String):void
+		private function convertText(target:XML, source:XML, style:String, template:Boolean = false):void
 		{
-			var t:XMLList = source.p;
-			target.@width  = source.width;
-			target.@height = source.height;
-			target.@ifMutiLine = t.length() > 1;
-			target.@font = "微软雅黑";
-			var s:String = "";
-			for each (var x:XML in t)
-				s += x.text + "\n";
-			//s = s.substr(-1);
-			target.appendChild(XML('<text><![CDATA[' + s.substr(0, s.length - 1) + ']]></text>'));
+			if (template)
+			{
+				target.@width  = Math.abs(source.placeholder.@x * 2);
+				target.@height = Math.abs(source.placeholder.@y * 2);
+				target.@ifMutiLine = true;
+				target.@font = "微软雅黑";
+				target.appendChild(XML('<text><![CDATA[Click to add text]]></text>'));
+			}
+			else
+			{
+				var t:XMLList  = source.p;
+				target.@width  = Math.abs(source.width);
+				target.@height = Math.abs(source.height);
+				target.@ifMutiLine = true;
+				target.@font = "微软雅黑";
+				var s:String = "";
+				var color:String = t[0].text.@color;
+				if (color != "" && color != " " && color != "undefined")
+					target.@color = uint(Number(color)).toString(16);
+				
+				for each (var x:XML in t)
+				{
+					for each (var i:XML in x.text)
+						s += i + "\n";
+				}
+				target.appendChild(XML('<text><![CDATA[' + s.substr(0, s.length - 1) + ']]></text>'));
+			}
 		}
 		
 		private function convertImage(target:XML, source:XML, style:String):void
 		{
 			target.@url = source.resource.url;
-			target.@imgID = ++countImage;
+			target.@imgID = source.resource.id;
 		}
 		
-		private function analyzePage(data:XMLList):void
+		private function getColor(style:String, type:String = null):String
+		{
+			var css:Object;
+			var color:String = "#EEEEEE";
+			switch (type)
+			{
+				case "bracket":
+				case "roundrect":
+				case "circle":
+					if (custom["ZFrame"] && custom["ZFrame"][style])
+						css = custom["ZFrame"][style];
+					break;
+				case "text":
+					if (custom["ZLabel"] && custom["ZLabel"][style])
+						css = custom["ZLabel"][style];
+					break;
+				default:
+					
+					break;
+			}
+			
+			if(!css)
+			{
+				if (comman[style])
+				{
+					css = comman[style];
+				}
+				else
+				{
+					for (var name:String in comman)
+					{
+						if (name.indexOf(style) > -1)
+						{
+							css = comman[name];
+							break;
+						}
+					}
+				}
+			}
+			
+			if(!css)
+			{
+				if (custom[style])
+				{
+					css = custom[style];
+				}
+				else
+				{
+					for (name in custom)
+					{
+						if (name.indexOf(style) > -1)
+						{
+							css = custom[name];
+							break;
+						}
+					}
+				}
+			}
+			
+			if (css)
+			{
+				if (css.color)
+					color = css.color;
+				else if (css.gradStartColor)
+					color = css.gradStartColor;
+				else if (css.borderColor)
+					color = css.borderColor;
+				if (color.toLocaleLowerCase() == "#fff")
+					color = "#ffffff";
+			}
+			
+			return color;
+		}
+		
+		private function createPage(data:XMLList):void
 		{
 			if (data)
 			{
 				for each (var xml:XML in data)
 				{
-					var ele:XMLList = kanvas.main.children().(@id == xml.eagle.@o);
-					if (ele && ele.length() == 1)
-					{
-						var pag:XML = <page/>;
-						pag.@id        = ++countPage;
-						pag.@x         = ele[0].@x;
-						pag.@y         = ele[0].@y;
-						pag.@width     = ele[0].@width;
-						pag.@height    = ele[0].@height;
-						pag.@scale     = ele[0].@scale;
-						pag.@rotation  = ele[0].@rotation;
-						pag.@elementID = ele[0].@id;
-						pag.@index     = countPage;
-						kanvas.pages.appendChild(pag);
-					}
+					var pag:XML = <page/>;
+					pag.@id        = ++countPage;
+					pag.@type      = "page";
+					pag.@styleType = "shape";
+					pag.@styleID   = "Page";
+					pag.@tempoID   = xml.eagle.@o;
+					pag.@index     = pag.@id;
+					tempo[tempo.length] = pag;
+				}
+			}
+		}
+		
+		private function analyzePage():void
+		{
+			var count:int = 0;
+			for each (var xml:XML in tempo)
+			{
+				var ele:XMLList = kanvas.main.children().(@id == xml.@tempoID);
+				if (ele && ele.length() == 1)
+				{
+					count ++;
+					xml.@x         = ele[0].@x;
+					xml.@y         = ele[0].@y;
+					xml.@width     = ele[0].@width;
+					xml.@height    = ele[0].@height;
+					xml.@scale     = ele[0].@scale;
+					xml.@rotation  = ele[0].@rotation;
+					xml.@elementID = ele[0].@id;
+					kanvas.pages.appendChild(xml);
 				}
 			}
 		}
@@ -345,6 +446,9 @@ package modules
 		private function rearrangeID():void
 		{
 			var list:XMLList = kanvas.main[0].children();
+			delete kanvas.main;
+			var main:XML = <main/>;
+			
 			if (list)
 			{
 				for each (var xml:XML in list)
@@ -352,40 +456,53 @@ package modules
 					var id:String = "tempo" + ( ++ countEle);
 					var temp:String = xml.@id;
 					xml.@id = id;
-					var page:XMLList = kanvas.pages.children().(@elementID == temp);
-					if (page && page.length() > 0) 
+					var page:XMLList = kanvas.pages.children().(@tempoID == temp);
+					var l:int = page.length();
+					if (xml.invisible == "false")
 					{
-						page[0].@elementID = id;
+						if (page && l > 0) 
+						{
+							page[0].@elementID = id;
+							if (l > 1)
+							{
+								
+								for (var i:int = 1; i < l; i++)
+									delete page[i].@elementID;
+							}
+						}
+						main.appendChild(xml);
 					}
+					else
+					{
+						for (i = 0; i < l; i++)
+							delete page[i].@elementID;
+					}
+					delete xml.invisible;
 				}
 			}
 			
 			for each (xml in list)
 				xml.@id = String(xml.@id).substr(5);
-				
+			
 			for each (xml in kanvas.pages.children())
 			{
-				if (xml.@elementID)
+				if (xml.@elementID && xml.@elementID != "")
 					xml.@elementID = String(xml.@elementID).substr(5);
+				else
+					delete xml.@elementID;
 			}
+			
+			kanvas.appendChild(main);
 		}
 		
 		private var fonts :Object;
 		private var comman:Object;
 		private var custom:Object;
+		private var tempo :Array;
 		
-		private var countImage:uint;
 		private var countPage :uint;
 		private var countEle  :uint;
 		
-		private var vos:Vector.<ElementVO>;
-		
-		private var kanvas:XML = 
-			<kanvas>
-				<bg/>
-				<header version = {CoreApp.VER} styleID='style_1'/>
-				<main/>
-				<pages/>
-			</kanvas>;
+		private var kanvas:XML;
 	}
 }

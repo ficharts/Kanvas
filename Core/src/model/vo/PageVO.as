@@ -53,7 +53,7 @@ package model.vo
 			xml = super.exportData();
 			xml.@index = index;
 			
-			if (elementVO)
+			if (elementVO &&　!(elementVO is PageVO))
 				xml.@elementID = elementVO.id;
 			
 			return xml;

@@ -49,6 +49,12 @@ package
 			}
 		}
 		
+		override public function openTemplate(id:uint):void
+		{
+			var path:String = File.applicationDirectory.nativePath + "/templates/template"+id+".kvs";
+			openFile(new File(path));
+		}
+		
 		/**
 		 * 当前文件
 		 */		
@@ -134,7 +140,8 @@ package
 			}
 			
 			//不能忘记背景图
-			imgIDsInXML.push(CoreFacade.coreProxy.bgVO.imgID.toString());
+			if (CoreFacade.coreProxy.bgVO.imgID > 0)
+				imgIDsInXML.push(CoreFacade.coreProxy.bgVO.imgID.toString());
 			
 			//如果数据中的图片id不存在于xml中，则说明此图片是多余图片，删除
 			for each (var id:String in imgIDsInKvs)
@@ -167,7 +174,8 @@ package
 					name.indexOf(".png" ) > 0 || 
 					name.indexOf(".jpe" ) > 0 || 
 					name.indexOf(".jpeg") > 0 || 
-					name.indexOf(".gif" ) > 0))
+					name.indexOf(".gif" ) > 0 || 
+					name.indexOf(".swf" ) > 0 ))
 				{
 					var imgData:ByteArray = reader.unzip(entry);
 					var imgID:String = (name.split('.')[0].toString()).split("/")[2];
@@ -187,13 +195,16 @@ package
 			for each (var element:ElementBase in CoreFacade.coreProxy.elements)
 			{
 				if (element is ImgElement)
-					imgIDsInXML.push((element as ImgElement).imgVO.imgID);
+					imgIDsInXML.push((element as ImgElement).imgVO.imgID.toString());
 			}
+			
+			if (CoreFacade.coreProxy.bgVO.imgID > 0)
+				imgIDsInXML.push(CoreFacade.coreProxy.bgVO.imgID.toString());
 			
 			//如果数据中的图片id不存在于xml中，则说明此图片是多余图片，删除
 			for each (var id:uint in imgIDsInKvs)
 			{
-				if (imgIDsInXML.indexOf(id) == - 1)
+				if (imgIDsInXML.indexOf(id.toString()) == - 1)
 					ImgLib.unRegister(id);
 			}
 			

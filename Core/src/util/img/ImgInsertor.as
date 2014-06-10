@@ -5,8 +5,10 @@ package util.img
 	import com.kvs.utils.ImageExtractor;
 	import com.kvs.utils.system.OS;
 	
+	import flash.display.AVM1Movie;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -19,6 +21,7 @@ package util.img
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
+	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
 	
 	import view.ui.Bubble;
@@ -117,7 +120,9 @@ package util.img
 			
 			try
 			{
-				imgLoader.loadBytes(bytes);
+				var context:LoaderContext = new LoaderContext;
+				context.allowCodeImport = true;
+				imgLoader.loadBytes(bytes, context);
 			} 
 			catch(error:Error) 
 			{
@@ -140,7 +145,20 @@ package util.img
 		 */		
 		private function imageLoaedFromLocal(evt:Event):void
 		{
-			this.dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, (imgLoader.content as Bitmap).bitmapData));
+			if (imgLoader.content is Bitmap)
+			{
+				dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, (imgLoader.content as Bitmap).bitmapData));
+			}
+			else if (imgLoader.content && imgLoader.content.width > 0 && imgLoader.content.height > 0)
+			{
+				var bitmapData:BitmapData = new BitmapData(imgLoader.content.width, imgLoader.content.height, true, 0);
+				bitmapData.draw(imgLoader.content, null, null, null, null, true);
+				dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, bitmapData));
+			}
+			else
+			{
+				dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED_ERROR));
+			}
 			
 			imgLoader.unload();
 			isLoading = false;
@@ -154,7 +172,20 @@ package util.img
 		 */		
 		private function imgloadedFromServer(evt:Event):void
 		{
-			this.dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, (imgLoader.content as Bitmap).bitmapData));
+			if (imgLoader.content is Bitmap)
+			{
+				dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, (imgLoader.content as Bitmap).bitmapData));
+			}
+			else if (imgLoader.content && imgLoader.content.width > 0 && imgLoader.content.height > 0)
+			{
+				var bitmapData:BitmapData = new BitmapData(imgLoader.content.width, imgLoader.content.height, true, 0);
+				bitmapData.draw(imgLoader.content, null, null, null, null, true);
+				dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, bitmapData));
+			}
+			else
+			{
+				dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED_ERROR));
+			}
 			
 			imgLoader.unload();
 			isLoading = false;

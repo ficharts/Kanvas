@@ -95,7 +95,7 @@ package view.templatePanel
 		 */		
 		public function get viewHeight():Number
 		{
-			return panel.h - panel.barHeight - 10;
+			return panel.h - panel.barHeight - 40;
 		}
 		
 		/**
@@ -110,7 +110,7 @@ package view.templatePanel
 		 */		
 		public function get fullSize():Number
 		{
-			return panel.w;
+			return panel.fullSize;
 		}
 		
 		/**

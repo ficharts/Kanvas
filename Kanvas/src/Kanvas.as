@@ -54,6 +54,7 @@ package
 			uiContainer.addChild(pagePanel);
 			uiContainer.addChild(themePanel);
 			uiContainer.addChild(shapePanel);
+			uiContainer.addChild(templatePanel);
 			uiContainer.addChild(toolBar);
 			
 			stage.addEventListener(Event.RESIZE, stageResizeHandler, false, 0, true);
@@ -99,6 +100,8 @@ package
 		private function importDataComplete(evt:KVSEvent):void
 		{
 			evt.stopPropagation();
+			if (templatePanel && templatePanel.visible)
+				templatePanel.close(stage.stageWidth * .5, stage.stageHeight * .5 + 10);
 			
 		}
 		
@@ -135,7 +138,8 @@ package
 			
 			//模板
 			templatePanel = new TemplatePanel(this);
-			
+			templatePanel.bgStyleXML = panelBGStyleXML;
+			templatePanel.titleStyleXML = panelTitleStyleXML;
 		}
 		
 		/**
@@ -150,6 +154,7 @@ package
 				shapePanel.updateLayout();
 				themePanel.updateLayout();
 				pagePanel.updateLayout();
+				templatePanel.updateLayout();
 				
 				kvsCore.resize();
 			}
@@ -235,7 +240,7 @@ package
 		/**
 		 * web版与桌面版的接口不同
 		 */		
-		protected var api:KanvasAPI;
+		public var api:KanvasAPI;
 		
 		/**
 		 * 装载工具条，面板的容器

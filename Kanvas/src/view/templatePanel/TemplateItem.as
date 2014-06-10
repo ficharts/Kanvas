@@ -30,19 +30,16 @@ package view.templatePanel
 			var tx:Number = (currState.width  - iconW) / 2;
 			var ty:Number = (currState.height - iconH) / 2;
 			
-			graphics.lineStyle(1, 0xEEEEEE);
+			graphics.lineStyle(1, 0xCCCCCC);
 			graphics.drawRect(tx, ty, iconW, iconH);
 			graphics.endFill();
 			
 			
 		}
 		
-		public var icon:String = "";
+		public var id:uint;
 		
 		public var data:XML;
-		
-		private var label:LabelUI;
-		
 		
 		private const iconStyleXML:XML = 
 			<states>
@@ -51,7 +48,7 @@ package view.templatePanel
 					<img/>
 				</normal>
 				<hover>
-					<fill color='#DDDDDD' alpha='0.8'/>
+					<fill color='#999999' alpha='0.8'/>
 					<img/>
 				</hover>
 				<down>

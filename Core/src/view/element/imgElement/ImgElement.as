@@ -87,8 +87,8 @@ package view.element.imgElement
 			graphics.clear();
 			currLoadState = normalState;
 			removeLoading();
-			imgVO.width  = imgVO.sourceData.width;
-			imgVO.height = imgVO.sourceData.height;
+			width  = imgVO.width  = imgVO.sourceData.width;
+			height = imgVO.height = imgVO.sourceData.height;
 			initBmp(imgVO.sourceData);
 			currLoadState.render();
 			
