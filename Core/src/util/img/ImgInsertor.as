@@ -181,23 +181,7 @@ package util.img
 			imgLoader.unload();
 			isLoading = false;
 			
-			//将加载的旧版本的swf转换为最新版本的
-			if (data is AVM1Movie)
-			{
-				var swfExtractor:SWFExtractor = new SWFExtractor();
-				swfExtractor.addEventListener(Event.COMPLETE, function(evt:Event):void {
-				
-					data = swfExtractor.view;
-					dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, data));
-				});
-				
-				swfExtractor.init(_fileBytes);
-			}
-			else
-			{
-				this.dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, data));
-			}
-			
+			this.dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, data));
 		}
 		
 		/**

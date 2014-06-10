@@ -75,7 +75,7 @@ package commands
 				swfVO.id = ElementCreator.id;
 				swfVO.imgID = imgID;
 				
-				swfVO.viewData = data as Sprite;
+				swfVO.viewData = data;
 				swfVO.fileBytes = fileData;
 				
 				swfVO.width = swfVO.viewData.width;

@@ -26,6 +26,7 @@ package landray.kp.maps.main
 			elements = new Vector.<Element>;
 			labels   = new Vector.<Label>;
 			images   = new Vector.<Image>;
+			groups   = new Vector.<Group>;
 		}
 		
 		/**
@@ -67,7 +68,7 @@ package landray.kp.maps.main
 			for each (var element:Element in elements)
 				viewer.canvas.removeChild(element);
 				
-			elements.length = labels.length = images.length = 0;
+			elements.length = labels.length = images.length = groups.length = 0;
 			
 			//create vos and elements
 			var config:KPConfig = KPConfig.instance;
@@ -78,10 +79,12 @@ package landray.kp.maps.main
 			{
 				var vo:ElementVO = MainUtil.getElementVO(String(xml.@type));
 				CoreUtil.mapping(xml, vo);
+				
 				try
 				{
 					//这里他妈的有特殊字符的话就导致崩溃了
 					element = MainUtil.getElementUI(vo);
+					
 					if (element)
 					{
 						CoreUtil.applyStyle(element.vo);
@@ -94,6 +97,12 @@ package landray.kp.maps.main
 						
 						if (element is Label) labels.push(Label(element));
 						if (element is Image) images.push(Image(element));
+						
+						if (element is Group)
+						{
+							element.vo.xml = xml;
+							groups.push(element);
+						}
 					}
 				}
 				catch(error:Error) 
@@ -102,10 +111,23 @@ package landray.kp.maps.main
 				}
 				
 			}
+			
+			//组合的初始化, 匹配组合关系
+			for each(var groupElement:Group in groups)
+			{
+				for each(var item:XML in groupElement.vo.xml.children())
+				{
+					element = config.kp_internal::elementMap.getValue(item.@id.toString());		
+					groupElement.childElements.push(element);
+				}
+			}
+			
 		}
 		
 		private var elements:Vector.<Element>;
 		private var labels:Vector.<Label>;
 		private var images:Vector.<Image>;
+		private var groups:Vector.<Group>;
+		
 	}
 }

@@ -49,10 +49,10 @@ package model
 		
 		/**
 		 */		
-		public static function addElementAt(element:ElementBase, index:int):void
+		public static function addElementAt(element:IElement, index:int):void
 		{
-			instance._coreMediator.addElementAt(element, index);
-			instance._coreProxy.addElement(element);
+			instance._coreMediator.addElementAt(element as ElementBase, index);
+			instance._coreProxy.addElement(element as ElementBase);
 		}
 		
 		/**

@@ -9,6 +9,7 @@ package commands
 	import util.undoRedo.UndoRedoMannager;
 	
 	import view.element.ElementBase;
+	import view.element.IElement;
 	import view.element.PageElement;
 	
 	/**
@@ -71,19 +72,23 @@ package commands
 				CoreFacade.coreMediator.autoGroupController.pastElements(xOff, yOff);
 				groupElements = CoreFacade.coreMediator.autoGroupController.elements.concat();
 				length = groupElements.length;
+				
+				var ele:ElementBase;
 				for (var i:int = 0; i < length; i++)
 				{
-					if (groupElements[i].isPage)
-						pageElements.push(groupElements[i]);
+					ele = groupElements[i] as ElementBase;
 					
-					if (groupElements[i].screenshot)
-						CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(groupElements[i]);
+					if (ele.isPage)
+						pageElements.push(ele);
+					
+					if (ele.screenshot)
+						CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(ele);
 				}
 			}
 			
 			pageElements.sort(sortOnPageIndex);
 			
-			for each (var element:ElementBase in pageElements)
+			for each (ele in pageElements)
 				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
 			if (pageElements.length)
@@ -105,7 +110,7 @@ package commands
 			{
 				for (var i:int = length - 1; i >= 0; i--)
 				{
-					elementIndexArray[i] = groupElements[i].index;
+					elementIndexArray[i] = (groupElements[i] as ElementBase).index;
 					CoreFacade.removeElement(groupElements[i]);
 				}
 			}
@@ -152,7 +157,7 @@ package commands
 		
 		/**
 		 */		
-		private var groupElements:Vector.<ElementBase>;
+		private var groupElements:Vector.<IElement>;
 		private var length:int;
 		private var pageElements:Vector.<ElementBase>;
 		private var elementIndexArray:Array;
