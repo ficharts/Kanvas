@@ -78,7 +78,11 @@ package modules.pages.flash
 		 */		
 		public function start():void
 		{
-			element.canvas.alpha = 0;
+			var elements:Vector.<IElement> = new Vector.<IElement>;
+			elements = element.getChilds(elements);
+			
+			for each (var item:IElement in elements)
+				item.canvas.alpha = 0;
 		}
 		
 		/**
@@ -86,7 +90,11 @@ package modules.pages.flash
 		 */		
 		public function end():void
 		{
-			element.canvas.alpha = 1;
+			var elements:Vector.<IElement> = new Vector.<IElement>;
+			elements = element.getChilds(elements);
+			
+			for each (var item:IElement in elements)
+				item.canvas.alpha = 1;
 		}
 		
 		/**
@@ -94,7 +102,12 @@ package modules.pages.flash
 		 */		
 		public function next():void
 		{
-			TweenLite.to(element.canvas, TIME, {alpha: 1});
+			var elements:Vector.<IElement> = new Vector.<IElement>;
+			elements = element.getChilds(elements);
+			
+			for each (var item:IElement in elements)
+				TweenLite.to(item.canvas, TIME, {alpha: 1});
+			
 		}
 		
 		/**
@@ -102,7 +115,11 @@ package modules.pages.flash
 		 */		
 		public function prev():void
 		{
-			TweenLite.to(element.canvas, TIME, {alpha: 0});
+			var elements:Vector.<IElement> = new Vector.<IElement>;
+			elements = element.getChilds(elements);
+			
+			for each (var item:IElement in elements)
+				TweenLite.to(item.canvas, TIME, {alpha: 0});
 		}
 		
 		/**

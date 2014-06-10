@@ -8,6 +8,7 @@ package commands
 	import util.undoRedo.UndoRedoMannager;
 	
 	import view.element.ElementBase;
+	import view.element.IElement;
 	import view.element.PageElement;
 
 	/**
@@ -42,10 +43,12 @@ package commands
 				var l:int = groupElements.length;
 				for (var i:int = 0; i < l; i ++)
 				{
-					var item:ElementBase = groupElements[i];
+					var item:ElementBase = groupElements[i] as ElementBase;
+					
 					elementIndexArray[i] = CoreFacade.getElementIndex(item);
 					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(item);
 					CoreFacade.removeElement(item);
+					
 					if (item.isPage)
 						CoreFacade.coreMediator.pageManager.removePage(item.vo.pageVO);
 				}
@@ -68,8 +71,9 @@ package commands
 				var l:int = groupElements.length;
 				for (var i:int = l - 1; i >= 0; i --)
 				{
-					var item:ElementBase = groupElements[i];
-					CoreFacade.addElementAt(groupElements[i], elementIndexArray[i]);
+					var item:ElementBase = groupElements[i] as ElementBase;;
+					CoreFacade.addElementAt(item, elementIndexArray[i]);
+					
 					if (item.isPage)
 						CoreFacade.coreMediator.pageManager.addPageAt(item.vo.pageVO, item.vo.pageVO.index);
 				}
@@ -115,7 +119,7 @@ package commands
 		
 		private var elementIndexArray:Array;
 		
-		private var groupElements:Vector.<ElementBase>;
+		private var groupElements:Vector.<IElement>;
 		
 		private var autoGroupEnabled:Boolean;
 		

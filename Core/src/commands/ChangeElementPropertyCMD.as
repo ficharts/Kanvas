@@ -11,6 +11,7 @@ package commands
 	
 	import view.element.ElementBase;
 	import view.element.GroupElement;
+	import view.element.IElement;
 	import view.element.PageElement;
 	import view.element.imgElement.ImgElement;
 	import view.elementSelector.ElementSelector;
@@ -241,7 +242,7 @@ package commands
 		
 		/**
 		 */	
-		private var groupElements:Vector.<ElementBase>;
+		private var groupElements:Vector.<IElement>;
 		
 		/**
 		 */		
