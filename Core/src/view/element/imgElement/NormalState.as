@@ -17,7 +17,7 @@ package view.element.imgElement
 		 */		
 		override public function render():void
 		{
-			element.showBmp();
+			element.showIMG();
 		}
 	}
 }

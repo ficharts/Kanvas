@@ -77,7 +77,7 @@ package commands
 			
 			newImgObj = {};
 			newImgObj.imgID   = evt.imgID;
-			newImgObj.imgData = evt.bitmapData;
+			newImgObj.imgData = evt.viewData;
 			newImgObj.imgURL  = evt.imgURL;
 			
 			//CoreFacade.coreMediator.mainUI.canvas.hideLoading();

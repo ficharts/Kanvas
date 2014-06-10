@@ -1,5 +1,7 @@
 package view.element.imgElement
 {
+	import flash.utils.ByteArray;
+	
 	import view.element.ElementBase;
 
 	/**

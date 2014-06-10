@@ -1,8 +1,15 @@
 package model.vo
 {
 	import flash.display.Sprite;
+	import flash.utils.ByteArray;
 
-	public class SWFVO extends ElementVO
+	/**
+	 *
+	 *  
+	 * @author wanglei
+	 * 
+	 */	
+	public class SWFVO extends ImgVO
 	{
 		public function SWFVO()
 		{
@@ -18,36 +25,16 @@ package model.vo
 		{
 			var vo:SWFVO = super.clone() as SWFVO;
 			vo.url = url;
-			vo.sourceData = sourceData;
+			vo.viewData = viewData;
 			vo.imgID = imgID;
 			
 			return vo;
 		}
 		
-		override public function exportData():XML
-		{
-			xml = super.exportData();
-			xml.@url = url;
-			xml.@imgID = imgID;
-			
-			return xml;
-		}
-		
 		/**
-		 * 图片上传至服务器后，分配url, 后继再编辑时
-		 * 
-		 * 根据此URL向服务器请求图片数据;
+		 * 适量图的复制得依靠对原始文件数据的重新加载, 生成新的sprite显示对象 
 		 */		
-		public var url:String = '';
+		public var fileBytes:ByteArray;
 		
-		/**
-		 * 图片的原始数据
-		 */		
-		public var sourceData:Sprite;
-		
-		/**
-		 * 图片的原始数据id, 复制时，原始ID不变，
-		 */		
-		public var imgID:uint = 0;
 	}
 }

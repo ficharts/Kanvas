@@ -9,6 +9,7 @@ package model
 	import model.vo.ImgVO;
 	import model.vo.LineVO;
 	import model.vo.PageVO;
+	import model.vo.SWFVO;
 	import model.vo.ShapeVO;
 	import model.vo.StarVO;
 	import model.vo.TextVO;
@@ -20,6 +21,7 @@ package model
 	import view.MediatorNames;
 	import view.element.*;
 	import view.element.imgElement.ImgElement;
+	import view.element.imgElement.SWFElement;
 	import view.element.shapes.*;
 	import view.element.text.TextEditField;
 	import view.interact.CoreMediator;
@@ -140,6 +142,7 @@ package model
 			
 			ElementCreator.registerElement('img', ImgElement, ImgVO);
 			ElementCreator.registerElement('image', ImgElement, ImgVO);
+			ElementCreator.registerElement('swf', SWFElement, SWFVO);
 			
 			ElementCreator.registerElement('hotspot', HotspotElement, ElementVO);
 			ElementCreator.registerElement('group', GroupElement, GroupVO);

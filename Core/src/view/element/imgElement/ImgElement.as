@@ -5,6 +5,7 @@ package view.element.imgElement
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
+	import flash.utils.ByteArray;
 	
 	import model.vo.ImgVO;
 	
@@ -22,8 +23,6 @@ package view.element.imgElement
 		{
 			super(vo);
 			
-			vo.xml = <image/>;
-			
 			_canvas.addChild(graphicShape);
 			addChild(_canvas);
 		}
@@ -33,7 +32,7 @@ package view.element.imgElement
 		override public function clone():ElementBase
 		{
 			var imgVO:ImgVO = new ImgVO;
-			imgVO.sourceData = this.imgVO.sourceData;
+			imgVO.viewData = this.imgVO.viewData;
 			imgVO.url = this.imgVO.url;
 			imgVO.imgID = this.imgVO.imgID;
 			
@@ -49,7 +48,14 @@ package view.element.imgElement
 		
 		/**
 		 */		
-		override public function showBmp():void
+		override public function imgLoaded(fileBytes:ByteArray, viewData:Object):void
+		{
+			imgVO.viewData = viewData;
+		}
+		
+		/**
+		 */		
+		override public function showIMG():void
 		{
 			if (bmpLarge && bmpSmall)
 			{
@@ -69,7 +75,7 @@ package view.element.imgElement
 		
 		/**
 		 */		
-		override protected function initBmp(bmd:Object):void
+		override protected function initIMG(bmd:Object):void
 		{
 			if (bmd)
 			{
@@ -134,7 +140,7 @@ package view.element.imgElement
 			lastWidth  = width;
 			lastHeight = height;
 			
-			if (renderBmdNeeded) showBmp();
+			if (renderBmdNeeded) showIMG();
 		}
 		
 		public function get smooth():Boolean

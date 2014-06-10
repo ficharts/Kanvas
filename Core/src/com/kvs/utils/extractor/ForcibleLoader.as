@@ -102,6 +102,7 @@ package com.kvs.utils.extractor
 		if (version < 9) {
 			updateVersion(inputBytes, 9);
 		}
+		
 		if (version > 7) {
 			flagSWF9Bit(inputBytes);
 		}

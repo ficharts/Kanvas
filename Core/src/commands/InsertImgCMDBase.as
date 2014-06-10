@@ -6,6 +6,7 @@ package commands
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import flash.utils.ByteArray;
 	
 	import model.CoreFacade;
 	import model.vo.ElementVO;
@@ -20,6 +21,8 @@ package commands
 	import util.undoRedo.UndoRedoMannager;
 	
 	import view.element.imgElement.ImgElement;
+	import view.element.imgElement.ImgElementBase;
+	import view.element.imgElement.SWFElement;
 	import view.ui.Canvas;
 
 	/**
@@ -43,12 +46,11 @@ package commands
 		
 		/**
 		 */		
-		protected function createImg(bmd:Object, imgID:uint):void
+		protected function createImg(data:Object, imgID:uint, fileData:ByteArray = null):void
 		{
-			
 			var vo:ElementVO;
 			
-			if (bmd is BitmapData)
+			if (data is BitmapData)
 			{
 				// 元素ID与图片资源ID单独管理
 				vo = new ImgVO();
@@ -56,10 +58,10 @@ package commands
 				
 				imgVO.id = ElementCreator.id;
 				imgVO.imgID = imgID;
-				imgVO.sourceData = bmd as BitmapData;
+				imgVO.viewData = data as BitmapData;
 				
-				imgVO.width = imgVO.sourceData.width;
-				imgVO.height = imgVO.sourceData.height;
+				imgVO.width = imgVO.viewData.width;
+				imgVO.height = imgVO.viewData.height;
 				
 				layoutVO(vo);
 				
@@ -72,14 +74,16 @@ package commands
 				
 				swfVO.id = ElementCreator.id;
 				swfVO.imgID = imgID;
-				swfVO.sourceData = bmd as Sprite;
 				
-				swfVO.width = swfVO.sourceData.width;
-				swfVO.height = swfVO.sourceData.height;
+				swfVO.viewData = data as Sprite;
+				swfVO.fileBytes = fileData;
+				
+				swfVO.width = swfVO.viewData.width;
+				swfVO.height = swfVO.viewData.height;
 				
 				layoutVO(vo);
 				
-				//element = new ImgElement(swfVO);
+				element = new SWFElement(swfVO);
 			}
 			
 			CoreFacade.addElement(element);
@@ -124,6 +128,8 @@ package commands
 			vo.y = p.y;
 		}
 		
+		/**
+		 */		
 		private function created():void
 		{
 			CoreFacade.coreMediator.pageManager.refreshPageThumbsByElement(element);
@@ -157,6 +163,6 @@ package commands
 		
 		/**
 		 */		
-		protected var element:ImgElement;
+		protected var element:ImgElementBase;
 	}
 }

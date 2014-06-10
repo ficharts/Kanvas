@@ -21,17 +21,26 @@ package com.kvs.utils.extractor
 		 */		
 		override public function init(bytes:ByteArray,limit:Number = 4194304, quality:Number = 80):void
 		{
-			_fileBytes = bytes;
+			_fileBytes = new ByteArray;
+			
+			_fileBytes.writeBytes(bytes, 0, bytes.bytesAvailable);
 			
 			var loaderContext:LoaderContext = new LoaderContext(); 
-			loaderContext.allowLoadBytesCodeExecution = true; 
-			loaderContext.allowCodeImport = true;
+			
+			if (CoreApp.isAIR)
+			{
+				loaderContext.allowLoadBytesCodeExecution = true; 
+				loaderContext.allowCodeImport = true;
+			}
+			
 			loaderContext.applicationDomain = ApplicationDomain.currentDomain;
 			
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, swfLoaded);
 			
 			move1Loader = new ForcibleLoader(loader);
-			move1Loader.loadBytes(_fileBytes, loaderContext);
+			move1Loader.loadBytes(bytes, loaderContext);
+			
+			
 		}
 		
 		/**
@@ -40,7 +49,7 @@ package com.kvs.utils.extractor
 		{
 			_view = loader.content as Sprite;
 			
-			//loader.unload();
+			loader.unload();
 			this.dispatchEvent(evt);
 		}
 		

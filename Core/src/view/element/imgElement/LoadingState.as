@@ -8,6 +8,8 @@ package view.element.imgElement
 	
 	import view.element.ElementEvent;
 
+	/**
+	 */	
 	public class LoadingState extends ImgLoadStateBase
 	{
 		public function LoadingState(host:ImgElementBase)
@@ -69,7 +71,7 @@ package view.element.imgElement
 		 */		
 		private function imgLoaded(evt:ImgInsertEvent):void
 		{
-			element.imgVO.sourceData = evt.bitmapData;
+			element.imgLoaded(imgLoader.fileBytes, evt.viewData);
 			
 			imgLoader.removeEventListener(ImgInsertEvent.IMG_LOADED, imgLoaded);
 			imgLoader.removeEventListener(ImgInsertEvent.IMG_LOADED_ERROR, imgLoadError);

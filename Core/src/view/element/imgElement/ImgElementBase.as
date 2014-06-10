@@ -2,6 +2,8 @@ package view.element.imgElement
 {
 	import com.kvs.utils.RexUtil;
 	
+	import flash.utils.ByteArray;
+	
 	import landray.kp.ui.Loading;
 	
 	import model.vo.ElementVO;
@@ -19,7 +21,7 @@ package view.element.imgElement
 		{
 			super(vo);
 			
-			
+			vo.xml = <image/>;
 			autoGroupChangable = false;
 			
 			// 图片加载状态初始化
@@ -55,9 +57,15 @@ package view.element.imgElement
 			
 			currLoadState = normalState;
 			removeLoading();
-			imgVO.width  = imgVO.sourceData.width;
-			imgVO.height = imgVO.sourceData.height;
-			initBmp(imgVO.sourceData);
+			
+			if (imgVO.viewData)
+			{
+				imgVO.width  = imgVO.viewData.width;
+				imgVO.height = imgVO.viewData.height;
+			}
+			
+			initIMG(imgVO.viewData);
+			
 			currLoadState.render();
 			
 			dispatchEvent(new ElementEvent(ElementEvent.IMAGE_TO_RENDER));
@@ -65,14 +73,21 @@ package view.element.imgElement
 		
 		/**
 		 */		
-		protected function initBmp(bmd:Object):void
+		public function imgLoaded(fileBytes:ByteArray, viewData:Object):void
 		{
 			
 		}
 		
 		/**
 		 */		
-		public function showBmp():void
+		protected function initIMG(bmd:Object):void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function showIMG():void
 		{
 		}
 		
@@ -85,7 +100,7 @@ package view.element.imgElement
 			super.render();
 			
 			// 图片插入时
-			if (imgVO.sourceData)
+			if (imgVO.viewData)
 				currLoadState.render();
 			else if (imgVO.url != "null" && RexUtil.ifHasText(imgVO.url))// 再次编辑时从服务器载入图片, 或者从内存中加载图片
 				currLoadState.loadingImg();

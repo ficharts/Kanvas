@@ -67,14 +67,10 @@ package
 			var context:LoaderContext = new LoaderContext();
 			laoder.load(new URLRequest('http://www.kanvas.cn/web/KanvasWeb.swf'));
 			
-			 label =new TextField
-			 label.text = "";
-			//addChild(label);
+			//laoder.load(new URLRequest('KanvasWeb.swf'));
+			
 		}
 		
-		/**
-		 */		
-		private var label:TextField
 		
 		/**
 		 */		
@@ -82,8 +78,6 @@ package
 		{
 			var perc:Number = evt.bytesLoaded /this.stage.loaderInfo.bytesTotal;
 			logoMask.scaleX = perc;
-			
-			label.text = label.text +  evt.bytesLoaded + ',' + evt.bytesTotal + "," + perc.toString() + "\n";
 		}
 		
 		/**
