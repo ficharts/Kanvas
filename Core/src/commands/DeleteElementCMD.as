@@ -31,6 +31,7 @@ package commands
 			elementIndex = CoreFacade.getElementIndex(element);
 			CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
 			CoreFacade.removeElement(element);
+			
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
@@ -75,13 +76,20 @@ package commands
 					CoreFacade.addElementAt(item, elementIndexArray[i]);
 					
 					if (item.isPage)
+					{
 						CoreFacade.coreMediator.pageManager.addPageAt(item.vo.pageVO, item.vo.pageVO.index);
+						CoreFacade.coreMediator.pageManager.layoutPages();						
+					}
 				}
 			}
 			
 			CoreFacade.addElementAt(element, elementIndex);
+			
 			if (element.isPage)
+			{
 				CoreFacade.coreMediator.pageManager.addPageAt(element.vo.pageVO, element.vo.pageVO.index);
+				CoreFacade.coreMediator.pageManager.layoutPages();
+			}
 			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
 			
@@ -93,6 +101,7 @@ package commands
 		override public function redoHandler():void
 		{
 			CoreFacade.removeElement(element);
+			
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
