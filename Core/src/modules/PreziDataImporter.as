@@ -197,7 +197,7 @@ package modules
 				case "text":
 					convertText(xml, data, style, template);
 					break;
-				case "img":
+				case "image":
 					convertImage(xml, data, style);
 					break;
 			}
@@ -327,8 +327,8 @@ package modules
 		{
 			var isSwf:Boolean = (String(source.resource.url).indexOf(".swf") > -1);
 			target.@type = (isSwf) ? "swf" : "img";
-			target.@url = source.resource.url;
 			target.@imgID = source.resource.id;
+			target.@url = source.resource.url;
 		}
 		
 		private function getColor(style:String, type:String = null):String
