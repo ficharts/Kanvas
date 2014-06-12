@@ -74,7 +74,10 @@ package landray.kp.maps.main.elements
 		{
 			if(!rendered)
 			{
+				FlowTextManager.updateTexLayout(text, textManager, fixWidth);
 				FlowTextManager.renderTextVOLabel(this, textVO);
+				textVO.width  = textManager.compositionWidth;
+				textVO.height = textManager.compositionHeight;
 				FlowTextManager.updateTexLayout(text, textManager, fixWidth);
 				textVO.width  = textManager.compositionWidth;
 				textVO.height = textManager.compositionHeight;
