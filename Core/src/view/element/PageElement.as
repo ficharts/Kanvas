@@ -23,7 +23,7 @@ package view.element
 			vo.xml = <page/>;
 			_screenshot = false;
 			_elementPageConvertable = false;
-			mouseChildren = true		
+			mouseChildren = true;
 		}
 		
 		/**
@@ -43,6 +43,10 @@ package view.element
 			mouseChildren = true;
 		}
 		
+		override protected function init():void
+		{
+			super.init();
+		}
 		
 		
 		/**

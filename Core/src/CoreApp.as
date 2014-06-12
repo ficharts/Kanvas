@@ -74,9 +74,13 @@ package
 				facade.sendNotification(Command.RENDER_BG_COLOR);
 				drawBgInteractorShape();
 				updatePastPoint();
+				updateStageBound();
+				facade.coreMediator.updateSelector();
+				if (textEditor && textEditor.visible)
+					textEditor.updateLayout();
 			}
 			
-			this.dispatchEvent(new Event(Event.RESIZE));
+			dispatchEvent(new Event(Event.RESIZE));
 		}
 		
 		/**
@@ -611,6 +615,11 @@ package
 		public function updatePastPoint():void
 		{
 			PAST_LOC = LayoutUtil.stagePointToElementPoint(stage.stageWidth * .5, stage.stageHeight * .5, canvas);
+		}
+		
+		private function updateStageBound():void
+		{
+			stageBound = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 		}
 		
 		/**

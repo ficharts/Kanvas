@@ -114,22 +114,21 @@ package view.interact
 		 */		
 		public function updateAfterZoomMove():void
 		{
-			var stage:Rectangle = coreMdt.coreApp.bound;
-			var w:Number = stage.width ;
-			var h:Number = stage.height;
-			var minLineInteractSizeSquare:Number = minInteractSize * minInteractSize * .25;
-			var maxLineInteractSizeSquare:Number = w * w;
+			var stage:Rectangle = coreMdt.coreApp.bound, w:Number = stage.width, h:Number = stage.height;
+			//minLineInteractSizeSquare, maxLineInteractSizeSquare
+			var minLineSquare:Number = minInteractSize * minInteractSize * .25, maxLineSquare:Number = w * w;
 			
 			//PerformaceTest.start("ElementCollisionDetection.updateAfterZoomMove()")
-			for each (var element:ElementBase in elements)
+			var element:ElementBase, bound:Rectangle, size:Number;
+			for each (element in elements)
 			{
 				if (element.visible)
 				{
-					var bound:Rectangle = LayoutUtil.getItemRect(coreMdt.canvas, element);
+					bound = getItemRect(coreMdt.canvas, element);
 					if (element is LineElement)
 					{
-						var size:Number = (bound.width * bound.width + bound.height * bound.height) >> 1;
-						if (size > maxLineInteractSizeSquare || size < minLineInteractSizeSquare)
+						size = (bound.width * bound.width + bound.height * bound.height) >> 1;
+						if (size > maxLineSquare || size < minLineSquare)
 							element.disable();//过小禁止交互
 						else
 							element.enable();
@@ -166,5 +165,6 @@ package view.interact
 		 */		
 		public var elements:Vector.<ElementBase>;
 		
+		private static var getItemRect:Function = LayoutUtil.getItemRect;
 	}
 }

@@ -99,6 +99,11 @@ package
 			e.target.removeEventListener(IOErrorEvent.IO_ERROR, uploadPageData);
 		}
 		
+		public function openTemplate(id:uint):void
+		{
+			
+		}
+		
 		/**
 		 */		
 		protected var core:CoreApp;

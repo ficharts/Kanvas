@@ -9,14 +9,22 @@ package view.templatePanel
 		public function TemplateItem()
 		{
 			super();
+			doubleClickEnabled = true;
+		}
+		
+		override public function set selected(value:Boolean):void
+		{
+			super.selected = value;
+			
+			mouseEnabled = true;
 		}
 		
 		override protected function init():void
 		{
-			w = 90;
-			h = 70;
-			iconW = 80;
-			iconH = 60;
+			w = 210;
+			h = 160;
+			iconW = 200;
+			iconH = 150;
 			
 			styleXML = iconStyleXML;
 			
@@ -30,19 +38,16 @@ package view.templatePanel
 			var tx:Number = (currState.width  - iconW) / 2;
 			var ty:Number = (currState.height - iconH) / 2;
 			
-			graphics.lineStyle(1, 0xEEEEEE);
+			graphics.lineStyle(1, 0xCCCCCC);
 			graphics.drawRect(tx, ty, iconW, iconH);
 			graphics.endFill();
 			
 			
 		}
 		
-		public var icon:String = "";
+		public var id:uint;
 		
 		public var data:XML;
-		
-		private var label:LabelUI;
-		
 		
 		private const iconStyleXML:XML = 
 			<states>
@@ -51,7 +56,7 @@ package view.templatePanel
 					<img/>
 				</normal>
 				<hover>
-					<fill color='#DDDDDD' alpha='0.8'/>
+					<fill color='#999999' alpha='0.8'/>
 					<img/>
 				</hover>
 				<down>

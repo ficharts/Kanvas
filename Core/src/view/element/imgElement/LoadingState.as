@@ -52,11 +52,10 @@ package view.element.imgElement
 			
 			element.currLoadState = element.normalState;
 			
-			element.graphics.clear();
 			element.shape.visible = true;
 			element.graphics.clear();
 			element.graphics.beginFill(0xff0000, 0.3);
-			element.graphics.drawRect( - element.vo.width / 2, - element.vo.height / 2, element.vo.width, element.vo.height);
+			element.graphics.drawRect( - element.vo.width * .5, - element.vo.height * .5, element.vo.width, element.vo.height);
 			element.graphics.endFill();
 			
 			var iconSize:Number = (element.vo.width > element.vo.height) ? element.vo.height * 0.5 : element.vo.width * 0.5;

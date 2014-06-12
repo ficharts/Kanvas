@@ -173,7 +173,13 @@ package view.element.text
 		 */
 		override public function render():void
 		{
+			
 			FlowTextManager.renderTextVOLabel(this, textVO);
+			
+			FlowTextManager.updateTexLayout(text, textManager, fixWidth);
+			var bound:Rectangle = textManager.getContentBounds();
+			textVO.width  = textManager.compositionWidth;
+			textVO.height = textManager.compositionHeight;
 			renderAfterLabelRender();
 			checkTextBm(true);// 文本渲染时要强制重新截图
 		}

@@ -27,8 +27,8 @@ package view.element.imgElement
 			addChild(_canvas);
 		}
 		
-		/**
-		 */		
+		
+
 		override public function clone():ElementBase
 		{
 			var imgVO:ImgVO = new ImgVO;
@@ -68,8 +68,9 @@ package view.element.imgElement
 					bmpDispl = tmpDispl;
 					bmpDispl.visible = true;
 				}
+				/*bmpDispl = true;
 				if (bmpDispl.smoothing!= smooth)
-					bmpDispl.smoothing = smooth;
+					bmpDispl.smoothing = smooth;*/
 			}
 		}
 		

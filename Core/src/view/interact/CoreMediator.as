@@ -423,7 +423,8 @@ package view.interact
 		 */		
 		public function updateSelector():void
 		{
-			selector.update();
+			if (selector && selector.visible)
+				selector.update();
 		}
 		
 		
@@ -805,19 +806,14 @@ package view.interact
 		{
 			if(!treking)
 			{
-				trace("flashPlay")
 				treking = true;
 				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
 				for each (var element:ElementBase in elements)
 				{
 					if (element is ImgElement)
-					{
-						(element as ImgElement).smooth = false;
-					}
+						ImgElement(element).smooth = false;
 					else if (element is TextEditField)
-					{
-						(element as TextEditField).smooth = false;
-					}
+						TextEditField(element).smooth = false;
 				}
 			}
 		}
@@ -835,19 +831,15 @@ package view.interact
 					coreApp.updatePastPoint();
 				}
 				//检测，重绘文本， 以达到像素精度不失真
-				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-				for each (var element:ElementBase in elements)
+				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements, element:ElementBase;
+				for each (element in elements)
 				{
 					if (element.visible)
 					{
 						if (element.isPage)
-						{
 							element.layoutPageNum();
-						}
 						if (element is TextEditField)
-						{
-							(element as TextEditField).checkTextBm();
-						}
+							TextEditField(element).checkTextBm();
 					}
 				}
 			}
@@ -859,7 +851,6 @@ package view.interact
 		{
 			if (treking)
 			{
-				trace("flashStop")
 				treking = false;
 				mainUI.curScreenState.enableCanvas();
 				zoomMoveControl.enableBGInteract();
@@ -868,13 +859,9 @@ package view.interact
 				for each (var element:ElementBase in elements)
 				{
 					if (element is ImgElement)
-					{
-						(element as ImgElement).smooth = true;
-					}
+						ImgElement(element).smooth = true;
 					else if (element is TextEditField)
-					{
-						(element as TextEditField).smooth = true;
-					}
+						TextEditField(element).smooth = true;
 				}
 				
 				//动画结束后再初始化页面动画，防止位置计算偏差，因为动画会让画布布局改变一下

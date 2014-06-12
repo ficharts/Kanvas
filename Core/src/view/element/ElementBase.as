@@ -457,7 +457,7 @@ package view.element
 		{
 			if (check && stage)
 			{
-				var rect:Rectangle = LayoutUtil.getItemRect(parent as Canvas, this);
+				var rect:Rectangle = getItemRect(parent as Canvas, this);
 				
 				if (rect.width < 1 || rect.height < 1)
 				{
@@ -465,17 +465,15 @@ package view.element
 				}
 				else 
 				{
-					var boud:Rectangle = LayoutUtil.getStageRect(stage);
-					super.visible = RectangleUtil.rectOverlapping(rect, boud);
+					var boud:Rectangle = getStageRect(stage);
+					super.visible = rectOverlapping(rect, boud);
 				}
 			}
 			
 			if (parent && visible)
 			{
-				var prtScale :Number = parent.scaleX;
-				var prtRadian:Number = MathUtil.angleToRadian(parent.rotation);
-				var prtCos:Number = Math.cos(prtRadian);
-				var prtSin:Number = Math.sin(prtRadian);
+				var prtScale :Number = parent.scaleX, prtRadian:Number = MathUtil.angleToRadian(parent.rotation);
+				var prtCos:Number = Math.cos(prtRadian), prtSin:Number = Math.sin(prtRadian);
 				
 				//scale
 				var tmpX:Number = x * prtScale;
@@ -654,11 +652,12 @@ package view.element
 					s = scaleX;
 				
 				numShape.width = numShape.height = 100;
-				var temSize:Number = numShape.width * s * parent.scaleX;
+				var parentScale:Number = (parent) ? parent.scaleX : 1;
+				var temSize:Number = numShape.width * s * parentScale;
 				
 				if (temSize > maxNumSize)
 				{
-					var size:Number = maxNumSize / s / parent.scaleX;
+					var size:Number = maxNumSize / s / parentScale;
 					
 					numShape.width  = size;
 					numShape.height = size;
@@ -1229,5 +1228,11 @@ package view.element
 		
 		//绘制图形的画布
 		protected var graphicShape:Shape;
+		
+		private static var getItemRect:Function = LayoutUtil.getItemRect;
+		
+		private static var getStageRect:Function = LayoutUtil.getStageRect;
+		
+		private static var rectOverlapping:Function = RectangleUtil.rectOverlapping;
 	}
 }

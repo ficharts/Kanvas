@@ -6,6 +6,7 @@ package view.ui
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import view.screenState.FullScreenState;
@@ -82,6 +83,7 @@ package view.ui
 		 */
 		public function set bound(value:Rectangle):void
 		{
+			
 			__bound = value;
 			
 			__boundDiagonalDistance = RectangleUtil.getDiagonalDistance(bound);
@@ -95,10 +97,23 @@ package view.ui
 		 */		
 		private var __bound:Rectangle;
 		
+		
+		
 		public function get stageBound():Rectangle
 		{
-			return null;
+			return __stageBound;
 		}
+		public function set stageBound(value:Rectangle):void
+		{
+			lastBound = __stageBound;
+			__stageBound = value;
+			updateCanvasCenter();
+			synBgImageToCanvas();
+		}
+		
+		private var __stageBound:Rectangle;
+		
+		private var lastBound:Rectangle;
 		
 		public function get boundDiagonalDistance():Number
 		{
@@ -136,13 +151,22 @@ package view.ui
 		 */		
 		public function synBgImageToCanvas():void
 		{
-			bgImageCanvas.scaleX = bgImageCanvas.scaleY = Math.pow(canvas.scaleX, .1);
+			bgImageCanvas.scaleX = bgImageCanvas.scaleY = canvas.scaleX;
 			bgImageCanvas.rotation = canvas.rotation;
-			var p:Number =  Math.pow(1 / (1 + canvas.scaleX), 2);
+			bgImageCanvas.x = canvas.x;
+			bgImageCanvas.y = canvas.y;
+		/*	trace(canvas.x, canvas.y)
+			var hw:Number = stage.stageWidth  * .5;
+			var hh:Number = stage.stageHeight * .5;*/
+			//bgImageCanvas.x = hw * canvas.scaleX + canvas.x;
+			//bgImageCanvas.y = hh * canvas.scaleX + canvas.y;
+			/*bgImageCanvas.scaleX = bgImageCanvas.scaleY = Math.pow(canvas.scaleX, .1) * 2;
+			bgImageCanvas.rotation = canvas.rotation;
+			var p:Number =  Math.pow(1 / (1 + Math.pow(canvas.scaleX, .1)), 2);
 			var hw:Number = stage.stageWidth  * .5;
 			var hh:Number = stage.stageHeight * .5;
 			bgImageCanvas.x = hw + (canvas.x - hw) * p;
-			bgImageCanvas.y = hh + (canvas.y - hh) * p;
+			bgImageCanvas.y = hh + (canvas.y - hh) * p;*/
 		}
 		
 		
@@ -158,8 +182,8 @@ package view.ui
 			if (bmd)
 			{
 				bgImageBitmap = new Bitmap(bmd);
-				bgImageBitmap.x = -.5 * bgImageBitmap.width;
-				bgImageBitmap.y = -.5 * bgImageBitmap.height;
+				//bgImageBitmap.x = -.5 * bgImageBitmap.width;
+				//bgImageBitmap.y = -.5 * bgImageBitmap.height;
 				bgImageCanvas.addChild(bgImageBitmap);
 				fitBgBitmapToBound();
 				synBgImageToCanvas();
@@ -168,7 +192,13 @@ package view.ui
 		
 		private function fitBgBitmapToBound():void
 		{
-			if (bgImageBitmap && bound)
+			if (bgImageBitmap)
+			{
+				bgImageBitmap.scaleX = bgImageBitmap.scaleY = 16;
+				bgImageBitmap.x = -.5 * bgImageBitmap.width;
+				bgImageBitmap.y = -.5 * bgImageBitmap.height;
+			}
+			/*if (bgImageBitmap && bound)
 			{
 				var vw:Number = bound.width;
 				var vh:Number = bound.height;
@@ -176,6 +206,23 @@ package view.ui
 				var bh:Number = bgImageBitmap.height / bgImageBitmap.scaleY;
 				var ss:Number = 1.5 * ((vw / vh > bw / bh) ? vw / bw : vh / bh);
 				TweenMax.to(bgImageBitmap, 1, {scaleX:ss, scaleY:ss, x:-.5 * bw * ss, y:-.5 * bh * ss});
+			}*/
+		}
+		
+		private function updateCanvasCenter():void
+		{
+			if (lastBound)
+			{
+				var lastCenter:Point = new Point((lastBound.left + lastBound.right) * .5, (lastBound.top + lastBound.bottom) * .5);
+				var center:Point = new Point((stageBound.left + stageBound.right) * .5, (stageBound.top + stageBound.bottom) * .5);
+				var vector:Point = center.subtract(lastCenter);
+				canvas.x += vector.x;
+				canvas.y += vector.y;
+			}
+			else
+			{
+				canvas.x = (bound.left + bound.right) * .5;
+				canvas.y = (bound.top + bound.bottom) * .5;
 			}
 		}
 		

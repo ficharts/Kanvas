@@ -157,28 +157,21 @@ package util
 										   ignoreCanvasRotate:Boolean = false, 
 										   toStage:Boolean = true):Rectangle
 		{
-			var x:Number = 0;
-			var y:Number = 0;
-			var w:Number = 0;
-			var h:Number = 0;
+			var x:Number = 0, y:Number = 0, w:Number = 0, h:Number = 0;
 			var offsetX:Number = (toStage && canvas) ? canvas.x : 0;
 			var offsetY:Number = (toStage && canvas) ? canvas.y : 0;
 			var offsetScale   :Number = (toStage && canvas) ? canvas.scaleX : 1;
 			var offsetRotation:Number = (toStage && canvas && !ignoreCanvasRotate) ? canvas.rotation : 0;
 			if (!ignoreItemRotate)
 			{
-				var p1:Point = item.topLeft;
-				var p2:Point = item.topRight;
-				var p3:Point = item.bottomLeft;
-				var p4:Point = item.bottomRight;
-				LayoutUtil.convertPointCanvas2Stage(p1, offsetX, offsetY, offsetScale, offsetRotation);
-				LayoutUtil.convertPointCanvas2Stage(p2, offsetX, offsetY, offsetScale, offsetRotation);
-				LayoutUtil.convertPointCanvas2Stage(p3, offsetX, offsetY, offsetScale, offsetRotation);
-				LayoutUtil.convertPointCanvas2Stage(p4, offsetX, offsetY, offsetScale, offsetRotation);
-				var minX:Number = Math.min(p1.x, p2.x, p3.x, p4.x);
-				var maxX:Number = Math.max(p1.x, p2.x, p3.x, p4.x);
-				var minY:Number = Math.min(p1.y, p2.y, p3.y, p4.y);
-				var maxY:Number = Math.max(p1.y, p2.y, p3.y, p4.y);
+				var p1:Point = item.topLeft.clone(), p2:Point = item.topRight.clone();
+				var p3:Point = item.bottomLeft.clone(), p4:Point = item.bottomRight.clone();
+				convertPointCanvas2Stage(p1, offsetX, offsetY, offsetScale, offsetRotation);
+				convertPointCanvas2Stage(p2, offsetX, offsetY, offsetScale, offsetRotation);
+				convertPointCanvas2Stage(p3, offsetX, offsetY, offsetScale, offsetRotation);
+				convertPointCanvas2Stage(p4, offsetX, offsetY, offsetScale, offsetRotation);
+				var minX:Number = Math.min(p1.x, p2.x, p3.x, p4.x), maxX:Number = Math.max(p1.x, p2.x, p3.x, p4.x);
+				var minY:Number = Math.min(p1.y, p2.y, p3.y, p4.y), maxY:Number = Math.max(p1.y, p2.y, p3.y, p4.y);
 				x = minX;
 				y = minY;
 				w = maxX - minX;
@@ -187,7 +180,7 @@ package util
 			else
 			{
 				var point:Point = new Point(item.left, item.top);
-				LayoutUtil.convertPointCanvas2Stage(point, offsetX, offsetY, offsetScale, offsetRotation);
+				convertPointCanvas2Stage(point, offsetX, offsetY, offsetScale, offsetRotation);
 				x = point.x;
 				y = point.y;
 				w = offsetScale * item.scaledWidth;
