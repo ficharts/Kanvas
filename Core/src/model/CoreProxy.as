@@ -490,9 +490,14 @@ package model
 		}
 		
 		/**
+		 * 
+		 * 基本元素与组合的集合
+		 * 
 		 * 数据导入时，辅助组合将子元素纳入组合中
 		 * 
 		 * 辅助页面与原件的匹配，辅助动画与原件的匹配
+		 * 
+		 * 
 		 */		
 		private var temElementMap:Map = new Map;
 		
@@ -500,7 +505,7 @@ package model
 		 */		
 		private function createVO(item:XML):ElementVO
 		{
-			var vo:ElementVO = ElementCreator.getElementVO(item.name().toString());
+			var vo:ElementVO = ElementCreator.getElementVO(item.@type.toString());
 			
 			XMLVOMapper.fuck(item, vo);
 			StyleUtil.applyStyleToElement(vo);
@@ -549,9 +554,9 @@ package model
 		{
 			bgImgLoader.removeEventListener(ImgInsertEvent.IMG_LOADED, initializeBgImgLoaded);
 			
-			bgVO.imgData = evt.bitmapData;
-			CoreFacade.coreMediator.coreApp.drawBGImg(evt.bitmapData);
-			coreApp.bgImgUpdated(evt.bitmapData);
+			bgVO.imgData = evt.viewData as BitmapData;
+			CoreFacade.coreMediator.coreApp.drawBGImg(bgVO.imgData);
+			coreApp.bgImgUpdated(bgVO.imgData);
 			
 			for each (var vo:PageVO in CoreFacade.coreMediator.pageManager.pages)
 				CoreFacade.coreMediator.pageManager.registUpdateThumbVO(vo);

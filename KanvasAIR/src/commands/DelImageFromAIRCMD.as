@@ -10,6 +10,7 @@ package commands
 	
 	import view.element.ElementBase;
 	import view.element.imgElement.ImgElement;
+	import view.element.imgElement.ImgElementBase;
 
 	/**
 	 */	
@@ -68,7 +69,7 @@ package commands
 			var isImgShared:Boolean = false;
 			for each (var element:ElementBase in CoreFacade.coreProxy.elements)
 			{
-				if (element is ImgElement && (element as ImgElement).imgVO.imgID == this.element.imgVO.imgID)
+				if (element is ImgElementBase && (element as ImgElementBase).imgVO.imgID == this.element.imgVO.imgID)
 				{
 					isImgShared = true;
 					break;

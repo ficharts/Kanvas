@@ -21,8 +21,9 @@ package model.vo
 		{
 			var vo:ImgVO = super.clone() as ImgVO;
 			vo.url = url;
-			vo.sourceData = sourceData;
+			vo.viewData = viewData;
 			vo.imgID = imgID;
+			
 			return vo;
 		}
 		
@@ -43,9 +44,25 @@ package model.vo
 		public var url:String = '';
 		
 		/**
-		 * 图片的原始数据
 		 */		
-		public var sourceData:BitmapData;
+		private var _sourceData:Object;
+
+		/**
+		 * 图片的显示数据对象，bitmapdata或者sprite
+		 */
+		public function get viewData():Object
+		{
+			return _sourceData;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set viewData(value:Object):void
+		{
+			_sourceData = value;
+		}
+
 		
 		/**
 		 * 图片的原始数据id, 复制时，原始ID不变，

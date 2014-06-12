@@ -2,6 +2,7 @@ package util.img
 {
 	import flash.display.BitmapData;
 	import flash.events.Event;
+	import flash.utils.ByteArray;
 
 	/**
 	 */	
@@ -29,18 +30,26 @@ package util.img
 		
 		/**
 		 */		
-		public function ImgInsertEvent(type:String, data:BitmapData = null, imgID:uint = 0, imgURL:String = null)
+		public function ImgInsertEvent(type:String, data:Object = null, imgID:uint = 0, imgURL:String = null, fileBytes:ByteArray = null)
 		{
 			super(type);
 			
-			this.bitmapData = data;
+			this.viewData = data;
+			this.fileBytes = fileBytes;
+			
 			this.imgID = imgID;
 			this.imgURL = imgURL;
+			
 		}
 		
 		/**
+		 * 显示对象，sprite 或者 bitmapdata
 		 */		
-		public var bitmapData:BitmapData;
+		public var viewData:Object;
+		
+		/**
+		 */		
+		public var fileBytes:ByteArray;
 		
 		/**
 		 */		

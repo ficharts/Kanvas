@@ -9,6 +9,7 @@ package model
 	import model.vo.ImgVO;
 	import model.vo.LineVO;
 	import model.vo.PageVO;
+	import model.vo.SWFVO;
 	import model.vo.ShapeVO;
 	import model.vo.StarVO;
 	import model.vo.TextVO;
@@ -20,6 +21,7 @@ package model
 	import view.MediatorNames;
 	import view.element.*;
 	import view.element.imgElement.ImgElement;
+	import view.element.imgElement.SWFElement;
 	import view.element.shapes.*;
 	import view.element.text.TextEditField;
 	import view.interact.CoreMediator;
@@ -39,10 +41,10 @@ package model
 		}
 		/**
 		 */		
-		public static function addElement(element:ElementBase):void
+		public static function addElement(element:IElement):void
 		{
-			instance._coreMediator.addElement(element);
-			instance._coreProxy.addElement(element);
+			instance._coreMediator.addElement(element as ElementBase);
+			instance._coreProxy.addElement(element as ElementBase);
 		}
 		
 		/**
@@ -55,10 +57,10 @@ package model
 		
 		/**
 		 */		
-		public static function removeElement(element:ElementBase):void
+		public static function removeElement(element:IElement):void
 		{
-			instance._coreMediator.removeElementFromView(element);
-			instance._coreProxy.removeElement(element);
+			instance._coreMediator.removeElementFromView(element as ElementBase);
+			instance._coreProxy.removeElement(element as ElementBase);
 		}
 		
 		public static function getElementIndex(element:ElementBase):int
@@ -140,6 +142,7 @@ package model
 			
 			ElementCreator.registerElement('img', ImgElement, ImgVO);
 			ElementCreator.registerElement('image', ImgElement, ImgVO);
+			ElementCreator.registerElement('swf', SWFElement, SWFVO);
 			
 			ElementCreator.registerElement('hotspot', HotspotElement, ElementVO);
 			ElementCreator.registerElement('group', GroupElement, GroupVO);

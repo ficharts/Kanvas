@@ -40,7 +40,7 @@ package commands
 			
 			imgInsertor.removeEventListener(ImgInsertEvent.IMG_LOADED_TO_LOCAL, imgLoadedHandler);
 			
-			createImg(evt.bitmapData, evt.imgID);
+			createImg(evt.viewData, evt.imgID, evt.fileBytes);
 		}
 		
 		

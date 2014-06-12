@@ -153,7 +153,7 @@ package modules
 							createObj(xml, "text", xml["@class"], color, true);
 							break;
 						case "image":
-							createObj(xml, "img", "img", color);
+							createObj(xml, "image", "img", color);
 							break;
 						default:
 							break;
@@ -225,7 +225,6 @@ package modules
 		
 		private function convertRect(target:XML, source:XML, style:String):void
 		{
-			
 			if (style == "border")
 			{
 				target.@width  = source.size.w;
@@ -326,6 +325,8 @@ package modules
 		
 		private function convertImage(target:XML, source:XML, style:String):void
 		{
+			var isSwf:Boolean = (String(source.resource.url).indexOf(".swf") > -1);
+			target.@type = (isSwf) ? "swf" : "img";
 			target.@url = source.resource.url;
 			target.@imgID = source.resource.id;
 		}

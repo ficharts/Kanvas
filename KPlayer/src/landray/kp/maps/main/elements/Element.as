@@ -37,6 +37,15 @@ package landray.kp.maps.main.elements
 		
 		/**
 		 */		
+		public function getChilds(group:Vector.<IElement>):Vector.<IElement>
+		{
+			group.push(this);
+			
+			return group;
+		}
+		
+		/**
+		 */		
 		private function init():void
 		{
 			addChild(_shape = new Shape);

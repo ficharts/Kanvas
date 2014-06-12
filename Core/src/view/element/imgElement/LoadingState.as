@@ -2,17 +2,17 @@ package view.element.imgElement
 {
 	import com.kvs.utils.graphic.BitmapUtil;
 	
-	import flash.display.Shape;
-	
 	import util.img.ImgInsertEvent;
 	import util.img.ImgInsertor;
 	import util.img.ImgLib;
 	
 	import view.element.ElementEvent;
 
+	/**
+	 */	
 	public class LoadingState extends ImgLoadStateBase
 	{
-		public function LoadingState(host:ImgElement)
+		public function LoadingState(host:ImgElementBase)
 		{
 			super(host);
 		}
@@ -70,7 +70,7 @@ package view.element.imgElement
 		 */		
 		private function imgLoaded(evt:ImgInsertEvent):void
 		{
-			element.imgVO.sourceData = evt.bitmapData;
+			element.imgLoaded(imgLoader.fileBytes, evt.viewData);
 			
 			imgLoader.removeEventListener(ImgInsertEvent.IMG_LOADED, imgLoaded);
 			imgLoader.removeEventListener(ImgInsertEvent.IMG_LOADED_ERROR, imgLoadError);

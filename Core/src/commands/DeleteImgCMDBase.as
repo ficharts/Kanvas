@@ -8,6 +8,7 @@ package commands
 	import util.undoRedo.UndoRedoMannager;
 	
 	import view.element.imgElement.ImgElement;
+	import view.element.imgElement.ImgElementBase;
 
 	/**
 	 */	
@@ -31,7 +32,7 @@ package commands
 		{
 			sendNotification(Command.UN_SELECT_ELEMENT);
 			
-			element = notification.getBody() as ImgElement;
+			element = notification.getBody() as ImgElementBase;
 			
 			elementIndex = element.index;
 			
@@ -72,7 +73,7 @@ package commands
 		
 		/**
 		 */		
-		protected var element:ImgElement;
+		protected var element:ImgElementBase;
 		
 		protected var elementIndex:int;
 		

@@ -172,7 +172,7 @@ package view.interact
 				{
 					var brect:Rectangle = rects[j];
 					if (arect.width < brect.width && arect.height < brect.height && 
-						RectangleUtil.rectOverlapping(arect, brect))
+						RectangleUtil.rectWithin(arect, brect))
 					{
 						var r:Rectangle = rects[i];
 						rects[i] = rects[j];

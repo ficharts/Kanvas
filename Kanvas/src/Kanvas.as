@@ -54,8 +54,8 @@ package
 			uiContainer.addChild(pagePanel);
 			uiContainer.addChild(themePanel);
 			uiContainer.addChild(shapePanel);
-			uiContainer.addChild(templatePanel);
 			uiContainer.addChild(toolBar);
+			uiContainer.addChild(templatePanel);
 			
 			stage.addEventListener(Event.RESIZE, stageResizeHandler, false, 0, true);
 			

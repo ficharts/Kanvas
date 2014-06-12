@@ -21,6 +21,7 @@ package
 	
 	import view.element.ElementBase;
 	import view.element.imgElement.ImgElement;
+	import view.element.imgElement.ImgElementBase;
 	import view.ui.Bubble;
 
 	/**
@@ -135,8 +136,8 @@ package
 			var imgIDsInXML:Array = [];
 			for each (var element:ElementBase in CoreFacade.coreProxy.elements)
 			{
-				if (element is ImgElement)
-					imgIDsInXML.push((element as ImgElement).imgVO.imgID.toString());
+				if (element is ImgElementBase)
+					imgIDsInXML.push((element as ImgElementBase).imgVO.imgID.toString());
 			}
 			
 			//不能忘记背景图

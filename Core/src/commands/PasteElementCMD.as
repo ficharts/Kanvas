@@ -75,6 +75,7 @@ package commands
 				{
 					if (groupElements[i].isPage)
 						pageElements.push(groupElements[i]);
+					
 					if (groupElements[i].screenshot)
 						CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(groupElements[i]);
 				}
@@ -85,6 +86,9 @@ package commands
 			for each (var element:ElementBase in pageElements)
 				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
+			if (pageElements.length)
+				CoreFacade.coreMediator.pageManager.layoutPages();
+				
 			v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
 			
 			sendNotification(Command.SElECT_ELEMENT, element);

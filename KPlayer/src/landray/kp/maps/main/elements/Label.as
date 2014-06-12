@@ -62,12 +62,10 @@ package landray.kp.maps.main.elements
 		
 		/**
 		 */		
-		public function check():void
+		public function check(force:Boolean = false):void
 		{
-			if (visible)
-			{
-				textDrawer.checkTextBm(graphics, textCanvas, textVO.scale * ((parent) ? parent.scaleX : 1));
-			}
+			if (visible || force)
+				textDrawer.checkTextBm(graphics, textCanvas, textVO.scale * ((parent) ? parent.scaleX : 1), true, force);
 		}
 		
 		/**
@@ -77,19 +75,27 @@ package landray.kp.maps.main.elements
 			if(!rendered)
 			{
 				FlowTextManager.renderTextVOLabel(this, textVO);
+				FlowTextManager.updateTexLayout(text, textManager, fixWidth);
+				textVO.width  = textManager.compositionWidth;
+				textVO.height = textManager.compositionHeight;
 				renderAfterLabelRender();
 				super.render();
 			}
-			check();
+			check(true);
 		}
 		
 		public function afterReRender():void
 		{
+			FlowTextManager.updateTexLayout(text, textManager, fixWidth);
+			
 			textVO.width  = textManager.compositionWidth;
 			textVO.height = textManager.compositionHeight;
 			
 			renderAfterLabelRender();
-			check();
+			
+			super.render();
+			
+			check(true);
 		}
 		
 		private function renderAfterLabelRender():void

@@ -69,7 +69,7 @@ package view.element
 		
 		/**
 		 */		
-		override public function getChilds(group:Vector.<ElementBase>):Vector.<ElementBase>
+		override public function getChilds(group:Vector.<IElement>):Vector.<IElement>
 		{
 			var elements:ElementBase;
 			for each (elements in childElements)

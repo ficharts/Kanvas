@@ -28,6 +28,7 @@ package view.interact
 	import view.editor.EditorBase;
 	import view.element.ElementBase;
 	import view.element.GroupElement;
+	import view.element.IElement;
 	import view.element.imgElement.ImgElement;
 	import view.element.text.TextEditField;
 	import view.elementSelector.ElementSelector;
@@ -79,10 +80,11 @@ package view.interact
 		{
 			if (element is GroupElement)
 			{
-				var group:Vector.<ElementBase> = new Vector.<ElementBase>;
+				var group:Vector.<IElement> = new Vector.<IElement>;
 				var elements:Vector.<ElementBase> = (element as GroupElement).childElements;
+				
 				for each (var child:ElementBase in elements)
-				group = child.getChilds(group);
+					group = child.getChilds(group);
 				
 				autoGroupController.setGroupElements(group);
 			}

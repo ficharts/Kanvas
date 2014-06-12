@@ -2,6 +2,7 @@ package view.templatePanel
 {
 	import com.kvs.ui.Panel;
 	import com.kvs.ui.button.LabelBtn;
+	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.layout.BoxLayout;
 	
 	import flash.display.Sprite;
@@ -23,29 +24,41 @@ package view.templatePanel
 			
 			title = "模板";
 			
-			w = 600;
-			h = 400;
+			w = 1024;
+			h = 576;
 			
 			addChild(templatesContainer = new Sprite);
 			
 			scrollProxy = new TemplatesScrollProxy(this);
 			
 			boxLayout = new BoxLayout;
-			boxLayout.setLoc(30, barHeight + 5);
-			boxLayout.setItemSizeAndFullWidth(540, 90, 70);
-			boxLayout.setHoriHeightAndGap(70, 90, 0);
+			boxLayout.setLoc(15, barHeight - 20);
+			boxLayout.setItemSizeAndFullWidth(1000, 210, 160);
+			boxLayout.setHoriHeightAndGap(160, 210, 0);
+			boxLayout.gap = 30;
 			boxLayout.ready();
 			
 			submit = new LabelBtn;
-			submit.w = 50;
+			submit.w = 120;
 			submit.h = 25;
-			submit.x = 530;
-			submit.y = 365;
-			submit.text = "取消";
+			submit.x = 1024 - 130 - 130;
+			submit.y = 576 - 35;
+			submit.text = "使用选定模板";
 			submit.bgStyleXML = submitBgStyle;
 			submit.labelStyleXML = submitStyle;
 			submit.addEventListener(MouseEvent.CLICK, submitClickHandler);
 			addChild(submit);
+			
+			cancel = new LabelBtn;
+			cancel.w = 120;
+			cancel.h = 25;
+			cancel.x = 1024 - 130;
+			cancel.y = 576 - 35;
+			cancel.text = "使用空白模板";
+			cancel.bgStyleXML = submitBgStyle;
+			cancel.labelStyleXML = submitStyle;
+			cancel.addEventListener(MouseEvent.CLICK, cancelClickHandler);
+			addChild(cancel);
 			
 			render();
 			
@@ -54,6 +67,7 @@ package view.templatePanel
 		
 		override public function updateLayout():void
 		{
+			
 			super.updateLayout();
 			
 			if (scrollProxy)
@@ -64,6 +78,11 @@ package view.templatePanel
 			
 			x = .5 * (stage.stageWidth - w);
 			y = .5 * (stage.stageHeight - h);
+			
+			graphics.clear();
+			graphics.beginFill(0xEEEEEE, .5);
+			graphics.drawRect(-x, -y, stage.stageWidth, stage.stageHeight);
+			graphics.endFill();
 		}
 		
 		public function get fullSize():Number
@@ -78,9 +97,11 @@ package view.templatePanel
 				var item:TemplateItem = new TemplateItem;
 				item.id = xml.@id;
 				item.tips = xml.@name;
-				item.setIcons(xml.@icon, xml.@icon, xml.@icon);
+				if (RexUtil.ifHasText(xml.@icon))
+					item.setIcons(xml.@icon, xml.@icon, xml.@icon);
 				templatesContainer.addChild(item);
 				boxLayout.layout(item);
+				item.addEventListener(MouseEvent.DOUBLE_CLICK, templateDoubleClickHandler);
 			}
 			
 			if (scrollProxy)
@@ -94,21 +115,60 @@ package view.templatePanel
 		
 		private function submitClickHandler(e:MouseEvent):void
 		{
+			if (curItem)
+			{
+				core.api.openTemplate(curItem.id);
+				cancelClickHandler(null);
+			}
+		}
+		
+		private function cancelClickHandler(e:MouseEvent):void
+		{
 			close(stage.stageWidth * .5, stage.stageHeight * .5 + 10);
+		}
+		
+		private function templateDoubleClickHandler(e:MouseEvent):void
+		{
+			core.api.openTemplate(curItem.id);
+			cancelClickHandler(null);
 		}
 		
 		private function templateClickedHandler(e:MouseEvent):void
 		{
 			if (e.target is TemplateItem)
 			{
-				core.api.openTemplate(e.target.id);
-				submitClickHandler(null);
+				var item:TemplateItem = TemplateItem(e.target);
+				if (curItem) 
+				{
+					if (item != curItem)
+					{
+						item.selected = true;
+						curItem.selected = false;
+						curItem = item;
+					}
+					else
+					{
+						curItem.selected = false;
+						curItem = null;
+					}
+				}
+				else
+				{
+					curItem = item;
+					item.selected = true;
+				}
+				//core.api.openTemplate(e.target.id);
+				//submitClickHandler(null);
 			}
 		}
+		
+		private var curItem:TemplateItem;
 		
 		private var core:Kanvas;
 		
 		private var submit:LabelBtn;
+		
+		private var cancel:LabelBtn;
 		
 		private var scrollProxy:TemplatesScrollProxy;
 		
@@ -137,25 +197,6 @@ package view.templatePanel
 		private static const templateData:XML = 
 			<templates>
 				<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
 <template id='1' icon='' name='模板1'/>
 <template id='1' icon='' name='模板1'/>
 <template id='1' icon='' name='模板1'/>

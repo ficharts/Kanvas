@@ -9,6 +9,7 @@ package commands
 	
 	import view.element.ElementBase;
 	import view.element.GroupElement;
+	import view.element.IElement;
 	import view.element.PageElement;
 
 	/**
@@ -58,19 +59,23 @@ package commands
 			//此时的智能组合囊括了所有子元素
 			groupElements = CoreFacade.coreMediator.autoGroupController._elements.concat();
 			length = groupElements.length;
+			
+			var element:ElementBase;
 			for (var i:int = 0; i < length; i++)
 			{
-				CoreFacade.addElement(groupElements[i]);
-				if (groupElements[i].isPage)
-					pageElements.push(groupElements[i]);
+				element = groupElements[i] as ElementBase;
+				CoreFacade.addElement(element);
 				
-				if (groupElements[i].screenshot)
-					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(groupElements[i]);
+				if (element.isPage)
+					pageElements.push(element);
+				
+				if (element.screenshot)
+					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
 			}
 			
 			pageElements.sort(sortOnPageIndex);
 			
-			for each (var element:ElementBase in pageElements)
+			for each (element in pageElements)
 				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
 			v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
@@ -132,7 +137,7 @@ package commands
 		/**
 		 */		
 		private var newGroup:GroupElement;
-		private var groupElements:Vector.<ElementBase>;
+		private var groupElements:Vector.<IElement>;
 		private var length:int;
 		private var pageElements:Vector.<ElementBase>;
 		
