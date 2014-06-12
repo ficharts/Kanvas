@@ -185,6 +185,12 @@
 			<contentType>application</contentType>
 		</fileType>
 		<fileType>
+			<icon>
+				<image16x16>assets/file16.png</image16x16>
+				<image32x32>assets/file32.png</image32x32>
+				<image48x48>assets/file48.png</image48x48>
+				<image128x128>assets/file128.png</image128x128>
+			</icon>
 			<name>prezi.pez</name>
 			<extension>pez</extension>
 			<description>Prezi file for Kanvas.</description>

@@ -22,6 +22,7 @@ package
 	import view.element.ElementBase;
 	import view.element.imgElement.ImgElement;
 	import view.element.imgElement.ImgElementBase;
+	import view.templatePanel.TemplateItem;
 	import view.ui.Bubble;
 
 	/**
@@ -50,9 +51,11 @@ package
 			}
 		}
 		
-		override public function openTemplate(id:uint):void
+		/**
+		 */		
+		override public function openTemplate(template:TemplateItem):void
 		{
-			var path:String = File.applicationDirectory.nativePath + "/templates/template"+id+".kvs";
+			var path:String = File.applicationDirectory.nativePath + "/templates/template"+ template.id +".kvs";
 			openFile(new File(path));
 		}
 		
