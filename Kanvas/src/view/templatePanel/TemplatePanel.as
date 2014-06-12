@@ -197,22 +197,6 @@ package view.templatePanel
 		private static const templateData:XML = 
 			<templates>
 				<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
 			</templates>;
 	}
 }
