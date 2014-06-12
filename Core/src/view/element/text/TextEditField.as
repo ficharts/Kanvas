@@ -173,11 +173,11 @@ package view.element.text
 		 */
 		override public function render():void
 		{
-			
-			FlowTextManager.renderTextVOLabel(this, textVO);
-			
 			FlowTextManager.updateTexLayout(text, textManager, fixWidth);
-			var bound:Rectangle = textManager.getContentBounds();
+			FlowTextManager.renderTextVOLabel(this, textVO);
+			textVO.width  = textManager.compositionWidth;
+			textVO.height = textManager.compositionHeight;
+			FlowTextManager.updateTexLayout(text, textManager, fixWidth);
 			textVO.width  = textManager.compositionWidth;
 			textVO.height = textManager.compositionHeight;
 			renderAfterLabelRender();
