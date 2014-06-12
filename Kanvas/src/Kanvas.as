@@ -97,12 +97,21 @@ package
 			mainNavControl.confirmPageEditFromCore();
 		}
 		
+		/**
+		 */		
 		private function importDataComplete(evt:KVSEvent):void
 		{
 			evt.stopPropagation();
+			
+			closeTemplatePanel();
+		}
+		
+		/**
+		 */		
+		public function closeTemplatePanel():void
+		{
 			if (templatePanel && templatePanel.visible)
 				templatePanel.close(stage.stageWidth * .5, stage.stageHeight * .5 + 10);
-			
 		}
 		
 		/**
@@ -234,6 +243,7 @@ package
 		protected function kvsReadyHandler(evt:KVSEvent):void
 		{
 			kvsCore.changeTheme('style_1', false);
+			
 			pagePanel.initPageManager();
 		}
 		
@@ -261,6 +271,8 @@ package
 		 */		
 		public var pagePanel:PagePanel;
 		
+		/**
+		 */		
 		public var templatePanel:TemplatePanel;
 		
 		/**

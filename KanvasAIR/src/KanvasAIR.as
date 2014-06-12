@@ -92,11 +92,6 @@ package
 			FlowTextManager.loadFont("FontLib.swf");
 			addChild(updater = new AIRUpdater);
 			updater.update(AIR_CLIENT_URL, "check");
-			
-			
-			/*var data:XML = XML(ByteArray(new PreziData.Content1).toString());
-			var temp:XML = PreziDataImporter.convertData(data);
-			CoreFacade.coreProxy.importData(temp);*/
 		}
 		
 		/**
@@ -122,7 +117,28 @@ package
 			toolBar.addCustomButtons(btns);
 			
 			kvsCore.addEventListener(KVSEvent.DATA_CHANGED, dataChanged);
+			
+			templatePanel.initTemplate(templates);
 		}
+		
+		/**
+		 */		
+		private var templates:XML = <templates>
+											<template id='1' icon='./temjfwoefjoiwe.png' name='模板1'/>
+											<template id='1' icon='' name='模板1'/>
+											<template id='1' icon='' name='模板1'/>
+											<template id='1' icon='' name='模板1'/>
+											<template id='1' icon='' name='模板1'/>
+											<template id='1' icon='' name='模板1'/>
+											<template id='1' icon='' name='模板1'/>
+											<template id='1' icon='' name='模板1'/>
+<template id='1' icon='' name='模板1'/>
+											<template id='1' icon='' name='模板1'/>
+											<template id='1' icon='' name='模板1'/>
+											<template id='1' icon='' name='模板1'/>
+											<template id='1' icon='' name='模板1'/>
+										</templates>;
+		
 		
 		/**
 		 */		
@@ -181,6 +197,9 @@ package
 			
 			if(!NativeApplication.nativeApplication.isSetAsDefaultApplication("kvs")) 
 				NativeApplication.nativeApplication.setAsDefaultApplication("kvs");
+			
+			if(!NativeApplication.nativeApplication.isSetAsDefaultApplication("pez")) 
+				NativeApplication.nativeApplication.setAsDefaultApplication("pez");
 		}
 		
 		/**
@@ -206,7 +225,7 @@ package
 				var extension:String = f.extension.toLowerCase();
 				if (extension == "kvs" || extension == "pez")
 				{
-					airAPI.openFile(f, extension);
+					airAPI.openFile(f);
 				}
 				else if (extension == "jpg" || extension == "png")
 				{
@@ -239,6 +258,7 @@ package
 			if (event.arguments.length > 0) 
 			{ 
 				var file:File = new File(event.arguments[0]); 
+				var extension:String = file.extension.toLowerCase();
 				
 				if (airAPI.file)
 				{

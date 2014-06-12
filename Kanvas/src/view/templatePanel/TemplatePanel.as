@@ -8,6 +8,11 @@ package view.templatePanel
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
+	/**
+	 * 
+	 * @author wanglei
+	 * 
+	 */	
 	public final class TemplatePanel extends Panel
 	{
 		public function TemplatePanel($core:Kanvas)
@@ -16,13 +21,15 @@ package view.templatePanel
 			core = $core;
 		}
 		
+		/**
+		 */		
 		override protected function init():void
 		{
 			super.init();
 			
 			title = "模板";
 			
-			w = 1024;
+			w = 960;
 			h = 576;
 			
 			addChild(templatesContainer = new Sprite);
@@ -30,42 +37,56 @@ package view.templatePanel
 			scrollProxy = new TemplatesScrollProxy(this);
 			
 			boxLayout = new BoxLayout;
-			boxLayout.setLoc(15, barHeight - 20);
-			boxLayout.setItemSizeAndFullWidth(1000, 210, 160);
+			boxLayout.setLoc(gap, barHeight);
+			boxLayout.setItemSizeAndFullWidth(w - gap * 2, 210, 150);
 			boxLayout.setHoriHeightAndGap(160, 210, 0);
-			boxLayout.gap = 30;
+			boxLayout.gap = 16;
 			boxLayout.ready();
-			
-			submit = new LabelBtn;
-			submit.w = 120;
-			submit.h = 25;
-			submit.x = 1024 - 130 - 130;
-			submit.y = 576 - 35;
-			submit.text = "使用选定模板";
-			submit.bgStyleXML = submitBgStyle;
-			submit.labelStyleXML = submitStyle;
-			submit.addEventListener(MouseEvent.CLICK, submitClickHandler);
-			addChild(submit);
 			
 			cancel = new LabelBtn;
 			cancel.w = 120;
-			cancel.h = 25;
-			cancel.x = 1024 - 130;
-			cancel.y = 576 - 35;
+			cancel.h = 30;
+			cancel.x = w - cancel.w - gap;
+			cancel.y = (h - barHeight) + (barHeight - cancel.h) / 2;
 			cancel.text = "使用空白模板";
 			cancel.bgStyleXML = submitBgStyle;
 			cancel.labelStyleXML = submitStyle;
 			cancel.addEventListener(MouseEvent.CLICK, cancelClickHandler);
 			addChild(cancel);
 			
-			render();
+			submit = new LabelBtn;
+			submit.w = 120;
+			submit.h = 30;
+			submit.x = cancel.x - submit.w - 10;;
+			submit.y = cancel.y;
+			submit.text = "使用选定模板";
+			submit.bgStyleXML = <states>
+									<normal>
+										<fill color='#539fd8' alpha='1'/>
+									</normal>
+									<hover>
+										<fill color='#3c92e0' alpha='0.9' angle="90"/>
+									</hover>
+									<down>
+										<fill color='#539fd8' alpha='0.3' angle="90"/>
+									</down>
+								</states>;
 			
-			imitTemplates();
+			submit.labelStyleXML = <label vAlign="center">
+										<format color='FFFFFF' font='微软雅黑' size='12' letterSpacing="3"/>
+									</label>;
+			
+			submit.addEventListener(MouseEvent.CLICK, submitClickHandler);
+			submit.enable = false;
+			addChild(submit);
+			
+			render();
 		}
 		
+		/**
+		 */		
 		override public function updateLayout():void
 		{
-			
 			super.updateLayout();
 			
 			if (scrollProxy)
@@ -78,23 +99,36 @@ package view.templatePanel
 			y = .5 * (stage.stageHeight - h);
 			
 			graphics.clear();
-			graphics.beginFill(0xEEEEEE, .5);
+			graphics.beginFill(0xFFFFFF, 1);
 			graphics.drawRect(-x, -y, stage.stageWidth, stage.stageHeight);
 			graphics.endFill();
+			
+			bgShape.graphics.beginFill(0xFFFFFF);
+			bgShape.graphics.drawRect(gap, barHeight, w - gap * 2, h - barHeight * 2);
+			bgShape.graphics.endFill();
+			
 		}
 		
+		/**
+		 */		
+		private var gap:uint = 20;
+		
+		/**
+		 */		
 		public function get fullSize():Number
 		{
 			return (boxLayout) ? boxLayout.getRectHeight() : 0;
 		}
 		
-		private function imitTemplates():void
+		/**
+		 */		
+		public function initTemplate(templateData:XML):void
 		{
 			for each (var xml:XML in templateData.children())
 			{
 				var item:TemplateItem = new TemplateItem;
 				item.id = xml.@id;
-				item.tips = xml.@name;
+				//item.tips = xml.@name;
 				
 				if (RexUtil.ifHasText(xml.@icon))
 					item.setIcons(xml.@icon, xml.@icon, xml.@icon);
@@ -113,6 +147,8 @@ package view.templatePanel
 			templatesContainer.addEventListener(MouseEvent.CLICK, templateClickedHandler);
 		}
 		
+		/**
+		 */		
 		private function submitClickHandler(e:MouseEvent):void
 		{
 			if (curItem)
@@ -122,17 +158,23 @@ package view.templatePanel
 			}
 		}
 		
+		/**
+		 */		
 		private function cancelClickHandler(e:MouseEvent):void
 		{
 			close(stage.stageWidth * .5, stage.stageHeight * .5 + 10);
 		}
 		
+		/**
+		 */		
 		private function templateDoubleClickHandler(e:MouseEvent):void
 		{
 			core.api.openTemplate(curItem);
 			cancelClickHandler(null);
 		}
 		
+		/**
+		 */		
 		private function templateClickedHandler(e:MouseEvent):void
 		{
 			if (e.target is TemplateItem)
@@ -157,8 +199,8 @@ package view.templatePanel
 					curItem = item;
 					item.selected = true;
 				}
-				//core.api.openTemplate(e.target.id);
-				//submitClickHandler(null);
+				
+				submit.enable = true;
 			}
 		}
 		
@@ -179,10 +221,10 @@ package view.templatePanel
 		private static const submitBgStyle:XML = 
 			<states>
 				<normal>
-					<fill color='#CCCCCC' alpha='1'/>
+					<fill color='#FFFFFF' alpha='1'/>
 				</normal>
 				<hover>
-					<fill color='#FFFFFF' alpha='0.9' angle="90"/>
+					<fill color='#DDDDDD' alpha='0.9' angle="90"/>
 				</hover>
 				<down>
 					<fill color='#AAAAAA' alpha='0.3' angle="90"/>
@@ -196,6 +238,7 @@ package view.templatePanel
 		
 		private static const templateData:XML = 
 			<templates>
+				<template id='1' icon='' name='模板1'/>
 				<template id='1' icon='' name='模板1'/>
 			</templates>;
 	}

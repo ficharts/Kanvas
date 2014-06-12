@@ -101,6 +101,13 @@ package
 			e.target.removeEventListener(IOErrorEvent.IO_ERROR, uploadPageData);
 		}
 		
+		/**
+		 *
+		 * 选择模版，web时从服务器加载xml数据，air时直接打开模版文件
+		 *  
+		 * @param template
+		 * 
+		 */		
 		public function openTemplate(template:TemplateItem):void
 		{
 			

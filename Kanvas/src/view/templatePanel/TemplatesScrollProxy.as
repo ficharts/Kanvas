@@ -57,8 +57,8 @@ package view.templatePanel
 		 */		
 		public function get maskRect():Rectangle
 		{
-			maskRectangle.x = 5;
-			maskRectangle.y = panel.barHeight + 5;
+			maskRectangle.x = 0;
+			maskRectangle.y = panel.barHeight;
 			maskRectangle.width = viewWidth;
 			maskRectangle.height = viewHeight;
 			
@@ -95,14 +95,14 @@ package view.templatePanel
 		 */		
 		public function get viewHeight():Number
 		{
-			return panel.h - panel.barHeight - 45;
+			return panel.h - panel.barHeight * 2;
 		}
 		
 		/**
 		 */		
 		public function get viewWidth():Number
 		{
-			return panel.w - 10;
+			return panel.w - 18;
 		}
 		
 		/**

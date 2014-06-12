@@ -37,7 +37,7 @@ package
 		{
 			super.kvsReadyHandler(evt);
 			
-			this.api = new APIForJS(kvsCore);
+			this.api = new APIForJS(kvsCore, this);
 			initBtns();
 		}
 		

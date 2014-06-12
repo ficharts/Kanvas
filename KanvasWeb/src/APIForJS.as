@@ -19,6 +19,7 @@ package
 	
 	import util.img.ImgInsertor;
 	
+	import view.templatePanel.TemplateItem;
 	import view.ui.Bubble;
 
 	/**
@@ -31,9 +32,11 @@ package
 		 * @param core
 		 * 
 		 */
-		public function APIForJS(core:CoreApp)
+		public function APIForJS(core:CoreApp, kanvas:Kanvas)
 		{
 			super(core);
+			
+			kvs = kanvas;
 			
 			core.addEventListener(KVSEvent.LINK_CLICKED, linkBtnClicked);
 			appID = core.stage.loaderInfo.parameters['id'];
@@ -93,6 +96,8 @@ package
 			
 			ExternalUtil.addCallback("initDataServer", initDataServer);
 			
+			ExternalUtil.addCallback("initTemplates", initTemplates);
+			
 			//通知网页端，Flash初始化OK
 			ExternalUtil.call('KANVAS.ready', appID);
 			
@@ -100,8 +105,35 @@ package
 		
 		/**
 		 */		
+		private function initTemplates(data:String):void
+		{
+			kvs.templatePanel.initTemplate(XML(data));
+		}
+		
+		/**
+		 */		
+		private var kvs:Kanvas;
+		
+		/**
+		 */		
 		public var appID:String;
 		
+		/**
+		 */		
+		override public function setXMLData(data:String):void
+		{
+			super.setXMLData(data);
+			
+			//数据设定完成后关闭模版面板
+			kvs.closeTemplatePanel();
+		}
+		
+		/**
+		 */		
+		override public function openTemplate(template:TemplateItem):void
+		{
+			
+		}
 		
 		
 		
@@ -317,7 +349,7 @@ package
 		/**
 		 * 指定路径, 从指定路径加载数据
 		 */		
-		private function loadDataFromServer(url:String):void
+		public function loadDataFromServer(url:String):void
 		{
 			var req:URLRequest = new URLRequest(url);
 			req.method = URLRequestMethod.GET;
@@ -334,9 +366,7 @@ package
 			//解压缩
 			data.uncompress();
 			
-			//转换为XMl格式
-			var xmlData:XML = XML(data.toString());
-			core.importData(xmlData);
+			setXMLData(data.toString());
 		}
 		
 		/**

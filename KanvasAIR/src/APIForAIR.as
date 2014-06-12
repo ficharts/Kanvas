@@ -55,8 +55,11 @@ package
 		 */		
 		override public function openTemplate(template:TemplateItem):void
 		{
-			var path:String = File.applicationDirectory.nativePath + "/templates/template"+ template.id +".kvs";
-			openFile(new File(path));
+			var path:String = File.applicationDirectory.nativePath + "/templates/"+ template.id +".kvs";
+			var file:File = new File(path);
+			
+			if (file.exists)
+				openFile(file);
 		}
 		
 		/**
@@ -69,11 +72,13 @@ package
 		/**
 		 * 打开文件 
 		 */		
-		public function openFile(newfile:File = null, extension:String = "kvs"):void
+		public function openFile(newfile:File = null):void
 		{
 			if (newfile)
 			{
 				this.file = newfile;
+				var extension:String = file.extension.toLowerCase();
+				
 				if (extension == "kvs") readFileKVS();
 				else if (extension == "pez") readFilePEZ();
 			}
