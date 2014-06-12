@@ -15,8 +15,6 @@ package commands
 	
 	import org.puremvc.as3.interfaces.INotification;
 	
-	import util.img.ImgInsertEvent;
-	import util.img.ImgInsertor;
 	import util.img.ImgLib;
 	import util.undoRedo.UndoRedoMannager;
 	

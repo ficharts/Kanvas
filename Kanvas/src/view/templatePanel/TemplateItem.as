@@ -1,9 +1,14 @@
 package view.templatePanel
 {
 	import com.kvs.ui.button.IconBtn;
-	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.layout.IBoxItem;
 	
+	
+	/**
+	 * 
+	 * @author wanglei
+	 * 
+	 */	
 	public final class TemplateItem extends IconBtn implements IBoxItem
 	{
 		public function TemplateItem()
@@ -23,6 +28,7 @@ package view.templatePanel
 		{
 			w = 210;
 			h = 160;
+			
 			iconW = 200;
 			iconH = 150;
 			
@@ -41,8 +47,6 @@ package view.templatePanel
 			graphics.lineStyle(1, 0xCCCCCC);
 			graphics.drawRect(tx, ty, iconW, iconH);
 			graphics.endFill();
-			
-			
 		}
 		
 		public var id:uint;

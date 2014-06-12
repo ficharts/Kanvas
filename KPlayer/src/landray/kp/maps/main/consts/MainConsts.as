@@ -27,6 +27,7 @@ package landray.kp.maps.main.consts
 				<element type="dashRect"        voClassPath="model.vo.ShapeVO"/>
 				<element type="dialog"          voClassPath="model.vo.DialogVO"/>
 				<element type="camera"          voClassPath="model.vo.ElementVO"/>
+				<element type="group"            voClassPath="model.vo.GroupVO"/>
 				<element type="page"            voClassPath="model.vo.PageVO"/>
 			</elements>;
 		
@@ -51,6 +52,7 @@ package landray.kp.maps.main.consts
 			dialog         :landray.kp.maps.main.elements.Dialog, 
 			dashRect       :landray.kp.maps.main.elements.DashRect, 
 			camera         :landray.kp.maps.main.elements.Camera,
+			group         :landray.kp.maps.main.elements.Group,
 			page           :landray.kp.maps.main.elements.Page
 		};
 	}

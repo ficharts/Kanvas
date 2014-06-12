@@ -90,11 +90,17 @@ package view.element.imgElement
 		 */		
 		private function initSWF(data:Object):void
 		{
-			swf = data as Sprite;
+			swf = data;
 			swf.x = - swf.width / 2;
 			swf.y = - swf.height / 2;
 			
-			addChild(swf);
+			addChild(swf as DisplayObject);
+			
+			//底部绘制触控区域
+			graphics.clear();
+			graphics.beginFill(0, 0);
+			graphics.drawRect(swf.x, swf.y, swf.width, swf.height);
+			graphics.endFill();
 		}
 		
 		/**
@@ -112,12 +118,12 @@ package view.element.imgElement
 		 */		
 		override public function get canvas():DisplayObject
 		{
-			return swf;
+			return swf as DisplayObject;
 		}
 		
 		/**
 		 */		
-		private var swf:Sprite;
+		private var swf:Object;
 		
 	}
 }

@@ -8,6 +8,7 @@ package commands
 	import util.undoRedo.UndoRedoMannager;
 	
 	import view.element.ElementBase;
+	import view.element.IElement;
 	import view.element.PageElement;
 	import view.interact.multiSelect.TemGroupElement;
 
@@ -87,14 +88,18 @@ package commands
 			//此时的智能组合囊括了所有子元素
 			groupElements = CoreFacade.coreMediator.autoGroupController._elements.concat();
 			length = groupElements.length;
+			
+			var ele:ElementBase;
 			for (var i:int = 0; i < length; i++)
 			{
-				CoreFacade.addElement(groupElements[i]);
-				if (groupElements[i].isPage)
-					pageElements.push(groupElements[i]);
+				ele = groupElements[i] as ElementBase;
+				CoreFacade.addElement(ele);
+				if (ele.isPage)
+					pageElements.push(ele);
+				
 				//根据元素检测需要刷新的页面并注册至刷新库以待刷新
-				if (groupElements[i].screenshot)
-					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(groupElements[i]);
+				if (ele.screenshot)
+					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(ele);
 			}
 			
 			//对要添加的页面进行排序
@@ -160,7 +165,7 @@ package commands
 		/**
 		 */		
 		private var newGroup:TemGroupElement;
-		private var groupElements:Vector.<ElementBase>;
+		private var groupElements:Vector.<IElement>;
 		private var length:int;
 		private var pageElements:Vector.<ElementBase>;
 		

@@ -72,6 +72,7 @@ package landray.kp.maps.main.elements
 					vo.style.width  = vo.width;
 					vo.style.height = vo.height;
 				}
+				
 				graphics.clear();
 			}
 		}

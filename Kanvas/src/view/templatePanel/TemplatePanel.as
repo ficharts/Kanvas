@@ -8,8 +8,6 @@ package view.templatePanel
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
-	import view.templatePanel.TemplatesScrollProxy;
-	
 	public final class TemplatePanel extends Panel
 	{
 		public function TemplatePanel($core:Kanvas)
@@ -97,8 +95,10 @@ package view.templatePanel
 				var item:TemplateItem = new TemplateItem;
 				item.id = xml.@id;
 				item.tips = xml.@name;
+				
 				if (RexUtil.ifHasText(xml.@icon))
 					item.setIcons(xml.@icon, xml.@icon, xml.@icon);
+				
 				templatesContainer.addChild(item);
 				boxLayout.layout(item);
 				item.addEventListener(MouseEvent.DOUBLE_CLICK, templateDoubleClickHandler);
@@ -117,7 +117,7 @@ package view.templatePanel
 		{
 			if (curItem)
 			{
-				core.api.openTemplate(curItem.id);
+				core.api.openTemplate(curItem);
 				cancelClickHandler(null);
 			}
 		}
@@ -129,7 +129,7 @@ package view.templatePanel
 		
 		private function templateDoubleClickHandler(e:MouseEvent):void
 		{
-			core.api.openTemplate(curItem.id);
+			core.api.openTemplate(curItem);
 			cancelClickHandler(null);
 		}
 		

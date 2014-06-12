@@ -1,5 +1,6 @@
 package landray.kp.maps.main.elements
 {
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	
 	import model.vo.ElementVO;
@@ -20,15 +21,15 @@ package landray.kp.maps.main.elements
 		 */		
 		override protected function initIMG(data:Object):void
 		{
-			swf = data as Sprite;
+			swf = data;
 			swf.x = - swf.width / 2;
 			swf.y = - swf.height / 2;
 			
-			addChild(swf);
+			addChild(swf as DisplayObject);
 		}
 		
 		/**
 		 */		
-		private var swf:Sprite;
+		private var swf:Object;
 	}
 }

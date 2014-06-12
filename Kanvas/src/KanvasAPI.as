@@ -1,4 +1,4 @@
-package
+package 
 {
 	import com.kvs.utils.Base64;
 	
@@ -9,6 +9,8 @@ package
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.utils.ByteArray;
+	
+	import view.templatePanel.TemplateItem;
 
 	/**
 	 * 
@@ -99,7 +101,7 @@ package
 			e.target.removeEventListener(IOErrorEvent.IO_ERROR, uploadPageData);
 		}
 		
-		public function openTemplate(id:uint):void
+		public function openTemplate(template:TemplateItem):void
 		{
 			
 		}

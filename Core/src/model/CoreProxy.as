@@ -674,6 +674,7 @@ package model
 				if (element is ImgElement)
 					vector.push(element as ImgElement);
 			}
+			
 			return vector;
 		}
 		

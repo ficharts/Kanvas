@@ -21,9 +21,7 @@ package com.kvs.utils.extractor
 		 */		
 		override public function init(bytes:ByteArray,limit:Number = 4194304, quality:Number = 80):void
 		{
-			_fileBytes = new ByteArray;
-			
-			_fileBytes.writeBytes(bytes, 0, bytes.bytesAvailable);
+			_fileBytes = bytes;
 			
 			var loaderContext:LoaderContext = new LoaderContext(); 
 			
@@ -34,20 +32,15 @@ package com.kvs.utils.extractor
 			}
 			
 			loaderContext.applicationDomain = ApplicationDomain.currentDomain;
-			
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, swfLoaded);
-			
-			move1Loader = new ForcibleLoader(loader);
-			move1Loader.loadBytes(bytes, loaderContext);
-			
-			
+			loader.loadBytes(_fileBytes, loaderContext);
 		}
 		
 		/**
 		 */		
 		private function swfLoaded(evt:Event):void
 		{
-			_view = loader.content as Sprite;
+			_view = loader.content;
 			
 			loader.unload();
 			this.dispatchEvent(evt);
@@ -70,7 +63,7 @@ package com.kvs.utils.extractor
 		
 		/**
 		 */		
-		private var _view:Sprite;
+		private var _view:Object;
 		
 		/**
 		 */		
