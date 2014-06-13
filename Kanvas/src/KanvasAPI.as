@@ -108,7 +108,7 @@ package
 		 * @param template
 		 * 
 		 */		
-		public function openTemplate(template:TemplateItem):void
+		public function openTemplate(path:String):void
 		{
 			
 		}

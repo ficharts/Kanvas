@@ -2,6 +2,7 @@ package
 {
 	import com.kvs.utils.Base64;
 	import com.kvs.utils.ExternalUtil;
+	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.net.Post;
 	
 	import flash.display.BitmapData;
@@ -130,14 +131,43 @@ package
 		
 		/**
 		 */		
-		override public function openTemplate(template:TemplateItem):void
+		override public function openTemplate(path:String):void
 		{
-			
+			if (RexUtil.ifHasText(path))
+			{
+				var loader:URLLoader = new URLLoader;
+				loader.addEventListener(Event.COMPLETE, loaderComplete);
+				loader.addEventListener(IOErrorEvent.IO_ERROR, loaderIOError);
+				loader.load(new URLRequest(path));
+			}
+			else
+			{
+				Bubble.show("模板路径不存在！");
+			}
 		}
 		
+		private function loaderComplete(e:Event):void
+		{
+			var loader:URLLoader = URLLoader(e.target);
+			loader.removeEventListener(Event.COMPLETE, loaderComplete);
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOError);
+			try
+			{
+				setXMLData(XML(loader.data));
+			}
+			catch (o:Error)
+			{
+				Bubble.show("模板文件格式不正确!");
+			}			
+		}
 		
-		
-		
+		private function loaderIOError(e:IOErrorEvent):void
+		{
+			var loader:URLLoader = URLLoader(e.target);
+			loader.removeEventListener(Event.COMPLETE, loaderComplete);
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOError);
+			Bubble.show("加载模板出错！");
+		}
 		
 		
 		//----------------------------------------------------

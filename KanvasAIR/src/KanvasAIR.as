@@ -125,8 +125,9 @@ package
 		 */		
 		private var templates:XML = 
 			<templates>
-				<template id='1' icon='/temjfwoefjoiwe.png' name='模板1'/>
+				<template id='1' icon='/temjfwoefjoiwe.png' name='模板1' path='templates/template1.kvs'/>
 			</templates>;
+		
 		
 		
 		/**

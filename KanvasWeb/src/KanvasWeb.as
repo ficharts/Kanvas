@@ -2,14 +2,20 @@ package
 {
 	import com.kvs.ui.button.IconBtn;
 	import com.kvs.utils.ExternalUtil;
+	import com.kvs.utils.RexUtil;
 	
 	import commands.*;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	
 	import model.CoreFacade;
+	
+	import view.ui.Bubble;
 	
 	/**
 	 * 网页版的kanvas
@@ -39,6 +45,46 @@ package
 			
 			this.api = new APIForJS(kvsCore, this);
 			initBtns();
+			
+			//init template
+			if (RexUtil.ifHasText(TEMPLATE_PATH))
+			{
+				var loader:URLLoader = new URLLoader;
+				loader.addEventListener(Event.COMPLETE, loaderComplete);
+				loader.addEventListener(IOErrorEvent.IO_ERROR, loaderIOError);
+				loader.load(new URLRequest(TEMPLATE_PATH));
+			}
+			else
+			{
+				templatePanel.close(stage.stageWidth * .5, stage.stageHeight * .5 + 10);
+				Bubble.show("未设置模板路径!");
+			}
+		}
+		
+		private function loaderComplete(e:Event):void
+		{
+			var loader:URLLoader = URLLoader(e.target);
+			loader.removeEventListener(Event.COMPLETE, loaderComplete);
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOError);
+			try
+			{
+				templatePanel.initTemplate(XML(loader.data));
+			}
+			catch (o:Error)
+			{
+				templatePanel.close(stage.stageWidth * .5, stage.stageHeight * .5 + 10);
+				Bubble.show("模板列表格式不正确!");
+			}
+			
+		}
+		
+		private function loaderIOError(e:IOErrorEvent):void
+		{
+			var loader:URLLoader = URLLoader(e.target);
+			loader.removeEventListener(Event.COMPLETE, loaderComplete);
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOError);
+			templatePanel.close(stage.stageWidth * .5, stage.stageHeight * .5 + 10);
+			Bubble.show("加载模板列表出错!");
 		}
 		
 		/**
@@ -132,5 +178,7 @@ package
 		 * 提交并退出按钮
 		 */		
 		private var exitBtn:IconBtn = new IconBtn;
+		
+		private static const TEMPLATE_PATH:String = "";
 	}
 }

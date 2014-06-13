@@ -129,11 +129,8 @@ package view.templatePanel
 			{
 				var item:TemplateItem = new TemplateItem;
 				item.id = xml.@id;
-				//item.tips = xml.@name;
-				
-				
-				/*if (RexUtil.ifHasText(xml.@icon))
-					item.setIcons(xml.@icon, xml.@icon, xml.@icon);*/
+				item.icon = xml.@icon;
+				item.path = xml.@path;
 				
 				templatesContainer.addChild(item);
 				boxLayout.layout(item);
@@ -155,7 +152,7 @@ package view.templatePanel
 		{
 			if (curItem)
 			{
-				core.api.openTemplate(curItem);
+				core.api.openTemplate(curItem.path);
 				cancelClickHandler(null);
 			}
 		}
@@ -171,7 +168,7 @@ package view.templatePanel
 		 */		
 		private function templateDoubleClickHandler(e:MouseEvent):void
 		{
-			core.api.openTemplate(curItem);
+			core.api.openTemplate(curItem.path);
 			cancelClickHandler(null);
 		}
 		

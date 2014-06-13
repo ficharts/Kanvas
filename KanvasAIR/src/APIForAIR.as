@@ -53,13 +53,15 @@ package
 		
 		/**
 		 */		
-		override public function openTemplate(template:TemplateItem):void
+		override public function openTemplate(path:String):void
 		{
-			var path:String = File.applicationDirectory.nativePath + "/templates/"+ template.id +".kvs";
+			var path:String = File.applicationDirectory.nativePath + "/" + path;
 			var file:File = new File(path);
 			
 			if (file.exists)
 				openFile(file);
+			else
+				Bubble.show("模板文件不存在！");
 		}
 		
 		/**

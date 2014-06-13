@@ -2,7 +2,11 @@ package view.templatePanel
 {
 	import com.kvs.ui.button.IconBtn;
 	import com.kvs.utils.RexUtil;
+	import com.kvs.utils.graphic.BitmapUtil;
 	import com.kvs.utils.layout.IBoxItem;
+	
+	import flash.display.BitmapData;
+	import flash.display.Shape;
 	
 	import util.img.ImgInsertEvent;
 	import util.img.ImgInsertor;
@@ -78,16 +82,32 @@ package view.templatePanel
 		
 		private function loadImgComplete(e:ImgInsertEvent):void
 		{
-			
+			loader.removeEventListener(ImgInsertEvent.IMG_LOADED, loadImgComplete);
+			loader.removeEventListener(ImgInsertEvent.IMG_LOADED_ERROR, loadImgError);
+			var bmd:BitmapData = BitmapData(e.viewData);
+			if (bmd)
+			{
+				if(!shape)
+				{
+					addChild(shape = new Shape);
+					shape.x = shape.y = 5;
+				}
+				BitmapUtil.drawBitmapDataToShape(bmd, shape, iconW, iconH, 0, 0, true);
+			}
 		}
 		private function loadImgError(e:ImgInsertEvent):void
 		{
-			
+			loader.removeEventListener(ImgInsertEvent.IMG_LOADED, loadImgComplete);
+			loader.removeEventListener(ImgInsertEvent.IMG_LOADED_ERROR, loadImgError);
+			if (shape)
+				shape.graphics.clear();
 		}
 		
 		private var __icon:String;
 		
 		public var id:uint;
+		
+		public var path:String;
 		
 		private const iconStyleXML:XML = 	
 			<states>
@@ -106,5 +126,7 @@ package view.templatePanel
 			</states>;
 		
 		private var loader:ImgInsertor;
+		
+		private var shape:Shape;
 	}
 }
