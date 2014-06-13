@@ -5,6 +5,7 @@ package view.templatePanel
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.layout.BoxLayout;
 	
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
@@ -130,8 +131,9 @@ package view.templatePanel
 				item.id = xml.@id;
 				//item.tips = xml.@name;
 				
-				if (RexUtil.ifHasText(xml.@icon))
-					item.setIcons(xml.@icon, xml.@icon, xml.@icon);
+				
+				/*if (RexUtil.ifHasText(xml.@icon))
+					item.setIcons(xml.@icon, xml.@icon, xml.@icon);*/
 				
 				templatesContainer.addChild(item);
 				boxLayout.layout(item);
@@ -192,15 +194,17 @@ package view.templatePanel
 					{
 						curItem.selected = false;
 						curItem = null;
+						submit.enable = false;
 					}
 				}
 				else
 				{
 					curItem = item;
 					item.selected = true;
+					submit.enable = true;
 				}
 				
-				submit.enable = true;
+				
 			}
 		}
 		
@@ -215,6 +219,8 @@ package view.templatePanel
 		private var scrollProxy:TemplatesScrollProxy;
 		
 		private var boxLayout:BoxLayout;
+		
+		private var bitmap:Bitmap;
 		
 		internal var templatesContainer:Sprite;
 		
@@ -235,11 +241,5 @@ package view.templatePanel
 			<label vAlign="center">
 				<format color='555555' font='微软雅黑' size='12' letterSpacing="3"/>
 			</label>;
-		
-		private static const templateData:XML = 
-			<templates>
-				<template id='1' icon='' name='模板1'/>
-				<template id='1' icon='' name='模板1'/>
-			</templates>;
 	}
 }

@@ -161,5 +161,15 @@ package model.vo
 		private var _isCustomColor:Object = false;
 		
 		
+		public function get template():Boolean
+		{
+			return _template;
+		}
+		
+		public function set template(value:Boolean):void
+		{
+			_template = value;
+		}
+		private var _template:Boolean;
 	}
 }

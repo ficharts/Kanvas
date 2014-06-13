@@ -154,6 +154,16 @@ package view.element.text
 		//---------------------------------------------------------
 		
 		
+		public function get template():Boolean
+		{
+			return textVO.template;
+		}
+		
+		public function set template(value:Boolean):void
+		{
+			textVO.template = value;
+		}
+		
 		/**
 		 */		
 		public function get text():String

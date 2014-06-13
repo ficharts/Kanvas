@@ -123,21 +123,10 @@ package
 		
 		/**
 		 */		
-		private var templates:XML = <templates>
-											<template id='1' icon='./temjfwoefjoiwe.png' name='模板1'/>
-											<template id='1' icon='' name='模板1'/>
-											<template id='1' icon='' name='模板1'/>
-											<template id='1' icon='' name='模板1'/>
-											<template id='1' icon='' name='模板1'/>
-											<template id='1' icon='' name='模板1'/>
-											<template id='1' icon='' name='模板1'/>
-											<template id='1' icon='' name='模板1'/>
-<template id='1' icon='' name='模板1'/>
-											<template id='1' icon='' name='模板1'/>
-											<template id='1' icon='' name='模板1'/>
-											<template id='1' icon='' name='模板1'/>
-											<template id='1' icon='' name='模板1'/>
-										</templates>;
+		private var templates:XML = 
+			<templates>
+				<template id='1' icon='/temjfwoefjoiwe.png' name='模板1'/>
+			</templates>;
 		
 		
 		/**
