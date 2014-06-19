@@ -59,7 +59,7 @@ package
 			var file:File = new File(path);
 			
 			if (file.exists)
-				openFile(file);
+				openFile(file, true);
 			else
 				Bubble.show("模板文件不存在！");
 		}
@@ -74,7 +74,7 @@ package
 		/**
 		 * 打开文件 
 		 */		
-		public function openFile(newfile:File = null):void
+		public function openFile(newfile:File = null, template:Boolean = false):void
 		{
 			if (newfile)
 			{
@@ -83,6 +83,7 @@ package
 				
 				if (extension == "kvs") readFileKVS();
 				else if (extension == "pez") readFilePEZ();
+				if (template || extension == "pez") file = null;
 			}
 			else
 			{
@@ -90,6 +91,8 @@ package
 				file.addEventListener(Event.SELECT, fileSelected);
 				file.browse([new FileFilter("kvs", "*.kvs")]);
 			}
+			
+			
 		}
 		
 		/**
@@ -220,7 +223,6 @@ package
 			}
 			
 			PerformaceTest.end();
-			file = null;
 		}
 		
 		/**

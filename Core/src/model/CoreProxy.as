@@ -333,6 +333,8 @@ package model
 		{
 			temElementMap.clear();
 			
+			CoreFacade.coreMediator.coreApp.drawBGImg(null);
+			
 			//先设置总体样式风格, 兼容旧数据的样式
 			var styleID:String = (themeConfigMap.containsKey(xml.header.@styleID)) ? xml.header.@styleID : "style_1";
 			
@@ -554,7 +556,7 @@ package model
 		{
 			bgImgLoader.removeEventListener(ImgInsertEvent.IMG_LOADED, initializeBgImgLoaded);
 			
-			bgVO.imgData = evt.viewData as BitmapData;
+			bgVO.imgData = evt.viewData;
 			CoreFacade.coreMediator.coreApp.drawBGImg(bgVO.imgData);
 			coreApp.bgImgUpdated(bgVO.imgData);
 			

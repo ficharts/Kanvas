@@ -5,6 +5,7 @@ package view.ui
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -173,18 +174,23 @@ package view.ui
 		/**
 		 * 在画布的正中心绘制背景图片
 		 */		
-		public function drawBGImg(bmd:BitmapData):void
+		public function drawBGImg(data:Object):void
 		{
 			// 图片数据为空时，仅删除背景图
-			if (bgImageBitmap && bgImageCanvas.contains(bgImageBitmap))
-				bgImageCanvas.removeChild(bgImageBitmap);
+			if (bgImageContent && bgImageCanvas.contains(bgImageContent))
+				bgImageCanvas.removeChild(bgImageContent);
 			
-			if (bmd)
+			if (data)
 			{
-				bgImageBitmap = new Bitmap(bmd);
-				//bgImageBitmap.x = -.5 * bgImageBitmap.width;
-				//bgImageBitmap.y = -.5 * bgImageBitmap.height;
-				bgImageCanvas.addChild(bgImageBitmap);
+				if (data is BitmapData)
+				{
+					bgImageCanvas.addChild(bgImageContent = new Bitmap(BitmapData(data)));
+				}
+				else if (data is DisplayObject)
+				{
+					bgImageCanvas.addChild(bgImageContent = DisplayObject(data));
+				}
+				
 				fitBgBitmapToBound();
 				synBgImageToCanvas();
 			}
@@ -192,11 +198,11 @@ package view.ui
 		
 		private function fitBgBitmapToBound():void
 		{
-			if (bgImageBitmap)
+			if (bgImageContent)
 			{
-				bgImageBitmap.scaleX = bgImageBitmap.scaleY = 16;
-				bgImageBitmap.x = -.5 * bgImageBitmap.width;
-				bgImageBitmap.y = -.5 * bgImageBitmap.height;
+				bgImageContent.scaleX  = bgImageContent.scaleY = 16;
+				bgImageContent.x = -.5 * bgImageContent.width;
+				bgImageContent.y = -.5 * bgImageContent.height;
 			}
 			/*if (bgImageBitmap && bound)
 			{
@@ -229,6 +235,7 @@ package view.ui
 		/**
 		 */		
 		public var bgImageCanvas:Sprite;
-		private var bgImageBitmap:Bitmap;
+		
+		private var bgImageContent:DisplayObject;
 	}
 }

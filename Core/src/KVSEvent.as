@@ -1,6 +1,5 @@
 package
 {
-	import flash.display.BitmapData;
 	import flash.events.Event;
 	
 	/**
@@ -109,6 +108,6 @@ package
 		
 		/**
 		 */		
-		public var bgIMG:BitmapData;
+		public var bgIMG:Object;
 	}
 }

@@ -342,7 +342,7 @@ package
 		/**
 		 * 背景图加载完毕或者删除成功后通知外围程序
 		 */		
-		public function bgImgUpdated(imgData:BitmapData):void
+		public function bgImgUpdated(imgData:Object):void
 		{
 			var evt:KVSEvent = new KVSEvent(KVSEvent.UPDATE_BG_IMG);
 			evt.bgIMG = imgData;

@@ -270,7 +270,7 @@ package landray.kp.mediator
 		 */
 		private function loaded(e:ImgInsertEvent):void
 		{
-			viewer.drawBGImg(e.viewData as BitmapData);
+			viewer.drawBGImg(e.viewData);
 		}
 		
 		/**

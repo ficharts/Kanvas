@@ -125,7 +125,18 @@ package
 		 */		
 		private var templates:XML = 
 			<templates>
-				<template id='1' icon='/temjfwoefjoiwe.png' name='模板1' path='templates/template1.kvs'/>
+				<template id='1' icon='templates/images/template1.png' name='模板1' path='templates/files/template1.kvs'/>
+				<template id='2' icon='templates/images/template2.png' name='模板2' path='templates/files/template2.kvs'/>
+				<template id='3' icon='templates/images/template3.png' name='模板3' path='templates/files/template3.kvs'/>
+				<template id='4' icon='templates/images/template4.png' name='模板4' path='templates/files/template4.kvs'/>
+				<template id='5' icon='templates/images/template5.png' name='模板5' path='templates/files/template5.kvs'/>
+				<template id='6' icon='templates/images/template6.png' name='模板6' path='templates/files/template6.kvs'/>
+				<template id='7' icon='templates/images/template7.png' name='模板7' path='templates/files/template7.kvs'/>
+				<template id='8' icon='templates/images/template8.png' name='模板8' path='templates/files/template8.kvs'/>
+				<template id='9' icon='templates/images/template9.png' name='模板9' path='templates/files/template9.kvs'/>
+				<template id='10' icon='templates/images/template10.png' name='模板10' path='templates/files/template10.kvs'/>
+				<template id='11' icon='templates/images/template11.png' name='模板11' path='templates/files/template11.kvs'/>
+				<template id='12' icon='templates/images/template12.png' name='模板12' path='templates/files/template12.kvs'/>
 			</templates>;
 		
 		
