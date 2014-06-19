@@ -7,6 +7,7 @@ package view.templatePanel
 	
 	import flash.display.BitmapData;
 	import flash.display.Shape;
+	import flash.filters.GlowFilter;
 	
 	import util.img.ImgInsertEvent;
 	import util.img.ImgInsertor;
@@ -22,6 +23,7 @@ package view.templatePanel
 		public function TemplateItem()
 		{
 			super();
+			
 			doubleClickEnabled = true;
 		}
 		
@@ -52,9 +54,11 @@ package view.templatePanel
 			var tx:Number = (currState.width  - iconW) / 2;
 			var ty:Number = (currState.height - iconH) / 2;
 			
-			graphics.lineStyle(1, 0xDDDDDD);
+			graphics.lineStyle(2, 0xFFFFFF);
 			graphics.drawRect(tx, ty, iconW, iconH);
 			graphics.endFill();
+			
+			this.filters = [new GlowFilter(0x000000, .1, 8, 8, 2, 3)];	
 		}
 		
 		public function get icon():String
@@ -95,6 +99,7 @@ package view.templatePanel
 				BitmapUtil.drawBitmapDataToShape(bmd, shape, iconW, iconH, 0, 0, true);
 			}
 		}
+		
 		private function loadImgError(e:ImgInsertEvent):void
 		{
 			loader.removeEventListener(ImgInsertEvent.IMG_LOADED, loadImgComplete);

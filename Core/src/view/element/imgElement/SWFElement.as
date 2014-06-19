@@ -13,10 +13,12 @@ package view.element.imgElement
 	import util.ElementUtil;
 	
 	import view.element.ElementBase;
+	import view.interact.autoGroup.IAutoGroupElement;
 	
 	/**
 	 */	
-	public class SWFElement extends ImgElementBase
+	public class SWFElement extends ImgElementBase implements IAutoGroupElement
+		
 	{
 		public function SWFElement(vo:ElementVO)
 		{

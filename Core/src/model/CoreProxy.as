@@ -2,7 +2,6 @@ package model
 {
 	import com.adobe.images.PNGEncoder;
 	import com.kvs.utils.Map;
-	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
@@ -336,7 +335,7 @@ package model
 			CoreFacade.coreMediator.coreApp.drawBGImg(null);
 			
 			//先设置总体样式风格, 兼容旧数据的样式
-			var styleID:String = (themeConfigMap.containsKey(xml.header.@styleID)) ? xml.header.@styleID : "style_1";
+			var styleID:String = (themeConfigMap.containsKey(xml.header.@styleID.toString())) ? xml.header.@styleID : "style_1";
 			
 			setCurrTheme(styleID);
 			

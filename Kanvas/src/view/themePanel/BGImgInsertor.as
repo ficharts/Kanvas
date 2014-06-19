@@ -31,7 +31,7 @@ package view.themePanel
 			imgBtn.w = w - 8;
 			imgBtn.h = h -  8;
 			imgBtn.x = imgBtn.y = 4;
-			imgBtn.text = '上传3D背景图';
+			imgBtn.text = '上传背景图';
 			imgBtn.labelStyleXML = noImgLabelStyle;
 			addChild(imgBtn);
 			

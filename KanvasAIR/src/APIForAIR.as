@@ -22,7 +22,6 @@ package
 	import view.element.ElementBase;
 	import view.element.imgElement.ImgElement;
 	import view.element.imgElement.ImgElementBase;
-	import view.templatePanel.TemplateItem;
 	import view.ui.Bubble;
 
 	/**
