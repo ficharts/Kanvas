@@ -208,8 +208,8 @@ package
 			var imgIDsInXML:Array = [];
 			for each (var element:ElementBase in CoreFacade.coreProxy.elements)
 			{
-				if (element is ImgElement)
-					imgIDsInXML.push((element as ImgElement).imgVO.imgID.toString());
+				if (element is ImgElementBase)
+					imgIDsInXML.push((element as ImgElementBase).imgVO.imgID.toString());
 			}
 			
 			if (CoreFacade.coreProxy.bgVO.imgID > 0)
