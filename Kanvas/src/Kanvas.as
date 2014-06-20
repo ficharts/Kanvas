@@ -147,7 +147,10 @@ package
 			
 			//模板
 			templatePanel = new TemplatePanel(this);
-			templatePanel.bgStyleXML = panelBGStyleXML;
+			templatePanel.bgStyleXML = <style>
+									<border color='#eeeeee' alpha='1'/>
+									<fill color='#eeeeee' alpha='1'/>
+								 </style>;;
 			templatePanel.titleStyleXML = panelTitleStyleXML;
 		}
 		

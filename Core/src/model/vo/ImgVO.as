@@ -13,7 +13,7 @@ package model.vo
 		{
 			super();
 			
-			type = 'img';
+			type = 'image';
 			styleType = 'img';
 		}
 		

@@ -20,7 +20,6 @@ package
 	
 	import util.img.ImgInsertor;
 	
-	import view.templatePanel.TemplateItem;
 	import view.ui.Bubble;
 
 	/**
@@ -146,18 +145,21 @@ package
 			}
 		}
 		
+		/**
+		 */		
 		private function loaderComplete(e:Event):void
 		{
 			var loader:URLLoader = URLLoader(e.target);
 			loader.removeEventListener(Event.COMPLETE, loaderComplete);
 			loader.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOError);
+			
 			try
 			{
-				setXMLData(XML(loader.data));
+				setBase64Data(e.target.data, false);
 			}
 			catch (o:Error)
 			{
-				Bubble.show("模板文件格式不正确!");
+				Bubble.show(e.target.data);
 			}			
 		}
 		
@@ -166,6 +168,7 @@ package
 			var loader:URLLoader = URLLoader(e.target);
 			loader.removeEventListener(Event.COMPLETE, loaderComplete);
 			loader.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOError);
+			
 			Bubble.show("加载模板出错！");
 		}
 		

@@ -411,6 +411,12 @@
 				this.swf.initDataServer(url, docID, thumbW, thumbH);
 			};
 		};
+
+		that.initTemplates = function(data) {
+			if (this.ifReady) {
+				this.swf.initTemplates(data);
+			};
+		};
 		
 		return that;
 		

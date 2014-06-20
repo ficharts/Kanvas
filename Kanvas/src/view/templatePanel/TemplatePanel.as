@@ -8,6 +8,8 @@ package view.templatePanel
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.filters.DropShadowFilter;
+	import flash.filters.GlowFilter;
 	
 	/**
 	 * 
@@ -28,7 +30,7 @@ package view.templatePanel
 		{
 			super.init();
 			
-			title = "模板";
+			title = "请选择模板";
 			
 			w = 960;
 			h = 576;
@@ -104,10 +106,13 @@ package view.templatePanel
 			graphics.drawRect(-x, -y, stage.stageWidth, stage.stageHeight);
 			graphics.endFill();
 			
+			
 			bgShape.graphics.beginFill(0xFFFFFF);
 			bgShape.graphics.drawRect(gap, barHeight, w - gap * 2, h - barHeight * 2);
 			bgShape.graphics.endFill();
 			
+			//边框
+			bgShape.filters = [new GlowFilter(0x000000, .2, 10, 10, 2, 3)];			
 		}
 		
 		/**
@@ -168,8 +173,11 @@ package view.templatePanel
 		 */		
 		private function templateDoubleClickHandler(e:MouseEvent):void
 		{
-			core.api.openTemplate(curItem.path);
-			cancelClickHandler(null);
+			if (curItem)
+			{
+				core.api.openTemplate(curItem.path);
+				cancelClickHandler(null);
+			}
 		}
 		
 		/**
