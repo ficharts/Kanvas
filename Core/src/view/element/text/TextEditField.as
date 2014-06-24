@@ -21,6 +21,7 @@ package view.element.text
 	
 	import view.element.ElementBase;
 	import view.element.IEditElement;
+	import view.element.IText;
 	import view.element.state.IEditShapeState;
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.interact.autoGroup.IAutoGroupElement;
@@ -29,7 +30,7 @@ package view.element.text
 	/**
 	 * 文本框， 有三种状态， 非选择状态(usualState), 选择状态(selectedState)， 编辑状态(editState)
 	 */
-	public class TextEditField extends ElementBase implements IEditElement, ITextFlowLabel, IAutoGroupElement
+	public class TextEditField extends ElementBase implements IEditElement, ITextFlowLabel, IAutoGroupElement, IText
 	{
 		
 		/**
@@ -42,6 +43,22 @@ package view.element.text
 			textDrawer = new TextDrawer(this);
 			shape.visible = false;
 			
+		}
+		
+		/**
+		 */		
+		public function useBitmap():void
+		{
+			textCanvas.visible = false;
+			shape.visible = true;
+		}
+		
+		/**
+		 */		
+		public function useText():void
+		{
+			textCanvas.visible = true;
+			shape.visible = false;
 		}
 		
 		/**
@@ -201,7 +218,7 @@ package view.element.text
 		{
 			if (visible || force)
 			{
-				textDrawer.checkTextBm(graphics, textCanvas, textVO.scale * parent.scaleX, false, force);
+				textDrawer.checkTextBm(graphics, textCanvas, textVO.scale * parent.scaleX, true, force);
 			}
 		}
 		
@@ -335,35 +352,6 @@ package view.element.text
 		{
 			return vo as TextVO;
 		}
-		
-		
-		
-		public function get smooth():Boolean
-		{
-			return __smooth;
-		}
-		
-		public function set smooth(value:Boolean):void
-		{
-			if (__smooth!= value)
-			{
-				__smooth = value;
-				if (stageWidth > stage.stageWidth || stageHeight > stage.stageHeight)
-				{
-					textCanvas.visible = smooth;
-					shape.visible = !smooth;
-				}
-				else
-				{
-					textCanvas.visible = true;
-					shape.visible = false;
-				}
-			}
-		}
-		private var __smooth:Boolean = true;
-		
-		
-		
 		
 		/**
 		 */		
