@@ -5,17 +5,23 @@ package
 	import com.coltware.airxzip.ZipFileWriter;
 	import com.kvs.utils.PerformaceTest;
 	
+	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.PNGEncoderOptions;
 	import flash.events.Event;
 	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
+	import flash.geom.Matrix;
 	import flash.net.FileFilter;
 	import flash.utils.ByteArray;
 	
 	import model.ConfigInitor;
 	import model.CoreFacade;
+	import model.vo.PageVO;
 	
 	import modules.PreziDataImporter;
+	import modules.pages.PageManager;
 	
 	import util.img.ImgLib;
 	
@@ -36,6 +42,8 @@ package
 			kanvasAIR = $kanvasAIR;
 			
 			core.stage.nativeWindow.addEventListener(Event.CLOSING,closing);
+			
+			cr = Bitmap(new Copyright);
 		}	
 		
 		/**
@@ -248,6 +256,132 @@ package
 				file.browseForSave("保存kanvas文件");
 			}
 		}
+		
+		public function exportImg():void
+		{
+			jpg = new File;
+			jpg.nativePath = File.desktopDirectory.nativePath + "/微舞幻灯.png";
+			jpg.addEventListener(Event.SELECT, selectJPGFileSave);
+			jpg.addEventListener(Event.CANCEL, cancelJPGFileSave);
+			jpg.browseForSave("保存png");
+		}
+		
+		private function selectJPGFileSave(evt:Event):void
+		{
+			kanvasAIR.exportImgBtn.selected = false;
+			jpg.removeEventListener(Event.SELECT, selectJPGFileSave);
+			jpg.removeEventListener(Event.CANCEL, cancelJPGFileSave);
+			
+			var manager:PageManager = CoreFacade.coreMediator.pageManager;
+			var l:int = manager.length;
+			var gutter:int = 10;
+			var w:Number = 800;
+			var h:Number = 600;
+			var flag:int = 30;
+			var tw:Number = gutter + gutter + w;
+			var num:int = 12;
+			var bmds:Array = [];
+			
+			for (var i:int = 0; i < l; i++)
+			{
+				var m:int = i % num;
+				if (m == 0)
+				{
+					//创建一张新的bmd存储
+					var th:Number = (l - i > num) 
+						? gutter + (h + gutter) * num
+						: gutter + (h + gutter) * (l - i) + gutter + 300;
+					var bmd:BitmapData = new BitmapData(tw, th, false, 0x555555);
+					bmds.push(bmd);
+					var mat:Matrix = new Matrix;
+					mat.translate(gutter, gutter);
+				}
+				var page:PageVO = manager.pages[i];
+				var pagBmd:BitmapData = (page.bitmapData) ? page.bitmapData : manager.getThumbByPageVO(page, w, h);
+				bmd.draw(pagBmd, mat, null, null, null, true);
+				mat.translate(0, h + gutter);
+			}
+			
+			pagBmd = cr.bitmapData;
+			bmd.draw(pagBmd, mat, null, null, null, true);
+			
+			var s:String = jpg.nativePath;
+			jpg.nativePath = (s.indexOf(".png") > -1) ? s : (s + ".png");
+			
+			//小于num页，只存一张
+			if (bmds.length == 1)
+			{
+				var dat:ByteArray = bmd.encode(bmd.rect, new PNGEncoderOptions(true));
+				var fs:FileStream = new FileStream();
+				fs.open(jpg,FileMode.WRITE);
+				fs.position = 0;
+				fs.writeBytes(dat);
+				fs.close();
+			}
+			//多于num页，批量存储
+			else if (bmds.length > 1)
+			{
+				l = bmds.length;
+				s = jpg.nativePath;
+				var t:String = s.substr(0, s.length - 4);
+				for (i = 0; i < l; i++)
+				{
+					bmd = bmds[i];
+					dat = bmd.encode(bmd.rect, new PNGEncoderOptions(true));
+					jpg = new File(t + (i + 1) + ".png");
+					fs = new FileStream();
+					fs.open(jpg, FileMode.WRITE);
+					fs.position = 0;
+					fs.writeBytes(dat);
+					fs.close();
+				}
+			}
+			
+			
+			/*var th:Number = gutter + gutter + Math.min(l, flag) * (600 + gutter) + 300;
+			var bmd:BitmapData = new BitmapData(tw, th, false, 0x555555);
+			var mat:Matrix = new Matrix;
+			mat.translate(gutter, gutter);
+			for (var i:int = 0; i < l; i++)
+			{
+				if (i < flag)
+				{
+					var page:PageVO = manager.pages[i];
+					var pagBmd:BitmapData = (page.bitmapData) ? page.bitmapData : manager.getThumbByPageVO(page, w, h);
+					bmd.draw(pagBmd, mat, null, null, null, true);
+					mat.translate(0, h + gutter);
+				}
+			}
+			pagBmd = cr.bitmapData;
+			bmd.draw(pagBmd, mat, null, null, null, true);
+			
+			var s:String = jpg.nativePath;
+			
+			jpg.nativePath = (s.indexOf(".png") > -1) ? s : (s + ".png");
+			
+			var dat:ByteArray = bmd.encode(bmd.rect, new PNGEncoderOptions(true));
+			var fs:FileStream = new FileStream();
+			fs.open(jpg,FileMode.WRITE);
+			fs.position = 0;
+			fs.writeBytes(dat);
+			fs.close();*/
+			//writeFile();
+		}
+		
+		private function cancelJPGFileSave(evt:Event):void
+		{
+			jpg.removeEventListener(Event.SELECT, selectJPGFileSave);
+			jpg.removeEventListener(Event.CANCEL, cancelJPGFileSave);
+			jpg = null;
+			kanvasAIR.exportImgBtn.selected = false;
+		}
+		
+		private var jpg:File;
+		
+		private var cr:Bitmap;
+		
+		[Embed(source="assets/cr.png")]
+		private static var Copyright:Class;
 		
 		/**
 		 * 初次选择文件时可能取消，这时要删除文件，不然下次保存时不知道文件保存到哪里去了

@@ -111,9 +111,14 @@ package
 			saveBtn.tips = '保存';
 			saveBtn.addEventListener(MouseEvent.MOUSE_DOWN, saveHandler);
 			
+			exportImgBtn.iconW = exportImgBtn.iconH = 30;
+			exportImgBtn.w = exportImgBtn.h = 30;
+			exportImgBtn.setIcons("save_up", "save_over", "save_down");
+			exportImgBtn.tips = "导出微博图片";
+			exportImgBtn.addEventListener(MouseEvent.MOUSE_DOWN, exportImgHandler);
 			//
 			var btns:Vector.<IconBtn> = new Vector.<IconBtn>;
-			btns.push(saveBtn);
+			btns.push(saveBtn, exportImgBtn);
 			toolBar.addCustomButtons(btns);
 			
 			kvsCore.addEventListener(KVSEvent.DATA_CHANGED, dataChanged);
@@ -161,10 +166,17 @@ package
 			}
 		}
 		
+		private function exportImgHandler(evt:Event):void
+		{
+			airAPI.exportImg();
+		}
+		
 		/**
 		 * 暂存按钮 
 		 */		
 		internal var saveBtn:IconBtn = new IconBtn;
+		
+		internal var exportImgBtn:IconBtn = new IconBtn;
 		
 		/**
 		 */		
@@ -286,6 +298,8 @@ package
 		}
 		
 		private var updater:AIRUpdater;
+		
+		
 		
 		public static const AIR_CLIENT_URL:String = "http://www.kanvas.cn/client/Kanvas.air";
 	}
