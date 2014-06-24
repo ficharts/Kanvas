@@ -18,15 +18,35 @@ package landray.kp.maps.main.elements
 	import util.textFlow.FlowTextManager;
 	import util.textFlow.ITextFlowLabel;
 	
+	import view.element.IText;
+	
 	/**
 	 * 
 	 */	
-	public final class Label extends Element implements ITextFlowLabel
+	public final class Label extends Element implements ITextFlowLabel, IText
 	{
 		public function Label($vo:ElementVO)
 		{
 			super($vo);
 			init();
+			
+			useBitmap();
+		}
+		
+		/**
+		 */		
+		public function useBitmap():void
+		{
+			textCanvas.visible = false;
+			shape.visible = true;
+		}
+		
+		/**
+		 */		
+		public function useText():void
+		{
+			textCanvas.visible = true;
+			shape.visible = false;
 		}
 		
 		/**
@@ -84,9 +104,12 @@ package landray.kp.maps.main.elements
 				renderAfterLabelRender();
 				super.render();
 			}
+			
 			check(true);
 		}
 		
+		/**
+		 */		
 		public function afterReRender():void
 		{
 			FlowTextManager.updateTexLayout(text, textManager, fixWidth);
@@ -107,6 +130,8 @@ package landray.kp.maps.main.elements
 			textCanvas.y = - textVO.height * .5;
 		}
 		
+		/**
+		 */		
 		public function get ifMutiLine():Boolean
 		{
 			return textVO.ifMutiLine;
@@ -116,10 +141,13 @@ package landray.kp.maps.main.elements
 			textVO.ifMutiLine = value;
 		}
 		
+		/**
+		 */		
 		public function get fixWidth():Number
 		{
 			return vo.width;
 		}
+		
 		public function set fixWidth(value:Number):void
 		{
 			vo.width = value;
@@ -161,23 +189,8 @@ package landray.kp.maps.main.elements
 		
 		private var __textLyoutFormat:TextLayoutFormat;
 		
-		public function get smooth():Boolean
-		{
-			return __smooth;
-		}
-		
-		public function set smooth(value:Boolean):void
-		{
-			if (__smooth!= value)
-			{
-				__smooth = value;
-				textCanvas.visible = smooth;
-				shape.visible = !smooth;
-			}
-		}
-		
-		private var __smooth:Boolean = true;
-		
+		/**
+		 */		
 		private function get textVO():TextVO
 		{
 			return vo as TextVO;

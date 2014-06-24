@@ -812,8 +812,8 @@ package view.interact
 				{
 					if (element is ImgElement)
 						ImgElement(element).smooth = false;
-					else if (element is TextEditField)
-						TextEditField(element).smooth = false;
+					//else if (element is TextEditField)
+						//TextEditField(element).smooth = false;
 				}
 			}
 		}
@@ -860,8 +860,8 @@ package view.interact
 				{
 					if (element is ImgElement)
 						ImgElement(element).smooth = true;
-					else if (element is TextEditField)
-						TextEditField(element).smooth = true;
+					//else if (element is TextEditField)
+						//TextEditField(element).smooth = true;
 				}
 				
 				//动画结束后再初始化页面动画，防止位置计算偏差，因为动画会让画布布局改变一下

@@ -35,8 +35,9 @@ package landray.kp.maps.main
 		{
 			for each (var image:Image in images)
 				image.smooth = false;
-			for each (var label:Label in labels)
-				label.smooth = false;
+				
+			//for each (var label:Label in labels)
+				//label.smooth = false;
 		}
 		
 		/**
@@ -45,8 +46,9 @@ package landray.kp.maps.main
 		{
 			for each (var image:Image in images)
 				image.smooth = true;
-			for each (var label:Label in labels)
-				label.smooth = true;
+				
+			//for each (var label:Label in labels)
+				//label.smooth = true;
 		}
 		
 		/**

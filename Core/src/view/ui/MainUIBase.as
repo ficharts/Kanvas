@@ -156,6 +156,8 @@ package view.ui
 			bgImageCanvas.rotation = canvas.rotation;
 			bgImageCanvas.x = canvas.x;
 			bgImageCanvas.y = canvas.y;
+			
+			
 		/*	trace(canvas.x, canvas.y)
 			var hw:Number = stage.stageWidth  * .5;
 			var hh:Number = stage.stageHeight * .5;*/
