@@ -117,7 +117,7 @@ package
 			exportImgBtn.iconW = exportImgBtn.iconH = 30;
 			exportImgBtn.w = exportImgBtn.h = 30;
 			exportImgBtn.setIcons("img_save_up", "img_save_over", "img_save_down");
-			exportImgBtn.tips = "村委长图片";
+			exportImgBtn.tips = "存为长图片";
 			exportImgBtn.addEventListener(MouseEvent.MOUSE_DOWN, exportImgHandler);
 			//
 			var btns:Vector.<IconBtn> = new Vector.<IconBtn>;
