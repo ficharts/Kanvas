@@ -39,6 +39,16 @@ package modules.pages
 	public final class PageManager extends EventDispatcher implements IPageManager
 	{
 		/**
+		 * 页面缩略图的宽度
+		 */		
+		public static const THUMB_WIDTH:uint = 800;
+		
+		/**
+		 * 页面缩略图的高度
+		 */		
+		public static const THUMB_HEIGHT:uint = 600;
+		
+		/**
 		 * 
 		 * @param $coreMdt
 		 * 

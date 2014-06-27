@@ -14,6 +14,7 @@ package view.pagePanel
 	import model.vo.PageVO;
 	
 	import modules.pages.PageEvent;
+	import modules.pages.PageManager;
 	
 	import view.ui.MainUIBase;
 	
@@ -114,7 +115,8 @@ package view.pagePanel
 		 */		
 		private function updateThumb(evt:PageEvent = null):void
 		{
-			pageVO.bitmapData = CoreFacade.coreMediator.pageManager.getThumbByPageVO(pageVO, 800, 600, true);
+			pageVO.bitmapData = CoreFacade.coreMediator.pageManager.getThumbByPageVO(pageVO, PageManager.THUMB_WIDTH, PageManager.THUMB_HEIGHT, true);
+			
 			
 			if (bmp && con.contains(bmp)) con.removeChild(bmp);
 			
