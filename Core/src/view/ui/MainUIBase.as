@@ -88,8 +88,8 @@ package view.ui
 			
 			__boundDiagonalDistance = RectangleUtil.getDiagonalDistance(bound);
 			
-			fitBgBitmapToBound();
-			synBgImageToCanvas();
+			fitBgContentToBound();
+			synBgContentToCanvas();
 			dispatchEvent(new KVSEvent(KVSEvent.UPATE_BOUND));
 		}
 		
@@ -112,7 +112,7 @@ package view.ui
 			__stageBound = value;
 			
 			updateCanvasCenter();
-			synBgImageToCanvas();
+			synBgContentToCanvas();
 		}
 		
 		private var __stageBound:Rectangle;
@@ -162,23 +162,47 @@ package view.ui
 			if (data)
 			{
 				if (data is BitmapData)
-					bgImageCanvas.addChild(bgImageContent = new Bitmap(BitmapData(data), "auto", true));
+				{
+					var bitmap:Bitmap = new Bitmap(BitmapData(data));
+					bitmap.smoothing = true;
+					bgImageCanvas.addChild(bgImageContent = bitmap);
+				}
 				else if (data is DisplayObject)
+				{
 					bgImageCanvas.addChild(bgImageContent = DisplayObject(data));
+				}
 				
-				fitBgBitmapToBound();
-				synBgImageToCanvas();
+				fitBgContentToBound(false);
+				synBgContentToCanvas();
 			}
 		}
 		
 		/**
 		 */		
-		private function fitBgBitmapToBound():void
+		private function fitBgContentToBound(tween:Boolean = true):void
 		{
 			if (bgImageContent)
 			{
-				bgImageContent.x = -.5 * bgImageContent.width;
-				bgImageContent.y = -.5 * bgImageContent.height;
+				var vw:Number = bound.width;
+				var vh:Number = bound.height;
+				var ow:Number = bgImageContent.width  / bgImageContent.scaleX;
+				var oh:Number = bgImageContent.height / bgImageContent.scaleY;
+				var sa:Number = ((ow / oh > vw / vh) ? vw / ow : vh / oh) * 32;
+				var xa:Number = ow * sa * -.5;
+				var ya:Number = oh * sa * -.5;
+				if (tween)
+				{
+					TweenMax.to(bgImageContent, .3, {
+						scaleX: sa, 
+						scaleY: sa, 
+						x: xa, y: ya});
+				}
+				else
+				{
+					bgImageContent.scaleX = bgImageContent.scaleY = sa;
+					bgImageContent.x = xa;
+					bgImageContent.y = ya;
+				}
 			}
 		}
 		
@@ -187,25 +211,35 @@ package view.ui
 		 * 
 		 * 及移动时需要被调用
 		 */		
-		public function synBgImageToCanvas():void
+		public function synBgContentToCanvas():void
 		{
-			bgImageCanvas.scaleX = bgImageCanvas.scaleY = canvas.scaleX;
 			bgImageCanvas.rotation = canvas.rotation;
-			bgImageCanvas.x = canvas.x;
-			bgImageCanvas.y = canvas.y;
+			if (canvas.scaleX > 1)
+			{
+				bgImageCanvas.scaleX = bgImageCanvas.scaleY = Math.pow(canvas.scaleX, .1);
+				var wc:Number = bound.x + bound.width  * .5;
+				var hc:Number = bound.y + bound.height * .5;
+				var wo:Number = canvas.x - wc;
+				var ho:Number = canvas.y - hc;
+				var si:Number = bgImageCanvas.scaleX / canvas.scaleX;
+				bgImageCanvas.x = wc + wo * si;
+				bgImageCanvas.y = hc + ho * si;
+			}
+			else
+			{
+				bgImageCanvas.scaleX = bgImageCanvas.scaleY = canvas.scaleX;
+				bgImageCanvas.x = canvas.x;
+				bgImageCanvas.y = canvas.y;
+			}
 			
-			/*	trace(canvas.x, canvas.y)
-			var hw:Number = stage.stageWidth  * .5;
-			var hh:Number = stage.stageHeight * .5;*/
-			//bgImageCanvas.x = hw * canvas.scaleX + canvas.x;
-			//bgImageCanvas.y = hh * canvas.scaleX + canvas.y;
-			/*bgImageCanvas.scaleX = bgImageCanvas.scaleY = Math.pow(canvas.scaleX, .1) * 2;
-			bgImageCanvas.rotation = canvas.rotation;
-			var p:Number =  Math.pow(1 / (1 + Math.pow(canvas.scaleX, .1)), 2);
-			var hw:Number = stage.stageWidth  * .5;
-			var hh:Number = stage.stageHeight * .5;
-			bgImageCanvas.x = hw + (canvas.x - hw) * p;
-			bgImageCanvas.y = hh + (canvas.y - hh) * p;*/
+			if (bgImageContent && bgImageContent is Bitmap)
+			{
+				Bitmap(bgImageContent).smoothing = ! ((bgImageCanvas.width < bound.width * 2) && 
+					(bgImageContent.width / bgImageContent.scaleX > bound.width));
+			}
+			//trace("scale:", bgImageCanvas.scaleX, canvas.scaleX);
+			//trace("x:", bgImageCanvas.x, canvas.x);
+			//trace("y:", bgImageCanvas.y, canvas.y);
 		}
 		
 		/**

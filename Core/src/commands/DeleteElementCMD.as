@@ -9,7 +9,6 @@ package commands
 	
 	import view.element.ElementBase;
 	import view.element.IElement;
-	import view.element.PageElement;
 
 	/**
 	 * 图形删除指令, 负责删除图形，线条和图片

@@ -31,7 +31,7 @@ package view.element
 		 */		
 		override public function del():void
 		{
-			this.dispatchEvent(new ElementEvent(ElementEvent.DEL_SHAPE, this));
+			dispatchEvent(new ElementEvent(ElementEvent.DEL_SHAPE, this));
 		}
 		
 		/**

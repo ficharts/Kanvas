@@ -475,7 +475,7 @@ package modules.pages
 			
 			var rect:Rectangle = new Rectangle(-offsetX, -offsetY, w, h);
 			mainUI.canvas.toShotcutState(-tp.x, -tp.y, scale, rotation, rect);
-			mainUI.synBgImageToCanvas();
+			mainUI.synBgContentToCanvas();
 			
 			var mat:Matrix = new Matrix;
 			mat.scale(mainUI.bgImageCanvas.scaleX, mainUI.bgImageCanvas.scaleY);
@@ -492,7 +492,7 @@ package modules.pages
 			bmd.draw(im, null, null, null, null, true);
 			
 			mainUI.canvas.toPreviewState();
-			mainUI.synBgImageToCanvas();
+			mainUI.synBgContentToCanvas();
 			
 			return bmd;
 		}

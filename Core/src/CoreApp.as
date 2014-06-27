@@ -593,7 +593,7 @@ package
 			canvas.x = .5 * stage.stageWidth;
 			canvas.y = .5 * stage.stageHeight;
 			
-			synBgImageToCanvas();
+			synBgContentToCanvas();
 		}
 		
 		/**

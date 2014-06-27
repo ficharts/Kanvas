@@ -70,7 +70,7 @@ package view.interact.zoomMove
 				canvas.rotation = canvasTargetRotation;
 				canvas.x = canvasTargetX;
 				canvas.y = canvasTargetY;
-				control.mainUI.synBgImageToCanvas();
+				control.mainUI.synBgContentToCanvas();
 				updated();
 				finishZoom();
 			}
@@ -130,7 +130,7 @@ package view.interact.zoomMove
 			}
 			if (packer) packer.modCanvasPosition();
 			
-			control.mainUI.synBgImageToCanvas();
+			control.mainUI.synBgContentToCanvas();
 			
 			control.uiMediator.flashTrek();
 		}

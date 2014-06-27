@@ -139,7 +139,7 @@ package landray.kp.mediator
 			for each (var graph:Graph in graphs)
 				graph.flashTrek();
 			
-			viewer.synBgImageToCanvas();
+			viewer.synBgContentToCanvas();
 			
 			selector.render();
 		}
@@ -384,7 +384,7 @@ package landray.kp.mediator
 			var aimY:Number = canvas.y + stageCenter.y - canvasCenter.y;
 			controller.zoomRotateMoveTo(canvasToScale, canvas.rotation, aimX, aimY, null, 1);
 			
-			viewer.synBgImageToCanvas();
+			viewer.synBgContentToCanvas();
 			
 			lastWidth  = thisWidth;
 			lastHeight = thisHeight;
