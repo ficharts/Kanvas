@@ -240,6 +240,8 @@ package view.ui
 				Bitmap(bgImageContent).smoothing = ! ((bgImageCanvas.width < bound.width * 2) && 
 					(bgImageContent.width / bgImageContent.scaleX > bound.width));
 			}
+			
+			
 			//trace("scale:", bgImageCanvas.scaleX, canvas.scaleX);
 			//trace("x:", bgImageCanvas.x, canvas.x);
 			//trace("y:", bgImageCanvas.y, canvas.y);
