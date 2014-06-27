@@ -88,7 +88,7 @@ package view.ui
 			
 			__boundDiagonalDistance = RectangleUtil.getDiagonalDistance(bound);
 			
-			fitBgContentToBound();
+			//fitBgContentToBound();
 			synBgContentToCanvas();
 			dispatchEvent(new KVSEvent(KVSEvent.UPATE_BOUND));
 		}
@@ -183,11 +183,14 @@ package view.ui
 		{
 			if (bgImageContent)
 			{
-				var vw:Number = bound.width;
+				/*var vw:Number = bound.width;
 				var vh:Number = bound.height;
 				var ow:Number = bgImageContent.width  / bgImageContent.scaleX;
+				var oh:Number = bgImageContent.height / bgImageContent.scaleY;*/
+				//var sa:Number = ((ow / oh > vw / vh) ? vw / ow : vh / oh) * 32;
+				var ow:Number = bgImageContent.width  / bgImageContent.scaleX;
 				var oh:Number = bgImageContent.height / bgImageContent.scaleY;
-				var sa:Number = ((ow / oh > vw / vh) ? vw / ow : vh / oh) * 32;
+				var sa:Number = 16;
 				var xa:Number = ow * sa * -.5;
 				var ya:Number = oh * sa * -.5;
 				if (tween)
