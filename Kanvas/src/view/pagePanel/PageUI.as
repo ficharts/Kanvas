@@ -139,6 +139,7 @@ package view.pagePanel
 		 */		
 		private function delHander(evt:MouseEvent):void
 		{
+			CoreFacade.coreMediator.autoGroupController.clear();
 			pageVO.dispatchEvent(new PageEvent(PageEvent.DELETE_PAGE_FROM_UI, pageVO));
 		}
 		

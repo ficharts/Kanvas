@@ -71,7 +71,7 @@ package view.ui
 				tp.offset(offsetX, offsetY);
 				rect = new Rectangle(-offsetX, -offsetY, w, h);
 				canvas.toShotcutState(-tp.x, -tp.y, scale, 0, rect);
-				core.synBgImageToCanvas();
+				core.synBgContentToCanvas();
 				
 				var mat:Matrix = new Matrix;
 				mat.scale(core.bgImageCanvas.scaleX, core.bgImageCanvas.scaleY);
@@ -84,7 +84,7 @@ package view.ui
 				var im:BitmapData = BitmapUtil.drawWithSize(canvas, vw, vh, true, 0, mat);
 				
 				canvas.toPreviewState();
-				core.synBgImageToCanvas();
+				core.synBgContentToCanvas();
 				
 				var bmd:BitmapData = new BitmapData(w, h, false, CoreFacade.coreProxy.bgColor);
 				bmd.draw(bg, null, null, null, null, true);

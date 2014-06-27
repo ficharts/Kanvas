@@ -83,7 +83,7 @@ package view.interact.zoomMove
 						canvas.scaleX = canvas.scaleY = offsetScale;
 						canvas.x = gesture.location.x - temp.x;
 						canvas.y = gesture.location.y - temp.y;
-						mediator.mainUI.synBgImageToCanvas();
+						mediator.mainUI.synBgContentToCanvas();
 						mediator.flashTrek();
 						//control.zoomRotateMoveTo(offsetScale, canvas.rotation, gesture.location.x - temp.x, gesture.location.y - temp.y, null, 0);
 					}
