@@ -84,7 +84,6 @@ package view.ui
 		 */
 		public function set bound(value:Rectangle):void
 		{
-			
 			__bound = value;
 			
 			__boundDiagonalDistance = RectangleUtil.getDiagonalDistance(bound);
@@ -98,16 +97,20 @@ package view.ui
 		 */		
 		private var __bound:Rectangle;
 		
-		
-		
+		/**
+		 */		
 		public function get stageBound():Rectangle
 		{
 			return __stageBound;
 		}
+		
+		/**
+		 */		
 		public function set stageBound(value:Rectangle):void
 		{
 			lastBound = __stageBound;
 			__stageBound = value;
+			
 			updateCanvasCenter();
 			synBgImageToCanvas();
 		}
@@ -122,7 +125,6 @@ package view.ui
 		}
 		
 		private var __boundDiagonalDistance:Number;
-		
 		
 		
 		/**
@@ -160,36 +162,24 @@ package view.ui
 			if (data)
 			{
 				if (data is BitmapData)
-				{
 					bgImageCanvas.addChild(bgImageContent = new Bitmap(BitmapData(data)));
-				}
 				else if (data is DisplayObject)
-				{
 					bgImageCanvas.addChild(bgImageContent = DisplayObject(data));
-				}
 				
 				fitBgBitmapToBound();
 				synBgImageToCanvas();
 			}
 		}
 		
+		/**
+		 */		
 		private function fitBgBitmapToBound():void
 		{
 			if (bgImageContent)
 			{
-				bgImageContent.scaleX  = bgImageContent.scaleY = 16;
 				bgImageContent.x = -.5 * bgImageContent.width;
 				bgImageContent.y = -.5 * bgImageContent.height;
 			}
-			/*if (bgImageBitmap && bound)
-			{
-				var vw:Number = bound.width;
-				var vh:Number = bound.height;
-				var bw:Number = bgImageBitmap.width  / bgImageBitmap.scaleX;
-				var bh:Number = bgImageBitmap.height / bgImageBitmap.scaleY;
-				var ss:Number = 1.5 * ((vw / vh > bw / bh) ? vw / bw : vh / bh);
-				TweenMax.to(bgImageBitmap, 1, {scaleX:ss, scaleY:ss, x:-.5 * bw * ss, y:-.5 * bh * ss});
-			}*/
 		}
 		
 		/**
@@ -218,6 +208,8 @@ package view.ui
 			bgImageCanvas.y = hh + (canvas.y - hh) * p;*/
 		}
 		
+		/**
+		 */		
 		private function updateCanvasCenter():void
 		{
 			if (lastBound)
