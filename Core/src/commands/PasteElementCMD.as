@@ -1,5 +1,8 @@
 package commands
 {
+	import flash.desktop.Clipboard;
+	import flash.desktop.ClipboardFormats;
+	
 	import model.CoreFacade;
 	import model.vo.PageVO;
 	
@@ -29,6 +32,9 @@ package commands
 		override public function execute(notification:INotification):void
 		{
 			sendNotification(Command.UN_SELECT_ELEMENT);
+			
+			var filesArray:Array = Clipboard.generalClipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+			if (filesArray) return;// 此时是从外部复制的文件内容，然后粘贴进来
 			
 			var xOff:Number;
 			var yOff:Number;

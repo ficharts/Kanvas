@@ -1,6 +1,7 @@
 package view.templatePanel
 {
 	import com.kvs.ui.button.IconBtn;
+	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.graphic.BitmapUtil;
 	import com.kvs.utils.layout.IBoxItem;
@@ -27,6 +28,10 @@ package view.templatePanel
 			doubleClickEnabled = true;
 		}
 		
+		/**
+		 */		
+		private var labelUI:LabelUI;
+		
 		override public function set selected(value:Boolean):void
 		{
 			super.selected = value;
@@ -34,13 +39,12 @@ package view.templatePanel
 			mouseEnabled = true;
 		}
 		
+		/**
+		 */		
 		override protected function init():void
 		{
-			w = 210;
-			h = 160;
-			
-			iconW = 200;
-			iconH = 150;
+			iconW = w - 10;
+			iconH = h -10;
 			
 			styleXML = iconStyleXML;
 			
@@ -59,13 +63,33 @@ package view.templatePanel
 			graphics.endFill();
 			
 			this.filters = [new GlowFilter(0x000000, .1, 8, 8, 2, 3)];	
+			
+			if (labelUI == null)
+			{
+				labelUI = new LabelUI;
+				labelUI.styleXML = <label radius='0' vPadding='5' hPadding='5'>
+									<format color='#333333' font='微软雅黑' size='10' bold='true'/>
+								  </label>
+					
+				labelUI.text = name;
+				labelUI.render();
+				
+				labelUI.x = 5
+				labelUI.y = h;
+				
+				addChild(labelUI);
+			}
 		}
 		
+		/**
+		 */		
 		public function get icon():String
 		{
 			return __icon;
 		}
 		
+		/**
+		 */		
 		public function set icon(value:String):void
 		{
 			if (__icon != value)
@@ -110,10 +134,16 @@ package view.templatePanel
 		
 		private var __icon:String;
 		
+		/**
+		 */		
 		public var id:uint;
 		
+		/**
+		 */		
 		public var path:String;
 		
+		/**
+		 */		
 		private const iconStyleXML:XML = 	
 			<states>
 				<normal>

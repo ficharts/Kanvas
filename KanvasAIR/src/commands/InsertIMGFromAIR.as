@@ -37,20 +37,37 @@ package commands
 		{
 			super.execute(notification);
 			
-			file.browse([new FileFilter("Images", "*.jpg;*.png;*.swf")]);
-			file.addEventListener(Event.SELECT, fileSelected);
+			file = notification.getBody() as File;
+			
+			if (file)
+			{
+				start();
+			}
+			else
+			{
+				file = new File;
+				file.browse([new FileFilter("Images", "*.jpg;*.png;*.swf")]);
+				file.addEventListener(Event.SELECT, fileSelected);
+			}
 		}
 		
 		/**
 		 */		
 		private function fileSelected(evt:Event):void
 		{
+			start();
+		}
+		
+		/**
+		 */		
+		private function start():void
+		{
 			var filestream:FileStream = new FileStream;
 			filestream.open(file, FileMode.READ);
 			
 			var bytes:ByteArray = new ByteArray;
 			filestream.readBytes(bytes, 0, file.size);
-				
+			
 			if (file.extension == "swf")
 				imgExtractor = new SWFExtractor();
 			else
@@ -86,7 +103,7 @@ package commands
 		
 		/**
 		 */		
-		private var file:File = new File;
+		private var file:File;
 		
 	}
 }

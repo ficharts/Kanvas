@@ -90,7 +90,7 @@ package commands
 			
 			elementIndex = CoreFacade.getElementIndex(element);
 			
-			this.sendNotification(Command.SElECT_ELEMENT, element);
+		//	this.sendNotification(Command.SElECT_ELEMENT, element);
 			
 			// 图形创建时 添加动画效果
 			TweenLite.from(element, 0.3, {alpha: 0, scaleX : 0, scaleY : 0, ease: Back.easeOut, onComplete: created});

@@ -3,6 +3,7 @@ package view.templatePanel
 	import com.kvs.ui.Panel;
 	import com.kvs.ui.button.LabelBtn;
 	import com.kvs.utils.RexUtil;
+	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.layout.BoxLayout;
 	
 	import flash.display.Bitmap;
@@ -32,7 +33,7 @@ package view.templatePanel
 			
 			title = "请选择模板";
 			
-			w = 960;
+			w = 880;
 			h = 576;
 			
 			addChild(templatesContainer = new Sprite);
@@ -41,9 +42,8 @@ package view.templatePanel
 			
 			boxLayout = new BoxLayout;
 			boxLayout.setLoc(gap, barHeight);
-			boxLayout.setItemSizeAndFullWidth(w - gap * 2, 210, 150);
-			boxLayout.setHoriHeightAndGap(160, 210, 0);
-			boxLayout.gap = 16;
+			boxLayout.setItemSizeAndFullWidth(w, itemW, itemH, 10);
+			boxLayout.vGap = 30;
 			boxLayout.ready();
 			
 			cancel = new LabelBtn;
@@ -87,6 +87,12 @@ package view.templatePanel
 		}
 		
 		/**
+		 * 每个模版截图的宽高 
+		 */		
+		private var itemW:uint = 160;
+		private var itemH:uint = 120;
+		
+		/**
 		 */		
 		override public function updateLayout():void
 		{
@@ -103,12 +109,11 @@ package view.templatePanel
 			
 			graphics.clear();
 			graphics.beginFill(0xFFFFFF, 1);
-			graphics.drawRect(-x, -y, stage.stageWidth, stage.stageHeight);
+			graphics.drawRect(- x, - y, stage.stageWidth, stage.stageHeight);
 			graphics.endFill();
 			
-			
 			bgShape.graphics.beginFill(0xFFFFFF);
-			bgShape.graphics.drawRect(gap, barHeight, w - gap * 2, h - barHeight * 2);
+			bgShape.graphics.drawRect(0, 0, w, h - barHeight);
 			bgShape.graphics.endFill();
 			
 			//边框
@@ -133,10 +138,11 @@ package view.templatePanel
 			for each (var xml:XML in templateData.children())
 			{
 				var item:TemplateItem = new TemplateItem;
-				item.id = xml.@id;
-				item.icon = xml.@icon;
-				item.path = xml.@path;
+				XMLVOMapper.fuck(xml, item);
 				
+				item.w = itemW;
+				item.h = itemH; 
+					
 				templatesContainer.addChild(item);
 				boxLayout.layout(item);
 				item.addEventListener(MouseEvent.DOUBLE_CLICK, templateDoubleClickHandler);

@@ -4,11 +4,13 @@ package view.interact.interactMode
 	
 	import flash.geom.Rectangle;
 	
+	import model.CoreFacade;
 	import model.vo.ElementVO;
 	
 	import view.element.ElementBase;
 	import view.element.GroupElement;
 	import view.element.shapes.LineElement;
+	import view.element.state.ElementSelected;
 	import view.interact.CoreMediator;
 	import view.interact.multiSelect.TemGroupElement;
 	

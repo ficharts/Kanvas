@@ -23,6 +23,7 @@ package
 	import modules.PreziDataImporter;
 	import modules.pages.PageManager;
 	
+	import util.img.ImageManager;
 	import util.img.ImgLib;
 	
 	import view.element.ElementBase;
@@ -172,8 +173,11 @@ package
 			}
 			
 			PerformaceTest.end("xml解析结束");
+			
 		}
 		
+		/**
+		 */		
 		private function readFilePEZ():void
 		{
 			var reader:ZipFileReader = new ZipFileReader();
@@ -230,6 +234,7 @@ package
 			}
 			
 			PerformaceTest.end();
+			
 		}
 		
 		/**

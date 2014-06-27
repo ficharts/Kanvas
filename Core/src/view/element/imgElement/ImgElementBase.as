@@ -9,6 +9,8 @@ package view.element.imgElement
 	import model.vo.ElementVO;
 	import model.vo.ImgVO;
 	
+	import util.img.ImageManager;
+	
 	import view.element.ElementBase;
 	import view.element.ElementEvent;
 	import view.interact.autoGroup.IAutoGroupElement;
@@ -75,7 +77,10 @@ package view.element.imgElement
 		 */		
 		public function imgLoaded(fileBytes:ByteArray, viewData:Object):void
 		{
+			imgVO.viewData = viewData;
 			
+			//客户端一次开启多个图片会导致文件打开卡住，所以需要滞后处理图片的渲染, 防止刚刚打开文件的卡顿
+			ImageManager.pushForRender(this);
 		}
 		
 		/**
@@ -155,12 +160,19 @@ package view.element.imgElement
 		internal function createLoading():void
 		{
 			if(!loading) 
-				addChild(loading = new Loading);
+			{
+				loading = new Loading;
+				//loading.scaleX = loading.scaleY = imgVO.scale
+				
+				addChild(loading);
+			}
 			
 			loading.play();
 		}
 		
-		internal function removeLoading():void
+		/**
+		 */		
+		public function removeLoading():void
 		{
 			if (loading) 
 			{

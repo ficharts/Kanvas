@@ -52,8 +52,9 @@ package view.element.imgElement
 		 */		
 		override public function imgLoaded(fileBytes:ByteArray, viewData:Object):void
 		{
-			imgVO.viewData = viewData;
 			(imgVO as SWFVO).fileBytes = fileBytes;
+			
+			super.imgLoaded(fileBytes, viewData);
 		}
 		
 		/**
