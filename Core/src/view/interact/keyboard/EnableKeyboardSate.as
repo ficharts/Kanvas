@@ -129,8 +129,6 @@ package view.interact.keyboard
 				altKey = false;
 			}
 			
-			
-			
 			switch(evt.keyCode)
 			{
 				case Keyboard.Z:
@@ -177,6 +175,10 @@ package view.interact.keyboard
 					break;
 				
 				case Keyboard.DELETE:
+					mainUIMediator.del();
+					break;
+				
+				case 8:// Mac系统下delete的按键编码是8
 					mainUIMediator.del();
 					break;
 				

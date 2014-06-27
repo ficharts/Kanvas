@@ -17,6 +17,10 @@ package view.toolBar
 	 */	
 	public class ToolBar extends FiUI
 	{
+		public static const BTN_SIZE:uint = 26;
+		
+		/**
+		 */		
 		public function ToolBar()
 		{
 			super();

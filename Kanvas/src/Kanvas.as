@@ -178,7 +178,7 @@ package
 		private function preLayout():void
 		{
 			toolBar.w = stage.stageWidth;
-			toolBar.h = 50;
+			toolBar.h = 40;
 			
 			pagePanel.h = shapePanel.h = themePanel.h = stage.stageHeight - toolBar.h;
 			pagePanel.y = shapePanel.y = themePanel.y = toolBar.h;

@@ -337,7 +337,6 @@ package view.pagePanel
 		internal function startCreatePageByDrag():void
 		{
 			var rect:Rectangle = this.addPageBtn.getRect(stage);
-			addPageBtn.tips = "添加页面";
 			var bmd:BitmapData = BitmapUtil.getBitmapData(this.addPageBtn, true);
 			
 			pageCreateIcon.graphics.clear();
@@ -660,7 +659,7 @@ package view.pagePanel
 			addPageBtn = new ShotBtn(this);
 			addPageBtn.buttonMode = false;
 			addPageBtn.w = w - gutter * 2 - 4;
-			addPageBtn.h = 30;
+			addPageBtn.h = 60;
 			addPageBtn.iconW = 50;
 			addPageBtn.iconH = 50;
 			addPageBtn.tips = "按下或者拖动创建页面";
@@ -669,14 +668,17 @@ package view.pagePanel
 			shot_over;
 			addPageBtn.styleXML = <states>
 										<normal>
+											<border color='cccccc' thickness='0.1'/>
 											<fill color='#FFFFFF' alpha='1'/>
 											<img/>
 										</normal>
 										<hover>
+											<border color='999999' thickness='0.1'/>
 											<fill color='#dddddd' alpha='1'/>
 											<img/>
 										</hover>
 										<down>
+											<border color='888888' thickness='0.1'/>
 											<fill color='#cccccc' alpha='1'/>
 											<img/>
 										</down>

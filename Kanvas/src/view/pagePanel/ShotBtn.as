@@ -84,7 +84,7 @@ package view.pagePanel
 			graphics.clear();
 			StyleManager.drawRect(this, this.currState, this);
 			
-			
+			graphics.lineStyle(0, 0, 0);
 			BitmapUtil.drawBitmapDataToSprite(img.data, this, iconW, iconH, (currState.width - iconW) / 2, (currState.height - iconH) / 2, true);
 			graphics.endFill();
 		}

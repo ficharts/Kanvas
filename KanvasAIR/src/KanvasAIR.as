@@ -32,6 +32,8 @@ package
 	
 	import util.textFlow.FlowTextManager;
 	
+	import view.toolBar.ToolBar;
+	
 	
 	/**
 	 * 
@@ -106,8 +108,8 @@ package
 			save_up;
 			save_over;
 			save_down;
-			saveBtn.iconW = saveBtn.iconH = 30;
-			saveBtn.w = saveBtn.h = 30;
+			saveBtn.iconW = saveBtn.iconH = ToolBar.BTN_SIZE;
+			saveBtn.w = saveBtn.h = ToolBar.BTN_SIZE;
 			saveBtn.setIcons("save_up", "save_over", "save_down");
 			saveBtn.tips = '保存';
 			saveBtn.addEventListener(MouseEvent.MOUSE_DOWN, saveHandler);
@@ -115,8 +117,8 @@ package
 			img_save_up;
 			img_save_over;
 			img_save_down;
-			exportImgBtn.iconW = exportImgBtn.iconH = 30;
-			exportImgBtn.w = exportImgBtn.h = 30;
+			exportImgBtn.iconW = exportImgBtn.iconH = ToolBar.BTN_SIZE;
+			exportImgBtn.w = exportImgBtn.h = ToolBar.BTN_SIZE;
 			exportImgBtn.setIcons("img_save_up", "img_save_over", "img_save_down");
 			exportImgBtn.tips = "存为长图片";
 			exportImgBtn.addEventListener(MouseEvent.MOUSE_DOWN, exportImgHandler);

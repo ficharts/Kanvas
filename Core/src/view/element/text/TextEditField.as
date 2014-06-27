@@ -84,8 +84,6 @@ package view.element.text
 			super.toPreview(renderable);
 		}
 		
-		
-		
 		/**
 		 */			
 		override public function showToolBar(toolbar:ToolBarController):void

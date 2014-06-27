@@ -162,7 +162,7 @@ package view.ui
 			if (data)
 			{
 				if (data is BitmapData)
-					bgImageCanvas.addChild(bgImageContent = new Bitmap(BitmapData(data)));
+					bgImageCanvas.addChild(bgImageContent = new Bitmap(BitmapData(data), "auto", true));
 				else if (data is DisplayObject)
 					bgImageCanvas.addChild(bgImageContent = DisplayObject(data));
 				

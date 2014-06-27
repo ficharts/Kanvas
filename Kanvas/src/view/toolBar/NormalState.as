@@ -98,8 +98,8 @@ package view.toolBar
 			play_up;
 			play_over;
 			play_down;
-			previewBtn.iconW = previewBtn.iconH = 30;
-			previewBtn.w = previewBtn.h = 30;
+			previewBtn.iconW = previewBtn.iconH = ToolBar.BTN_SIZE;
+			previewBtn.w = previewBtn.h = ToolBar.BTN_SIZE;
 			previewBtn.setIcons("play_up", "play_over", "play_down");
 			previewBtn.tips = '预览';
 			ctner.addChild(previewBtn);
@@ -108,8 +108,8 @@ package view.toolBar
 			undo_up;
 			undo_over;
 			undo_down;
-			undoBtn.iconW = undoBtn.iconH = 30;
-			undoBtn.w = undoBtn.h = 30;
+			undoBtn.iconW = undoBtn.iconH = ToolBar.BTN_SIZE;
+			undoBtn.w = undoBtn.h = ToolBar.BTN_SIZE;
 			undoBtn.setIcons("undo_up", "undo_over", "undo_down");
 			undoBtn.selected = true;
 			undoBtn.tips = '撤销';
@@ -119,8 +119,8 @@ package view.toolBar
 			redo_up;
 			redo_over;
 			redo_down;
-			redoBtn.iconW = redoBtn.iconH = 30;
-			redoBtn.w = redoBtn.h = 30;
+			redoBtn.iconW = redoBtn.iconH = ToolBar.BTN_SIZE;
+			redoBtn.w = redoBtn.h = ToolBar.BTN_SIZE;
 			redoBtn.setIcons("redo_up", "redo_over", "redo_down");
 			redoBtn.selected = true;
 			redoBtn.tips = '重做';
@@ -130,8 +130,8 @@ package view.toolBar
 			img_up;
 			img_over;
 			img_down;
-			imgBtn.iconW = imgBtn.iconH = 30;
-			imgBtn.w = imgBtn.h = 30;
+			imgBtn.iconW = imgBtn.iconH = ToolBar.BTN_SIZE;
+			imgBtn.w = imgBtn.h = ToolBar.BTN_SIZE;
 			imgBtn.setIcons("img_up", "img_over", "img_down");
 			imgBtn.tips = '插入图片';
 			centerBtnsC.addChild(imgBtn);
@@ -142,8 +142,8 @@ package view.toolBar
 			shape_over;
 			shape_down;
 			
-			addBtn.iconW = addBtn.iconH = 30;
-			addBtn.w = addBtn.h = 30;
+			addBtn.iconW = addBtn.iconH = ToolBar.BTN_SIZE;
+			addBtn.w = addBtn.h = ToolBar.BTN_SIZE;
 			addBtn.setIcons("shape_up", "shape_over", "shape_down");
 			addBtn.tips = '开启图形创建面板';
 			addBtn.x = imgBtn.width + 20;
@@ -153,8 +153,8 @@ package view.toolBar
 			style_up;
 			style_over;
 			style_down;
-			themeBtn.iconW = themeBtn.iconH = 30;
-			themeBtn.w = themeBtn.h = 30;
+			themeBtn.iconW = themeBtn.iconH = ToolBar.BTN_SIZE;
+			themeBtn.w = themeBtn.h = ToolBar.BTN_SIZE;
 			themeBtn.setIcons("style_up", "style_over", "style_down");
 			themeBtn.tips = '开启风格样式面板';
 			centerBtnsC.addChild(themeBtn);
