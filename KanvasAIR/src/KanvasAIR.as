@@ -3,6 +3,7 @@ package
 	import com.kvs.ui.button.IconBtn;
 	
 	import commands.ChangeBgImgAIR;
+	import commands.Command;
 	import commands.DelImageFromAIRCMD;
 	import commands.InsertIMGFromAIR;
 	
@@ -146,6 +147,20 @@ package
 				<template id='10' icon='templates/images/template10.png' name='模板10' path='templates/files/template10.kvs'/>
 				<template id='11' icon='templates/images/template11.png' name='模板11' path='templates/files/template11.kvs'/>
 				<template id='12' icon='templates/images/template12.png' name='模板12' path='templates/files/template12.kvs'/>
+			
+				<template id='13' icon='templates/images/template13.png' name='模板1' path='templates/files/template13.kvs'/>
+				<template id='1' icon='templates/images/template1.png' name='模板1' path='templates/files/template1.kvs'/>
+				<template id='2' icon='templates/images/template2.png' name='模板2' path='templates/files/template2.kvs'/>
+				<template id='3' icon='templates/images/template3.png' name='模板3' path='templates/files/template3.kvs'/>
+				<template id='4' icon='templates/images/template4.png' name='模板4' path='templates/files/template4.kvs'/>
+				<template id='5' icon='templates/images/template5.png' name='模板5' path='templates/files/template5.kvs'/>
+				<template id='6' icon='templates/images/template6.png' name='模板6' path='templates/files/template6.kvs'/>
+				<template id='7' icon='templates/images/template7.png' name='模板7' path='templates/files/template7.kvs'/>
+				<template id='8' icon='templates/images/template8.png' name='模板8' path='templates/files/template8.kvs'/>
+				<template id='9' icon='templates/images/template9.png' name='模板9' path='templates/files/template9.kvs'/>
+				<template id='10' icon='templates/images/template10.png' name='模板10' path='templates/files/template10.kvs'/>
+				<template id='11' icon='templates/images/template11.png' name='模板11' path='templates/files/template11.kvs'/>
+				<template id='12' icon='templates/images/template12.png' name='模板12' path='templates/files/template12.kvs'/>
 			</templates>;
 		
 		
@@ -217,6 +232,28 @@ package
 			
 			if(!NativeApplication.nativeApplication.isSetAsDefaultApplication("pez")) 
 				NativeApplication.nativeApplication.setAsDefaultApplication("pez");
+			
+			addEventListener(Event.COPY, copyHandler);
+			addEventListener(Event.PASTE, pastHandler);
+		}
+		
+		/**
+		 */		
+		private function copyHandler(evt:Event):void
+		{
+			
+		}
+		
+		/**
+		 */		
+		private function pastHandler(evt:Event):void
+		{
+			var filesArray:Array = Clipboard.generalClipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+			
+			if (filesArray)
+				openPastOrDropFile(filesArray);
+			
+			Clipboard.generalClipboard.clear();
 		}
 		
 		/**
@@ -236,25 +273,40 @@ package
 		private function onDragDrop(e:NativeDragEvent):void
 		{
 			var filesArray:Array = e.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+			openPastOrDropFile(filesArray);
+		}
+		
+		/**
+		 */		
+		private function openPastOrDropFile(filesArray:Array):void
+		{
 			if (filesArray.length)
 			{
-				var f:File = filesArray[0];
-				var extension:String = f.extension.toLowerCase();
-				if (extension == "kvs" || extension == "pez")
+				var extension:String
+				for each (var f:File in filesArray)
 				{
-					airAPI.openFile(f);
+					extension = f.extension.toLowerCase();
+					if (extension == "kvs" || extension == "pez")
+					{
+						if (filesArray.length == 1)
+							airAPI.openFile(f);
+					}
+					else if (extension == "jpg" || extension == "png" || extension == "swf")
+					{
+						if (this.templatePanel.isOpen == false)
+							CoreFacade.sendNotification(Command.INSERT_IMAGE, f);
+					}
+					else
+					{
+						
+					}
 				}
-				else if (extension == "jpg" || extension == "png")
-				{
-					
-				}
-				else
-				{
-					
-				}
+				
 			}
 		}
 		
+		/**
+		 */		
 		override protected function stageResizeHandler(evt:Event):void
 		{
 			super.stageResizeHandler(evt);

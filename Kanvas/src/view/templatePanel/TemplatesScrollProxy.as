@@ -102,7 +102,7 @@ package view.templatePanel
 		 */		
 		public function get viewWidth():Number
 		{
-			return panel.w - 18;
+			return panel.w - 20;
 		}
 		
 		/**

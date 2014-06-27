@@ -50,7 +50,7 @@ package view.element.imgElement
 		 */		
 		override public function imgLoaded(fileBytes:ByteArray, viewData:Object):void
 		{
-			imgVO.viewData = viewData;
+			super.imgLoaded(fileBytes, viewData);
 		}
 		
 		/**
@@ -89,6 +89,7 @@ package view.element.imgElement
 				bmpLarge.y = -.5 * vo.height;
 				bmpLarge.smoothing = true;
 				_canvas.addChild(bmpLarge);
+				
 				
 				if(!bmdSmall)
 				{

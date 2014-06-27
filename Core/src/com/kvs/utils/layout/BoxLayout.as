@@ -23,7 +23,7 @@ package com.kvs.utils.layout
 		/**
 		 * 设置单元格的尺寸和总宽
 		 */		
-		public function setItemSizeAndFullWidth(rectW:Number, itemW:Number, itemH:Number):void
+		public function setItemSizeAndFullWidth(rectW:Number, itemW:Number, itemH:Number, gap:Number = 0):void
 		{
 			this.rect.width = rectW;
 			
@@ -31,7 +31,11 @@ package com.kvs.utils.layout
 			this.cellH = itemH;
 			
 			maxColumnNum = Math.floor(rectW / cellW);
-			this.gap = (rectW - maxColumnNum * cellW) / (maxColumnNum + 1);
+			
+			if (gap)
+				this.gap = gap;
+			else
+				this.gap = (rectW - maxColumnNum * cellW) / (maxColumnNum + 1);
 		}
 		
 		/**
@@ -40,8 +44,9 @@ package com.kvs.utils.layout
 		public function setHoriHeightAndGap(h:Number, iW:Number, gap:uint = 7):void
 		{
 			this.gap = gap;
-			this.cellH = h - 2 * gap;
+			
 			this.cellW = iW;
+			this.cellH = h - 2 * gap;
 		}
 		
 		/**
@@ -51,8 +56,8 @@ package com.kvs.utils.layout
 			item.w = this.cellW;
 			item.h = this.cellH;
 			
-			item.x = rect.x + gap + curColumn * (cellW + gap);
-			item.y = rect.y + gap;
+			item.x = rect.x + hGap + curColumn * (cellW + hGap);
+			item.y = rect.y + vGap;
 			
 			curColumn += 1;
 		}
@@ -61,7 +66,7 @@ package com.kvs.utils.layout
 		 */		
 		public function get horiWidth():Number
 		{
-			return this.gap * (curColumn + 1)  + curColumn * this.cellW;
+			return this.hGap * (curColumn + 1)  + curColumn * this.cellW;
 		}
 		
 		/**
@@ -84,7 +89,7 @@ package com.kvs.utils.layout
 		 */		
 		public function getRectHeight():Number
 		{
-			this.rect.height = (this.curRow + 1) * this.cellH + (this.curRow + 2) * this.gap;
+			this.rect.height = (this.curRow + 1) * this.cellH + (this.curRow + 1) * this.vGap;
 			
 			return this.rect.height;
 		}
@@ -103,8 +108,8 @@ package com.kvs.utils.layout
 			item.w = this.cellW;
 			item.h = this.cellH;
 			
-			item.x = rect.x + this.gap + cellW * curColumn + this.gap * curColumn;
-			item.y = rect.y + this.gap + cellH * curRow + this.gap * curRow;
+			item.x = rect.x + cellW * curColumn + this.hGap * curColumn;
+			item.y = rect.y + cellH * curRow + this.vGap * curRow;
 			
 			curColumn ++;
 		}
@@ -134,8 +139,11 @@ package com.kvs.utils.layout
 		 */
 		public function set gap(value:uint):void
 		{
-			_gap = value;
+			_gap = vGap = hGap = value;
 		}
+		
+		public var hGap:uint;
+		public var vGap:uint;
 
 		/**
 		 */

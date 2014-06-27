@@ -70,15 +70,11 @@ package view.element.imgElement
 		 */		
 		private function imgLoaded(evt:ImgInsertEvent):void
 		{
-			element.imgLoaded(imgLoader.fileBytes, evt.viewData);
-			
 			imgLoader.removeEventListener(ImgInsertEvent.IMG_LOADED, imgLoaded);
 			imgLoader.removeEventListener(ImgInsertEvent.IMG_LOADED_ERROR, imgLoadError);
 			imgLoader = null;
 			
-			element.removeLoading();
-			
-			element.toNomalState();
+			element.imgLoaded(evt.fileBytes, evt.viewData);
 		}
 		
 		
