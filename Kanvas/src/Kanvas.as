@@ -301,7 +301,7 @@ package
 		/**
 		 * 工具提示控制器
 		 */		
-		private var toolTipsManager:ToolTipsManager;
+		public var toolTipsManager:ToolTipsManager;
 		
 		
 		

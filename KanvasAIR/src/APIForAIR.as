@@ -14,6 +14,7 @@ package
 	import flash.filesystem.FileStream;
 	import flash.geom.Matrix;
 	import flash.net.FileFilter;
+	import flash.net.dns.AAAARecord;
 	import flash.utils.ByteArray;
 	
 	import model.ConfigInitor;
@@ -262,6 +263,8 @@ package
 			}
 		}
 		
+		/**
+		 */		
 		public function exportImg():void
 		{
 			jpg = new File;
@@ -441,6 +444,10 @@ package
 				{
 					imgDataBytes = bmd.encode(bmd.rect, new PNGEncoderOptions);
 					writer.addBytes(imgDataBytes,"preview.png");
+					
+					
+					//保存缩略图用于模版截图
+					saveFileImageForTemplate(imgDataBytes);
 				}
 				
 				// 添加图片资源数据
@@ -479,6 +486,21 @@ package
 				}
 			}*/
 			
+		}
+		
+		/**
+		 * 保存文件的缩略图, 给模版用
+		 */		
+		private function saveFileImageForTemplate(imgDataBytes:ByteArray):void
+		{
+			var fileImage:File = new File;
+			fileImage.nativePath = "/Users/wanglei/projects/Kanvas/KanvasAIR/src/templates/images/" + file.name.split(".")[0] + ".png";
+			
+			var fs:FileStream = new FileStream();
+			fs.open(fileImage, FileMode.WRITE);
+			fs.position = 0;
+			fs.writeBytes(imgDataBytes);
+			fs.close();
 		}
 		
 		/**

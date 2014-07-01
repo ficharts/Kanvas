@@ -1,5 +1,8 @@
 package view.interact.interactMode
 {
+	import com.kvs.ui.toolTips.ToolTipsEvent;
+	import com.kvs.ui.toolTips.ToolTipsManager;
+	
 	import commands.Command;
 	
 	import flash.ui.Mouse;
@@ -98,6 +101,9 @@ package view.interact.interactMode
 			mainMediator.previewCliker.enable = true;
 			mainMediator.mouseController.autoHide = true;
 			Mouse.hide();
+			
+			//防止鼠标位于预览按钮上时，
+			this.mainMediator.mainUI.dispatchEvent(new ToolTipsEvent(ToolTipsEvent.HIDE_TOOL_TIPS));
 		}
 		
 		/**

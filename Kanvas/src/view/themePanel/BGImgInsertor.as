@@ -2,7 +2,6 @@ package view.themePanel
 {
 	import com.kvs.ui.button.IconBtn;
 	import com.kvs.ui.button.LabelBtn;
-	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.graphic.BitmapUtil;
 	
 	import flash.display.Bitmap;
@@ -77,7 +76,7 @@ package view.themePanel
 			}
 			else
 			{
-				imgBtn.text = '上传3D背景图';
+				imgBtn.text = '上传背景图';
 				imgBtn.updateLabelStyle(noImgLabelStyle);
 				imgBtn.updateBgStyle(noImgStyleXML);
 			}
