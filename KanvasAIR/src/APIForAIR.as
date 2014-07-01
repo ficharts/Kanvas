@@ -15,6 +15,7 @@ package
 	import flash.geom.Matrix;
 	import flash.net.FileFilter;
 	import flash.net.dns.AAAARecord;
+	import flash.text.ReturnKeyLabel;
 	import flash.utils.ByteArray;
 	
 	import model.ConfigInitor;
@@ -493,6 +494,8 @@ package
 		 */		
 		private function saveFileImageForTemplate(imgDataBytes:ByteArray):void
 		{
+			return;
+			
 			var fileImage:File = new File;
 			fileImage.nativePath = "/Users/wanglei/projects/Kanvas/KanvasAIR/src/templates/images/" + file.name.split(".")[0] + ".png";
 			
