@@ -18,10 +18,12 @@ package
 	import flash.events.InvokeEvent;
 	import flash.events.MouseEvent;
 	import flash.events.NativeDragEvent;
+	import flash.events.TimerEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.utils.ByteArray;
+	import flash.utils.Timer;
 	
 	import model.CoreFacade;
 	import model.CoreProxy;
@@ -30,9 +32,12 @@ package
 	import modules.PreziDataImporter;
 	import modules.pages.PageManager;
 	
+	import org.osmf.events.TimeEvent;
+	
 	import util.textFlow.FlowTextManager;
 	
 	import view.toolBar.ToolBar;
+	import view.ui.Bubble;
 	
 	
 	/**
@@ -148,13 +153,51 @@ package
 		 */		
 		private function saveHandler(evt:Event):void
 		{
-			if(!saveBtn.selected)
+			_save();
+		}
+		
+		/**
+		 * 文件保存成功后触发
+		 */		
+		public function saved():void
+		{
+			if (saveTimmer == null)
 			{
-				saveBtn.selected = true;
-				airAPI.saveFile();
+				saveTimmer = new Timer(60000);//1分钟自动保存一次
+				saveTimmer.addEventListener(TimerEvent.TIMER, saveFromTimmer);
+				saveTimmer.start();
+			}
+			else
+			{
+				//saveTimmer.reset();
 			}
 		}
 		
+		/**
+		 */		
+		private function saveFromTimmer(evt:TimerEvent):void
+		{
+			_save();
+		}
+		
+		/**
+		 */		
+		private function _save():void
+		{
+			if(!saveBtn.selected)
+			{
+				airAPI.saveFile();
+				saveBtn.selected = true;
+			}
+		}
+		
+		/**
+		 * 触发自动保存 
+		 */		
+		private var saveTimmer:Timer;
+		
+		/**
+		 */		
 		private function exportImgHandler(evt:Event):void
 		{
 			airAPI.exportImg();
@@ -264,7 +307,7 @@ package
 					}
 					else if (extension == "jpg" || extension == "png" || extension == "swf")
 					{
-						if (this.templatePanel.isOpen == false)
+						if (this.templatePanel.isOpen == false || airAPI.file)
 							CoreFacade.sendNotification(Command.INSERT_IMAGE, f);
 					}
 					else
@@ -312,9 +355,15 @@ package
 			}
 			else// 正常打开应用，没有通过双击文件方式 
 			{
-				templatePanel.visible = true;
+				// 正在编辑文件时，窗口切换也会导致程序运行到这里
+				if (ifOpend == false)
+					templatePanel.visible = true;
 			}
+			
+			ifOpend = true;
 		} 
+		
+		private var ifOpend:Boolean = false;
 		
 		/**
 		 */		

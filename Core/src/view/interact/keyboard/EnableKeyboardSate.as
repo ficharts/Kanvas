@@ -223,17 +223,8 @@ package view.interact.keyboard
 				case Keyboard.SPACE:
 					if (!evt.ctrlKey)
 					{
-						if (mainUIMediator.currentElement && 
-							mainUIMediator.currentElement.isPage && 
-							mainUIMediator.selector.visible)
-						{
-							mainUIMediator.pageManager.indexWithZoom = mainUIMediator.currentElement.vo.pageVO.index;
-						}
-						else
-						{
-							mainUIMediator.pageManager.reset();
-							mainUIMediator.autoZoom();
-						}
+						mainUIMediator.pageManager.reset();
+						mainUIMediator.autoZoom();
 					}
 					
 					break;

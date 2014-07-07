@@ -98,6 +98,12 @@ package view.interact.zoomMove
 					time = Math.min(Math.max(timeScale, timeRotation, control.minTweenTime), control.maxTweenTime);
 				}
 				
+				
+				/*if (!isNaN(canvasMiddleScale))
+				{
+					easeFlash = (canvas.scaleX < canvasTargetScale) ? Quart.easeIn : Quart.easeOut;
+				}*/
+				 
 				TweenMax.to(packer, time, {
 					progress:1, 
 					rotation:canvasTargetRotation, 

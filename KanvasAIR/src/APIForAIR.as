@@ -511,6 +511,7 @@ package
 		private function fileSaved(evt:Event):void
 		{
 			isSaving = false;
+			kanvasAIR.saved();
 		}
 		
 		/**

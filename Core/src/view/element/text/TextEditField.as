@@ -198,13 +198,7 @@ package view.element.text
 		 */
 		override public function render():void
 		{
-			FlowTextManager.updateTexLayout(text, textManager, fixWidth);
 			FlowTextManager.renderTextVOLabel(this, textVO);
-			textVO.width  = textManager.compositionWidth;
-			textVO.height = textManager.compositionHeight;
-			FlowTextManager.updateTexLayout(text, textManager, fixWidth);
-			textVO.width  = textManager.compositionWidth;
-			textVO.height = textManager.compositionHeight;
 			renderAfterLabelRender();
 			checkTextBm(true);// 文本渲染时要强制重新截图
 		}

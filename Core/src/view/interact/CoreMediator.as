@@ -222,7 +222,7 @@ package view.interact
 		 */		
 		public function autoZoom():void
 		{
-			sendNotification(Command.AUTO_ZOOM);
+			currentMode.autoZoom();
 		}
 		
 		/**

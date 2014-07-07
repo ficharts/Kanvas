@@ -170,6 +170,16 @@ package view.interact.interactMode
 		}
 		
 		/**
+		 * 自动对焦元素或者整个场景，
+		 * 
+		 * 未选择元素时，对焦整个场景
+		 */		
+		public function autoZoom():void
+		{
+			
+		}
+		
+		/**
 		 * 移动元件结束后呈现属性控制器
 		 */		
 		public function moveElementEnd():void

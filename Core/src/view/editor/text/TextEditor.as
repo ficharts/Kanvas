@@ -217,7 +217,6 @@ package view.editor.text
 				mainUIMediator.pageManager.registOverlappingPageVOs(field);
 				//field.checkTextBm(true);
 				mainUIMediator.pageManager.refreshVOThumbs();
-				
 			}
 			else 
 			{

@@ -1,5 +1,7 @@
 package 
 {
+	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.IApp;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
@@ -54,7 +56,10 @@ package
 		 */		
 		public static const VER:String = "1.2.3";
 		
-		
+		override public function set mouseChildren(enable:Boolean):void
+		{
+			trace(enable);
+		}
 		
 		//-------------------------------------------------
 		//
@@ -522,7 +527,7 @@ package
 		private function initUI():void
 		{
 			// 值越高，动画播放更流畅, 但更消耗性能 
-			stage.frameRate = 30;
+			stage.frameRate = 100;
 			
 			thumbManager = new ThumbManager(this);
 			bgColorFlasher = new BgColorFlasher(this);

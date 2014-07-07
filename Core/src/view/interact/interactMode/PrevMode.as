@@ -1,5 +1,7 @@
 package view.interact.interactMode
 {
+	import commands.Command;
+	
 	import flash.ui.Mouse;
 	
 	import view.interact.CoreMediator;
@@ -12,6 +14,13 @@ package view.interact.interactMode
 		public function PrevMode(mainMediator:CoreMediator)
 		{
 			super(mainMediator);
+		}
+		
+		/**
+		 */		
+		override public function autoZoom():void
+		{
+			mainMediator.sendNotification(Command.AUTO_ZOOM);
 		}
 		
 		/**

@@ -156,18 +156,34 @@ package view.interact.zoomMove
 			return mainUI.canvas;
 		}
 		
+		/**
+		 * 鼠标滚轮滑动时的倍数
+		 */		
 		public var zoomScale:Number = 1.5;
 		
+		/**
+		 * 每秒缩放倍数 
+		 */		
 		public var speedScale:Number = 2;
 		
+		/**
+		 * 每秒旋转90度 
+		 */		
 		public var speedRotation:Number = 90;
 		
-		public var maxTweenTime:Number = 4;
+		/**
+		 * 
+		 */		
+		public var maxTweenTime:Number = 10;
 		
-		public var minTweenTime:Number = 1.2;
+		/**
+		 * 
+		 */		
+		public var minTweenTime:Number = 2;
 		
-		public var plusScale:Number = .5;
-		
+		/**
+		 * 
+		 */		
 		public var gestureControl:Boolean = false;
 		
 		/**

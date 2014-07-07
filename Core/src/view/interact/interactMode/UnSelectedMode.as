@@ -20,6 +20,14 @@ package view.interact.interactMode
 			super(mainMediator);
 		}
 		
+		
+		/**
+		 */		
+		override public function autoZoom():void
+		{
+			mainMediator.sendNotification(Command.AUTO_ZOOM);
+		}
+		
 		/**
 		 */		
 		override public function drawShotFrame():void
