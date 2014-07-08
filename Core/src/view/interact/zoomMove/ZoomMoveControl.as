@@ -179,7 +179,7 @@ package view.interact.zoomMove
 		/**
 		 * 
 		 */		
-		public var minTweenTime:Number = 2;
+		public var minTweenTime:Number = 1.3;
 		
 		/**
 		 * 

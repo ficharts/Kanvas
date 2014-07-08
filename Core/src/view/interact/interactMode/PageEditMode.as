@@ -73,7 +73,22 @@ package view.interact.interactMode
 			
 			var temHolder:FlasherHolder;
 			var i:uint;
-			for (i = 0; i < holdersHasFlash.length - 1; i ++)
+			
+			holdersHasFlash.sort(sortHolders);
+			
+			function sortHolders(a:FlasherHolder, b: FlasherHolder):Object
+			{
+				if (a.flasher.index > b.flasher.index)
+					return 1;
+				else if (a.flasher.index < b.flasher.index)
+					return - 1;
+				else
+					return 0;
+				
+				return 0;
+			}
+			
+			/*for (i = 0; i < holdersHasFlash.length - 1; i ++)
 			{
 				if (holdersHasFlash[i + 1].flasher.index < holdersHasFlash[i].flasher.index)
 				{
@@ -81,7 +96,7 @@ package view.interact.interactMode
 					holdersHasFlash[i + 1] = holdersHasFlash[i];
 					holdersHasFlash[i] = temHolder;
 				}
-			}
+			}*/
 			
 			for (i = 0; i < holdersHasFlash.length; i ++)
 			{
