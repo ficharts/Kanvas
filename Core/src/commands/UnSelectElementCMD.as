@@ -26,6 +26,19 @@ package commands
 			{
 				mainMediator.currentElement.toUnSelectedState();
 				mainMediator.currentElement = null;
+				
+				if (mainMediator.curInteractElement)
+					mainMediator.curInteractElement = null;
+				
+			}
+			else if (mainMediator.curInteractElement)//为了防止有时文字不能被选择
+			{
+				mainMediator.curInteractElement.toUnSelectedState();
+				mainMediator.curInteractElement = null;
+			}
+			else
+			{
+				
 			}
 			
 			mainMediator.toUnSelectedMode();

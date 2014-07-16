@@ -4,6 +4,7 @@ package view.element
 	import com.kvs.ui.clickMove.IClickMove;
 	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.MathUtil;
+	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	import com.kvs.utils.StageUtil;
 	import com.kvs.utils.ViewUtil;
@@ -486,6 +487,7 @@ package view.element
 				super.x = tmpX * prtCos - tmpY * prtSin + parent.x;
 				super.y = tmpX * prtSin + tmpY * prtCos + parent.y;
 			}
+			
 		}
 		
 		/**
