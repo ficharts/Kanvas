@@ -190,9 +190,10 @@ package view.ui
 				//var sa:Number = ((ow / oh > vw / vh) ? vw / ow : vh / oh) * 32;
 				var ow:Number = bgImageContent.width  / bgImageContent.scaleX;
 				var oh:Number = bgImageContent.height / bgImageContent.scaleY;
-				var sa:Number = 16;
+				var sa:Number = 1;
 				var xa:Number = ow * sa * -.5;
 				var ya:Number = oh * sa * -.5;
+				
 				if (tween)
 				{
 					TweenMax.to(bgImageContent, .3, {
@@ -219,7 +220,7 @@ package view.ui
 			bgImageCanvas.rotation = canvas.rotation;
 			if (canvas.scaleX > 1)
 			{
-				bgImageCanvas.scaleX = bgImageCanvas.scaleY = Math.pow(canvas.scaleX, .1);
+				bgImageCanvas.scaleX = bgImageCanvas.scaleY = Math.pow(canvas.scaleX, .8);
 				var wc:Number = bound.x + bound.width  * .5;
 				var hc:Number = bound.y + bound.height * .5;
 				var wo:Number = canvas.x - wc;
@@ -241,10 +242,6 @@ package view.ui
 					(bgImageContent.width / bgImageContent.scaleX > bound.width));
 			}
 			
-			
-			//trace("scale:", bgImageCanvas.scaleX, canvas.scaleX);
-			//trace("x:", bgImageCanvas.x, canvas.x);
-			//trace("y:", bgImageCanvas.y, canvas.y);
 		}
 		
 		/**

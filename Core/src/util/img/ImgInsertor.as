@@ -177,11 +177,13 @@ package util.img
 			else
 				data = imgLoader.content;
 			
-			_fileBytes = imgLoader.contentLoaderInfo.bytes;
+			_fileBytes = new ByteArray();
+			_fileBytes.writeBytes(imgLoader.contentLoaderInfo.bytes, 0, imgLoader.contentLoaderInfo.bytes.length);
+			
 			imgLoader.unload();
 			isLoading = false;
 			
-			this.dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, data));
+			this.dispatchEvent(new ImgInsertEvent(ImgInsertEvent.IMG_LOADED, data, 0, null, _fileBytes));
 		}
 		
 		/**

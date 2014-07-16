@@ -32,6 +32,7 @@ package com.kvs.utils
 		{
 			if (Math.abs(start - target) > 180)
 				target = (target > start) ? target - 360 : target + 360;
+			
 			return target;
 		}
 		

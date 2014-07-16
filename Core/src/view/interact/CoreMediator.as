@@ -1,5 +1,6 @@
 package view.interact
 {
+	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	
 	import commands.Command;
@@ -822,6 +823,7 @@ package view.interact
 		 */		
 		public function flashTrek():void
 		{
+			
 			if (treking)
 			{
 				if (currentMode != preMode) 
@@ -843,6 +845,7 @@ package view.interact
 					}
 				}
 			}
+			
 		}
 		
 		/**

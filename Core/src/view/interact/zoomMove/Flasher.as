@@ -1,5 +1,6 @@
 package view.interact.zoomMove
 {
+	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.*;
 	import com.kvs.utils.MathUtil;
@@ -52,6 +53,7 @@ package view.interact.zoomMove
 				ease : easeFlash, 
 				onUpdate : updated,
 				onComplete : finishZoom});
+			
 		}
 		
 		/**
@@ -112,6 +114,8 @@ package view.interact.zoomMove
 					onComplete:finishZoom
 				});
 			}
+			
+			trace(TweenLite.rootFrame);
 		}
 		
 		/**
