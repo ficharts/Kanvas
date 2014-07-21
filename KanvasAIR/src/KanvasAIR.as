@@ -348,7 +348,7 @@ package
 					airAPI.openFile(file);
 				}
 				else
-				{
+				{	
 					airAPI.file = file;
 					kvsCore.addEventListener(Event.RESIZE, kvsResizeHandler);
 				}

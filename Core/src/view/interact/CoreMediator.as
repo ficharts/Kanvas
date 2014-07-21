@@ -496,11 +496,11 @@ package view.interact
 		}
 		
 		/**
-		 * 返回上一次记录的画布状态
+		 * 从演示模式返回到编辑模式时，停留在演示位置；
 		 */		
 		public function resetCanvasState():void
 		{
-			zoomMoveControl.zoomRotateMoveTo(curCanvasState.scale, curCanvasState.rotation, curCanvasState.x, curCanvasState.y);
+			//zoomMoveControl.zoomRotateMoveTo(curCanvasState.scale, curCanvasState.rotation, curCanvasState.x, curCanvasState.y);
 		}
 		
 		/**
