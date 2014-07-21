@@ -6,9 +6,7 @@ package modules.pages
 	
 	import commands.Command;
 	
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -18,8 +16,6 @@ package modules.pages
 	import model.CoreProxy;
 	import model.ElementProxy;
 	import model.vo.PageVO;
-	
-	import modules.pages.flash.FlashIn;
 	
 	import util.LayoutUtil;
 	

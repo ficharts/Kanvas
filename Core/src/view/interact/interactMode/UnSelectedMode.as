@@ -96,7 +96,6 @@ package view.interact.interactMode
 		{
 			//切换之预览模式时需清除镜头框
 			mainMediator.cameraShotShape.graphics.clear();
-			mainMediator.restoryCanvasState();
 			
 			mainMediator.currentMode = mainMediator.preMode;
 			prevElements();

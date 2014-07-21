@@ -14,8 +14,6 @@ package
 	import flash.filesystem.FileStream;
 	import flash.geom.Matrix;
 	import flash.net.FileFilter;
-	import flash.net.dns.AAAARecord;
-	import flash.text.ReturnKeyLabel;
 	import flash.utils.ByteArray;
 	
 	import model.ConfigInitor;
@@ -25,11 +23,9 @@ package
 	import modules.PreziDataImporter;
 	import modules.pages.PageManager;
 	
-	import util.img.ImageManager;
 	import util.img.ImgLib;
 	
 	import view.element.ElementBase;
-	import view.element.imgElement.ImgElement;
 	import view.element.imgElement.ImgElementBase;
 	import view.ui.Bubble;
 

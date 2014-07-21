@@ -29,8 +29,6 @@ package view.interact.interactMode
 		{
 			mainMediator.currentMode = mainMediator.unSelectedMode;
 			mainMediator.currentMode.drawShotFrame();
-				
-			mainMediator.zoomMoveControl.zoomAuto();
 			
 			mainMediator.coreApp.clearDrawMode();
 			mainMediator.coreApp.prevDrawMode = false;
