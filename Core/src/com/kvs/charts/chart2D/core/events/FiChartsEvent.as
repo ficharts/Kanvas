@@ -19,7 +19,7 @@ package com.kvs.charts.chart2D.core.events
 		/**
 		 * 图表创建完成事件
 		 */		
-		public static const READY:String = "ready";
+		public static const CHART_READY:String = "chartReady";
 		
 		/**
 		 * 配置文件发生改变时触发 

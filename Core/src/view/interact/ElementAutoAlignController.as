@@ -112,10 +112,12 @@ package view.interact
 					}
 				}//end of for element
 			}//end of for i
+			
+			
 			if (alignArr[0] && alignArr[1])
-			{
 				tempPoint.setTo(alignArr[0].x + alignArr[1].x, alignArr[0].y + alignArr[1].y);
-			}
+			
+			
 			return tempPoint;
 		}
 		

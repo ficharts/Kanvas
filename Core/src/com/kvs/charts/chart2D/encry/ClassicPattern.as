@@ -9,6 +9,7 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.charts.chart2D.core.itemRender.PointRenderBace;
 	import com.kvs.charts.chart2D.marker.MarkerSeries;
 	import com.kvs.charts.common.IDisCombilePointRender;
+	import com.kvs.ui.label.LabelUI;
 	import com.kvs.ui.toolTips.TooltipDataItem;
 	
 	import flash.display.Bitmap;
@@ -157,9 +158,7 @@ package com.kvs.charts.chart2D.encry
 		{
 			var px:Number;
 			var py:Number;
-			var bd:BitmapData;
-			var bm:Bitmap = new Bitmap(bd);
-			var mar:Matrix = new Matrix;
+			var bd:LabelUI;
 			
 			for each (var itemRender:PointRenderBace in renders)
 			{
@@ -169,25 +168,13 @@ package com.kvs.charts.chart2D.encry
 				px = itemRender.x + itemRender.valueLabelUI.x;
 				py = itemRender.y + itemRender.valueLabelUI.y;
 				
-				mar.tx = px;
-				mar.ty = py;
-				
-				bd = itemRender.valueLabelUI.bitmapData.clone();
+				bd = itemRender.valueLabelUI;
 				
 				if (itemRender.valueLabelUI.visible && itemRender.isEnable && itemRender.visible)
 				{
-					if (itemRender.valueLabelUI.rotation == 0)
-					{
-						chartMain.chartCanvas.drawValueLabel(bd, mar, px, py);
-					}
-					else
-					{
-						bm = new Bitmap(bd, PixelSnapping.ALWAYS, true);
-						bm.x = px;
-						bm.y = py;
-						bm.rotation = itemRender.valueLabelUI.rotation;
-						chartMain.chartCanvas.addValueLabel(bm);
-					}
+					bd.x = px;
+					bd.y = py;
+					chartMain.chartCanvas.addValueLabel(bd);
 				}
 			}
 		}

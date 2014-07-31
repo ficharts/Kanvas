@@ -52,7 +52,38 @@ package com.kvs.utils.XMLConfigKit
 		
 		/**
 		 */		
-		public static var currentLib:XMLVOLib;
+		public static function set currentLib(value:XMLVOLib):void
+		{
+			if (value != _curLib)
+			{
+				if (prevLib != _curLib)
+					prevLib = _curLib;
+				
+				_curLib = value;
+			}
+		}
+		
+		/**
+		 */		
+		public static function unsetLib():void
+		{
+			_curLib = prevLib;
+		}
+		
+		/**
+		 */		
+		public static function get currentLib():XMLVOLib
+		{
+			return _curLib;
+		}
+		
+		/**
+		 */		
+		private static var prevLib:XMLVOLib;
+		
+		/**
+		 */		
+		private static var _curLib:XMLVOLib;
 		
 		/**
 		 */		

@@ -1,6 +1,7 @@
 package view.interact
 {
 	import com.kvs.utils.PerformaceTest;
+	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	
 	import commands.Command;
@@ -30,6 +31,7 @@ package view.interact
 	import view.element.ElementBase;
 	import view.element.GroupElement;
 	import view.element.IElement;
+	import view.element.chart.ChartElement;
 	import view.element.imgElement.ImgElement;
 	import view.element.text.TextEditField;
 	import view.elementSelector.ElementSelector;
@@ -293,6 +295,16 @@ package view.interact
 		{
 			coreApp.textEditor.edit(element);
 			CoreFacade.coreMediator.autofitController.autofitEditorModifyText(element);
+			toEditMode();
+		}
+		
+		/**
+		 */		
+		public function editChart(chart:ChartElement):void
+		{
+			ViewUtil.hide(mainUI.canvas);//隐藏并禁止canvas的交互
+			
+			mainUI.dispatchEvent(new KVSEvent(KVSEvent.TOOLBAR_TO_CHART));
 			toEditMode();
 		}
 		

@@ -22,6 +22,7 @@ package
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import flash.net.dns.AAAARecord;
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 	
@@ -110,6 +111,12 @@ package
 			
 			this.api = new APIForAIR(kvsCore, this);
 			
+			chartBtn.iconW = chartBtn.iconH = ToolBar.BTN_SIZE;
+			chartBtn.w = chartBtn.h = ToolBar.BTN_SIZE;
+			chartBtn.setIcons("save_up", "save_over", "save_down");
+			chartBtn.tips = '图表';
+			chartBtn.addEventListener(MouseEvent.MOUSE_DOWN, createChartHandler);
+			
 			save_up;
 			save_over;
 			save_down;
@@ -129,7 +136,7 @@ package
 			exportImgBtn.addEventListener(MouseEvent.MOUSE_DOWN, exportImgHandler);
 			//
 			var btns:Vector.<IconBtn> = new Vector.<IconBtn>;
-			btns.push(saveBtn, exportImgBtn);
+			btns.push(saveBtn, exportImgBtn, chartBtn);
 			toolBar.addCustomButtons(btns);
 			
 			kvsCore.addEventListener(KVSEvent.DATA_CHANGED, dataChanged);
@@ -137,9 +144,6 @@ package
 			templatePanel.initTemplate(XML(ByteArray(new ConfigXML).toString()));
 			templatePanel.visible = false;
 		}
-		
-		[Embed(source="templates/config.xml", mimeType="application/octet-stream")]
-		public var ConfigXML:Class;
 		
 		/**
 		 */		
@@ -154,6 +158,13 @@ package
 		private function saveHandler(evt:Event):void
 		{
 			_save();
+		}
+		
+		/**
+		 */		
+		private function createChartHandler(evt:Event):void
+		{
+			kvsCore.createChart();
 		}
 		
 		/**
@@ -209,6 +220,11 @@ package
 		internal var saveBtn:IconBtn = new IconBtn;
 		
 		internal var exportImgBtn:IconBtn = new IconBtn;
+		
+		/**
+		 * 负责图表插入的btn 
+		 */		
+		private var chartBtn:IconBtn = new IconBtn;
 		
 		/**
 		 */		
@@ -376,9 +392,12 @@ package
 			}
 		}
 		
+		/**
+		 */		
 		private var updater:AIRUpdater;
 		
-		
+		[Embed(source="templates/config.xml", mimeType="application/octet-stream")]
+		public var ConfigXML:Class;
 		
 		public static const AIR_CLIENT_URL:String = "http://www.kanvas.cn/client/Kanvas.air";
 	}

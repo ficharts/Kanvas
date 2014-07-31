@@ -34,6 +34,16 @@ package view.toolBar
 		
 		/**
 		 */		
+		override public function toChartEdit():void
+		{
+			tb.currentState.ctner.visible = false;
+			
+			tb.currentState = tb.chartEditState;
+			tb.currentState.ctner.visible = true;
+		}
+		
+		/**
+		 */		
 		private function prevHandler(evt:MouseEvent):void
 		{
 			tb.dispatchEvent(new InteractEvent(InteractEvent.PREVIEW));

@@ -22,13 +22,14 @@ package com.kvs.charts.chart2D.core.backgound
 			if (style.enable)
 			{
 				var thikness:Number = style.border.thikness;
-				StyleManager.setShapeStyle(style, this.graphics);
+				//StyleManager.setShapeStyle(style, this.graphics);
 				
+				this.graphics.beginFill(0, 0);
 				graphics.drawRoundRect(thikness / 2, thikness / 2, style.width - thikness, 
 					style.height - thikness, style.radius, style.radius);
 				graphics.endFill();
 				
-				StyleManager.setEffects(this, style);
+				//StyleManager.setEffects(this, style);
 			}
 			
 		}

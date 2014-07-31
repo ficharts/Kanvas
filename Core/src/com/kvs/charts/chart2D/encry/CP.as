@@ -39,96 +39,96 @@ package com.kvs.charts.chart2D.encry
 	{
 		public function CP()
 		{
-			XMLVOLib.registerCustomClasses(<colors path='com.fiCharts.utils.XMLConfigKit.style.Colors'/>);
+			XMLVOLib.registerCustomClasses(<colors path='com.kvs.utils.XMLConfigKit.style.Colors'/>);
 			
 			//-------------------数据缩放--------------------------------
 			ZoomWindowStyle;
-			XMLVOLib.registerCustomClasses(<window path='com.fiCharts.charts.chart2D.core.zoomBar.ZoomWindowStyle'/>);
+			XMLVOLib.registerCustomClasses(<window path='com.kvs.charts.chart2D.core.zoomBar.ZoomWindowStyle'/>);
 			
 			XMLVOLib.setASStyleKey("barBG");
 			XMLVOLib.setASStyleKey("chart");
 			XMLVOLib.setASStyleKey("grayChart");
 			
-			XMLVOLib.registerCustomClasses(<zoom path='com.fiCharts.charts.chart2D.core.model.Zoom'/>);
+			XMLVOLib.registerCustomClasses(<zoom path='com.kvs.charts.chart2D.core.model.Zoom'/>);
 			//------------------数据缩放---------------------------------
 			
 			
 			ChartBGStyle;
-			XMLVOLib.registerCustomClasses(<chartBG path='com.fiCharts.charts.chart2D.core.model.ChartBGStyle'/>);
+			XMLVOLib.registerCustomClasses(<chartBG path='com.kvs.charts.chart2D.core.model.ChartBGStyle'/>);
 			
 			GridFieldStyle;
-			XMLVOLib.registerCustomClasses(<gridField path='com.fiCharts.charts.chart2D.core.model.GridFieldStyle'/>);
-			XMLVOLib.registerCustomClasses(<hGrid path='com.fiCharts.utils.XMLConfigKit.style.Style'/>);
-			XMLVOLib.registerCustomClasses(<vGrid path='com.fiCharts.utils.XMLConfigKit.style.Style'/>);
+			XMLVOLib.registerCustomClasses(<gridField path='com.kvs.charts.chart2D.core.model.GridFieldStyle'/>);
+			XMLVOLib.registerCustomClasses(<hGrid path='com.kvs.utils.XMLConfigKit.style.Style'/>);
+			XMLVOLib.registerCustomClasses(<vGrid path='com.kvs.utils.XMLConfigKit.style.Style'/>);
 			
 			ChartDataFormatter;
-			XMLVOLib.registerCustomClasses(<dataFormatter path='com.fiCharts.charts.common.ChartDataFormatter'/>);
+			XMLVOLib.registerCustomClasses(<dataFormatter path='com.kvs.charts.common.ChartDataFormatter'/>);
 			
 			XMLVOLib.setASLabelStyleKey('title');
 			XMLVOLib.setASLabelStyleKey('subTitle');
 			
 			TooltipStyle;
-			XMLVOLib.registerCustomClasses(<tooltip path='com.fiCharts.ui.toolTips.TooltipStyle'/>);
+			XMLVOLib.registerCustomClasses(<tooltip path='com.kvs.ui.toolTips.TooltipStyle'/>);
 			XMLVOLib.setASLabelStyleKey('self');
 			XMLVOLib.setASLabelStyleKey('group');
 			
 			LegendStyle;
-			XMLVOLib.registerCustomClasses(<legend path='com.fiCharts.charts.legend.LegendStyle'/>);
-			XMLVOLib.registerCustomClasses(<icon path='com.fiCharts.charts.chart2D.core.model.DataRender'/>);
+			XMLVOLib.registerCustomClasses(<legend path='com.kvs.charts.legend.LegendStyle'/>);
+			XMLVOLib.registerCustomClasses(<icon path='com.kvs.charts.chart2D.core.model.DataRender'/>);
 			
 			AxisModel;
-			XMLVOLib.registerCustomClasses(<axis path='com.fiCharts.charts.chart2D.core.model.AxisModel'/>);
+			XMLVOLib.registerCustomClasses(<axis path='com.kvs.charts.chart2D.core.model.AxisModel'/>);
 			
 			XAxis;
-			XMLVOLib.registerCustomClasses(<xAxis path='com.fiCharts.charts.chart2D.core.model.XAxis'/>);
-			XMLVOLib.registerCustomClasses(<x path='com.fiCharts.charts.chart2D.core.model.XAxis'/>);
+			XMLVOLib.registerCustomClasses(<xAxis path='com.kvs.charts.chart2D.core.model.XAxis'/>);
+			XMLVOLib.registerCustomClasses(<x path='com.kvs.charts.chart2D.core.model.XAxis'/>);
 			
 			YAxis;
-			XMLVOLib.registerCustomClasses(<yAxis path='com.fiCharts.charts.chart2D.core.model.YAxis'/>);
-			XMLVOLib.registerCustomClasses(<y path='com.fiCharts.charts.chart2D.core.model.YAxis'/>);
+			XMLVOLib.registerCustomClasses(<yAxis path='com.kvs.charts.chart2D.core.model.YAxis'/>);
+			XMLVOLib.registerCustomClasses(<y path='com.kvs.charts.chart2D.core.model.YAxis'/>);
 			
 			TickMarkStyle;
-			XMLVOLib.registerCustomClasses(<tickMark path='com.fiCharts.charts.chart2D.core.axis.TickMarkStyle'/>);
+			XMLVOLib.registerCustomClasses(<tickMark path='com.kvs.charts.chart2D.core.axis.TickMarkStyle'/>);
 			
 			Series;
-			XMLVOLib.registerCustomClasses(<series path='com.fiCharts.charts.chart2D.core.model.Series'/>);
+			XMLVOLib.registerCustomClasses(<series path='com.kvs.charts.chart2D.core.model.Series'/>);
 			
 			LineSeries;
-			XMLVOLib.registerCustomClasses(<line path='com.fiCharts.charts.chart2D.line.LineSeries'/>);
+			XMLVOLib.registerCustomClasses(<line path='com.kvs.charts.chart2D.line.LineSeries'/>);
 			
 			ColumnSeries2D;
-			XMLVOLib.registerCustomClasses(<column path='com.fiCharts.charts.chart2D.column2D.ColumnSeries2D'/>);
+			XMLVOLib.registerCustomClasses(<column path='com.kvs.charts.chart2D.column2D.ColumnSeries2D'/>);
 			
 			BubbleSeries;
-			XMLVOLib.registerCustomClasses(<bubble path='com.fiCharts.charts.chart2D.bubble.BubbleSeries'/>);
+			XMLVOLib.registerCustomClasses(<bubble path='com.kvs.charts.chart2D.bubble.BubbleSeries'/>);
 			
 			MarkerSeries;
-			XMLVOLib.registerCustomClasses(<marker path='com.fiCharts.charts.chart2D.marker.MarkerSeries'/>);
+			XMLVOLib.registerCustomClasses(<marker path='com.kvs.charts.chart2D.marker.MarkerSeries'/>);
 			
 			AreaSeries2D;
-			XMLVOLib.registerCustomClasses(<area path='com.fiCharts.charts.chart2D.area2D.AreaSeries2D'/>);
+			XMLVOLib.registerCustomClasses(<area path='com.kvs.charts.chart2D.area2D.AreaSeries2D'/>);
 			
 			StackedSeries;
-			XMLVOLib.registerCustomClasses(<stack path='com.fiCharts.charts.chart2D.column2D.stack.StackedSeries'/>);
+			XMLVOLib.registerCustomClasses(<stack path='com.kvs.charts.chart2D.column2D.stack.StackedSeries'/>);
 			
 			StackedColumnSeries;
-			XMLVOLib.registerCustomClasses(<stackedColumn path='com.fiCharts.charts.chart2D.column2D.stack.StackedColumnSeries'/>);
+			XMLVOLib.registerCustomClasses(<stackedColumn path='com.kvs.charts.chart2D.column2D.stack.StackedColumnSeries'/>);
 			
 			StackedPercentColumnSeries;
-			XMLVOLib.registerCustomClasses(<stackedPercentColumn path='com.fiCharts.charts.chart2D.column2D.stack.StackedPercentColumnSeries'/>);
+			XMLVOLib.registerCustomClasses(<stackedPercentColumn path='com.kvs.charts.chart2D.column2D.stack.StackedPercentColumnSeries'/>);
 			
 			BarSeries;
-			XMLVOLib.registerCustomClasses(<bar path='com.fiCharts.charts.chart2D.bar.BarSeries'/>);
+			XMLVOLib.registerCustomClasses(<bar path='com.kvs.charts.chart2D.bar.BarSeries'/>);
 			
 			StackedBarSeries;
-			XMLVOLib.registerCustomClasses(<stackedBar path='com.fiCharts.charts.chart2D.bar.stack.StackedBarSeries'/>);
+			XMLVOLib.registerCustomClasses(<stackedBar path='com.kvs.charts.chart2D.bar.stack.StackedBarSeries'/>);
 			
 			StackedPercentBarSeries;
-			XMLVOLib.registerCustomClasses(<stackedPercentBar path='com.fiCharts.charts.chart2D.bar.stack.StackedPercentBarSeries'/>);
+			XMLVOLib.registerCustomClasses(<stackedPercentBar path='com.kvs.charts.chart2D.bar.stack.StackedPercentBarSeries'/>);
 			
 			DataRender;
-			XMLVOLib.registerCustomClasses(<dataRender path='com.fiCharts.charts.chart2D.core.model.DataRender'/>);
-			XMLVOLib.registerCustomClasses(<zoomPoint path='com.fiCharts.charts.chart2D.core.model.DataRender'/>);
+			XMLVOLib.registerCustomClasses(<dataRender path='com.kvs.charts.chart2D.core.model.DataRender'/>);
+			XMLVOLib.registerCustomClasses(<zoomPoint path='com.kvs.charts.chart2D.core.model.DataRender'/>);
 			
 			XMLVOLib.setASLabelStyleKey('valueLabel');
 			XMLVOLib.setASLabelStyleKey('innerValueLabel');

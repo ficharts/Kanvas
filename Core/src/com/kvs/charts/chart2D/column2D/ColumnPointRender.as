@@ -61,12 +61,12 @@ package com.kvs.charts.chart2D.column2D
 			if (columnDataItem.width < valueLabelUI.width)
 			{
 				valueLabelUI.rotation = - 90;
-				temX = - valueLabelUI.width / 2;
+				temX = - valueLabelUI.height / 2;
 				
 				if (Number(_itemVO.yValue) < 0)
 					temY = - offset;
 				else
-					temY = offset + valueLabelUI.height;
+					temY = offset + valueLabelUI.width;
 				
 				// 当柱体的高度和宽度都无法容下label时，隐藏他
 				if (temHeight < valueLabelUI.height /*|| columnDataItem.width < temWidth*/)

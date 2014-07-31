@@ -51,7 +51,7 @@ package view.elementSelector.sizeControl
 				var center:Point = Point.interpolate(orign, align, .5);
 				holder.element.vo.x = center.x;
 				holder.element.vo.y = center.y;
-				holder.element.render();
+				//holder.element.render();
 			}
 			
 			updateHolderLayout();
@@ -94,7 +94,7 @@ package view.elementSelector.sizeControl
 			var temp:Point = LayoutUtil.stagePointToElementPoint(oldX + hDis / 2 * Math.cos(rote), oldY + hDis / 2 * Math.sin(rote), holder.coreMdt.canvas);
 			holder.element.vo.x = temp.x;
 			holder.element.vo.y = temp.y;
-			holder.element.render();
+			holder.element.resizing();
 			
 			var currPoint:Point = (oppsite) ? holder.element.bottomCenter : holder.element.topCenter;
 			orign = (oppsite) ? topCenter : bottomCenter;

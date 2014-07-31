@@ -35,7 +35,7 @@ package
 		 */		
 		protected function init():void
 		{
-			this.resetLib();
+			this.setLib();
 			
 			kvsCore.externalUI = uiContainer;
 			kvsCore.addEventListener(KVSEvent.READY, kvsReadyHandler);
@@ -43,6 +43,8 @@ package
 			kvsCore.addEventListener(KVSEvent.CANCEL_PAGE_EDIT, cancelPageEdit);
 			kvsCore.addEventListener(KVSEvent.CONFIRM_PAGE_EDIT, confirmPageEdit);
 			kvsCore.addEventListener(KVSEvent.IMPORT_DATA_COMPLETE, importDataComplete);
+			
+			kvsCore.addEventListener(KVSEvent.TOOLBAR_TO_CHART, toChartEdit);
 			
 			addChild(kvsCore);
 			addChild(uiContainer);
@@ -95,6 +97,15 @@ package
 		{
 			evt.stopPropagation();
 			mainNavControl.confirmPageEditFromCore();
+		}
+		
+		/**
+		 */		
+		private function toChartEdit(evt:KVSEvent):void
+		{
+			evt.stopPropagation();
+			
+			
 		}
 		
 		/**

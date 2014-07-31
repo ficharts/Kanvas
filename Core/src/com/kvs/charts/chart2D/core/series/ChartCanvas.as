@@ -1,6 +1,7 @@
 package com.kvs.charts.chart2D.core.series
 {
 	import com.kvs.charts.chart2D.encry.SB;
+	import com.kvs.ui.label.LabelUI;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -36,7 +37,7 @@ package com.kvs.charts.chart2D.core.series
 		
 		/**
 		 */		
-		public function addValueLabel(bm:Bitmap):void
+		public function addValueLabel(bm:LabelUI):void
 		{
 			valueLabelsCanvas.addChild(bm);
 		}

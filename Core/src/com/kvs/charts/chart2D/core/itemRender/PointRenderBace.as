@@ -3,13 +3,13 @@ package com.kvs.charts.chart2D.core.itemRender
 	import com.kvs.charts.chart2D.core.events.FiChartsEvent;
 	import com.kvs.charts.chart2D.core.model.DataRender;
 	import com.kvs.charts.common.SeriesDataPoint;
+	import com.kvs.ui.label.LabelUI;
 	import com.kvs.ui.toolTips.ToolTipHolder;
 	import com.kvs.ui.toolTips.ToolTipsEvent;
 	import com.kvs.ui.toolTips.TooltipDataItem;
 	import com.kvs.ui.toolTips.TooltipStyle;
 	import com.kvs.utils.XMLConfigKit.style.IStyleStatesUI;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
-	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.XMLConfigKit.style.States;
 	import com.kvs.utils.XMLConfigKit.style.StatesControl;
 	import com.kvs.utils.XMLConfigKit.style.Style;
@@ -306,14 +306,14 @@ package com.kvs.charts.chart2D.core.itemRender
 		
 		/**
 		 */		
-		protected function createValueLabelUI():Bitmap
+		protected function createValueLabelUI():LabelUI
 		{
 			var labelUI:LabelUI  = new LabelUI();
 			labelUI.style = this.valueLabel;
 			labelUI.mdata = this.itemVO.metaData;
 			labelUI.render();
 			
-			return BitmapUtil.getBitmap(labelUI);
+			return labelUI;
 		}
 		
 		/**
@@ -358,7 +358,7 @@ package com.kvs.charts.chart2D.core.itemRender
 		
 		/**
 		 */		
-		public var valueLabelUI:Bitmap;
+		public var valueLabelUI:LabelUI;
 
 		/**
 		 */

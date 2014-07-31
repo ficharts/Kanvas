@@ -11,7 +11,6 @@ package view.elementSelector
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	
-	import util.CoreUtil;
 	import util.layout.ElementLayoutInfo;
 	import util.layout.LayoutTransformer;
 	

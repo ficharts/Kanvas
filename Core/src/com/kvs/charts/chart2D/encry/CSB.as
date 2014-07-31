@@ -37,6 +37,8 @@ package com.kvs.charts.chart2D.encry
 	import flash.ui.ContextMenuItem;
 	import flash.utils.ByteArray;
 	
+	import model.DecForKvs;
+	
 	/**
 	 */
 	[Event(name="legendDataChanged", type = "com.kvs.charts.chart2D.core.events.FiChartsEvent")]
@@ -84,13 +86,12 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		private function preInit():void
 		{
-			resetLib();
-			dec.run(this);
+			setLib();
+			
+			initStyleTempalte(DecForKvs.chart2dConfig);
+			
+			this.init();
 		}
-		
-		/**
-		 */		
-		protected var dec:DecChart;
 		
 		/**
 		 * 注入图表的基础配置文件�此配置文件包含默认的样式模板, 菜单语言配置等；
@@ -98,18 +99,16 @@ package com.kvs.charts.chart2D.encry
 		 * 图表初始化时先初始此文件�
 		 * 
 		 */		
-		internal function initStyleTempalte(value:String):void
+		internal function initStyleTempalte(chartConfig:XML):void
 		{
-			var defaultConfig:XML = XML(value);
-			
-			for each (var item:XML in defaultConfig.styles.children())
+			for each (var item:XML in chartConfig.styles.children())
 				Chart2DStyleTemplate.pushTheme(XML(item.toXMLString()));
 			
 			//注册全局样式模板
-			for each (item in defaultConfig.child('template').children())
+			for each (item in chartConfig.child('template').children())
 				XMLVOLib.registWholeXML(item.@id, item, item.name().toString());
 			
-			XMLVOMapper.fuck(defaultConfig.menu, menu);
+			XMLVOMapper.fuck(chartConfig.menu, menu);
 		}
 		
 		
@@ -220,13 +219,16 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function setConfigXML(value:String):void
 		{	
+			if (this._configXML == value) return;
+			
+			this._configXML = value;
+			
 			if (ifReady)
 			{
-				setConfigXMLHandler(value);
+				setConfigXMLHandler(_configXML);
 			}
 			else
 			{
-				this._configXML = value;
 				this.ifConfigChanged = true;
 			}
 		}
@@ -393,7 +395,7 @@ package com.kvs.charts.chart2D.encry
 		{
 			if (value)
 			{
-				this.resetLib();				
+				this.setLib();				
 				chart.configXML = XML(value);
 			}
 		}
@@ -402,7 +404,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		private function setStyleHandler(value:String):void
 		{
-			this.resetLib();
+			this.setLib();
 			chart.setStyle(value);
 		}
 		
@@ -410,7 +412,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		private function setCustomStyleHandler(value:String):void
 		{
-			this.resetLib();
+			this.setLib();
 			chart.setCustomStyle(XML(value));
 		}
 		
@@ -891,7 +893,7 @@ package com.kvs.charts.chart2D.encry
 			}
 			
 			// 初始化过程完�
-			this.dispatchEvent(new FiChartsEvent(FiChartsEvent.READY));
+			this.dispatchEvent(new FiChartsEvent(FiChartsEvent.CHART_READY));
 		}
 		
 		/**

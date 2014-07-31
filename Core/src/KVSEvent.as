@@ -64,6 +64,11 @@ package
 		public static const CONFIRM_PAGE_EDIT:String = "confirmPageEdit";
 		
 		/**
+		 * 告知工具条切换到编辑状态 
+		 */		
+		public static const TOOLBAR_TO_CHART:String = "TOOLBAR_TO_CHART";
+		
+		/**
 		 * 样式改变 
 		 */		
 		public static const THEME_CHANGED:String = "themeChanged";
@@ -73,6 +78,8 @@ package
 		 */	
 		public static const SAVE:String = "save";
 		
+		/**
+		 */		
 		public static const IMPORT_DATA_COMPLETE:String = "importDataComplete";
 		
 		/**

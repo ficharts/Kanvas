@@ -19,7 +19,7 @@ package view.toolBar
 		{
 			this.ctner.visible = false;
 			
-			title.text = "点击页面中的原件，为其添加动画效果";
+			title.text = "点击图片，文字，图形，为其添加闪现效果";
 			title.styleXML = <label radius='0' vPadding='5' hPadding='5'>
 									<format color='#eeeeee' font='微软雅黑' size='12'/>
 								  </label>

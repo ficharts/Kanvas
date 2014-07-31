@@ -35,21 +35,34 @@ package model
 		{
 			this.shell = shell;
 			
-			configByte = ByteArray(new Meta);
+			var configByte:ByteArray = ByteArray(new Meta);
+			var chart2dByte:ByteArray = ByteArray(new Chart2DMeta);
+			
 			licenseByte = ByteArray(new Lc);
 			
 			var md5:Made = new Made;
-			decryConfigFile(md5.fuck(licenseByte));
+			var key:ByteArray = md5.fuck(licenseByte);
+			
+			decryConfigFile(key, configByte);//解密kvs的配置文件
+			decryConfigFile(key, chart2dByte);//解密kvs的配置文件
 			
 			licenseByte.uncompress();
 			configByte.uncompress();
+			chart2dByte.uncompress();
 			
-			c = XML(configByte.toString());
+			kvsConfig = XML(configByte.toString());
+			chart2dConfig = XML(chart2dByte.toString());
 		}
 		
 		/**
+		 *  kvs 的核心配置
 		 */		
-		public var c:XML;
+		public static var kvsConfig:XML;
+		
+		/**
+		 * 2d图表的核心配置
+		 */		
+		public static var chart2dConfig:XML;
 		
 		/**
 		 */		
@@ -243,19 +256,15 @@ package model
 		/**
 		 * 根据license的md5码 解密配置文件;
 		 */		
-		private function decryConfigFile(licenseMd5:ByteArray):void
+		private function decryConfigFile(licenseMd5:ByteArray, config:ByteArray):void
 		{
 			var pad:IPad = new KP;
 			var aesKey:SEA = new SEA(licenseMd5);
 			var cbcMode:CCB = new CCB(aesKey, pad)
 			var mode:ICipher = new VI(cbcMode as IVMode);
 			pad.setBlockSize(mode.getBlockSize());
-			mode.yy(configByte);
+			mode.yy(config);
 		}
-		
-		/**
-		 */		
-		private var configByte:ByteArray;
 		
 		/**
 		 */		
@@ -266,9 +275,15 @@ package model
 		[Embed(source="Config.z", mimeType="application/octet-stream")]
 		private var Meta:Class;
 		
+			
+		[Embed(source="chart2DConfig.z", mimeType="application/octet-stream")]
+		private var Chart2DMeta:Class;
+		
 		/**
 		 */	
 		[Embed(source="license.z", mimeType="application/octet-stream")]
 		private var Lc:Class;
+		
+		
 	}
 }

@@ -98,6 +98,18 @@ package control
 			app.kvsCore.toUnselect();
 		}
 		
+		
+		/**
+		 * 
+		 */		
+		private function toChartEdit(evt:KVSEvent):void
+		{
+			_closePanels();
+			app.toolBar.toPageEditMode();
+			
+			app.zoomToolBar.visible = false;
+		}
+		
 		/**
 		 */		
 		private function keyUpHandler(evt:KeyboardEvent):void

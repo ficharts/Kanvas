@@ -340,7 +340,7 @@ package com.kvs.charts.chart2D.encry
 			chartModel.gridField.width = sizeX;
 			chartModel.gridField.height = sizeY;
 			
-			gridField.render(this.hAxises[0].ticks, this.vAxises[0].ticks, chartModel.gridField);
+		//	gridField.render(this.hAxises[0].ticks, this.vAxises[0].ticks, chartModel.gridField);
 			chartBG.render(chartModel.chartBG);
 		}
 		

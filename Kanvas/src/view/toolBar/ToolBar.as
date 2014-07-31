@@ -35,6 +35,13 @@ package view.toolBar
 		
 		/**
 		 */		
+		public function toChartEditMode():void
+		{
+			currentState.toChartEdit();
+		}
+		
+		/**
+		 */		
 		public function toNormalMode():void
 		{
 			currentState.toNomal();
@@ -96,6 +103,8 @@ package view.toolBar
 		internal var normalState:ToolBarStateBS;
 		
 		internal var pageEditState:ToolBarStateBS;
+		
+		internal var chartEditState:ToolBarStateBS;
 		
 		
 		

@@ -56,10 +56,9 @@ package
 		 */		
 		public static const VER:String = "1.2.3";
 		
-		override public function set mouseChildren(enable:Boolean):void
-		{
-			trace(enable);
-		}
+		
+		
+		
 		
 		//-------------------------------------------------
 		//
@@ -106,7 +105,7 @@ package
 		 */			
 		public function createShape(proxy:ElementProxy):void
 		{
-			resetLib();
+			setLib();
 			
 			facade.sendNotification(Command.CREATE_SHAPE, proxy);
 		}
@@ -117,6 +116,14 @@ package
 		public function createPage(proxy:ElementProxy):void
 		{
 			facade.sendNotification(Command.CREATE_PAGE, proxy);
+		}
+		
+		/**
+		 * 创建图表
+		 */		
+		public function createChart():void
+		{
+			facade.sendNotification(Command.CREAT_CHART);
 		}
 		
 		/**
@@ -254,7 +261,7 @@ package
 		 */		
 		public function exportZipData():ByteArray
 		{
-			resetLib();
+			setLib();
 			
 			return facade.coreProxy.exportZipData();
 		}
@@ -486,7 +493,7 @@ package
 		 */
 		public function startInit():void
 		{
-			resetLib();
+			setLib();
 			
 			initUI();
 			initMVC();
@@ -495,10 +502,10 @@ package
 			dec = new DecForKvs(this);
 			dec.verify();
 			
-			for each (var item:XML in dec.c.child('template').children())
+			for each (var item:XML in DecForKvs.kvsConfig.child('template').children())
 				XMLVOLib.registWholeXML(item.@id, item, item.name().toString());
 			
-			CoreFacade.coreProxy.initThemeConfig(XML(dec.c.child('themes').toXMLString()));
+			CoreFacade.coreProxy.initThemeConfig(XML(DecForKvs.kvsConfig.child('themes').toXMLString()));
 			
 			this.ready();
 			
@@ -512,7 +519,7 @@ package
 		
 		/**
 		 */		
-		public function resetLib():void
+		public function setLib():void
 		{
 			XMLVOLib.currentLib = xmlLib;
 		}

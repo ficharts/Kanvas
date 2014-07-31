@@ -1,6 +1,7 @@
 package com.kvs.charts.chart2D.core.axis
 {
 	import com.kvs.charts.chart2D.core.model.SeriesDataFeature;
+	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.ArrayUtil;
 	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
@@ -592,7 +593,7 @@ package com.kvs.charts.chart2D.core.axis
 		
 		/**
 		 */		
-		override protected function restoreLabel(vo:AxisLabelData, ui:BitmapData):void
+		override protected function restoreLabel(vo:AxisLabelData, ui:LabelUI):void
 		{
 			sourceLabelVOs.push(vo);
 			sourceLabelUIs.push(ui);
