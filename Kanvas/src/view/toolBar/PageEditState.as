@@ -2,6 +2,9 @@ package view.toolBar
 {
 	import com.kvs.ui.button.LabelBtn;
 	import com.kvs.ui.label.LabelUI;
+	
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 
 	/**
 	 * 页面动画效果编辑时的工具条
@@ -64,6 +67,23 @@ package view.toolBar
 				
 			cancelBtn.text = "取消";
 			this.ctner.addChild(cancelBtn);
+			
+			cancelBtn.addEventListener(MouseEvent.CLICK, cancelEdit);
+			confirmBtn.addEventListener(MouseEvent.CLICK, confirmEdit);
+		}
+		
+		/**
+		 */		
+		private function cancelEdit(evt:Event):void
+		{
+			tb.main.mainNavControl.cancelPageEdit();
+		}
+		
+		/**
+		 */		
+		private function confirmEdit(evt:Event):void
+		{
+			tb.main.mainNavControl.confirmPageEdit();
 		}
 		
 		/**

@@ -37,6 +37,8 @@ package
 		{
 			this.setLib();
 			
+			toolBar = new ToolBar(this);
+			
 			kvsCore.externalUI = uiContainer;
 			kvsCore.addEventListener(KVSEvent.READY, kvsReadyHandler);
 			kvsCore.addEventListener(KVSEvent.TO_PAGE_EDIT, toPageEditMode);
@@ -53,6 +55,9 @@ package
 			uiContainer.addChild(zoomToolBar);//zoombar在这里加载是为了防止布局时因为zoombar没有初始化导致的位置偏差
 			preLayout();
 			
+			//UI交互控制
+			mainNavControl = new NavControl(this);
+			
 			uiContainer.addChild(pagePanel);
 			uiContainer.addChild(themePanel);
 			uiContainer.addChild(shapePanel);
@@ -64,9 +69,6 @@ package
 			// 工具提示初始化
 			toolTipsManager = new ToolTipsManager(this);
 			toolTipsManager.setStyleXML(tipsStyle);
-			
-			//UI交互控制
-			mainNavControl = new NavControl(this);
 			
 			// 核心core开始初始化
 			kvsCore.startInit();
@@ -88,7 +90,7 @@ package
 		private function cancelPageEdit(evt:KVSEvent):void
 		{
 			evt.stopPropagation();
-			mainNavControl.cancelPageEditFromCore();
+			mainNavControl.cancelPageEdit();
 		}
 		
 		/**
@@ -96,7 +98,7 @@ package
 		private function confirmPageEdit(evt:KVSEvent):void
 		{
 			evt.stopPropagation();
-			mainNavControl.confirmPageEditFromCore();
+			mainNavControl.confirmPageEdit();
 		}
 		
 		/**
@@ -235,7 +237,7 @@ package
 				stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE)
 			{
 				gutter = 5;
-				kvsCore.bound = new Rectangle(gutter, gutter, stage.stageWidth - gutter * 2, stage.stageHeight - gutter * 2);
+				kvsCore.autofitRect = new Rectangle(gutter, gutter, stage.stageWidth - gutter * 2, stage.stageHeight - gutter * 2);
 			}
 			else
 			{
@@ -246,9 +248,11 @@ package
 				else if (themePanel.isOpen)
 					w -= themePanel.w;
 				
-				kvsCore.bound = new Rectangle(pagePanel.w + gutter, toolBar.h + gutter, w, 
+				kvsCore.autofitRect = new Rectangle(pagePanel.w + gutter, toolBar.h + gutter, w, 
 					stage.stageHeight - toolBar.h - gutter * 2);
 			}
+			
+			kvsCore.contentRect = new Rectangle(0, toolBar.h, stage.stageWidth, stage.stageHeight - toolBar.h);
 		}
 		
 		/**
@@ -292,7 +296,7 @@ package
 		/**
 		 * 工具条
 		 */		
-		public var toolBar:ToolBar = new ToolBar;
+		public var toolBar:ToolBar;
 		
 		/**
 		 * zoom工具条
@@ -307,7 +311,7 @@ package
 		/**
 		 * 主场景交互控制 
 		 */		
-		private var mainNavControl:NavControl;
+		public var mainNavControl:NavControl;
 		
 		/**
 		 * 工具提示控制器

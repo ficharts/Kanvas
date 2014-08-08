@@ -21,10 +21,16 @@ package view.toolBar
 		
 		/**
 		 */		
-		public function ToolBar()
+		public function ToolBar(main:Kanvas)
 		{
 			super();
+			
+			this.main  = main;
 		}
+		
+		/**
+		 */		
+		internal var main:Kanvas;
 		
 		/**
 		 */		
@@ -65,6 +71,10 @@ package view.toolBar
 			pageEditState.init();
 			pageEditState.updateLayout();	
 			
+			chartEditState = new ChartEditState(this);
+			chartEditState.init();
+			chartEditState.updateLayout();
+			
 			currentState = normalState;
 		}
 		
@@ -74,7 +84,7 @@ package view.toolBar
 		{
 			normalState.updateLayout();
 			pageEditState.updateLayout();	
-			
+			chartEditState.updateLayout();
 		}
 		
 		/**
@@ -114,20 +124,6 @@ package view.toolBar
 		internal var bgShape:Shape = new Shape;
 		
 		/**
-		 * 撤销按钮
-		 */		
-		public function get undoBtn():IconBtn
-		{
-			return (normalState as NormalState).undoBtn;
-		}
-		
-		/**
-		 * 反撤销按钮
-		 */	
-		public function get  redoBtn():IconBtn{
-			return (normalState as NormalState).redoBtn;
-		}
-		/**
 		 * 元素创建按钮，点击后会弹出元素创建面板 
 		 */		
 		public function get addBtn():IconBtn {
@@ -141,19 +137,6 @@ package view.toolBar
 			return (normalState as NormalState).themeBtn;
 		}
 		
-		/**
-		 */		
-		public function get confirmBtn():LabelBtn
-		{
-			return (pageEditState as PageEditState).confirmBtn;
-		}
-		
-		/**
-		 */		
-		public function get cancelBtn():LabelBtn
-		{
-			return (pageEditState as PageEditState).cancelBtn;
-		}
 		
 		
 		

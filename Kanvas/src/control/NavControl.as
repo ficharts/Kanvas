@@ -33,24 +33,15 @@ package control
 			app.addEventListener(InteractEvent.OPEN_THEME_PANEL, openThemePanelHandler, false, 0, true);
 			app.addEventListener(InteractEvent.CLOSE_THEME_PANEL, closeThemePanelHandler, false, 0, true);
 			
-			app.kvsCore.addEventListener(UndoRedoEvent.ENABLE, enableHandler, false, 0, true);
-			app.kvsCore.addEventListener(UndoRedoEvent.DISABLE, disableHandler, false, 0, true);
-			app.toolBar.undoBtn.addEventListener(MouseEvent.CLICK, fallbackHandler, false, 0, true);
-			app.toolBar.redoBtn.addEventListener(MouseEvent.CLICK, redoHandler, false, 0, true);
-			
-			
 			app.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler, false, 0, true);
 			app.addEventListener(InteractEvent.PREVIEW, previewPanelHandler, false, 0, true);
-			
-			app.toolBar.cancelBtn.addEventListener(MouseEvent.CLICK, cancelPageEdit);
-			app.toolBar.confirmBtn.addEventListener(MouseEvent.CLICK, confirmPageEdit);
 		}
 		
 		/**
 		 */		
 		public function toPageEditMode():void
 		{
-			_closePanels();
+			closePanels();
 			app.toolBar.toPageEditMode();
 			
 			app.zoomToolBar.visible = false;
@@ -58,54 +49,39 @@ package control
 		
 		/**
 		 */		
-		public function cancelPageEditFromCore():void
+		public function cancelPageEdit():void
 		{
 			app.kvsCore.cancelPageEdit();
-			_confirmPageEdit();
+			toNormal();
 		}
 		
 		/**
 		 */		
-		public function confirmPageEditFromCore():void
+		public function confirmPageEdit():void
 		{
-			_confirmPageEdit();
+			toNormal();
 		}
 		
 		/**
+		 * 整体应用进入到正常模式下
 		 */		
-		private function confirmPageEdit(evt:Event):void
+		public function toNormal():void
 		{
-			_confirmPageEdit();
-		}
-		
-		/**
-		 */		
-		private function cancelPageEdit(evt:Event):void
-		{
-			app.kvsCore.cancelPageEdit();
-			_confirmPageEdit();
-		}
-		
-		/**
-		 * 退出页面编辑状态并保存数据
-		 */		
-		private function _confirmPageEdit():void
-		{
-			_openPanels();
-			app.toolBar.toNormalMode();
-			app.zoomToolBar.visible = true;
+			openPanels();
 			
 			app.kvsCore.toUnselect();
+			app.toolBar.toNormalMode();
+			
+			app.zoomToolBar.visible = true;
+			
 		}
 		
-		
 		/**
-		 * 
 		 */		
 		private function toChartEdit(evt:KVSEvent):void
 		{
-			_closePanels();
-			app.toolBar.toPageEditMode();
+			closePanels();
+			app.toolBar.toChartEditMode();
 			
 			app.zoomToolBar.visible = false;
 		}
@@ -141,7 +117,7 @@ package control
 			
 			app.zoomToolBar.y = 10000;
 			
-			_closePanels();
+			closePanels();
 			TweenLite.to(app.toolBar, 0.5, {y: - app.toolBar.h});
 		}
 		
@@ -160,7 +136,7 @@ package control
 		{
 			app.stage.removeEventListener(FullScreenEvent.FULL_SCREEN, closeFullScreenHandler);
 			
-			_openPanels();
+			openPanels();
 			TweenLite.to(app.toolBar, 0.5, {y: 0});
 			
 			app.zoomToolBar.y = (app.stage.stageHeight - app.zoomToolBar.height) * .5;
@@ -187,7 +163,7 @@ package control
 		 * 关闭除工具条以外的面板 
 		 * 
 		 */		
-		private function _closePanels():void
+		private function closePanels():void
 		{
 			if (app.themePanel.isOpen)
 			{
@@ -214,7 +190,7 @@ package control
 		
 		/**
 		 */		
-		private function _openPanels():void
+		private function openPanels():void
 		{
 			if (isThemPanelOpen)
 			{
@@ -346,51 +322,6 @@ package control
 		}
 		
 		
-		
-		
-		
-		
-		//---------------------------------------------------
-		//
-		//
-		// 撤销控制
-		//
-		//
-		//----------------------------------------------------
-		
-		/**
-		 */		
-		private function enableHandler(evt:UndoRedoEvent):void
-		{
-			if (evt.operation == "undo")
-				app.toolBar.undoBtn.selected = false;
-			else if (evt.operation == "redo")
-				app.toolBar.redoBtn.selected = false;
-		}
-		
-		/**
-		 */		
-		private function disableHandler(evt:UndoRedoEvent):void
-		{
-			if (evt.operation == "undo")
-				app.toolBar.undoBtn.selected = true;
-			else if (evt.operation == "redo")
-				app.toolBar.redoBtn.selected = true;
-		}
-		
-		
-		
-		/**
-		 */		
-		private function fallbackHandler(evt:MouseEvent):void
-		{
-			app.kvsCore.undo();
-		}
-		
-		private function redoHandler(evt:MouseEvent):void
-		{
-			app.kvsCore.redo();
-		}
 		
 		
 		/**

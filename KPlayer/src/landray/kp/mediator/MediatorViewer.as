@@ -281,7 +281,7 @@ package landray.kp.mediator
 			canvas.rotation = 0;
 			canvas.scaleX = canvas.scaleY = 1;
 			var bound:Rectangle = LayoutUtil.getContentRect(canvas);
-			var stage:Rectangle = viewer.bound;
+			var stage:Rectangle = viewer.autofitRect;
 			var cenC:Point = new Point((bound.left + bound.right) * .5, (bound.top + bound.bottom) * .5);
 			var cenS:Point = new Point((stage.left + stage.right) * .5, (stage.top + stage.bottom) * .5);
 			canvas.x = cenS.x - cenC.x;

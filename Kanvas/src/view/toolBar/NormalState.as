@@ -1,12 +1,15 @@
 package view.toolBar
 {
 	import com.kvs.ui.button.IconBtn;
+	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	
 	import control.InteractEvent;
 	
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	
+	import util.undoRedo.UndoRedoEvent;
 
 	/**
 	 *
@@ -40,6 +43,11 @@ package view.toolBar
 			
 			tb.currentState = tb.chartEditState;
 			tb.currentState.ctner.visible = true;
+			
+			tb.main.pagePanel.visible = false;
+			
+			ViewUtil.show(tb.main.kvsCore.chartEditor);
+			ViewUtil.hide(tb.main.kvsCore.canvas);//隐藏并禁止canvas的交互
 		}
 		
 		/**
@@ -172,7 +180,57 @@ package view.toolBar
 			themeBtn.addEventListener(MouseEvent.CLICK, openThemeHandler, false, 0, true);
 			
 			ctner.addChild(customButtonContainer);
+			
+			tb.main.kvsCore.addEventListener(UndoRedoEvent.ENABLE, enableHandler, false, 0, true);
+			tb.main.kvsCore.addEventListener(UndoRedoEvent.DISABLE, disableHandler, false, 0, true);
+			
+			this.redoBtn.addEventListener(MouseEvent.CLICK, redoHandler);
+			this.undoBtn.addEventListener(MouseEvent.CLICK, undoHandler);
 		}
+		
+		
+		//---------------------------------------------------
+		//
+		//
+		// 撤销控制
+		//
+		//
+		//----------------------------------------------------
+		
+		/**
+		 */		
+		private function enableHandler(evt:UndoRedoEvent):void
+		{
+			if (evt.operation == "undo")
+				this.undoBtn.selected = false;
+			else if (evt.operation == "redo")
+				this.redoBtn.selected = false;
+		}
+		
+		/**
+		 */		
+		private function disableHandler(evt:UndoRedoEvent):void
+		{
+			if (evt.operation == "undo")
+				this.undoBtn.selected = true;
+			else if (evt.operation == "redo")
+				this.redoBtn.selected = true;
+		}
+		
+		
+		
+		/**
+		 */		
+		private function undoHandler(evt:MouseEvent):void
+		{
+			tb.main.kvsCore.undo();
+		}
+		
+		private function redoHandler(evt:MouseEvent):void
+		{
+			tb.main.kvsCore.redo();
+		}
+		
 			
 		/**
 		 */		
