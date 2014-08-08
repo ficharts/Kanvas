@@ -1,18 +1,14 @@
 package view.interact
 {
-	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	
 	import commands.Command;
 	
 	import flash.display.Shape;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.geom.Matrix;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import model.CoreFacade;
@@ -300,11 +296,13 @@ package view.interact
 		
 		/**
 		 */		
-		public function editChart(chart:ChartElement):void
+		public function editChart():void
 		{
-			ViewUtil.hide(mainUI.canvas);//隐藏并禁止canvas的交互
+			var evt:KVSEvent = new KVSEvent(KVSEvent.TOOLBAR_TO_CHART);
+			evt.element = currentElement;
+			mainUI.dispatchEvent(evt);
 			
-			mainUI.dispatchEvent(new KVSEvent(KVSEvent.TOOLBAR_TO_CHART));
+			sendNotification(Command.UN_SELECT_ELEMENT);
 			toEditMode();
 		}
 		
@@ -315,7 +313,8 @@ package view.interact
 		 */		
 		public function closeEditor():void
 		{
-			currentEditor.close();
+			if (currentEditor)
+				currentEditor.close();
 		}
 		
 		

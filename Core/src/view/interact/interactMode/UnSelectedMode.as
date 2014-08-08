@@ -32,7 +32,7 @@ package view.interact.interactMode
 		 */		
 		override public function drawShotFrame():void
 		{
-			mainMediator.drawShotFrame(mainMediator.coreApp.bound);
+			mainMediator.drawShotFrame(mainMediator.coreApp.autofitRect);
 		}
 		
 		/**

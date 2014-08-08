@@ -1,24 +1,20 @@
 package 
 {
-	import com.greensock.TweenLite;
-	import com.greensock.TweenMax;
 	import com.kvs.utils.RexUtil;
+	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.IApp;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	
 	import commands.Command;
 	
-	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.system.Security;
 	import flash.utils.ByteArray;
 	
-	import model.ConfigInitor;
 	import model.CoreFacade;
 	import model.DecForKvs;
 	import model.ElementProxy;
@@ -29,6 +25,7 @@ package
 	import util.undoRedo.UndoRedoEvent;
 	import util.undoRedo.UndoRedoMannager;
 	
+	import view.editor.chart.ChartEditor;
 	import view.editor.text.TextEditor;
 	import view.element.ElementBase;
 	import view.element.imgElement.ImgElement;
@@ -54,7 +51,7 @@ package
 		/**
 		 * 产品版本号 
 		 */		
-		public static const VER:String = "1.2.3";
+		public static const VER:String = "1.2.5";
 		
 		
 		
@@ -80,8 +77,11 @@ package
 				updatePastPoint();
 				updateStageBound();
 				facade.coreMediator.updateSelector();
+				
 				if (textEditor && textEditor.visible)
 					textEditor.updateLayout();
+				
+				chartEditor.resize();
 			}
 			
 			dispatchEvent(new Event(Event.RESIZE));
@@ -133,7 +133,6 @@ package
 		{
 			facade.sendNotification(Command.INSERT_IMAGE);
 		}
-		
 		
 		/**
 		 * 拖动当前原件，拖动创建时用到；
@@ -540,7 +539,6 @@ package
 			bgColorFlasher = new BgColorFlasher(this);
 
 			Bubble.init(stage);
-
 			
 			//画布与舞台布局信息转换器
 			layoutTransformer = new LayoutTransformer(canvas);
@@ -567,12 +565,16 @@ package
 			textEditor.layoutTransformer = this.layoutTransformer;
 			addChild(textEditor);
 			
+			
+			chartEditor = new ChartEditor(this);
+			ViewUtil.hide(chartEditor);
+			addChild(chartEditor);
+			
 			drawBgInteractorShape();
 			updatePastPoint();
 		}
 		
 		/**
-		 * 
 		 */		
 		public var thumbManager:ThumbManager;
 		
@@ -689,12 +691,19 @@ package
 		public var autoAlignUI:Shape = new Shape;
 		
 		/**
+		 * 
 		 */		
 		public var writeShape:Shape = new Shape;
 		
 		/**
+		 * 画笔
 		 */		
 		public var interact:Interact = new Interact;
+		
+		/**
+		 * 图表编辑器 
+		 */		
+		public var chartEditor:ChartEditor;
 		
 		
 		

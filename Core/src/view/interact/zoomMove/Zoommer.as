@@ -175,12 +175,12 @@ package view.interact.zoomMove
 			{
 				canvasBound = LayoutUtil.getContentRect(canvas, false);
 				
-				var scale:Number = (canvasBound.width / canvasBound.height > mainUI.bound.width / mainUI.bound.height)
-					? mainUI.bound.width  / canvasBound.width
-					: mainUI.bound.height / canvasBound.height;
+				var scale:Number = (canvasBound.width / canvasBound.height > mainUI.autofitRect.width / mainUI.autofitRect.height)
+					? mainUI.autofitRect.width  / canvasBound.width
+					: mainUI.autofitRect.height / canvasBound.height;
 				
 				//画布保持原比例，不缩放
-				flasher.canvasTargetScale = (originalScale || (!control.ifAutoZoom && !(canvasBound.width < mainUI.bound.width && canvasBound.height < mainUI.bound.height))) ? 1 : scale;
+				flasher.canvasTargetScale = (originalScale || (!control.ifAutoZoom && !(canvasBound.width < mainUI.autofitRect.width && canvasBound.height < mainUI.autofitRect.height))) ? 1 : scale;
 				
 				canvasBound.width  *= scale;
 				canvasBound.height *= scale;
@@ -190,7 +190,7 @@ package view.interact.zoomMove
 				canvasBound.y = tl.y;
 				
 				var canvasCenter:Point = new Point((canvasBound .left + canvasBound .right) * .5, (canvasBound .top + canvasBound .bottom) * .5);
-				var stageCenter :Point = new Point((mainUI.bound.left + mainUI.bound.right) * .5, (mainUI.bound.top + mainUI.bound.bottom) * .5);
+				var stageCenter :Point = new Point((mainUI.autofitRect.left + mainUI.autofitRect.right) * .5, (mainUI.autofitRect.top + mainUI.autofitRect.bottom) * .5);
 				flasher.canvasTargetX = canvas.x + stageCenter.x - canvasCenter.x;
 				flasher.canvasTargetY = canvas.y + stageCenter.y - canvasCenter.y;
 			}

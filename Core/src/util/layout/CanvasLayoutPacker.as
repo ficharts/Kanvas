@@ -51,7 +51,7 @@ package util.layout
 			progress = 0;
 			modPositionNeed = true;
 			
-			var center:Point = new Point(.5 * (mainUI.bound.left + mainUI.bound.right), .5 * (mainUI.bound.top + mainUI.bound.bottom));
+			var center:Point = new Point(.5 * (mainUI.autofitRect.left + mainUI.autofitRect.right), .5 * (mainUI.autofitRect.top + mainUI.autofitRect.bottom));
 			
 			//point A
 			eleAO = center.clone();

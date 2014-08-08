@@ -2,6 +2,8 @@ package
 {
 	import flash.events.Event;
 	
+	import view.element.ElementBase;
+	
 	/**
 	 * 核心Core向外部发送的事件，告知外部程序
 	 * 
@@ -95,6 +97,10 @@ package
 		{
 			return new KVSEvent(this.type);
 		}
+		
+		/**
+		 */		
+		public var element:ElementBase;
 		
 		/**
 		 */		

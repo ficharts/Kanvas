@@ -33,7 +33,7 @@ package view.elementSelector.toolBar
 		 */		
 		private function editChartHandler(evt:MouseEvent):void
 		{
-			toolBar.selector.coreMdt.editChart(toolBar.selector.element as ChartElement);
+			toolBar.selector.coreMdt.editChart();
 		}
 		
 		/**

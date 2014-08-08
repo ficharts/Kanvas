@@ -64,7 +64,7 @@ package modules.pages
 		 */
 		public function addPageFromUI(index:int = 0):void
 		{
-			var bound:Rectangle = coreMdt.coreApp.bound;
+			var bound:Rectangle = coreMdt.coreApp.autofitRect;
 			var proxy:ElementProxy = new ElementProxy;
 			
 			proxy.x = (bound.left + bound.right) * .5;

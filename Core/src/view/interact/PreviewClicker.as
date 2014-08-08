@@ -141,7 +141,7 @@ package view.interact
 				{
 					elementsHit.sort(sortOnSize);
 					var targetElement:ICanvasLayout;
-					var screenSize:Number = mdt.mainUI.bound.width * mdt.mainUI.bound.height;
+					var screenSize:Number = mdt.mainUI.autofitRect.width * mdt.mainUI.autofitRect.height;
 					var multiple:Number = Math.pow(mdt.mainUI.canvas.scaleX, 2);
 					for each (element in elementsHit)
 					{

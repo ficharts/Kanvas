@@ -38,7 +38,7 @@ package view.interact
 				var x:Number = 0;
 				var y:Number = 0;
 				//画布矩形范围
-				var canvasBound:Rectangle = coreMdt.coreApp.bound;
+				var canvasBound:Rectangle = coreMdt.coreApp.autofitRect;
 				
 				var toolBarWidth :Number = coreMdt.selector.toolBar.barWidth;
 				var toolBarHeight:Number = coreMdt.selector.toolBar.barHeight;
@@ -110,7 +110,7 @@ package view.interact
 				var x:Number = 0;
 				var y:Number = 0;
 				//画布矩形范围
-				var canvasBound:Rectangle = coreMdt.coreApp.bound;
+				var canvasBound:Rectangle = coreMdt.coreApp.autofitRect;
 				var editorBound:Rectangle = coreMdt.coreApp.textEditor.editorBound;
 				
 				if (xDir == 0 || xDir == 1)
@@ -177,7 +177,7 @@ package view.interact
 				edtAftBound.y = eleAftBound.y - coreMdt.coreApp.textEditor.offSet - coreMdt.coreApp.textEditor.panelHeight;
 				
 				//画布矩形范围
-				var canvasBound:Rectangle = coreMdt.coreApp.bound;
+				var canvasBound:Rectangle = coreMdt.coreApp.autofitRect;
 				
 				//检测编辑器范围是否超出画布范围
 				if (xDir == 0 || xDir == 1)
