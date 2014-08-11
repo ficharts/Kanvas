@@ -38,7 +38,7 @@ package view.interact.interactMode
 			mainMediator.mouseController.autoHide = false;
 			Mouse.show();
 			
-			mainMediator.resetCanvasState();
+			//从演播模式退出后，画布继续停留在演播的位置
 		}
 	}
 }

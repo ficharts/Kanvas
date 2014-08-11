@@ -84,6 +84,8 @@ package view.interact.interactMode
 		 */		
 		override public function toPageEditMode():void
 		{
+			mainMediator.restoryCanvasState();
+			
 			mainMediator.disableKeyboardControl();
 			mainMediator.currentMode = mainMediator.pageEditMode;
 			

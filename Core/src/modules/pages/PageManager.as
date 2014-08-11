@@ -246,7 +246,16 @@ package modules.pages
 		 */		
 		private function resetPageFlash(pageIndex:int):void
 		{
+			var curPage:PageVO;
+			
+			if (pageIndex != - 1)
+				curPage = getPageAt(pageIndex);
+			
+			if (curPage)
+				curPage.dispatchEvent(new PageEvent(PageEvent.PAGE_SELECTED, curPage, false));
+			
 			indexWithZoom = pageIndex;
+			
 		}
 		
 		/**
