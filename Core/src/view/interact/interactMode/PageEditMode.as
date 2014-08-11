@@ -30,6 +30,14 @@ package view.interact.interactMode
 		}
 		
 		/**
+		 * 删除所有动画控制器
+		 */		
+		public function reset():void
+		{
+			
+		}
+		
+		/**
 		 * 根据当前的动画编号，设定新添加的动画编号
 		 */		
 		public function addFlash(fhr:FlasherHolder):void
@@ -45,6 +53,8 @@ package view.interact.interactMode
 			
 			freshIndex();
 			fhr.rework();
+			
+			mainMediator.mainUI.dispatchEvent(new KVSEvent(KVSEvent.DATA_CHANGED));
 		}
 		
 		/**
@@ -56,6 +66,8 @@ package view.interact.interactMode
 			
 			for each (var fh:FlasherHolder in holders)
 				fh.rework();
+				
+				mainMediator.mainUI.dispatchEvent(new KVSEvent(KVSEvent.DATA_CHANGED));
 		}
 		
 		/**
@@ -137,7 +149,7 @@ package view.interact.interactMode
 					fh.y = point.y;
 					fh.w = ele.scaledWidth * mainMediator.canvas.scaleX;
 					fh.h = ele.scaledHeight * mainMediator.canvas.scaleY;
-					fh.rotation = ele.vo.rotation;
+					fh.rotation = ele.vo.rotation + mainMediator.canvas.rotation;
 					fh.render();
 					
 					flasherHolders.push(fh);

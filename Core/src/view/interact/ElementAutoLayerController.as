@@ -40,6 +40,8 @@ package view.interact
 						_indexChangeElement.push(element);
 					}
 				}
+				
+				
 				if (_indexChangeElement)
 				{
 					//当前元素放入层级比较队列
@@ -62,8 +64,11 @@ package view.interact
 					//获得一个重新比较后的顺序数组order
 					var order:Vector.<int> = getOrderBySize(_indexChangeElement);
 					//trace(order);
+					
+					
 					//重新排列元素
-					swapElements(_indexChangeElement, order);
+					//swapElements(_indexChangeElement, order);
+					// 因为智能图层有时会让原来原件的图层顺序错乱，后记要改称当前原件图层调整，不改变其他原件的相对图层位置
 				}
 			}
 			return layer;

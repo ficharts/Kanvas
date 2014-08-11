@@ -340,7 +340,7 @@ package view.interact
 			currentMode.toSelectMode();
 		}
 		
-		/**
+		/**`
 		 * 进入到非选择模式，当前场景中没有任何图形被选择
 		 * 
 		 * 关闭型变框
@@ -500,7 +500,7 @@ package view.interact
 		 */		
 		public function resetCanvasState():void
 		{
-			//zoomMoveControl.zoomRotateMoveTo(curCanvasState.scale, curCanvasState.rotation, curCanvasState.x, curCanvasState.y);
+			zoomMoveControl.zoomRotateMoveTo(curCanvasState.scale, curCanvasState.rotation, curCanvasState.x, curCanvasState.y);
 		}
 		
 		/**
