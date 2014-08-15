@@ -9,7 +9,6 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.StageUtil;
 	import com.kvs.utils.XMLConfigKit.App;
-	import com.kvs.utils.XMLConfigKit.IApp;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
@@ -22,7 +21,6 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.utils.system.OS;
 	
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	import flash.events.ContextMenuEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -961,7 +959,7 @@ package com.kvs.charts.chart2D.encry
 		
 		/**
 		 */		
-		protected var chart:IChart;
+		public var chart:IChart;
 		
 		/**
 		 */		

@@ -15,7 +15,6 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.charts.chart2D.core.series.SeriesDirectionControl;
 	import com.kvs.charts.chart2D.core.zoomBar.ZoomBar;
 	import com.kvs.charts.common.ChartColors;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.charts.legend.model.LegendVO;
 	import com.kvs.charts.legend.view.LegendEvent;
@@ -24,6 +23,8 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.IEditableObject;
+	import com.kvs.utils.XMLConfigKit.Model;
+	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.IStyleStatesUI;
@@ -33,14 +34,15 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.utils.XMLConfigKit.style.Style;
 	import com.kvs.utils.XMLConfigKit.style.elements.IFreshElement;
 	import com.kvs.utils.XMLConfigKit.style.elements.IStyleElement;
-	import com.kvs.utils.XMLConfigKit.StyleManager;
 	
 	import flash.display.Sprite;
+	
+	import org.osmf.net.ABRUtils;
 
 	/**
 	 * 序列的基�
 	 */	
-	public class SB extends Sprite implements IDirectionSeries, IEditableObject, IStyleElement, IFreshElement, IStyleStatesUI
+	public class SB extends Sprite implements IDirectionSeries, IEditableObject, IStyleElement, IFreshElement, IStyleStatesUI, ISeries
 	{
 
 		/**
@@ -50,6 +52,18 @@ package com.kvs.charts.chart2D.encry
 			super();
 			
 			addChild(canvas);
+		}
+		
+		/**
+		 */		
+		public function get labels():Vector.<String>
+		{
+			var labels:Vector.<String> = new Vector.<String>
+			
+			for each (var data:SeriesDataPoint in dataItemVOs)
+				labels.push(data.xLabel);
+				
+			return labels;
 		}
 		
 		/**

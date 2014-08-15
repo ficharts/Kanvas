@@ -87,7 +87,7 @@ package com.kvs.charts.chart2D.encry
 			while (seriesContainer.numChildren)
 				seriesContainer.removeChildAt(0);
 			
-			for each (var seriesItem:PieSeries in this.series)
+			for each (var seriesItem:PieSeries in this.pieSeries)
 			{
 				seriesItem.dataFormatter = chartModel.dataFormatter;
 				seriesContainer.addChild(seriesItem);
@@ -224,7 +224,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		private function renderPieSeries(percent:Number):void
 		{
-			for each (var seriesItem:PieSeries in this.series)
+			for each (var seriesItem:PieSeries in this.pieSeries)
 			{
 				seriesItem.x = centerX;
 				seriesItem.y = conterY;
@@ -359,7 +359,7 @@ package com.kvs.charts.chart2D.encry
 					}
 				}
 				
-				for each (seriesItem in series)  
+				for each (seriesItem in pieSeries)  
 				{
 					seriesItem.configed();				
 					seriesItem.initData(this.dataVOes);
@@ -374,8 +374,20 @@ package com.kvs.charts.chart2D.encry
 		}
 		
 		/**
+		 */		
+		public function get series():Vector.<ISeries>
+		{
+			var result:Vector.<ISeries> = new Vector.<ISeries>;
+			
+			for each (var s:ISeries in pieSeries)
+				result.push(s);
+			
+			return result;
+		}
+		
+		/**
 		 */
-		private function get series():Vector.<PieSeries>
+		private function get pieSeries():Vector.<PieSeries>
 		{
 			return this.chartModel.pieSeries.items;
 		}
@@ -629,7 +641,6 @@ package com.kvs.charts.chart2D.encry
 			addChild(this.rightContainer);
 			addChild(this.bottomContainer);
 			addChild(this.leftContainer);
-			tooltipManager = new ToolTipsManager(this);
 			
 			XMLVOLib.addCreationHandler(Series.PIE_SERIES_CREATED, createSeriesHandler);
 			XMLVOLib.addCreationHandler(Chart2DModel.UPDATE_TITLE_STYLE, updateTitleStyleHandler);
@@ -640,9 +651,6 @@ package com.kvs.charts.chart2D.encry
 			chartProxy.setChartModel(chartProxy.currentStyleXML);
 		}
 		
-		/**
-		 */		
-		private var tooltipManager:ToolTipsManager;
 		
 		/**
 		 */		

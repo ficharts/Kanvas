@@ -35,7 +35,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function initPattern():void
 		{
-			for each(var series:SB in chartMain.series)
+			for each(var series:SB in chartMain.chartSeries)
 			series.toClassicPattern();
 		}
 		
@@ -50,7 +50,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function renderSeries():void
 		{
-			for each(var series:SB in chartMain.series)
+			for each(var series:SB in chartMain.chartSeries)
 				series.render();
 		}
 		
@@ -101,7 +101,7 @@ package com.kvs.charts.chart2D.encry
 			chartMain.chartCanvas.clearItemRenders();
 			
 			// 汇总  节点渲染器；
-			for each (var seriesItem:SB in chartMain.series)
+			for each (var seriesItem:SB in chartMain.chartSeries)
 			{
 				// 柱状图与散点图的节点渲染器优先作为主体渲染节点
 				if (seriesItem is ColumnSeries2D || seriesItem is MarkerSeries)
@@ -311,7 +311,7 @@ package com.kvs.charts.chart2D.encry
 				flashSeriesPercent = 1;
 			}
 			
-			for each (seriesItem in chartMain.series)
+			for each (seriesItem in chartMain.chartSeries)
 			seriesItem.setPercent(flashSeriesPercent);
 			
 			//播放动画
@@ -344,7 +344,7 @@ package com.kvs.charts.chart2D.encry
 				flashTimmer.start();
 			}
 			
-			for each (var seriesItem:SB in chartMain.series)
+			for each (var seriesItem:SB in chartMain.chartSeries)
 				seriesItem.setPercent(flashSeriesPercent);
 		}
 		

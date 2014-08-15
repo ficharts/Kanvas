@@ -2,6 +2,11 @@ package com.kvs.charts.chart2D.pie.series
 {
 	import com.kvs.charts.common.SeriesDataPoint;
 	
+	/**
+	 * 
+	 * @author wanglei
+	 * 
+	 */	
 	public class PieDataItem extends SeriesDataPoint
 	{
 		public function PieDataItem()
@@ -10,31 +15,27 @@ package com.kvs.charts.chart2D.pie.series
 		}
 		
 		/**
-		 */		
-		private var _label:Object
-
+		 */
 		public function get label():Object
 		{
-			return _label;
+			return xValue;
 		}
 
 		public function set label(value:Object):void
 		{
-			_label = value;
+			xValue = value;
 		}
 		
 		/**
 		 */		
-		private var _value:Object;
-
 		public function get value():Object
 		{
-			return _value;
+			return yValue;
 		}
 
 		public function set value(value:Object):void
 		{
-			_value = value;
+			yValue = value;
 		}
 		
 		/**

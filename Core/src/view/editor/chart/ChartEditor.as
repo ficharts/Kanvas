@@ -1,18 +1,12 @@
 package view.editor.chart
 {
+	import com.kvs.charts.chart2D.encry.ISeries;
+	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.ui.label.TextInputField;
 	
 	import flash.display.Sprite;
-	import flash.text.engine.CFFHinting;
-	import flash.text.engine.FontLookup;
 	
-	import flashx.textLayout.container.ScrollPolicy;
-	import flashx.textLayout.container.TextContainerManager;
-	import flashx.textLayout.edit.EditingMode;
-	import flashx.textLayout.formats.TextAlign;
-	import flashx.textLayout.formats.TextLayoutFormat;
-	
-	import util.textFlow.FlowTextManager;
+	import view.element.chart.ChartElement;
 	
 	/**
 	 *
@@ -36,12 +30,54 @@ package view.editor.chart
 			
 			dataField.textLayoutFormat.fontFamily = "宋体";
 			dataField.textLayoutFormat.lineHeight = "150%";
-			dataField.textLayoutFormat.wordSpacing
+			//dataField.textLayoutFormat.wordSpacing
 			
-			dataField.text = "awefawefawefawef";
-			dataField.updateLayout();
-			
+			dataField.updateFormat();
 			addChild(dataField);
+		}
+		
+		/**
+		 * 当前正在编辑的图表 
+		 */		
+		public var chart:ChartElement;
+		
+		/**
+		 * 将图表的数据模型转换为文本并输出
+		 */		
+		public function exportTextFromChart():void
+		{
+			var str:String = "";
+			
+			var series:Vector.<ISeries> = chart.series;
+			
+			for each (var s:ISeries in series)
+			{
+				str += s.seriesName;
+				str += split;
+				
+				var data:Vector.<SeriesDataPoint> = s.dataItemVOs;
+				for each (var p:SeriesDataPoint in data)
+				{
+					str += split + p.yLabel;
+				}
+			}
+			
+			dataField.text = str;
+			dataField.updateLayout();
+		}
+		
+		/**
+		 */		
+		private var split:String = " ";
+		
+		/**
+		 */		
+		private function textToXML(text:String):XML
+		{
+			var xml:XML;
+			
+			
+			return xml;
 		}
 		
 		/**

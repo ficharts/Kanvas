@@ -467,7 +467,7 @@ package com.kvs.charts.chart2D.encry
 			var seriesItem:SB;
 			var itemRender:PointRenderBace;
 			
-			for each (seriesItem in series)
+			for each (seriesItem in chartSeries)
 			{
 				seriesItem.seriesWidth = sizeX;
 				seriesItem.seriesHeight = sizeY;
@@ -869,7 +869,7 @@ package com.kvs.charts.chart2D.encry
 			var seriesItem:SB;
 			if (chartModel.axis.changed && chartModel.series.changed)
 			{
-				for each (seriesItem in series)
+				for each (seriesItem in chartSeries)
 				{
 					seriesItem.horizontalAxis = getAxisByID(seriesItem.xAxis, this.hAxises);
 					seriesItem.verticalAxis = getAxisByID(seriesItem.yAxis, this.vAxises);
@@ -915,7 +915,7 @@ package com.kvs.charts.chart2D.encry
 					}
 				}
 				
-				for each (var seriesItem:SB in series)  
+				for each (var seriesItem:SB in chartSeries)  
 				{
 					seriesItem.configed(this.chartModel.series.colorMananger);// 图表整体配置完毕， 可以开始子序列的定义了；					
 					seriesItem.dataProvider = dataVOes;
@@ -969,7 +969,7 @@ package com.kvs.charts.chart2D.encry
 					bubbleRadiusAxis.redyToUpdateData();
 					
 				//数据更新后同步刷新坐标轴的数据；
-				for each (var seriesVO:SB in series)
+				for each (var seriesVO:SB in chartSeries)
 					seriesVO.updateAxisValueRange();
 				
 				// 数据更新完毕；	
@@ -996,8 +996,20 @@ package com.kvs.charts.chart2D.encry
 		private var bubbleRadiusAxis:LinearAxis;
 		
 		/**
+		 */		
+		public function get series():Vector.<ISeries>
+		{
+			var result:Vector.<ISeries> = new Vector.<ISeries>;
+			
+			for each (var s:ISeries in chartSeries)
+				result.push(s);
+			
+			return result;
+		}
+		
+		/**
 		 */
-		public function get series():Vector.<SB>
+		public function get chartSeries():Vector.<SB>
 		{
 			return this.chartModel.series.items;
 		}
@@ -1106,8 +1118,6 @@ package com.kvs.charts.chart2D.encry
 			createBG();
 			addChild(title);
 			
-			toolTipManager = new ToolTipsManager(this);
-			
 			chartProxy = new CP();
 			initListeners();
 			
@@ -1133,10 +1143,6 @@ package com.kvs.charts.chart2D.encry
 		/**
 		 */		
 		private var legendPanel:LegendPanel;
-		
-		/**
-		 */		
-		private var toolTipManager:ToolTipsManager;
 		
 		/**
 		 */		

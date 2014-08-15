@@ -9,8 +9,8 @@ package com.kvs.charts.chart2D.bar
 	import com.kvs.charts.chart2D.core.model.Chart2DModel;
 	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.common.ChartColors;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.common.SeriesDataPoint;
+	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
@@ -24,6 +24,19 @@ package com.kvs.charts.chart2D.bar
 			super();
 			
 			this.value = 'xValue';
+		}
+		
+		/**
+		 * 条图的label为纵轴方向
+		 */		
+		override public function get labels():Vector.<String>
+		{
+			var labels:Vector.<String> = new Vector.<String>
+			
+			for each (var data:SeriesDataPoint in dataItemVOs)
+				labels.push(data.yLabel);
+			
+			return labels;
 		}
 		
 		/**

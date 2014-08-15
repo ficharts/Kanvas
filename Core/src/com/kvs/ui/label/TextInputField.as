@@ -48,6 +48,13 @@ package com.kvs.ui.label
 		
 		/**
 		 */		
+		public function updateFormat():void
+		{
+			textManager.hostFormat = textLayoutFormat;
+		}
+		
+		/**
+		 */		
 		private function clickHandler(evt:MouseEvent):void
 		{
 			var editM:ISelectionManager = textManager.beginInteraction();
@@ -102,8 +109,7 @@ package com.kvs.ui.label
 		public function set text(value:String):void
 		{
 			textManager.setText(value);
-			//textManager.updateContainer();new 
-			
+			updateLayout(); 
 		}
 		
 		/**

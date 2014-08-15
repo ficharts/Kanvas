@@ -298,6 +298,9 @@ package view.interact
 		 */		
 		public function editChart():void
 		{
+			coreApp.chartEditor.chart = currentElement as ChartElement;
+			coreApp.chartEditor.exportTextFromChart();
+			
 			var evt:KVSEvent = new KVSEvent(KVSEvent.TOOLBAR_TO_CHART);
 			evt.element = currentElement;
 			mainUI.dispatchEvent(evt);

@@ -1,6 +1,7 @@
 package view.element.chart
 {
 	import com.kvs.charts.chart2D.core.events.FiChartsEvent;
+	import com.kvs.charts.chart2D.encry.ISeries;
 	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.graphic.BitmapUtil;
@@ -25,6 +26,13 @@ package view.element.chart
 			
 			chart2d = new Chart2D();
 			addChild(chart2d);
+		}
+		
+		/**
+		 */		
+		public function get series():Vector.<ISeries>
+		{
+			return chart2d.chart.series;
 		}
 		
 		/**

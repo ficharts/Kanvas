@@ -1,5 +1,8 @@
 package com.kvs.charts.common
 {
+	import com.kvs.charts.chart2D.encry.ISeries;
+	import com.kvs.charts.chart2D.encry.SB;
+
 	/**
 	 * 图表通用接口；
 	 */	
@@ -58,6 +61,10 @@ package com.kvs.charts.common
 		 */		
 		function get dataVOes():Vector.<Object>;
 		function set dataVOes(value:Vector.<Object>):void;
+		
+		/**
+		 */		
+		function get series():Vector.<ISeries>
 		
 		/**
 		 * 图表的宽度

@@ -166,7 +166,7 @@ package com.kvs.charts.chart2D.encry
 		{
 			if (this.tipsContorl.ifMouseIn)
 			{
-				for each(var series:SB in chartMain.series)
+				for each(var series:SB in chartMain.chartSeries)
 					series.showDataRender();
 			}
 		}
@@ -175,7 +175,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function initPattern():void
 		{
-			for each(var series:SB in chartMain.series)
+			for each(var series:SB in chartMain.chartSeries)
 				series.toSimplePattern();
 		}
 		
@@ -211,7 +211,7 @@ package com.kvs.charts.chart2D.encry
 			zoomBar.init(zoomBarStyle, chartMain.chartModel.zoom);
 			
 			//将第一个序列的数据和坐标轴克隆给滚动图表
-			var series:SB = chartMain.series[0];
+			var series:SB = chartMain.chartSeries[0];
 			
 			// 创建并设置坐标轴样式
 			var hAxis:AxisBase = series.horizontalAxis.clone();
@@ -250,7 +250,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function renderSeries():void
 		{
-			for each(var series:SB in chartMain.series)
+			for each(var series:SB in chartMain.chartSeries)
 			{
 				if (series is BarSeries) return;//条形图的大数据彻底不支持，此处略过
 					
@@ -293,7 +293,7 @@ package com.kvs.charts.chart2D.encry
 		{
 			evt.stopPropagation();
 			
-			for each(var series:SB in this.chartMain.series)
+			for each(var series:SB in this.chartMain.chartSeries)
 				series.dataResizedByIndex(evt.start, evt.end);
 		}
 		
@@ -308,7 +308,7 @@ package com.kvs.charts.chart2D.encry
 			
 			PerformaceTest.start("dataResizedByRange");
 			
-			for each(var series:SB in this.chartMain.series)
+			for each(var series:SB in this.chartMain.chartSeries)
 				series.dataResizedByRange(evt.start, evt.end);
 			
 			PerformaceTest.end("dataResizedByRange");
@@ -326,7 +326,7 @@ package com.kvs.charts.chart2D.encry
 			{
 				axis.redayToUpdataYData()
 				
-				for each (var seriesItem:SB in chartMain.series)
+				for each (var seriesItem:SB in chartMain.chartSeries)
 				{
 					// 别忘了图例可以控制序列的隐藏
 					if(seriesItem.visible)					
@@ -346,7 +346,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		private function renderDataResized(evt:DataResizeEvent):void
 		{
-			for each(var series:SB in this.chartMain.series)
+			for each(var series:SB in this.chartMain.chartSeries)
 				series.renderDataResized();
 		}
 		
@@ -581,7 +581,7 @@ package com.kvs.charts.chart2D.encry
 				zoomAxis.updateTipsData();//先更新每个序列的tips节点
 				
 				// 组装tips
-				for each (var series:SB in chartMain.series)
+				for each (var series:SB in chartMain.chartSeries)
 				{
 					// 别忘了图例可以控制序列的隐藏
 					if(series.visible)

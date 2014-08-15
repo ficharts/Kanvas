@@ -1,10 +1,10 @@
 package com.kvs.charts.chart2D.pie.series
 {
 	import com.kvs.charts.chart2D.core.itemRender.ItemRenderEvent;
+	import com.kvs.charts.chart2D.encry.ISeries;
 	import com.kvs.charts.chart2D.pie.PieChartModel;
 	import com.kvs.charts.chart2D.pie.PieDataFormatter;
 	import com.kvs.charts.common.ChartColors;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.charts.legend.model.LegendVO;
 	import com.kvs.charts.legend.view.LegendEvent;
@@ -12,6 +12,8 @@ package com.kvs.charts.chart2D.pie.series
 	import com.kvs.utils.MathUtil;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.IEditableObject;
+	import com.kvs.utils.XMLConfigKit.Model;
+	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.effect.Effects;
@@ -19,17 +21,42 @@ package com.kvs.charts.chart2D.pie.series
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
 	import com.kvs.utils.XMLConfigKit.style.States;
 	import com.kvs.utils.XMLConfigKit.style.elements.IStyleElement;
-	import com.kvs.utils.dec.NullPad;
-	import com.kvs.utils.XMLConfigKit.StyleManager;
 	
 	import flash.display.Sprite;
 
 	/**
 	 */	
-	public class PieSeries extends Sprite implements IEditableObject, IStyleElement, IEffectable
+	public class PieSeries extends Sprite implements IEditableObject, IStyleElement, IEffectable, ISeries
 	{
 		public function PieSeries()
 		{
+		}
+		
+		/**
+		 */
+		private var _seriesName:String = "";
+		
+		public function get seriesName():String
+		{
+			return _seriesName;
+		}
+		
+		public function set seriesName(value:String):void
+		{
+			_seriesName = value;
+		}
+		
+		/**
+		 * 
+		 */		
+		public function get labels():Vector.<String>
+		{
+			var labels:Vector.<String> = new Vector.<String>;
+			
+			for each (var p:PieDataItem in _dataItemVOs)
+				labels.push(p.xLabel);
+			
+			return labels;
 		}
 		
 		/**
@@ -46,7 +73,7 @@ package com.kvs.charts.chart2D.pie.series
 				var dataItem:PieDataItem;
 				partUIs = new Vector.<PartPieUI>;
 				
-				for each (dataItem in this.dataItemVOs)
+				for each (dataItem in this._dataItemVOs)
 				{
 					partUI = new PartPieUI(dataItem);
 					partUI.states = this.states;
@@ -283,7 +310,7 @@ package com.kvs.charts.chart2D.pie.series
 			var dataSum:Number = 0;
 			var startRad:Number = 0;
 			var partRad:Number = 0;
-			dataItemVOs = new Vector.<PieDataItem>;
+			_dataItemVOs = new Vector.<PieDataItem>;
 			
 			var precision:uint = 0;
 			var temPrecision:uint = 0;
@@ -316,7 +343,7 @@ package com.kvs.charts.chart2D.pie.series
 					seriesDataItem.color = chartColorManager.chartColor;
 				
 				dataSum += Number(seriesDataItem.value);
-				dataItemVOs.push(seriesDataItem);
+				_dataItemVOs.push(seriesDataItem);
 				
 				// 计算小数点保留位数用
 				temPrecision = RexUtil.checkPrecision(seriesDataItem.value.toString())
@@ -328,7 +355,7 @@ package com.kvs.charts.chart2D.pie.series
 			
 			startRad = this.angleToRad(startAngle);
 			 
-			for each (seriesDataItem in dataItemVOs)
+			for each (seriesDataItem in _dataItemVOs)
 			{
 				seriesDataItem.xLabel = dataFormatter.formatLabel(seriesDataItem.label);
 				seriesDataItem.yLabel = dataFormatter.formatValue(seriesDataItem.value);
@@ -374,7 +401,19 @@ package com.kvs.charts.chart2D.pie.series
 		
 		/**
 		 */		
-		private var dataItemVOs:Vector.<PieDataItem>;
+		public function get dataItemVOs():Vector.<SeriesDataPoint>
+		{
+			var points:Vector.<SeriesDataPoint> = new Vector.<SeriesDataPoint>;
+			
+			for each (var p:PieDataItem in _dataItemVOs)
+				points.push(p);
+			
+			return dataItemVOs;
+		}
+		
+		/**
+		 */		
+		private var _dataItemVOs:Vector.<PieDataItem>;
 		
 		/**
 		 */		
@@ -383,7 +422,7 @@ package com.kvs.charts.chart2D.pie.series
 			var legendVOes:Vector.<LegendVO> = new Vector.<LegendVO>;
 			var legendVO:LegendVO;
 			
-			for each(var item:SeriesDataPoint in dataItemVOs)	
+			for each(var item:SeriesDataPoint in _dataItemVOs)	
 			{
 				legendVO = new LegendVO();
 				legendVO.metaData = item; // 用于精确控制节点的状态
