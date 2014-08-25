@@ -1,7 +1,5 @@
 package com.kvs.charts.chart2D.core.axis
 {
-	import com.kvs.charts.chart2D.core.model.Zoom;
-
 	/**
 	 */	
 	public class LinearAxis_Normal implements IAxisPattern
@@ -41,12 +39,6 @@ package com.kvs.charts.chart2D.core.axis
 			
 		}
 		
-		/**
-		 */		
-		public function adjustZoomFactor(model:Zoom):void
-		{
-			
-		}
 		
 		/**
 		 */		
@@ -58,22 +50,6 @@ package com.kvs.charts.chart2D.core.axis
 		/**
 		 */		
 		protected var _axis:AxisBase;
-		
-		/**
-		 */		
-		public function toNormalPattern():void
-		{
-		}
-		
-		/**
-		 */		
-		public function toZoomPattern():void
-		{
-			if (axis.zoomPattern)
-				axis.curPattern = axis.zoomPattern;
-			else
-				axis.curPattern = axis.getZoomPattern();
-		}
 		
 		/**
 		 */		

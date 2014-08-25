@@ -1,6 +1,6 @@
 package com.kvs.charts.chart2D.core.series
 {
-	import com.kvs.charts.chart2D.core.events.DataResizeEvent;
+	
 
 	/**
 	 * 两种序列渲染模式，经典模式和数据缩放模式；
@@ -9,20 +9,6 @@ package com.kvs.charts.chart2D.core.series
 	 */	
 	public interface ISeriesRenderPattern
 	{
-		/**
-		 * 经典渲染模式和 数据缩放渲染模式的切换 
-		 * 
-		 */		
-		function toClassicPattern():void;
-		function toSimplePattern():void;
-		
-		/**
-		 * 渲染范围内的离散数据
-		 * 
-		 * 缩放模式是仅刷新一定范围内并且是离散式的刷新
-		 */		
-		function renderScaledData():void;
-		
 		/**
 		 * 缩放模式下：样式，尺寸，数值分布特性的设定，但不渲染图表，
 		 * 

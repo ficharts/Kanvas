@@ -1,16 +1,17 @@
 package view.interact.interactMode
 {
+	import com.kvs.utils.ViewUtil;
+	
 	import commands.Command;
 	
 	import flash.geom.Rectangle;
 	
-	import model.CoreFacade;
 	import model.vo.ElementVO;
 	
 	import view.element.ElementBase;
 	import view.element.GroupElement;
+	import view.element.chart.ChartElement;
 	import view.element.shapes.LineElement;
-	import view.element.state.ElementSelected;
 	import view.interact.CoreMediator;
 	import view.interact.multiSelect.TemGroupElement;
 	
@@ -189,11 +190,31 @@ package view.interact.interactMode
 		
 		/**
 		 */		
-		override public function toEditMode():void
+		override public function toTextEditMode():void
 		{
 			mainMediator.hideSelector();		
 			mainMediator.disableKeyboardControl();
-			mainMediator.currentMode = mainMediator.editMode;
+			mainMediator.currentMode = mainMediator.textEditMode;
+		}
+		
+		/**
+		 */		
+		override public function toChartEditMode():void
+		{
+			mainMediator.hideSelector();		
+			mainMediator.disableKeyboardControl();
+			mainMediator.zoomMoveControl.disable();
+			
+			mainMediator.coreApp.chartEditor.chart = mainMediator.currentElement as ChartElement;
+			mainMediator.coreApp.chartEditor.exportTextFromChart();
+			
+			ViewUtil.show(mainMediator.coreApp.chartEditor);
+			ViewUtil.hide(mainMediator.canvas);//隐藏并禁止canvas的交互
+			
+			mainMediator.currentMode = mainMediator.chartEditMode;
+			
+			var evt:KVSEvent = new KVSEvent(KVSEvent.TOOLBAR_TO_CHART);
+			mainMediator.mainUI.dispatchEvent(evt);
 		}
 		
 		/**

@@ -1,16 +1,12 @@
 package com.kvs.charts.chart2D.pie.series
 {
-	import com.kvs.charts.chart2D.core.events.FiChartsEvent;
 	import com.kvs.charts.chart2D.core.series.SeriesItemUIBase;
 	import com.kvs.charts.common.SeriesDataPoint;
-	import com.kvs.ui.toolTips.ToolTipHolder;
-	import com.kvs.ui.toolTips.ToolTipsEvent;
-	import com.kvs.ui.toolTips.TooltipStyle;
-	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
 	import com.kvs.ui.label.LabelUI;
+	import com.kvs.ui.toolTips.ToolTipHolder;
+	import com.kvs.ui.toolTips.TooltipStyle;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
-	
-	import flash.events.MouseEvent;
+	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
 	
 	/**
 	 */	
@@ -27,37 +23,6 @@ package com.kvs.charts.chart2D.pie.series
 		/**
 		 */		
 		private var tooltipHolder:ToolTipHolder = new ToolTipHolder();
-		
-		/**
-		 */		
-		override protected function rollOverHandler(evt:MouseEvent):void
-		{
-			var event:FiChartsEvent = new FiChartsEvent(FiChartsEvent.ITEM_OVER);
-			event.dataItem = this.dataItem;
-			this.dispatchEvent(event);
-			
-			this.dispatchEvent(new ToolTipsEvent(ToolTipsEvent.SHOW_TOOL_TIPS, tooltipHolder));
-		}
-		
-		/**
-		 */		
-		override protected function rollOutHandler(evt:MouseEvent):void
-		{
-			var event:FiChartsEvent = new FiChartsEvent(FiChartsEvent.ITEM_OUT);
-			event.dataItem = this.dataItem;
-			this.dispatchEvent(event);
-			
-			this.dispatchEvent(new ToolTipsEvent(ToolTipsEvent.HIDE_TOOL_TIPS));
-		}
-		
-		/**
-		 */		
-		override public function downHandler():void
-		{
-			var event:FiChartsEvent = new FiChartsEvent(FiChartsEvent.ITEM_CLICKED);
-			event.dataItem = this.dataItem;
-			this.dispatchEvent(event);
-		}
 		
 		/**
 		 */		

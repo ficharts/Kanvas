@@ -86,31 +86,7 @@ package com.kvs.charts.chart2D.core.model
 		{
 		}
 		
-		/**
-		 */		
-		private var _ifDataScalable:Boolean = false;
 
-		/**
-		 * 是否支持数据缩放，开启数据缩放后，在PC或者移动设备上
-		 * 
-		 * 会相应缩放操作而缩放数据，例如滚轮缩放或者触摸放大缩�
-		 */		
-		private var _zoom:Zoom = new Zoom();// 防止经典模式下滚轮缩放时因zoom为空导致的报错
-
-		/**
-		 */
-		public function get zoom():Zoom
-		{
-			return _zoom;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set zoom(value:Zoom):void
-		{
-			_zoom = value;
-		}
 		
 		
 		//------------------------------
@@ -430,7 +406,7 @@ package com.kvs.charts.chart2D.core.model
 		
 		/**
 		 */		
-		public var minTopPadding:Number = 80;
+		public var minTopPadding:Number = 20;
 		
 		/**
 		 */		

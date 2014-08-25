@@ -4,6 +4,11 @@ package com.kvs.charts.chart2D.bar
 	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.common.SeriesDataPoint;
 	
+	/**
+	 * 
+	 * @author wanglei
+	 * 
+	 */	
 	public class ClassicBarRender implements ISeriesRenderPattern
 	{
 		/**
@@ -19,20 +24,6 @@ package com.kvs.charts.chart2D.bar
 		
 		/**
 		 */		
-		public function toClassicPattern():void
-		{
-		}
-		
-		/**
-		 */		
-		public function toSimplePattern():void
-		{
-		}
-		
-		public function renderScaledData():void
-		{
-		}
-		
 		public function render():void
 		{
 			if (series.ifDataChanged || series.ifSizeChanged)

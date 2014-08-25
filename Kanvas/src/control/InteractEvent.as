@@ -7,6 +7,14 @@ package control
 	 */	
 	public class InteractEvent extends Event
 	{
+	
+		/**
+		 *  插入图表 
+		 */		
+		public static const OPEN_CHART_PANEL:String = "openChartPanel";
+		
+		public static const CLOSE_PANEL:String = "closeChartPanel";
+		
 		/**
 		 * 插入图片
 		 */		
@@ -18,19 +26,9 @@ package control
 		public static const OPEN_SHAPE_PANEL:String = 'openShapePanel';
 		
 		/**
-		 * 关闭图形创建面板 
-		 */		
-		public static const CLOSE_SHAPE_PANE:String = 'closeShapePanel';
-		
-		/**
 		 * 开启整体风格样式设置面板 
 		 */		
 		public static const OPEN_THEME_PANEL:String = 'openThemePanel';
-		
-		/**
-		 * 关闭整体风格样式设置面板
-		 */		
-		public static const CLOSE_THEME_PANEL:String = 'closeThemePanel';
 		
 		/**
 		 */		

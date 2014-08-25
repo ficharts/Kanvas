@@ -2,7 +2,6 @@ package com.kvs.ui.label
 {
 	import flash.display.Shape;
 	import flash.display.Sprite;
-	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
 	import flash.text.engine.BreakOpportunity;
 	import flash.text.engine.CFFHinting;

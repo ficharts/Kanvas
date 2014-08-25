@@ -1,8 +1,6 @@
 package com.kvs.charts.chart2D.bar
 {
-	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
-	
-	public class SimpleBarRender implements ISeriesRenderPattern
+	public class SimpleBarRender
 	{
 		public function SimpleBarRender(series:BarSeries)
 		{
@@ -12,20 +10,6 @@ package com.kvs.charts.chart2D.bar
 		/**
 		 */		
 		private var series:BarSeries;
-		
-		/**
-		 */		
-		public function toClassicPattern():void
-		{
-		}
-		
-		public function toSimplePattern():void
-		{
-		}
-		
-		public function renderScaledData():void
-		{
-		}
 		
 		public function render():void
 		{

@@ -23,33 +23,6 @@ package com.kvs.charts.chart2D.column2D
 		
 		/**
 		 */		
-		public function toClassicPattern():void
-		{
-			if (series.classicPattern)
-				series.curRenderPattern = series.classicPattern;
-			else
-				series.curRenderPattern = series.classicPattern = new ClassicColumnRender(series);
-			
-			series.clearCanvas();
-			
-		}
-		
-		/**
-		 */		
-		public function toSimplePattern():void
-		{
-		}
-		
-		/**
-		 */		
-		public function renderScaledData():void
-		{
-			series.layoutDataItems(series.dataOffsetter.minIndex, series.dataOffsetter.maxIndex);
-			render();
-		}
-		
-		/**
-		 */		
 		public function render():void
 		{
 			if (series.ifSizeChanged || series.ifDataChanged)

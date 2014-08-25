@@ -1,6 +1,5 @@
 package commands
 {
-	import flash.display.Stage;
 	import flash.geom.Point;
 	
 	import model.CoreFacade;
@@ -9,6 +8,7 @@ package commands
 	
 	import org.puremvc.as3.interfaces.INotification;
 	
+	import util.ElementCreator;
 	import util.LayoutUtil;
 	import util.layout.LayoutTransformer;
 	
@@ -40,14 +40,14 @@ package commands
 				layoutTransformer.canvas.stage.stageHeight / 2, layoutTransformer.canvas);
 			
 			// VO 初始化
-			var elementVO:ElementVO = new ChartVO;
+			var elementVO:ElementVO = 	ElementCreator.getElementVO('chart2d');
+			
 			elementVO.x = point.x;
 			elementVO.y = point.y;
 			elementVO.rotation = 0;
 			elementVO.width = 400;
 			elementVO.height = 300;
 			elementVO.styleType = "chart";
-			elementVO.type = "chart";
 			
 			// UI 初始化
 			element = new ChartElement(elementVO);

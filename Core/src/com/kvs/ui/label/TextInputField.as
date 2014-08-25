@@ -57,8 +57,18 @@ package com.kvs.ui.label
 		 */		
 		private function clickHandler(evt:MouseEvent):void
 		{
+			setFocus();
+		}
+		
+		/**
+		 */		
+		public function setFocus(ifPos:Boolean = false):void
+		{
 			var editM:ISelectionManager = textManager.beginInteraction();
-			//editM.selectRange(startPos, startPos);
+			
+			if (ifPos)
+				editM.selectRange(pos-1, pos);
+			
 			editM.setFocus();
 		}
 		
@@ -101,7 +111,7 @@ package com.kvs.ui.label
 		 */		
 		public function get text():String
 		{
-			return textManager.getText();
+			return textManager.getText("\n");
 		}
 		
 		/**
@@ -139,13 +149,15 @@ package com.kvs.ui.label
 		 */		
 		private function inputUpdateHandler(evt:UpdateCompleteEvent):void
 		{
-			var text:String = textManager.getText();
+			var editM:ISelectionManager = textManager.beginInteraction();
+			pos = editM.activePosition;
 			
-			this.graphics.clear();
-			this.graphics.lineStyle(1, 0xeeeeee);
-			this.graphics.beginFill(0, 0);
-			this.graphics.drawRect(0, 0, textWidth, textHeight);
-			this.graphics.endFill();
+			var text:String = textManager.getText();
+			this.dispatchEvent(evt);
 		}
+		
+		/**
+		 */		
+		private var pos:int;
 	}
 }

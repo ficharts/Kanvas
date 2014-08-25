@@ -45,9 +45,6 @@ package view.toolBar
 			tb.currentState.ctner.visible = true;
 			
 			tb.main.pagePanel.visible = false;
-			
-			ViewUtil.show(tb.main.kvsCore.chartEditor);
-			ViewUtil.hide(tb.main.kvsCore.canvas);//隐藏并禁止canvas的交互
 		}
 		
 		/**
@@ -55,6 +52,13 @@ package view.toolBar
 		private function prevHandler(evt:MouseEvent):void
 		{
 			tb.dispatchEvent(new InteractEvent(InteractEvent.PREVIEW));
+		}
+		
+		/**
+		 */		
+		private function addChartHander(evt:MouseEvent):void
+		{
+			tb.dispatchEvent(new InteractEvent(InteractEvent.OPEN_CHART_PANEL));
 		}
 		
 		/**
@@ -144,14 +148,30 @@ package view.toolBar
 			redoBtn.tips = '重做';
 			ctner.addChild(redoBtn);
 			
+			
+			
+			
+			//--------------------------------------------------------------------------------------------
+			
+			var gap:uint = 12;
+			
+			chartBtn.iconW = chartBtn.iconH = ToolBar.BTN_SIZE;
+			chartBtn.w = chartBtn.h = ToolBar.BTN_SIZE;
+			chartBtn.setIcons("img_up", "img_over", "img_down");
+			chartBtn.tips = '图表';
+			centerBtnsC.addChild(chartBtn);
+			chartBtn.addEventListener(MouseEvent.CLICK, addChartHander, false, 0, true);
+			
+			
 			//图片插入面板
 			img_up;
 			img_over;
 			img_down;
 			imgBtn.iconW = imgBtn.iconH = ToolBar.BTN_SIZE;
 			imgBtn.w = imgBtn.h = ToolBar.BTN_SIZE;
+			imgBtn.x = chartBtn.width + gap;
 			imgBtn.setIcons("img_up", "img_over", "img_down");
-			imgBtn.tips = '插入图片';
+			imgBtn.tips = '图片';
 			centerBtnsC.addChild(imgBtn);
 			imgBtn.addEventListener(MouseEvent.CLICK, addImgHandler, false, 0, true);
 			
@@ -163,8 +183,8 @@ package view.toolBar
 			addBtn.iconW = addBtn.iconH = ToolBar.BTN_SIZE;
 			addBtn.w = addBtn.h = ToolBar.BTN_SIZE;
 			addBtn.setIcons("shape_up", "shape_over", "shape_down");
-			addBtn.tips = '开启图形创建面板';
-			addBtn.x = imgBtn.width + 20;
+			addBtn.tips = '图形';
+			addBtn.x = imgBtn.x + imgBtn.width + gap;
 			centerBtnsC.addChild(addBtn);
 			addBtn.addEventListener(MouseEvent.CLICK, addHandler, false, 0, true);
 			
@@ -174,10 +194,16 @@ package view.toolBar
 			themeBtn.iconW = themeBtn.iconH = ToolBar.BTN_SIZE;
 			themeBtn.w = themeBtn.h = ToolBar.BTN_SIZE;
 			themeBtn.setIcons("style_up", "style_over", "style_down");
-			themeBtn.tips = '开启风格样式面板';
+			themeBtn.tips = '主题';
 			centerBtnsC.addChild(themeBtn);
-			themeBtn.x = addBtn.x + addBtn.width + 20;
+			themeBtn.x = addBtn.x + addBtn.width + gap;
 			themeBtn.addEventListener(MouseEvent.CLICK, openThemeHandler, false, 0, true);
+			
+			
+			
+			//---------------------------------------------------------------------------------------------
+			
+			
 			
 			ctner.addChild(customButtonContainer);
 			
@@ -287,6 +313,10 @@ package view.toolBar
 		 * 图片插入按钮 
 		 */		
 		public var imgBtn:IconBtn = new IconBtn;
+		
+		/**
+		 */		
+		public var chartBtn:IconBtn = new IconBtn;
 		
 		/**
 		 * 风格设置按钮，点击后会弹出风格设置面板，用于设置风格和背景； 

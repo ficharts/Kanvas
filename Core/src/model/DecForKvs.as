@@ -37,6 +37,7 @@ package model
 			
 			var configByte:ByteArray = ByteArray(new Meta);
 			var chart2dByte:ByteArray = ByteArray(new Chart2DMeta);
+			var pie2dByte:ByteArray = ByteArray(new Pie2DMeta);
 			
 			licenseByte = ByteArray(new Lc);
 			
@@ -45,13 +46,17 @@ package model
 			
 			decryConfigFile(key, configByte);//解密kvs的配置文件
 			decryConfigFile(key, chart2dByte);//解密kvs的配置文件
+			decryConfigFile(key, pie2dByte);//解密kvs的配置文件
+			
 			
 			licenseByte.uncompress();
 			configByte.uncompress();
 			chart2dByte.uncompress();
+			pie2dByte.uncompress();
 			
 			kvsConfig = XML(configByte.toString());
 			chart2dConfig = XML(chart2dByte.toString());
+			pie2dConfig = XML(pie2dByte.toString());
 		}
 		
 		/**
@@ -63,6 +68,10 @@ package model
 		 * 2d图表的核心配置
 		 */		
 		public static var chart2dConfig:XML;
+		
+		/**
+		 */		
+		public static var pie2dConfig:XML;
 		
 		/**
 		 */		
@@ -276,8 +285,11 @@ package model
 		private var Meta:Class;
 		
 			
-		[Embed(source="chart2DConfig.z", mimeType="application/octet-stream")]
+		[Embed(source="Chart2DConfig.z", mimeType="application/octet-stream")]
 		private var Chart2DMeta:Class;
+		
+		[Embed(source="Pie2DConfig.z", mimeType="application/octet-stream")]
+		private var Pie2DMeta:Class;
 		
 		/**
 		 */	

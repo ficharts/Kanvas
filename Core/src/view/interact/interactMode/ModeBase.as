@@ -282,7 +282,14 @@ package view.interact.interactMode
 		
 		/**
 		 */		
-		public function toEditMode():void
+		public function toTextEditMode():void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function toChartEditMode():void
 		{
 			
 		}

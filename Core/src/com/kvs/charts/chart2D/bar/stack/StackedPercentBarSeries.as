@@ -38,12 +38,10 @@ package com.kvs.charts.chart2D.bar.stack
 			this.updateLabelDisplay(itemRender);
 			
 			itemRender.dataRender = this.dataRender;
-			itemRender.tooltip = this.tooltip;
 			
 			initTipString(item, itemRender.xTipLabel, 
 				itemRender.yTipLabel, this.getZTip(item),itemRender.isHorizontal);
 			
-			itemRender.initToolTips();
 			itemRenders.push(itemRender);
 		}
 		

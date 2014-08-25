@@ -1,18 +1,17 @@
 package com.kvs.charts.chart2D.area2D
 {
-	import com.kvs.charts.chart2D.core.model.SeriesDataFeature;
 	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.chart2D.line.IClassicPartRender;
 	import com.kvs.charts.chart2D.line.PartLineUI;
 	import com.kvs.charts.common.SeriesDataPoint;
-	import com.kvs.utils.XMLConfigKit.style.Style;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
+	import com.kvs.utils.XMLConfigKit.style.Style;
 	
 	import flash.display.Shape;
 	
 	/**
 	 */	
-	public class ClassicAreaRender implements ISeriesRenderPattern, IClassicPartRender
+	public class ClassicAreaRender implements IClassicPartRender, ISeriesRenderPattern
 	{
 		public function ClassicAreaRender(series:AreaSeries2D)
 		{
@@ -22,30 +21,6 @@ package com.kvs.charts.chart2D.area2D
 		/**
 		 */		
 		private var series:AreaSeries2D;
-		
-		/**
-		 */		
-		public function toClassicPattern():void
-		{
-		}
-		
-		/**
-		 */		
-		public function toSimplePattern():void
-		{
-			if (series.simplePattern)
-			{
-				series.curRenderPattern = series.simplePattern;
-			}
-			else
-			{
-				series.curRenderPattern = new SimpleAreaRender(series);
-			}
-			
-			series.clearCanvas();
-			series.partUIs.length = 0;
-			series.partUIs = null;
-		}
 		
 		/**
 		 */		

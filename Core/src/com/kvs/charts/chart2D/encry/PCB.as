@@ -38,6 +38,14 @@ package com.kvs.charts.chart2D.encry
 		}
 		
 		/**
+		 * 
+		 */		
+		public function set setSeries(xml:XML):void
+		{
+			
+		}
+		
+		/**
 		 */		
 		private var _dataVOes:Vector.<Object>;
 		

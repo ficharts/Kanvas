@@ -6,9 +6,9 @@ package com.kvs.charts.chart2D.bubble
 	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.chart2D.encry.SB;
 	import com.kvs.charts.common.ChartColors;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.utils.RexUtil;
+	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	
@@ -19,25 +19,29 @@ package com.kvs.charts.chart2D.bubble
 		public function BubbleSeries()
 		{
 			super();
+			
+			curRenderPattern = new ClassicBubbleRender(this);	
 		}
 		
 		/**
 		 */		
-		override protected function getClassicPattern():ISeriesRenderPattern
+		override public function exportValues(split:String):String
 		{
-			return new ClassicBubbleRender(this);	
+			var labels:Vector.<String> = new Vector.<String>
+			var bubbles:Array = new Array;
+				
+			for each (var data:BubbleDataPoint in dataItemVOs)
+			{
+				labels.push(data.yLabel);
+				bubbles.push(data.zLabel);
+			}
+			
+			return seriesName + ":\n" + labels.join(split) + "\n" + bubbles.join(split);
 		}
 		
 		/**
 		 */		
-		override protected function getSimplePattern():ISeriesRenderPattern
-		{
-			return new SimpleBubbleRender(this);
-		}
-		
-		/**
-		 */		
-		override protected function get type():String
+		override public function get type():String
 		{
 			return "bubble";
 		}
@@ -102,12 +106,10 @@ package com.kvs.charts.chart2D.bubble
 			this.updateLabelDisplay(itemRender);
 			
 			itemRender.dataRender = this.dataRender;
-			itemRender.tooltip = this.tooltip;
 			
 			initTipString(item, itemRender.xTipLabel, 
 				itemRender.yTipLabel,getZTip(item),itemRender.isHorizontal);
 			
-			itemRender.initToolTips();
 			itemRenders.push(itemRender);
 		}
 		

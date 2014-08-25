@@ -99,11 +99,18 @@ package com.kvs.charts.chart2D.core.series
 		 */		
 		public function addSeries(series:Vector.<SB>):void
 		{
-			while (seriesCanvas.numChildren)
-				seriesCanvas.removeChildAt(0);
+			removeSeries();
 			
 			for each (var seriesItem:SB in series)
 				seriesCanvas.addChild(seriesItem);
+		}
+		
+		/**
+		 */		
+		public function removeSeries():void
+		{
+			while (seriesCanvas.numChildren)
+				seriesCanvas.removeChildAt(0);
 		}
 		
 	}

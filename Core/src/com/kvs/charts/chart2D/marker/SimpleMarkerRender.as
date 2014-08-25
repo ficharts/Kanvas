@@ -22,32 +22,6 @@ package com.kvs.charts.chart2D.marker
 		
 		/**
 		 */		
-		public function toClassicPattern():void
-		{ 
-			if (marker.classicPattern)
-				marker.curRenderPattern = marker.classicPattern;
-			else
-				marker.classicPattern = marker.curRenderPattern = new ClassicMarkerRender(marker);
-			
-			marker.clearCanvas();
-		}
-		
-		/**
-		 */		
-		public function toSimplePattern():void
-		{
-		}
-		
-		/**
-		 */		
-		public function renderScaledData():void
-		{
-			//marker.layoutDataItems(marker.dataOffsetter.minIndex, marker.dataOffsetter.maxIndex);
-			render();
-		}
-		
-		/**
-		 */		
 		public function render():void
 		{
 			if (marker.ifSizeChanged || marker.ifDataChanged)

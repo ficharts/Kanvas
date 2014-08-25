@@ -296,17 +296,9 @@ package view.interact
 		
 		/**
 		 */		
-		public function editChart():void
+		public function toChartEditMode():void
 		{
-			coreApp.chartEditor.chart = currentElement as ChartElement;
-			coreApp.chartEditor.exportTextFromChart();
-			
-			var evt:KVSEvent = new KVSEvent(KVSEvent.TOOLBAR_TO_CHART);
-			evt.element = currentElement;
-			mainUI.dispatchEvent(evt);
-			
-			sendNotification(Command.UN_SELECT_ELEMENT);
-			toEditMode();
+			currentMode.toChartEditMode();
 		}
 		
 		/**
@@ -380,7 +372,7 @@ package view.interact
 		 */		
 		public function toEditMode():void
 		{
-			currentMode.toEditMode();
+			currentMode.toTextEditMode();
 		}
 		
 		/**
@@ -410,7 +402,7 @@ package view.interact
 		/**
 		 * 开始型变控制框，元素被选择后续执行的动作
 		 */		
-		public function openSelector():void
+		public function showSelector():void
 		{
 			currentMode.showSelector();
 		}
@@ -514,7 +506,7 @@ package view.interact
 		 */		
 		public function resetCanvasState():void
 		{
-			//zoomMoveControl.zoomRotateMoveTo(curCanvasState.scale, curCanvasState.rotation, curCanvasState.x, curCanvasState.y);
+			zoomMoveControl.zoomRotateMoveTo(curCanvasState.scale, curCanvasState.rotation, curCanvasState.x, curCanvasState.y);
 		}
 		
 		/**
@@ -532,11 +524,16 @@ package view.interact
 		 * 编辑状态：非选择，选择，编辑
 		 */		
 		public var currentMode:ModeBase;
+		
 		public var selectedMode:ModeBase;
 		public var unSelectedMode:ModeBase;
 		public var preMode:ModeBase;
-		public var editMode:ModeBase;
+		
+		/**
+		 */		
+		public var textEditMode:ModeBase;
 		public var pageEditMode:ModeBase;
+		public var chartEditMode:ChartEditMode;
 		
 		
 		/**
@@ -635,8 +632,10 @@ package view.interact
 			//状态
 			selectedMode = new SelectedMode(this);
 			unSelectedMode = new UnSelectedMode(this);
-			editMode = new EditMode(this);
+			textEditMode = new TextEditMode(this);
 			pageEditMode = new PageEditMode(this);
+			chartEditMode = new ChartEditMode(this);
+			
 			preMode = new PrevMode(this);
 			
 			currentMode = unSelectedMode;
@@ -870,7 +869,7 @@ package view.interact
 			{
 				treking = false;
 				mainUI.curScreenState.enableCanvas();
-				zoomMoveControl.enableBGInteract();
+				//zoomMoveControl.enableBGInteract();//生效会导致动画编辑时背景可被拖动
 				
 				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
 				for each (var element:ElementBase in elements)

@@ -1,8 +1,8 @@
 package com.kvs.charts.chart2D.core
 {
+	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
-	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.layout.LayoutManager;
 	
 	import flash.display.Sprite;
@@ -25,6 +25,10 @@ package com.kvs.charts.chart2D.core
 		{
 			titleLabel.text = '';
 			subTitleLabel.text = '';
+			
+			titleLabel.style = new LabelStyle;
+			subTitleLabel.style = new LabelStyle;
+			
 			boxHeight = 0;
 		}
 		

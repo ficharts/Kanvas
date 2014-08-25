@@ -1,5 +1,6 @@
 package 
 {
+	import com.kvs.charts.chart2D.encry.SB;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.IApp;
@@ -155,7 +156,7 @@ package
 		 */		
 		public function showSelector():void
 		{
-			facade.coreMediator.openSelector();
+			facade.coreMediator.showSelector();
 		}
 		
 		/**
@@ -452,7 +453,14 @@ package
 		 */		
 		public function toPageEdit():void
 		{
-			CoreFacade.coreMediator.toPrevMode();
+			CoreFacade.coreMediator.toPageEditMode();
+		}
+		
+		/**
+		 */		
+		public function toSelect():void
+		{
+			CoreFacade.coreMediator.toSelectedMode();
 		}
 		
 		/**
@@ -483,8 +491,13 @@ package
 		public function CoreApp()
 		{
 			super();
-			
-			//Security.allowDomain("*");
+		}
+		
+		/**
+		 */		
+		public function applyTextToChart():void
+		{
+			chartEditor.applyTextToChart();
 		}
 		
 		/**

@@ -1,26 +1,14 @@
 package com.kvs.charts.chart2D.core.itemRender
 {
-	import com.kvs.charts.chart2D.core.events.FiChartsEvent;
 	import com.kvs.charts.chart2D.core.model.DataRender;
 	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.ui.label.LabelUI;
-	import com.kvs.ui.toolTips.ToolTipHolder;
-	import com.kvs.ui.toolTips.ToolTipsEvent;
-	import com.kvs.ui.toolTips.TooltipDataItem;
-	import com.kvs.ui.toolTips.TooltipStyle;
 	import com.kvs.utils.XMLConfigKit.style.IStyleStatesUI;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
 	import com.kvs.utils.XMLConfigKit.style.States;
-	import com.kvs.utils.XMLConfigKit.style.StatesControl;
 	import com.kvs.utils.XMLConfigKit.style.Style;
-	import com.kvs.utils.graphic.BitmapUtil;
 	
-	import flash.display.Bitmap;
-	import flash.display.Shape;
 	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import flash.geom.Point;
 
 	/**
 	 */	
@@ -32,10 +20,6 @@ package com.kvs.charts.chart2D.core.itemRender
 
 			//this.hitArea = canvas;
 			addChild(canvas);
-			
-			statesControl = new StatesControl(this);
-			canvas.addEventListener(MouseEvent.ROLL_OVER, rollOverHandler, false, 0, true);
-			canvas.addEventListener(MouseEvent.ROLL_OUT, rollOutHandler, false, 0, true);
 		}
 		
 		/**
@@ -63,28 +47,6 @@ package com.kvs.charts.chart2D.core.itemRender
 		
 		/**
 		 */		
-		private function rollOverHandler(evt:MouseEvent):void
-		{
-			var event:FiChartsEvent = new FiChartsEvent(FiChartsEvent.ITEM_OVER);
-			event.dataItem = this.itemVO;
-			this.dispatchEvent(event);
-			
-			this.showToolTips();
-		}
-		
-		/**
-		 */		
-		private function rollOutHandler(evt:MouseEvent):void
-		{
-			var event:FiChartsEvent = new FiChartsEvent(FiChartsEvent.ITEM_OUT);
-			event.dataItem = this.itemVO;
-			this.dispatchEvent(event);
-			
-			this.hideToolTips();	
-		}				
-		
-		/**
-		 */		
 		public var isHorizontal:Boolean = false;
 		
 		/**
@@ -103,79 +65,14 @@ package com.kvs.charts.chart2D.core.itemRender
 		 */		
 		public function disable():void
 		{
-			this.statesControl.enable = canvas.visible = _isEnable = false;
-			
-			_itemVO.removeEventListener(ItemRenderEvent.SHOW_TOOLTIP, showTooltipHandler);
-			_itemVO.removeEventListener(ItemRenderEvent.HIDE_TOOLTIP, hideTooltipHandler);
+			canvas.visible = _isEnable = false;
 		}
 		
 		/**
 		 */		
 		public function enable():void
 		{
-			this.statesControl.enable = canvas.visible = _isEnable = true;
-			
-			_itemVO.addEventListener(ItemRenderEvent.SHOW_TOOLTIP, showTooltipHandler, false, 0, true);
-			_itemVO.addEventListener(ItemRenderEvent.HIDE_TOOLTIP, hideTooltipHandler, false, 0, true);
-		}
-		
-		/**
-		 */		
-		private function showTooltipHandler(evt:Event):void
-		{
-			this.showToolTips();
-			statesControl.toHover();
-		}
-		
-		/**
-		 */		
-		private function hideTooltipHandler(evt:Event):void
-		{
-			this.hideToolTips();
-			statesControl.toNormal();
-		}
-		
-		/**
-		 */		
-		public function initToolTips():void
-		{
-			if (this.tooltip.enable)
-			{
-				toolTipsHolder = new ToolTipHolder;
-				toolTipsHolder.locked = tooltip.locked;
-				
-				var isUp:Boolean = true;
-				
-				if (Number(itemVO[this.value]) < 0)
-					toolTipsHolder.isPositive = false;
-				
-				toolTipsHolder.isHorizontal = isHorizontal;
-				
-				var tooltipItem:TooltipDataItem = new TooltipDataItem;
-				tooltipItem.metaData = itemVO.metaData;
-				tooltipItem.style = this.tooltip;
-				toolTipsHolder.pushTip(tooltipItem);
-			}
-		}
-		
-		/**
-		 */		
-		private var _tooltipStyle:TooltipStyle;
-
-		/**
-		 * 
-		 */
-		public function get tooltip():TooltipStyle
-		{
-			return _tooltipStyle;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set tooltip(value:TooltipStyle):void
-		{
-			_tooltipStyle = value;
+			canvas.visible = _isEnable = true;
 		}
 		
 		/**
@@ -201,25 +98,6 @@ package com.kvs.charts.chart2D.core.itemRender
 		
 		/**
 		 */		
-		protected var _toolTipsVO:ToolTipHolder;
-
-		/**
-		 */
-		public function get toolTipsHolder():ToolTipHolder
-		{
-			return _toolTipsVO;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set toolTipsHolder(value:ToolTipHolder):void
-		{
-			_toolTipsVO = value;
-		}
-		
-		/**
-		 */		
 		protected var canvas:Sprite = new Sprite;
 
 		/**
@@ -227,53 +105,20 @@ package com.kvs.charts.chart2D.core.itemRender
 		 */
 		public function hoverHandler():void
 		{
-			y = _itemVO.dataItemY;
-			
-			dataRender.toHover();
 		}
 		
 		/**
 		 */		
 		public function normalHandler():void
 		{
-			y = _itemVO.dataItemY;
-			
-			dataRender.toNormal();
 		}
 		
 		/**
 		 */		
 		public function downHandler():void
 		{
-			this.y = itemVO.dataItemY + 1;
-			
-			dataRender.toDown();
-			
-			var event:FiChartsEvent = new FiChartsEvent(FiChartsEvent.ITEM_CLICKED);
-			event.dataItem = this._itemVO;
-			this.dispatchEvent(event);
 		}
 		
-		/**
-		 */		
-		protected function showToolTips():void
-		{
-			if (this.tooltip.enable)
-			{
-				var location:Point = new Point(itemVO.dataItemX, itemVO.dataItemY);
-				toolTipsHolder.location = this.parent.parent.localToGlobal(location);
-				this.dispatchEvent(new ToolTipsEvent(ToolTipsEvent.SHOW_TOOL_TIPS, toolTipsHolder));
-			}
-		}
-		
-		/**
-		 */		
-		protected function hideToolTips():void
-		{
-			if (this.tooltip.enable)
-				this.dispatchEvent(new ToolTipsEvent(ToolTipsEvent.HIDE_TOOL_TIPS));
-		}
-
 		/**
 		 *  Set item render position.             
 		 */
@@ -372,16 +217,7 @@ package com.kvs.charts.chart2D.core.itemRender
 		public function set itemVO(v:SeriesDataPoint):void
 		{
 			_itemVO = v;
-			
-			legendStateContorl = new LegendStateControl(_itemVO, this.statesControl);
-			
-			_itemVO.addEventListener(ItemRenderEvent.SHOW_TOOLTIP, showTooltipHandler, false, 0, true);
-			_itemVO.addEventListener(ItemRenderEvent.HIDE_TOOLTIP, hideTooltipHandler, false, 0, true);
 		}
-		
-		/**
-		 */		
-		protected var legendStateContorl:LegendStateControl;
 		
 		/**
 		 */		
@@ -400,7 +236,6 @@ package com.kvs.charts.chart2D.core.itemRender
 		public function set dataRender(value:DataRender):void
 		{
 			_dataRender = value;
-			_dataRender.toNormal();
 		}
 		
 		/**
@@ -454,11 +289,9 @@ package com.kvs.charts.chart2D.core.itemRender
 		public function set states(value:States):void
 		{
 			_states = value;
+			
+			currState = _states.getNormal;
 		}
 		
-		/**
-		 */		
-		protected var statesControl:StatesControl;;
-
 	}
 }

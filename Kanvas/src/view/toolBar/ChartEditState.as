@@ -2,14 +2,11 @@ package view.toolBar
 {
 	import com.kvs.ui.button.LabelBtn;
 	import com.kvs.ui.label.LabelUI;
-	import com.kvs.utils.ViewUtil;
-	
-	import commands.Command;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import view.element.chart.ChartElement;
+	import model.CoreFacade;
 
 	/**
 	 *
@@ -79,14 +76,22 @@ package view.toolBar
 			
 			cancelBtn.addEventListener(MouseEvent.CLICK, cancelChartEdit);
 			confirmBtn.addEventListener(MouseEvent.CLICK, confirmChartEdit);
+			
 			tb.main.kvsCore.addEventListener(KVSEvent.TOOLBAR_TO_CHART, toChartEditHandler);
+			tb.main.kvsCore.addEventListener(KVSEvent.TOOLBAR_TO_NORMAL, toNormalHandler);
+		}
+		
+		/**
+		 */		
+		private function toNormalHandler(evt:KVSEvent):void
+		{
+			tb.main.mainNavControl.toNormal();
 		}
 		
 		/**
 		 */		
 		private function toChartEditHandler(evt:KVSEvent):void
 		{
-			chart = evt.element as ChartElement;
 			tb.toChartEditMode();
 		}
 		
@@ -100,7 +105,8 @@ package view.toolBar
 		/**
 		 */		
 		private function confirmChartEdit(evt:Event):void
-		{
+		{	
+			tb.main.kvsCore.applyTextToChart();
 			tb.main.mainNavControl.toNormal();
 		}
 		
@@ -142,16 +148,7 @@ package view.toolBar
 			tb.currentState.ctner.visible = true;
 			
 			tb.main.pagePanel.visible = true;
-			ViewUtil.hide(tb.main.kvsCore.chartEditor);
-			ViewUtil.show(tb.main.kvsCore.canvas);
-			
-			tb.main.kvsCore.facade.sendNotification(Command.SElECT_ELEMENT, chart);
 		}
-		
-		/**
-		 */		
-		private var chart:ChartElement;
-		
 		
 	}
 }

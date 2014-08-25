@@ -68,7 +68,12 @@ package
 		/**
 		 * 告知工具条切换到编辑状态 
 		 */		
-		public static const TOOLBAR_TO_CHART:String = "TOOLBAR_TO_CHART";
+		public static const TOOLBAR_TO_CHART:String = "toolbarToChart";
+		
+		/**
+		 * 告知工具条恢复到正常状态 
+		 */		
+		public static const TOOLBAR_TO_NORMAL:String = "toobarToNormal";
 		
 		/**
 		 * 样式改变 

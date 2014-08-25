@@ -75,24 +75,12 @@ package com.kvs.charts.legend.view
 		 */		
 		private function overHandler(evt:MouseEvent):void
 		{
-			icoRender.toHover();
-			iconShape.graphics.clear();
-			icoRender.render(iconShape, vo.metaData);
-			
-			sourceY = this.y;
-			this.vo.dispatchEvent(new LegendEvent(LegendEvent.LEGEND_ITEM_OVER, vo));
 		}
 		
 		/**
 		 */		
 		private function outHandler(evt:MouseEvent):void
 		{
-			icoRender.toNormal();
-			iconShape.graphics.clear();
-			icoRender.render(iconShape, vo.metaData);
-			
-			this.y = sourceY;
-			this.vo.dispatchEvent(new LegendEvent(LegendEvent.LEGEND_ITEM_OUT, vo));
 		}
 		
 		/**
@@ -107,7 +95,6 @@ package com.kvs.charts.legend.view
 			else
 				icoRender = style.icon;
 			
-			icoRender.toNormal();
 			icoRender.render(iconShape, vo.metaData);
 			iconShape.x = iconShape.width / 2;
 			iconShape.y = 0;

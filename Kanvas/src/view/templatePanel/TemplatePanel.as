@@ -2,14 +2,12 @@ package view.templatePanel
 {
 	import com.kvs.ui.Panel;
 	import com.kvs.ui.button.LabelBtn;
-	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.layout.BoxLayout;
 	
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.filters.DropShadowFilter;
 	import flash.filters.GlowFilter;
 	
 	/**

@@ -154,9 +154,23 @@ package model.vo
 				__thumbUpdatable = value;
 			}
 		}
+		
 		private var __thumbUpdatable:Boolean = true;
 		
-		public var elementID:uint;
+		/**
+		 */		
+		private var _elementID:uint;
+
+		public function get elementID():uint
+		{
+			return _elementID;
+		}
+
+		public function set elementID(value:uint):void
+		{
+			_elementID = value;
+		}
+
 		
 		public var bitmapData:BitmapData;
 		

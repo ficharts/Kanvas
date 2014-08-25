@@ -14,6 +14,8 @@ package
 	
 	import model.CoreFacade;
 	
+	import view.chartPanel.ChartPanel;
+	import view.element.chart.Chart2D;
 	import view.pagePanel.PagePanel;
 	import view.shapePanel.ShapePanel;
 	import view.templatePanel.TemplatePanel;
@@ -53,11 +55,13 @@ package
 			
 			initPanels();
 			uiContainer.addChild(zoomToolBar);//zoombar在这里加载是为了防止布局时因为zoombar没有初始化导致的位置偏差
-			preLayout();
 			
 			//UI交互控制
 			mainNavControl = new NavControl(this);
 			
+			preLayout();
+			
+			uiContainer.addChild(chartPanel);
 			uiContainer.addChild(pagePanel);
 			uiContainer.addChild(themePanel);
 			uiContainer.addChild(shapePanel);
@@ -133,10 +137,20 @@ package
 		{
 			exitIcon;
 			
+			// 图表面板初始化
+			chartPanel = new ChartPanel(this);
+			chartPanel.w = 130;
+			chartPanel.title = '图表';
+			chartPanel.ifShowExitBtn = true;
+			chartPanel.isOpen = false;
+			chartPanel.bgStyleXML = panelBGStyleXML;
+			chartPanel.titleStyleXML = panelTitleStyleXML;
+			chartPanel.exitBtnStyleXML = exitBtnStyle;
+			
 			// 图形面板初始化
 			shapePanel = new ShapePanel(this);
 			shapePanel.w = 130;
-			shapePanel.title = '图形创建';
+			shapePanel.title = '图形';
 			shapePanel.ifShowExitBtn = true;
 			shapePanel.isOpen = false;
 			shapePanel.bgStyleXML = panelBGStyleXML;
@@ -147,7 +161,7 @@ package
 			themePanel = new ThemePanel(this);
 			themePanel.w = 130;
 			themePanel.barHeight = 40;
-			themePanel.title = '风格样式';
+			themePanel.title = '主题';
 			themePanel.ifShowExitBtn = true;
 			themePanel.isOpen = false;
 			themePanel.bgStyleXML = panelBGStyleXML;
@@ -176,6 +190,7 @@ package
 				preLayout();
 				
 				toolBar.updateLayout();
+				chartPanel.updateLayout();
 				shapePanel.updateLayout();
 				themePanel.updateLayout();
 				pagePanel.updateLayout();
@@ -193,32 +208,11 @@ package
 			toolBar.w = stage.stageWidth;
 			toolBar.h = 50;
 			
-			pagePanel.h = shapePanel.h = themePanel.h = stage.stageHeight - toolBar.h;
-			pagePanel.y = shapePanel.y = themePanel.y = toolBar.h;
+			chartPanel.h = pagePanel.h = shapePanel.h = themePanel.h = stage.stageHeight - toolBar.h;
+			chartPanel.y = pagePanel.y = shapePanel.y = themePanel.y = toolBar.h;
 			
 			zoomToolBar.y = (stage.stageHeight - zoomToolBar.height) * .5;
-			
-			//面板关闭时，将其移至屏幕外右侧，面板开启时，将其移至屏幕内右侧；
-			if (themePanel.isOpen)
-			{
-				themePanel.x = stage.stageWidth - themePanel.w;
-				shapePanel.x = stage.stageWidth;
-				
-				zoomToolBar.x = stage.stageWidth - themePanel.w - zoomToolBar.width - 20;
-			}
-			else if (shapePanel.isOpen)
-			{
-				shapePanel.x = stage.stageWidth - shapePanel.w;
-				themePanel.x = stage.stageWidth;
-				
-				zoomToolBar.x = stage.stageWidth - themePanel.w - zoomToolBar.width - 20;
-			}
-			else
-			{
-				shapePanel.x = stage.stageWidth;
-				themePanel.x = stage.stageWidth;
-				zoomToolBar.x = stage.stageWidth - zoomToolBar.width - 20;
-			}
+			mainNavControl.alginToRight();
 			
 			//画布尺寸变化时调用此方法
 			updateKvsContenBound();
@@ -242,11 +236,9 @@ package
 			else
 			{
 				gutter = 30;
+				
 				var w:Number =  stage.stageWidth - gutter * 2 - pagePanel.w;
-				if (shapePanel.isOpen)
-					w -= shapePanel.w;
-				else if (themePanel.isOpen)
-					w -= themePanel.w;
+				w -= mainNavControl.rightPanelWidth;
 				
 				kvsCore.autofitRect = new Rectangle(pagePanel.w + gutter, toolBar.h + gutter, w, 
 					stage.stageHeight - toolBar.h - gutter * 2);
@@ -274,6 +266,10 @@ package
 		 * 装载工具条，面板的容器
 		 */		
 		private var uiContainer:Sprite = new Sprite;
+		
+		/**
+		 */		
+		public var chartPanel:Panel;
 		
 		/**
 		 * 图形面板，从这里创建图形元素 

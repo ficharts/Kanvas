@@ -19,7 +19,6 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.charts.chart2D.core.model.Series;
 	import com.kvs.charts.chart2D.core.model.XAxis;
 	import com.kvs.charts.chart2D.core.model.YAxis;
-	import com.kvs.charts.chart2D.core.zoomBar.ZoomWindowStyle;
 	import com.kvs.charts.chart2D.line.LineSeries;
 	import com.kvs.charts.chart2D.marker.MarkerSeries;
 	import com.kvs.charts.common.ChartColors;
@@ -42,7 +41,6 @@ package com.kvs.charts.chart2D.encry
 			XMLVOLib.registerCustomClasses(<colors path='com.kvs.utils.XMLConfigKit.style.Colors'/>);
 			
 			//-------------------数据缩放--------------------------------
-			ZoomWindowStyle;
 			XMLVOLib.registerCustomClasses(<window path='com.kvs.charts.chart2D.core.zoomBar.ZoomWindowStyle'/>);
 			
 			XMLVOLib.setASStyleKey("barBG");

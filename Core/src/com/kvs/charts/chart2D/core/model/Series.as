@@ -187,8 +187,6 @@ package com.kvs.charts.chart2D.core.model
 		 */		
 		public function created():void
 		{
-			items.reverse();
-			
 			var length:uint = _items.length;
 			var index:uint = 0;
 			var columnSereisIndex:uint = 0;

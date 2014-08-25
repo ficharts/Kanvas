@@ -86,9 +86,16 @@ package com.kvs.charts.chart2D.encry
 		{
 			setLib();
 			
-			initStyleTempalte(DecForKvs.chart2dConfig);
+			initStyle();
 			
 			this.init();
+		}
+		
+		/**
+		 */		
+		protected function initStyle():void
+		{
+			
 		}
 		
 		/**
@@ -97,7 +104,7 @@ package com.kvs.charts.chart2D.encry
 		 * 图表初始化时先初始此文件�
 		 * 
 		 */		
-		internal function initStyleTempalte(chartConfig:XML):void
+		public function initStyleTempalte(chartConfig:XML):void
 		{
 			for each (var item:XML in chartConfig.styles.children())
 				Chart2DStyleTemplate.pushTheme(XML(item.toXMLString()));
@@ -142,71 +149,6 @@ package com.kvs.charts.chart2D.encry
 		/**
 		 */		
 		protected var customConfig:XML;
-		
-		
-		/**
-		 */		
-		private var _ifDataScalable:Boolean = false;
-
-		/**
-		 * 是否开启数据缩放，开启后<code>scaleData</code>方法才会生效
-		 */
-		public function get ifDataScalable():Boolean
-		{
-			return _ifDataScalable;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set ifDataScalable(value:Boolean):void
-		{
-			_ifDataScalable = value;
-			
-			if (ifReady)
-				chart.setDataScalable(_ifDataScalable);
-			else
-				ifDataScalableChanged = true;
-		}
-		
-		/**
-		 */		
-		private var ifDataScalableChanged:Boolean = false;
-		
-		/**
-		 * 
-		 * 根据数据范围缩放图表
-		 * 
-		 * @param valueFrom 数据范围的起点�
-		 * @param valueTo   数据范围的终点�
-		 * 
-		 */		
-		public function scaleData(valueFrom:Object, valueTo:Object):void
-		{
-			if (ifReady)
-			{
-				chart.scaleData(valueFrom, valueTo);
-			}
-			else
-			{
-				dataScaleForm = valueFrom;
-				dataScaleTo = valueTo;
-				ifScaleDataChanged = true;
-			}
-		}
-		
-		/**
-		 */		
-		private var ifScaleDataChanged:Boolean = false;
-		
-		/**
-		 */		
-		private var dataScaleForm:Object;
-		
-		/**
-		 */		
-		private var dataScaleTo:Object;
-		
 		
 		
 		/**
@@ -748,9 +690,7 @@ package com.kvs.charts.chart2D.encry
 		//-----------------------------------------------------
 		protected function initInterfaces():void
 		{
-			ExternalUtil.addCallback("ifDataScalable", ifChartDataScalable);
 			
-			ExternalUtil.addCallback("setConfigXML", setConfigXMLHandler);
 			ExternalUtil.addCallback("setConfigFile", requestConfigURL);
 			
 			ExternalUtil.addCallback("setStyle", setStyleHandler);
@@ -776,15 +716,8 @@ package com.kvs.charts.chart2D.encry
 			this.loadingDataInfo = stage.loaderInfo.parameters['loadingDataInfo'];
 			this.loadingDataErrorInfo = stage.loaderInfo.parameters['loadingDataErrorInfo'];
 			
-			ExternalUtil.call("FiCharts.beforeInit", id);
 		}
 		
-		/**
-		 */		
-		private function ifChartDataScalable():Boolean
-		{
-			return chart.ifDataScalable();
-		}
 		
 		
 		
@@ -870,18 +803,6 @@ package com.kvs.charts.chart2D.encry
 			{
 				this.render();
 				ifPreRender = false;
-			}
-			
-			if (ifDataScalableChanged)
-			{
-				this.chart.setDataScalable(this.ifDataScalable);
-				ifDataScalableChanged = false;
-			}
-			
-			if (this.ifScaleDataChanged && this.ifDataScalable)
-			{
-				this.scaleData(this.dataScaleTo, dataScaleTo);
-				ifScaleDataChanged = false;
 			}
 			
 			if (this.ifConfigFileURLChanged)

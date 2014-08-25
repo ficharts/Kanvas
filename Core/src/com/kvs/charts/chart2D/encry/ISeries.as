@@ -20,10 +20,17 @@ package com.kvs.charts.chart2D.encry
 			
 		/**
 		 * 
-		 * 获取序列的label，柱状图，条形图，饼图的label获取方式各不相同
+		 * 获取序列的字段，柱状图，条形图，饼图的label获取方式各不相同
 		 * 
 		 */			
 		function get labels():Vector.<String>
+			
+		/**
+		 * 
+		 * 获取序列的值，柱状图，条形图，饼图的label获取方式各不相同
+		 * 
+		 */			
+		function exportValues(split:String):String
 			
 		/**
 		 * 
@@ -31,5 +38,28 @@ package com.kvs.charts.chart2D.encry
 		 * 
 		 */			
 		function get seriesName():String;
+		
+		/**
+		 * 
+		 * @return 
+		 * 
+		 */		
+		function get type():String;
+		
+		/**
+		 */		
+		function get xField():String;
+		
+		/**
+		 */		
+		function get yField():String;
+		
+		/**
+		 */		
+		function set xField(value:String):void;
+		
+		/**
+		 */		
+		function set yField(value:String):void;
 	}
 }

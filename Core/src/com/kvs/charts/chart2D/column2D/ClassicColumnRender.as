@@ -19,33 +19,6 @@ package com.kvs.charts.chart2D.column2D
 		
 		/**
 		 */		
-		public function toClassicPattern():void
-		{
-			
-		}
-		
-		/**
-		 */		
-		public function toSimplePattern():void
-		{
-			if(series.curRenderPattern == null)
-				series.curRenderPattern = series.simplePattern = new SimpleColumnRender(series);
-			else
-				series.curRenderPattern = series.simplePattern;
-			
-			series.clearCanvas();
-			series.columnUIs.length = 0;
-			series.columnUIs = null;
-		}
-		
-		/**
-		 */		
-		public function renderScaledData():void
-		{
-		}
-		
-		/**
-		 */		
 		public function render():void
 		{
 			if (series.ifDataChanged || series.ifSizeChanged)

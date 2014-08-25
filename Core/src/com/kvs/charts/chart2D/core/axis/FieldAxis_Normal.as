@@ -1,7 +1,5 @@
 package com.kvs.charts.chart2D.core.axis
 {
-	import com.kvs.charts.chart2D.core.model.Zoom;
-	
 	import flash.text.TextField;
 	
 	/**
@@ -45,28 +43,6 @@ package com.kvs.charts.chart2D.core.axis
 		/**
 		 */		
 		private var axis:FieldAxis;
-		
-		/**
-		 */		
-		public function adjustZoomFactor(model:Zoom):void
-		{
-		}
-		
-		/**
-		 */		
-		public function toNormalPattern():void
-		{
-		}
-		
-		/**
-		 */		
-		public function toZoomPattern():void
-		{
-			if (axis.zoomPattern)
-				axis.curPattern = axis.zoomPattern;
-			else
-				axis.curPattern = axis.getZoomPattern();
-		}
 		
 		/**
 		 */		

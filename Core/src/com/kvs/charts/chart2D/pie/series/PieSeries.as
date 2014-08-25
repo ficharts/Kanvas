@@ -33,6 +33,13 @@ package com.kvs.charts.chart2D.pie.series
 		}
 		
 		/**
+		 */		
+		public function get type():String
+		{
+			return "pie";
+		}
+		
+		/**
 		 */
 		private var _seriesName:String = "";
 		
@@ -57,6 +64,18 @@ package com.kvs.charts.chart2D.pie.series
 				labels.push(p.xLabel);
 			
 			return labels;
+		}
+		
+		/**
+		 */		
+		public function exportValues(split:String):String
+		{
+			var labels:Vector.<String> = new Vector.<String>
+			
+			for each (var data:PieDataItem in _dataItemVOs)
+				labels.push(data.yLabel);
+			
+			return seriesName + ":\n" + labels.join(split);;
 		}
 		
 		/**
@@ -322,8 +341,8 @@ package com.kvs.charts.chart2D.pie.series
 				seriesDataItem.metaData = item;
 				//XMLVOMapper.pushXMLDataToVO(item, seriesDataItem.metaData);//将XML转化为对象
 				
-				seriesDataItem.label = item[this.labelField]; 
-				seriesDataItem.value = item[this.valueField]; 
+				seriesDataItem.label = item[this.xField]; 
+				seriesDataItem.value = item[this.yField]; 
 				
 				if (RexUtil.ifTextNull(seriesDataItem.label)&& RexUtil.ifTextNull(seriesDataItem.value))
 				{
@@ -442,7 +461,7 @@ package com.kvs.charts.chart2D.pie.series
 
 		/**
 		 */
-		public function get labelField():String
+		public function get xField():String
 		{
 			return _labelField;
 		}
@@ -450,7 +469,7 @@ package com.kvs.charts.chart2D.pie.series
 		/**
 		 * @private
 		 */
-		public function set labelField(value:String):void
+		public function set xField(value:String):void
 		{
 			_labelField = value;
 		}
@@ -459,12 +478,12 @@ package com.kvs.charts.chart2D.pie.series
 		 */		
 		private var _valueField:String;
 
-		public function get valueField():String
+		public function get yField():String
 		{
 			return _valueField;
 		}
 
-		public function set valueField(value:String):void
+		public function set yField(value:String):void
 		{
 			_valueField = value;
 		}

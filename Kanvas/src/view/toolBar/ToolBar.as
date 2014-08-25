@@ -2,15 +2,11 @@ package view.toolBar
 {
 	import com.kvs.ui.FiUI;
 	import com.kvs.ui.button.IconBtn;
-	import com.kvs.ui.button.LabelBtn;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.Style;
 	
-	import control.InteractEvent;
-	
 	import flash.display.Shape;
-	import flash.events.MouseEvent;
 
 	/**
 	 * 工具条
@@ -137,7 +133,9 @@ package view.toolBar
 			return (normalState as NormalState).themeBtn;
 		}
 		
-		
+		public function get chartBtn():IconBtn{
+			return (normalState as NormalState).chartBtn;
+		}
 		
 		
 		

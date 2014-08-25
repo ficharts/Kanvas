@@ -22,6 +22,7 @@ package model
 	import view.MediatorNames;
 	import view.element.*;
 	import view.element.chart.ChartElement;
+	import view.element.chart.PieElement;
 	import view.element.imgElement.ImgElement;
 	import view.element.imgElement.SWFElement;
 	import view.element.shapes.*;
@@ -152,7 +153,8 @@ package model
 			ElementCreator.registerElement('dialog', DialogUI, DialogVO);
 			ElementCreator.registerElement("page", PageElement, PageVO);
 			
-			ElementCreator.registerElement("chart", ChartElement, ChartVO);
+			ElementCreator.registerElement("chart2d", ChartElement, ChartVO);
+			ElementCreator.registerElement("pie2d", PieElement, ChartVO);
 		}
 		
 		/**

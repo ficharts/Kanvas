@@ -53,6 +53,24 @@ package model
 		 */		
 		public var styleType:String = '';
 		
+		private var _config:Object;
+
+		/**
+		 */
+		public function get config():Object
+		{
+			return _config;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set config(value:Object):void
+		{
+			_config = value;
+		}
+
+		
 		/**
 		 * 拖动创建和点击创建图形的动画时间不同，所以要靠此属性传递给图形创建动画
 		 */		

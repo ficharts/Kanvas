@@ -13,7 +13,6 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.charts.chart2D.core.series.IDirectionSeries;
 	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.chart2D.core.series.SeriesDirectionControl;
-	import com.kvs.charts.chart2D.core.zoomBar.ZoomBar;
 	import com.kvs.charts.common.ChartColors;
 	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.charts.legend.model.LegendVO;
@@ -67,12 +66,17 @@ package com.kvs.charts.chart2D.encry
 		}
 		
 		/**
-		 * 堆积图的zoombar数据设置需屏蔽
 		 */		
-		public function setZoomBarData(zoomBar:ZoomBar):void
+		public function exportValues(split:String):String
 		{
-			zoomBar.setData(dataItemVOs.concat(), verticalValues.concat());
+			var labels:Vector.<String> = new Vector.<String>
+			
+			for each (var data:SeriesDataPoint in dataItemVOs)
+				labels.push(data.yLabel);
+			
+			return seriesName + ":\n" + labels.join(split);
 		}
+		
 		
 		/**
 		 * 序列自动计算名称，避免空值引起的图例排版问题
@@ -87,7 +91,7 @@ package com.kvs.charts.chart2D.encry
 		
 		/**
 		 */		
-		protected function get type():String
+		public function get type():String
 		{
 			return null;
 		}
@@ -136,221 +140,15 @@ package com.kvs.charts.chart2D.encry
 		// 
 		// 模式�
 		//---------------------------------------------------------------------------
-		/**
-		 * 序列自动计算名称，避免空值引起的图例排版问题
-		 */		
-		public function toClassicPattern():void
-		{
-			if (curRenderPattern)
-				curRenderPattern.toClassicPattern();
-			else
-				curRenderPattern = getClassicPattern();
-			
-			if (simpleDataRender && simpleDataRender.parent)
-			{
-				this.removeChild(simpleDataRender)
-				simpleDataRender = null;
-			}
-			
-			if (tipItem)
-			{
-				tipItem.distory();
-				tipItem = null;
-			}
-		}
-		
-		/**
-		 */		
-		public function toSimplePattern():void
-		{
-			if (curRenderPattern)
-				curRenderPattern.toSimplePattern();
-			else
-				curRenderPattern = getSimplePattern();
-			
-			if (simpleDataRender == null)
-			{
-				simpleDataRender = new Sprite;
-				simpleDataRender.graphics.clear();
-				
-				dataRender.toHover();
-				dataRender.render(simpleDataRender, this);
-				this.addChild(simpleDataRender);
-			}
-			
-			if (tipItem == null)
-			{
-				tipItem = new TooltipDataItem;
-				tipItem.style = this.tooltip;
-			}
-		}
-		
-		/**
-		 * 子类需重写此方法，应对两种渲染模式
-		 */		
-		protected function getClassicPattern():ISeriesRenderPattern
-		{
-			return null;
-		}
-		
-		/**
-		 * 子类需重写此方法，应对两种渲染模式
-		 */		
-		protected function getSimplePattern():ISeriesRenderPattern
-		{
-			return null;
-		}
 		
 		/**
 		 */		
 		public var curRenderPattern:ISeriesRenderPattern;
-		public var classicPattern:ISeriesRenderPattern;
-		public var simplePattern:ISeriesRenderPattern;
 		
-		
-		
-		
-		//--------------------------------------------------------
-		//
-		//
-		// 数据缩放下的信息提示控制
-		//
-		//
-		//-------------------------------------------------------
-		
-		
-		/**
-		 * 显示数据节点
-		 */		
-		public function showDataRender():void
-		{
-			simpleDataRender.visible = true;
-		}
-		
-		/**
-		 * 隐藏数据节点
-		 */		
-		private function hideDataRender(evt:DataResizeEvent):void
-		{
-			simpleDataRender.visible = false;
-		}
-		
-		/**
-		 */		
-		private function updateTipByIndex(evt:DataResizeEvent):void
-		{
-			_updateTipsData(evt.data);
-		}
-		
-		/**
-		 */		
-		private function updateTipByData(evt:DataResizeEvent):void
-		{
-			var i:uint;
-			var curData:Number = 0;
-			var minDis:Number = evt.end - evt.start;
-			var index:int = - 1; 
-			
-			for (i = dataOffsetter.minIndex; i <= dataOffsetter.maxIndex; i ++)
-			{
-				curData = horValues[i];
-				
-				if (curData > evt.start && curData < evt.end)
-				{
-					if (Math.abs(evt.data - curData) < minDis)
-					{
-						minDis = Math.abs(evt.data - curData);
-						index = i;
-					}
-				}
-			}
-			
-			_updateTipsData(index);
-		}
-		
-		/**
-		 */		
-		private function _updateTipsData(index:uint):void
-		{
-			if (index >= 0 && index <= maxDataItemIndex)
-			{
-				var item:SeriesDataPoint = this.dataItemVOs[index];
-				simpleDataRender.x = item.x;
-				simpleDataRender.y = item.y;
-				
-				if (simpleDataRender.visible == false)
-					this.horizontalAxis.dispatchEvent(new DataResizeEvent(DataResizeEvent.IF_SHOW_DATA_RENDER));
-				
-				tipItem.metaData = item.metaData;
-			}
-		}
-		
-		/**
-		 */		
-		private var simpleDataRender:Sprite;
-		
-		/**
-		 * 数据缩放时的信息提示数据节点�每个序列仅有一个节�
-		 */		
-		public var tipItem:TooltipDataItem;
-		
-		
-		//---------------------------------------------------------------------
-		//
-		//  数据缩放控制�序列数据缩放因数据类型而不同， 反映到不同类型的坐标轴上
-		//
-		// 一种是按照节点位置，一种是按照数据范围
-		//
+	
 		//----------------------------------------------------------------------
 		
-		/**
-		 */		
-		public function dataResizedByIndex(minIndex:uint, maxIndex:uint):void
-		{
-			dataOffsetter.minIndex = minIndex;
-			dataOffsetter.maxIndex = maxIndex;
-			dataOffsetter.offSet(0, maxDataItemIndex);
-			
-			scrollYValues = this.verValues.slice(dataOffsetter.minIndex, dataOffsetter.maxIndex + 1);
-		}
 		
-		/**
-		 * 前后各多延伸一个节�
-		 */		
-		public function dataResizedByRange(min:Number, max:Number):void
-		{
-			dataOffsetter.minIndex = 0;
-			dataOffsetter.maxIndex = maxDataItemIndex;
-			
-			dataOffsetter.getDataIndexRange(min, max, horValues);
-			dataOffsetter.offSet(0, maxDataItemIndex);
-			
-			scrollYValues = this.verValues.slice(dataOffsetter.minIndex, dataOffsetter.maxIndex + 1);
-		}
-		
-		/**
-		 * 用于为动态渲染的Y轴提供数�
-		 */		
-		public var scrollYValues:Vector.<Object>;
-
-		/**
-		 * 这些值是数据筛分时构建， 用来辅助划定数值序号范围；
-		 */		
-		private var horValues:Array = [];
-		
-		/**
-		 * 这些值是数据筛分时构建， 用来辅助刷新Y轴数�
-		 */		
-		private var verValues:Vector.<Object> = new Vector.<Object>;
-		
-		/**
-		 */		
-		public function renderDataResized():void
-		{
-			PerformaceTest.start("renderScaledData " + this.type);
-			this.curRenderPattern.renderScaledData();
-			PerformaceTest.end("renderScaledData " + this.type);
-		}
 		
 		/**
 		 */		
@@ -562,24 +360,6 @@ package com.kvs.charts.chart2D.encry
 		//
 		//-------------------------------------
 		
-		/**
-		 */		
-		private var _tooltip:TooltipStyle;
-
-		/**
-		 */
-		public function get tooltip():TooltipStyle
-		{
-			return _tooltip;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set tooltip(value:TooltipStyle):void
-		{
-			_tooltip = XMLVOMapper.updateObject(value, _tooltip, Model.TOOLTIP, this) as TooltipStyle;
-		}
 
 		
 		
@@ -639,12 +419,10 @@ package com.kvs.charts.chart2D.encry
 			updateLabelDisplay(itemRender);
 			
 			itemRender.dataRender = this.dataRender;
-			itemRender.tooltip = this.tooltip;
 			
 			initTipString(item, getXTip(item), 
 				getYTip(item), getZTip(item), itemRender.isHorizontal);
 			
-			itemRender.initToolTips();
 			itemRenders.push(itemRender);
 		}
 		
@@ -766,14 +544,6 @@ package com.kvs.charts.chart2D.encry
 		}
 		
 		/**
-		 * 仅为数据缩放/滚动过程中的Y轴动态更新提供数�
-		 */		
-		public function updateYAxisValueForScroll():void
-		{
-			verticalAxis.pushYData(scrollYValues);
-		}
-		
-		/**
 		 */		
 		private var _horizontalValues:Vector.<Object> = new Vector.<Object>;
 
@@ -869,12 +639,6 @@ package com.kvs.charts.chart2D.encry
 			_horizontalAxis = v;
 			_horizontalAxis.direction = AxisBase.HORIZONTAL_AXIS;
 			_horizontalAxis.mdata = this;
-			
-			_horizontalAxis.addEventListener(DataResizeEvent.RATE_SERIES_DATA_ITEMS, rateDataItems, false, 0, true);
-			
-			_horizontalAxis.addEventListener(DataResizeEvent.UPDATE_TIPS_BY_DATA, updateTipByData, false, 0, true);
-			_horizontalAxis.addEventListener(DataResizeEvent.UPDATE_TIPS_BY_INDEX, updateTipByIndex, false, 0, true);
-			_horizontalAxis.addEventListener(DataResizeEvent.HIDE_DATA_RENDER, hideDataRender, false, 0, true);
 		}
 
 		/**
@@ -1050,45 +814,6 @@ package com.kvs.charts.chart2D.encry
 				initDataItem(seriesDataItem);
 		}
 		
-		/**
-		 * 
-		 * 从原始数据节点中筛分一部分用于渲染�如果节点
-		 * 
-		 * 未被完全初始化，就完成其初始�
-		 * 
-		 */		
-		private function rateDataItems(evt:DataResizeEvent):void
-		{
-			if (sourceDataItems == null) return;
-			
-			PerformaceTest.start("构建数据节点");
-			
-			this.dataItemVOs.length = this.horValues.length = verValues.length = 0;
-			
-			var sourceDataLen:uint = this.sourceDataItems.length;
-			var i:uint, j:uint = 0;
-			var dataItem:SeriesDataPoint;
-			
-			for (i = 0; i < sourceDataLen; i += evt.step)
-			{
-				if (i + evt.step >= sourceDataLen)
-					dataItem = dataItemVOs[j] = sourceDataItems[sourceDataLen - 1];
-				else
-					dataItem = dataItemVOs[j] = sourceDataItems[i];
-				
-				if (dataItem.metaData == null)
-					initDataItem(dataItem);
-				
-				horValues[j] = this.horizontalValues[i];
-				verValues[j] = this.verticalValues[i];
-				
-				j ++;
-			}
-			
-			updateMaxIndex();
-			
-			PerformaceTest.end("构建数据节点");
-		}
 		
 		/**
 		 */		

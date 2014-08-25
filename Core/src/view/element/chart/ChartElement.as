@@ -1,6 +1,7 @@
 package view.element.chart
 {
 	import com.kvs.charts.chart2D.core.events.FiChartsEvent;
+	import com.kvs.charts.chart2D.encry.CSB;
 	import com.kvs.charts.chart2D.encry.ISeries;
 	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
@@ -17,6 +18,9 @@ package view.element.chart
 	import view.interact.autoGroup.IAutoGroupElement;
 	
 	/**
+	 * 
+	 * 图表组件，包含所有图表
+	 * 
 	 */	
 	public class ChartElement extends ElementBase implements IAutoGroupElement
 	{
@@ -24,15 +28,23 @@ package view.element.chart
 		{
 			super(vo);
 			
-			chart2d = new Chart2D();
-			addChild(chart2d);
+			createChart();
+			
+			addChild(chart);
+		}
+		
+		/**
+		 */		
+		protected function createChart():void
+		{
+			chart = new Chart2D;
 		}
 		
 		/**
 		 */		
 		public function get series():Vector.<ISeries>
 		{
-			return chart2d.chart.series;
+			return chart.chart.series;
 		}
 		
 		/**
@@ -49,17 +61,17 @@ package view.element.chart
 		{
 			preRender();
 			
-			if (chart2d.ifReady)
+			if (chart.ifReady)
 				render();
 			else
-				chart2d.addEventListener(FiChartsEvent.CHART_READY, readyHandler);
+				chart.addEventListener(FiChartsEvent.CHART_READY, readyHandler);
 		}
 		
 		/**
 		 */		
 		private function readyHandler(evt:FiChartsEvent):void
 		{
-			chart2d.removeEventListener(FiChartsEvent.CHART_READY, readyHandler);
+			chart.removeEventListener(FiChartsEvent.CHART_READY, readyHandler);
 			
 			this.render();
 		}
@@ -70,27 +82,47 @@ package view.element.chart
 		{
 			super.render();
 			
-			chart2d.setLib();
+			chart.setLib();
 			
-			chart2d.width = chartVO.width;
-			chart2d.height = chartVO.height;
+			chart.width = chartVO.width;
+			chart.height = chartVO.height;
 			
-			chart2d.setConfigXML(chartVO.data.toString());
-			chart2d.render();
+			chart.setConfigXML(chartVO.config.toString());
+			chart.render();
 			
-			chart2d.x = - chart2d.width / 2;
-			chart2d.y = - chart2d.height / 2;
+			chart.x = - chart.width / 2;
+			chart.y = - chart.height / 2;
 			
 			XMLVOLib.unsetLib();
 			
 			if (ifSizing)
 			{
-				
-				chart2d.visible = true;
+				chart.visible = true;
 				ifSizing = false;
 				
 				graphicShape.graphics.clear();
 			}
+		}
+		
+		/**
+		 */		
+		public function set configXML(xml:XML):void
+		{
+			chartVO.config = xml;
+		}
+		
+		/**
+		 */		
+		public function get configXML():XML
+		{
+			return XML(chartVO.config.toString());
+		}
+		
+		/**
+		 */		
+		public function setData(data:Vector.<Object>):void
+		{
+			chart.chart.dataVOes = data;
 		}
 		
 		/**
@@ -101,17 +133,13 @@ package view.element.chart
 			
 			if (ifSizing == false)// 刚开始resize
 			{
-				
-				
-				chart2d.visible = false;
+				chart.visible = false;
 				ifSizing = true;
 			}
 				graphicShape.graphics.clear();
-				BitmapUtil.drawBitmapDataToGraphics(BitmapUtil.getBitmapData(chart2d), graphicShape.graphics, 
+				BitmapUtil.drawBitmapDataToGraphics(BitmapUtil.getBitmapData(chart), graphicShape.graphics, 
 					vo.width, vo.height, - vo.width / 2, - vo.height / 2, true);
 				
-				
-			
 		}
 		
 		/**
@@ -160,12 +188,12 @@ package view.element.chart
 		 */		
 		override public function get shape():DisplayObject
 		{
-			return chart2d;
+			return chart;
 		}
 		
 		/**
 		 */		
-		private var chart2d:Chart2D;
+		protected var chart:CSB;
 		
 		/**
 		 */		

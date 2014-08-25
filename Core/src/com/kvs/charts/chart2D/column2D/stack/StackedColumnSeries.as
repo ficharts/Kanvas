@@ -6,13 +6,12 @@ package com.kvs.charts.chart2D.column2D.stack
 	import com.kvs.charts.chart2D.core.itemRender.PointRenderBace;
 	import com.kvs.charts.chart2D.core.model.Chart2DModel;
 	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
-	import com.kvs.charts.chart2D.core.zoomBar.ZoomBar;
 	import com.kvs.charts.chart2D.encry.SB;
 	import com.kvs.charts.common.ChartColors;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.charts.legend.model.LegendVO;
 	import com.kvs.charts.legend.view.LegendEvent;
+	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
@@ -28,38 +27,42 @@ package com.kvs.charts.chart2D.column2D.stack
 		public function StackedColumnSeries()
 		{
 			super();
+			
+			curRenderPattern = new ClassicStackedColumnRender(this);
 		}
 		
 		/**
 		 */		
-		override public function setZoomBarData(zoomBar:ZoomBar):void
+		override public function get labels():Vector.<String>
 		{
+			var labels:Vector.<String> = new Vector.<String>
+			var dataItemVOs:Vector.<SeriesDataPoint> = stacks[0].dataItemVOs;
+			
+			for each (var data:SeriesDataPoint in dataItemVOs)
+				labels.push(data.xLabel);
+			
+			return labels;
 		}
 		
 		/**
-		 * 
 		 */		
-		override public function dataResizedByRange(min:Number, max:Number):void
+		override public function exportValues(split:String):String
 		{
+			var s:String = "";
+			
+			for each (var stack:StackedSeries in stacks)
+			{
+				s += stack.exportValues(split);
+				s += '\n\n';
+			}
+			
+			return s;
 		}
+		
 		
 		/**
 		 */		
-		override protected function getClassicPattern():ISeriesRenderPattern
-		{
-			return new ClassicStackedColumnRender(this);
-		}
-		
-		/**
-		 */		
-		override protected function getSimplePattern():ISeriesRenderPattern
-		{
-			return new SimpleStackedColumnRender(this);
-		}
-		
-		/**
-		 */		
-		override protected function get type():String
+		override public function get type():String
 		{
 			return "stackedColumn";
 		}
@@ -186,9 +189,7 @@ package com.kvs.charts.chart2D.column2D.stack
 			}
 			
 			itemRender.dataRender = this.dataRender;
-			itemRender.tooltip = this.tooltip;
 			
-			itemRender.initToolTips();
 			itemRenders.push(itemRender);
 		}
 		

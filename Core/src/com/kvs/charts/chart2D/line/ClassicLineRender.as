@@ -3,14 +3,14 @@ package com.kvs.charts.chart2D.line
 	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.utils.RexUtil;
-	import com.kvs.utils.XMLConfigKit.style.Style;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
+	import com.kvs.utils.XMLConfigKit.style.Style;
 	
 	import flash.display.Shape;
 	
 	/**
 	 */	
-	public class ClassicLineRender implements ISeriesRenderPattern, IClassicPartRender
+	public class ClassicLineRender implements IClassicPartRender, ISeriesRenderPattern
 	{
 		public function ClassicLineRender(series:LineSeries)
 		{
@@ -20,37 +20,6 @@ package com.kvs.charts.chart2D.line
 		/**
 		 */		
 		private var series:LineSeries;
-		
-		/**
-		 */		
-		public function toClassicPattern():void
-		{
-		}
-		
-		/**
-		 * 经典模式切换到简单模式，移除不必要的对象； 
-		 */		
-		public function toSimplePattern():void
-		{
-			if (series.simplePattern)
-			{
-				series.curRenderPattern = series.simplePattern;
-			}
-			else
-			{
-				series.curRenderPattern = series.simplePattern = new SimpleLineRender(series);
-			}
-			
-			series.clearCanvas();
-			series.partUIs.length = 0;
-			series.partUIs = null;
-		}
-		
-		/**
-		 */		
-		public function renderScaledData():void
-		{
-		}
 		
 		/**
 		 */		

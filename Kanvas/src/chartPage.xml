@@ -1,0 +1,180 @@
+<charts id='chartPage' title='图表'>		
+	<selector icon='circleFrame'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config ySuffix="万">
+			    <axis>
+			        <x type="field"/>
+			        <y type="linear"/>
+			    </axis>
+			    <series>
+			        <line xField='label' yField='value'/>
+			    </series>
+			    <data>
+			        <set label='1月' value='279'/>
+			        <set label='2月' value='410' />
+			        <set label='3月' value='325'/>
+			        <set label='4月' value='572'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+	<selector icon='circleFrame'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config ySuffix='K'>
+			    <axis>
+			        <x type="field"/>
+			        <y type="linear"/>
+			    </axis>
+			    <series>
+			        <column xField='label' yField='valueA'/>
+			        <column xField='label' yField='value'/>
+			    </series>
+			    <data>
+			        <set label='1月' value='279' valueA='400'/>
+			        <set label='2月' value='410' valueA='300'/>
+			        <set label='3月' value='325' valueA='250'/>
+			        <set label='4月' value='572' valueA='100'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+	<selector icon='circleFrame'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config xSuffix='K'>
+			    <axis>
+			        <y type="field"/>
+			        <x type="linear"/>
+			    </axis>
+			    <series>
+			        <bar xField='value' yField='label'/>
+			        <bar xField='valueB' yField='label'/>
+			    </series>
+			    <data>
+			        <set label='1月' value='279' valueB='400'/>
+			        <set label='2月' value='410' valueB='300'/>
+			        <set label='3月' value='325' valueB='250'/>
+			        <set label='4月' value='572' valueB='100'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+	<selector icon='circleFrame'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config>
+			    <axis>
+			        <x type="field"/>
+			        <y type="linear"/>
+			    </axis>
+			    <series>
+			        <stackedColumn>
+			            <stack xField='label' yField='valueA'/>
+			            <stack xField='label' yField='valueB'/>
+			            <stack xField='label' yField='valueC'/>
+			        </stackedColumn>
+			    </series>
+			    <data>
+			        <set label='1月' valueC='279' valueA='400' valueB='536'/>
+			        <set label='2月' valueC='410' valueA='300' valueB='253'/>
+			        <set label='3月' valueC='325' valueA='250' valueB='358'/>
+			        <set label='4月' valueC='572' valueA='100' valueB='400'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+	
+	<selector icon='circleFrame'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config xSuffix='K'>
+			    <axis>
+			        <x type='linear'/>
+			        <y type='field'/>
+			    </axis>
+			    <series>
+			        <stackedBar>
+			            <stack xField='valueA' yField='label'/>
+			            <stack xField='valueB' yField='label'/>
+			            <stack xField='valueC' yField='label'/>
+			        </stackedBar>
+			    </series>
+			    <data>
+			        <set label='1月' valueC='279' valueA='400' valueB='536'/>
+			        <set label='2月' valueC='410' valueA='300' valueB='253'/>
+			        <set label='3月' valueC='325' valueA='250' valueB='358'/>
+			        <set label='4月' valueC='572' valueA='100' valueB='400'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+	
+	<selector icon='circleFrame'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config>
+			    <axis>
+			        <x type="field"/>
+			        <y type="linear"/>
+			    </axis>
+			    <series>
+			        <bubble xField='label' yField='value' radiusField='radius'/>
+			    </series>
+			    <data>
+			        <set label='1' value='279' radius='23'/>
+			        <set label='2' value='410' radius='32'/>
+			        <set label='3' value='325' radius='65'/>
+			        <set label='4' value='572' radius='25'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+	<selector icon='circleFrame'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config ySuffix="万">
+			    <axis>
+			        <x type="field"/>
+			        <y type="linear"/>
+			    </axis>
+			    <series>
+			        <marker xField='label' yField='value'/>
+			    </series>
+			    <data>
+			        <set label='1月' value='279'/>
+			        <set label='2月' value='410' />
+			        <set label='3月' value='325'/>
+			        <set label='4月' value='572'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+	<selector icon='circleFrame'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config ySuffix="万">
+			    <axis>
+			        <x type="field"/>
+			        <y type="linear"/>
+			    </axis>
+			    <series>
+			        <area xField='label' yField='value'/>
+			    </series>
+			    <data>
+			        <set label='1月' value='279'/>
+			        <set label='2月' value='410' />
+			        <set label='3月' value='325'/>
+			        <set label='4月' value='572'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+	<selector icon='circleFrame'>
+		<shape type='pie2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config valueSuffix='亿部' precision="2">
+				<data>
+					<set label="Nokia" value="4.171"/>
+					<set label="Samsung" value="3.294"/>
+					<set label="Apple" value="0.932"/>
+					<set label="LG" value="0.881"/>
+					<set label="ZTE" value="0.661"/>
+					<set label="Others" value="5.521"/>
+				</data>
+			</config>
+		</shape>
+	</selector>
+</charts>

@@ -2,8 +2,6 @@ package com.kvs.charts.chart2D.core.axis
 {
 	import com.kvs.charts.chart2D.core.events.FiChartsEvent;
 	import com.kvs.charts.chart2D.core.model.SeriesDataFeature;
-	import com.kvs.charts.chart2D.core.model.Zoom;
-	import com.kvs.charts.chart2D.core.zoomBar.ZoomBar;
 	import com.kvs.charts.common.ChartDataFormatter;
 	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
@@ -52,9 +50,6 @@ package com.kvs.charts.chart2D.core.axis
 			addChild(labelsMask);
 			labelUIsCanvas.mask = labelsMask;
 			labelUIsCanvas.addEventListener(MouseEvent.CLICK, labelsClickHandler, false, 0, true);
-			
-			// 初始化当前模�
-			curPattern = this.getNormalPatter();
 		}
 		
 		/**
@@ -170,68 +165,7 @@ package com.kvs.charts.chart2D.core.axis
 		
 		/**
 		 */		
-		public function adjustZoomFactor(scaleModel:Zoom):void
-		{
-			curPattern.adjustZoomFactor(scaleModel);
-		}
-		
-		/**
-		 */		
-		public function toNomalPattern():void
-		{
-			if(curPattern)
-				curPattern.toNormalPattern();
-			else
-				curPattern = getNormalPatter();
-			
-			zoomBar.distory();
-			this.removeChild(zoomBar)
-			zoomBar = null;
-		}
-		
-		/**
-		 */		
-		public function toZoomPattern():void
-		{
-			if (curPattern)
-				curPattern.toZoomPattern();
-			else
-				curPattern = getZoomPattern();
-			
-			this.curPattern.dataUpdated();
-			
-			if (zoomBar == null)
-			{
-				zoomBar = new ZoomBar(this);
-				this.addChild(zoomBar);
-			}
-		}
-		
-		/**
-		 */		
-		internal function getNormalPatter():IAxisPattern
-		{
-			return null;
-		}
-		
-		/**
-		 */		
-		internal function getZoomPattern():IAxisPattern
-		{
-			return null;
-		}
-		
-		/**
-		 */		
 		internal var curPattern:IAxisPattern;
-		
-		/**
-		 */		
-		internal var normalPattern:IAxisPattern;
-		
-		/**
-		 */		
-		internal var zoomPattern:IAxisPattern;
 		
 		/**
 		 * 根据原始数据得到其在总数据中的百分比位置，用来做尺寸缩放
@@ -300,7 +234,6 @@ package com.kvs.charts.chart2D.core.axis
 			{
 				this.labelsMask.graphics.clear();
 				
-				
 				this.curPattern.renderHorLabelUIs();
 				
 				// 横轴的坐标轴遮罩只绘制一次，图表初始化时会先整个坐标轴一起渲�
@@ -358,6 +291,8 @@ package com.kvs.charts.chart2D.core.axis
 			labelUI = createLabelUI(labelIndex);
 			temUintSize = minUintSize;//轴的尺寸刷新�minUintSize 会重新计算，避免之前的大尺寸和谐掉后继的小尺�
 			
+			var uintAmount:uint = length;
+			
 			// 自动调整label布局模式
 			if(isAutoLabelLayout)
 			{
@@ -387,13 +322,12 @@ package com.kvs.charts.chart2D.core.axis
 			
 			//保证标签间距大于最小单元宽度， 防止标签重叠�
 			var addFactor:uint = 1;
-			var uintAmount:uint = length;
-			while (size > 0 && (size / uintAmount) < temUintSize)
+			/*while (size > 0 && (size / uintAmount) < temUintSize)
 			{
 				addFactor += 1;
 				uintAmount = length / addFactor;
-			}
-			
+			}*/
+		
 			// 布局和显示数据范围内的label
 			_ticks.length = 0;
 			
@@ -433,7 +367,7 @@ package com.kvs.charts.chart2D.core.axis
 		
 		/**
 		 */		
-		private var _isAutoLabelLayout:Object = false;
+		private var _isAutoLabelLayout:Object = true;
 		
 		/**
 		 */		
@@ -721,10 +655,7 @@ package com.kvs.charts.chart2D.core.axis
 				
 				if (position == 'bottom')
 				{
-					if (this.zoomBar)
-						titleLabelH.y = this.labelUIsCanvas.height + title.margin + zoomBar.barHeight;
-					else
-						titleLabelH.y = this.labelUIsCanvas.height + title.margin;
+					titleLabelH.y = this.labelUIsCanvas.height + title.margin;
 				}
 				else
 				{
@@ -974,7 +905,7 @@ package com.kvs.charts.chart2D.core.axis
 		
 		/**
 		 */		
-		public var minUintSize:uint = 10;
+		public var minUintSize:uint = 30;
 		/**
 		 * @param value
 		 */		
@@ -1292,43 +1223,6 @@ package com.kvs.charts.chart2D.core.axis
 			_metaData = value;
 		}
 		
-		
-		
-		
-		
-		//--------------------------------------------------------------
-		//
-		//  
-		// 数据滚动条的控制
-		//
-		//
-		//---------------------------------------------------------------
-		
-		
-		/**
-		 */		
-		internal function updateScrollBarSize(startPerc:Number, endPerc:Number):void
-		{
-			zoomBar.updateWindowSize(startPerc, endPerc);
-		}
-		
-		/**
-		 */		
-		internal function updateScrollBarPos(perc:Number):void
-		{
-			zoomBar.updateWindowPos(perc);
-		}
-		
-		/**
-		 */		
-		internal function upateDataStep(value:uint):void
-		{
-			zoomBar.updateChartDataStep(value);
-		}
-		
-		/**
-		 */		
-		public var zoomBar:ZoomBar;
 
 	}
 }

@@ -7,6 +7,7 @@ package commands
 	
 	import model.CoreFacade;
 	import model.ElementProxy;
+	import model.vo.ChartVO;
 	import model.vo.ElementVO;
 	import model.vo.ShapeVO;
 	
@@ -53,6 +54,11 @@ package commands
 			elementVO.width = elementProxy.width;
 			elementVO.height = elementProxy.height;
 			elementVO.styleType = elementProxy.styleType;
+			
+			if (elementVO is ChartVO)
+			{
+				(elementVO as ChartVO).config = XML(elementProxy.config.toString());
+			}
 			
 			if (elementVO.styleType == "fill")
 				elementVO.colorIndex = 0;

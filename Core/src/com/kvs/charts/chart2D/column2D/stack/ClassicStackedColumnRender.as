@@ -17,32 +17,6 @@ package com.kvs.charts.chart2D.column2D.stack
 		
 		/**
 		 */		
-		public function toClassicPattern():void
-		{
-		}
-		
-		/**
-		 */		
-		public function toSimplePattern():void
-		{
-			if (series.simplePattern)
-				series.curRenderPattern = series.curRenderPattern;
-			else
-				series.curRenderPattern = series.simplePattern = new SimpleStackedColumnRender(series);
-			
-			series.clearCanvas();
-			series.columnUIs.length = 0;
-		}
-		
-		/**
-		 */		
-		public function renderScaledData():void
-		{
-			
-		}
-		
-		/**
-		 */		
 		public function render():void
 		{
 			if (series.ifDataChanged || series.ifSizeChanged)

@@ -22,6 +22,8 @@ package model.vo
 			super();
 		}
 		
+		/**
+		 */		
 		public function clone():ElementVO
 		{
 			var target:ElementVO = ElementCreator.getElementVO(type);

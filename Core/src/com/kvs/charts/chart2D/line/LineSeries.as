@@ -27,20 +27,8 @@ package com.kvs.charts.chart2D.line
 		public function LineSeries()
 		{
 			super();
-		}
-		
-		/**
-		 */		
-		override protected function getClassicPattern():ISeriesRenderPattern
-		{
-			return new ClassicLineRender(this);
-		}
-		
-		/**
-		 */		
-		override protected function getSimplePattern():ISeriesRenderPattern
-		{
-			return new SimpleLineRender(this);
+			
+			curRenderPattern = new ClassicLineRender(this);
 		}
 		
 		/**
@@ -54,7 +42,7 @@ package com.kvs.charts.chart2D.line
 		
 		/**
 		 */		
-		override protected function get type():String
+		override public function get type():String
 		{
 			return "line";
 		}

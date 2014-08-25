@@ -28,7 +28,6 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.charts.legend.LegendPanel;
 	import com.kvs.charts.legend.LegendStyle;
 	import com.kvs.charts.legend.model.LegendVO;
-	import com.kvs.ui.toolTips.ToolTipsManager;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.system.GC;
@@ -75,30 +74,6 @@ package com.kvs.charts.chart2D.encry
 			StackedPercentBarSeries;
 			
 			init();
-		}
-		
-		/**
-		 */		
-		public function ifDataScalable():Boolean
-		{
-			return chartModel.zoom.enable;
-		}
-		
-		/**
-		 */		
-		public function setDataScalable(value:Boolean):void
-		{
-			chartModel.zoom.enable = value;
-		}
-		
-		/**
-		 * 
-		 * 动态进行数据缩放的对外接口, 用于Flash/AIR等类型的项目中， web用配置文件方式处理数据缩放
-		 * 
-		 */		
-		public function scaleData(startValue:Object, endValue:Object):void
-		{
-			this.currentPattern.scaleData(startValue, endValue);
 		}
 		
 		
@@ -211,8 +186,23 @@ package com.kvs.charts.chart2D.encry
 		private var ifDataChanged:Boolean = false;
 		
 		
-		
-		
+		/**
+		 * 
+		 */		
+		public function set setSeries(xml:XML):void
+		{
+			chartCanvas.removeSeries();
+			
+			chartSeries.length = 0;
+			chartModel.series = null;
+			
+			var config:XML = <config></config>
+				config.appendChild(xml);
+				
+			configXML.series = xml;
+			
+			XMLVOMapper.fuck(xml, chartModel);
+		}
 		
 		
 		
@@ -320,8 +310,6 @@ package com.kvs.charts.chart2D.encry
 			if (currentPattern == null)
 				currentPattern = new ClassicPattern(this);
 			
-			currentPattern.initPattern();
-			
 			configSeriesAxis();
 			configSeriesAndLegendData();
 			updateAxisData();
@@ -359,7 +347,7 @@ package com.kvs.charts.chart2D.encry
 			if (this.sizeX >= 0)
 			{
 				title.boxWidth = this.sizeX;
-				title.render();
+				//title.render();
 				title.x = this.originX;
 				
 				title.y = (topSpace - this.topAxisContainer.height - title.boxHeight) * .5;
@@ -1077,26 +1065,6 @@ package com.kvs.charts.chart2D.encry
 		
 		/**
 		 */		
-		private function toZoomPatternHandler(evt:Event):void
-		{
-			if (this.currentPattern == null)
-				currentPattern = new ZoomPattern(this);
-			else
-				currentPattern.toZoomPattern();
-		}
-		
-		/**
-		 */		
-		private function toClassicPatternHandler(evt:Event):void
-		{
-			if (this.currentPattern == null)
-				currentPattern = new ClassicPattern(this);
-			else
-				currentPattern.toClassicPattern();
-		}
-		
-		/**
-		 */		
 		private function updateValueLabelHandler(evt:ItemRenderEvent):void
 		{
 			currentPattern.updateValueLabelHandler(evt);
@@ -1116,7 +1084,7 @@ package com.kvs.charts.chart2D.encry
 		{
 			initContainers();
 			createBG();
-			addChild(title);
+			//addChild(title);
 			
 			chartProxy = new CP();
 			initListeners();
@@ -1214,9 +1182,6 @@ package com.kvs.charts.chart2D.encry
 			XMLVOLib.addCreationHandler(Chart2DModel.UPDATE_TITLE_STYLE, updateTitleStyleHandler);
 			XMLVOLib.addCreationHandler(Chart2DModel.UPDATE_LEGEND_STYLE, updateLegendStyleHandler);
 			
-			XMLVOLib.addCreationHandler(CB.TO_CLASSIC_PATTERN, toClassicPatternHandler);
-			XMLVOLib.addCreationHandler(CB.TO_ZOOM_PATTERN, toZoomPatternHandler);
-			
 			this.addEventListener(ItemRenderEvent.UPDATE_VALUE_LABEL, updateValueLabelHandler, false, 0, true);
 		}
 		
@@ -1297,12 +1262,6 @@ package com.kvs.charts.chart2D.encry
 		/**
 		 */		
 		internal var classicPattern:IChartPattern;
-		internal var zoomPattern:IChartPattern;
-		
-		/**
-		 */		
-		public static const TO_CLASSIC_PATTERN:String = 'toClassicState';
-		public static const TO_ZOOM_PATTERN:String = 'toZoomState';
 		
 	}
 }

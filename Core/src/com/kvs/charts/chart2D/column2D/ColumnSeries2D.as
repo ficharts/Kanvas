@@ -7,8 +7,8 @@ package com.kvs.charts.chart2D.column2D
 	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.chart2D.encry.SB;
 	import com.kvs.charts.common.ChartColors;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.common.SeriesDataPoint;
+	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
@@ -22,20 +22,8 @@ package com.kvs.charts.chart2D.column2D
 		public function ColumnSeries2D()
 		{
 			super();
-		}
-		
-		/**
-		 */		
-		override protected function getClassicPattern():ISeriesRenderPattern
-		{
-			return new ClassicColumnRender(this);	
-		}
-		
-		/**
-		 */		
-		override protected function getSimplePattern():ISeriesRenderPattern
-		{
-			return new SimpleColumnRender(this);
+			
+			curRenderPattern = new ClassicColumnRender(this);	
 		}
 		
 		/**
@@ -56,12 +44,10 @@ package com.kvs.charts.chart2D.column2D
 			this.updateLabelDisplay(itemRender);
 				
 			itemRender.dataRender = this.dataRender;
-			itemRender.tooltip = this.tooltip;
 			
 			initTipString(item, itemRender.xTipLabel, 
 				itemRender.yTipLabel,itemRender.zTipLabel,itemRender.isHorizontal);
 			
-			itemRender.initToolTips();
 			itemRenders.push(itemRender);
 		}
 		
@@ -75,7 +61,7 @@ package com.kvs.charts.chart2D.column2D
 		
 		/**
 		 */		
-		override protected function get type():String
+		override public function get type():String
 		{
 			return "column";
 		}

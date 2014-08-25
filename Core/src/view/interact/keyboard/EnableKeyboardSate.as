@@ -140,11 +140,6 @@ package view.interact.keyboard
 					if (evt.ctrlKey)
 						mainUIMediator.redo();
 				
-				case Keyboard.ESCAPE:
-					mainUIMediator.esc();
-					
-					break;
-				
 				case Keyboard.A:
 					
 					if (evt.ctrlKey)

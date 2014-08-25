@@ -29,6 +29,42 @@ package com.kvs.charts.chart2D.bar.stack
 		
 		/**
 		 */		
+		override public function get labels():Vector.<String>
+		{
+			var labels:Vector.<String> = new Vector.<String>
+			var dataItemVOs:Vector.<SeriesDataPoint> = stacks[0].dataItemVOs;
+			
+			for each (var data:SeriesDataPoint in dataItemVOs)
+				labels.push(data.yLabel);
+			
+			return labels.reverse();
+		}
+		
+		/**
+		 */		
+		override public function exportValues(split:String):String
+		{
+			var s:String = "";
+			
+			var labels:Vector.<String>;
+			var dataItemVOs:Vector.<SeriesDataPoint>;
+			for each (var stack:StackedSeries in stacks)
+			{
+				labels = new Vector.<String>;
+				dataItemVOs = stack.dataItemVOs;
+				
+				for each (var data:SeriesDataPoint in dataItemVOs)
+					labels.push(data.xLabel);
+					
+				s += stack.seriesName + ":\n" + labels.reverse().join(split);
+				s += '\n\n';
+			}
+			
+			return s;
+		}
+		
+		/**
+		 */		
 		override protected function initItemRender(itemRender:PointRenderBace, item:SeriesDataPoint):void
 		{
 			if (ifNullData(item))
@@ -52,12 +88,10 @@ package com.kvs.charts.chart2D.bar.stack
 			}
 			
 			itemRender.dataRender = this.dataRender;
-			itemRender.tooltip = this.tooltip;
 			
 			initTipString(item, itemRender.xTipLabel, 
 				itemRender.yTipLabel,itemRender.zTipLabel,itemRender.isHorizontal);
 			
-			itemRender.initToolTips();
 			itemRenders.push(itemRender);
 		}
 		
@@ -73,7 +107,7 @@ package com.kvs.charts.chart2D.bar.stack
 		
 		/**
 		 */		
-		override protected function get type():String
+		override public function get type():String
 		{
 			return "stackedBar";
 		}
@@ -256,7 +290,7 @@ package com.kvs.charts.chart2D.bar.stack
 				series.verticalAxis = this.verticalAxis;
 			}
 			
-			stacks.reverse();
+			//stacks.reverse();
 			
 			// 如果显示数值则坐标轴多延伸一个单元格�
 			if (this.labelDisplay != LabelStyle.NONE && horizontalAxis is LinearAxis)

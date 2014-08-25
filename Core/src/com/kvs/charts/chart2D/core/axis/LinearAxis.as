@@ -21,6 +21,8 @@ package com.kvs.charts.chart2D.core.axis
 		public function LinearAxis()
 		{
 			super();
+			
+			curPattern = new LinearAxis_Normal(this);
 		}
 		
 		/**
@@ -37,20 +39,6 @@ package com.kvs.charts.chart2D.core.axis
 		 * 原始数据序列化后的间�
 		 */		
 		internal  var confirmedSourceValueDis:Number = 0;
-		
-		/**
-		 */
-		override internal function getNormalPatter():IAxisPattern
-		{
-			return new LinearAxis_Normal(this);
-		}
-		
-		/**
-		 */		
-		override internal function getZoomPattern():IAxisPattern
-		{
-			return new LinearAxis_DataScale(this);
-		}
 		
 		/**
 		 */		
