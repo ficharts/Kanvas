@@ -92,7 +92,7 @@ package view.toolBar
 		 */		
 		private function toChartEditHandler(evt:KVSEvent):void
 		{
-			tb.toChartEditMode();
+			tb.main.mainNavControl.toChartEditMode();
 		}
 		
 		/**

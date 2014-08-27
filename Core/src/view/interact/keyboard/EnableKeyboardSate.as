@@ -93,6 +93,11 @@ package view.interact.keyboard
 			{
 				altKey = true;
 			}
+			
+			if (evt.keyCode == Keyboard.ESCAPE)
+			{
+				mainUIMediator.esc();
+			} 
 		}
 		
 		private var ctrlKey:Boolean;

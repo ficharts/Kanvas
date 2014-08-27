@@ -45,7 +45,7 @@ package view.elementSelector.toolBar
 			text_edit;
 			
 			editBtn.tips = '编辑';
-			toolBar.initBtnStyle(editBtn, 'text_edit');
+			toolBar.initBtnStyle(editBtn, 'text_edit', btnBGStyle);
 			
 			addedColorBtn.iconWidth = addedColorBtn.iconHeight = toolBar.iconSize;
 			addedColorBtn.w = addedColorBtn.h = toolBar.btnHeight;
@@ -113,6 +113,27 @@ package view.elementSelector.toolBar
 			toolBar.addBtn(toolBar.delBtn);
 			this.resetColorIconStyle();
 		}
+		
+		/**
+		 * 图表编辑按钮的颜色要突出一些
+		 */			
+		public var btnBGStyle:XML = <states>
+										<normal>
+											<border thickness='1' alpha='1' color='#373737'/>
+											<fill color='#6498e8, #447bd8' alpha='1, 1' angle='90'/>
+											<img/>
+										</normal>
+										<hover>
+											<border thickness='1' color='000000'/>
+											<fill color='#6498e8, #6498e8' alpha='1, 1' angle='90'/>
+											<img/>
+										</hover>
+										<down>
+											<border thickness='1' color='000000'/>
+											<fill color='#5282cc, #3b68b9' alpha='1, 1' angle='90'/>
+											<img/>
+										</down>
+									</states>
 		
 	}
 }

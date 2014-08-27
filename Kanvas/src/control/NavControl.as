@@ -82,10 +82,9 @@ package control
 		
 		/**
 		 */		
-		private function toChartEdit(evt:KVSEvent):void
+		public function toChartEditMode():void
 		{
 			curPanelState.close();
-			
 			
 			app.toolBar.toChartEditMode();
 			app.zoomToolBar.visible = false;

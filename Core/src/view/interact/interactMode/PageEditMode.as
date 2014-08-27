@@ -232,7 +232,7 @@ package view.interact.interactMode
 			}
 			
 			flasherHolders.length = 0;
-			curPage = null;
+			//curPage = null;
 			
 			mainMediator.enableKeyboardControl();
 			mainMediator.currentMode = mainMediator.selectedMode;
@@ -243,6 +243,12 @@ package view.interact.interactMode
 			mainMediator.mainUI.stage.removeEventListener(KeyboardEvent.KEY_UP, escHandler);
 			
 			mainMediator.resetCanvasState();
+			
+			mainMediator.currentElement = curPage;
+			curPage.toSelectedState();
+			mainMediator.showSelector();
+			
+			curPage = null;
 		}
 		
 		/**
