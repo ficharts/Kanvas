@@ -1,28 +1,24 @@
 package com.kvs.charts.chart2D.pie.series
 {
-	import com.kvs.charts.chart2D.core.series.SeriesItemUIBase;
 	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.ui.label.LabelUI;
-	import com.kvs.ui.toolTips.ToolTipHolder;
-	import com.kvs.ui.toolTips.TooltipStyle;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
+	import com.kvs.utils.XMLConfigKit.style.Style;
+	
+	import flash.display.Sprite;
 	
 	/**
 	 */	
-	public class PartPieUI extends SeriesItemUIBase
+	public class PartPieUI
 	{
 		public function PartPieUI(dataItem:SeriesDataPoint)
 		{
-			super(dataItem);
+			this.dataItem = dataItem;
 			
 			radDis = (pieDataItem.endRad - pieDataItem.startRad);
 			midRad = pieDataItem.startRad + radDis / 2;
 		}
-		
-		/**
-		 */		
-		private var tooltipHolder:ToolTipHolder = new ToolTipHolder();
 		
 		/**
 		 */		
@@ -32,19 +28,11 @@ package com.kvs.charts.chart2D.pie.series
 			valueLabelUI.mdata = this.dataItem.metaData;
 			valueLabelUI.style = this.labelStyle;
 			valueLabelUI.render();
-			addChild(valueLabelUI);
-			
-			tooltipHolder.metaData = dataItem.metaData;
-			tooltipHolder.style = tooltipStyle;
 		}
 		
 		/**
 		 */		
 		public var labelStyle:LabelStyle;
-		
-		/**
-		 */		
-		public var tooltipStyle:TooltipStyle;
 		
 		/**
 		 */
@@ -77,18 +65,24 @@ package com.kvs.charts.chart2D.pie.series
 		
 		/**
 		 */		
-		override public function render():void
+		private var dataItem:SeriesDataPoint;
+		
+		/**
+		 */		
+		public function render(canvas:Sprite):void
 		{
-			this.graphics.clear();
-			
 			currState.tx = - radius;
 			currState.ty = - radius;
 			currState.width = currState.height = radius * 2;
 			
-			StyleManager.drawArc(this, currState, radius, rads, pieDataItem.metaData);
+			StyleManager.drawArc(canvas, currState, radius, rads, pieDataItem.metaData);
 			
 			layoutValueLabel();
 		}
+		
+		/**
+		 */		
+		public var currState:Style;
 		
 		/**
 		 * 调整数值标签的位置及显示
@@ -116,7 +110,7 @@ package com.kvs.charts.chart2D.pie.series
 		
 		/**
 		 */		
-		private var valueLabelUI:LabelUI;
+		public var valueLabelUI:LabelUI;
 		
 		/**
 		 */		

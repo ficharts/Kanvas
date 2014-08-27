@@ -124,7 +124,6 @@ package com.kvs.charts.chart2D.encry
 						
 					updateSeriesAndLegendData();
 					
-					renderTitle();// 渲染标题
 					renderLegend(); // 渲染图例并调整好位置
 					renderBG();
 					layout();// 调整布局�计算出饼图位置及半径�
@@ -247,7 +246,6 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		private function layout():void
 		{
-			topContainer.x = (this.chartWidth - title.boxWidth) * 0.5;
 			topContainer.y = (this.gutterTop - topContainer.height) * 0.5;
 			
 			//rightContainer.x = (chartWidth - this.gutterRight) + (this.gutterRight - rightContainer.width) / 2 ;
@@ -285,17 +283,6 @@ package com.kvs.charts.chart2D.encry
 		private var conterY:Number = 0;
 		
 		/**
-		 */		
-		private function renderTitle():void
-		{
-			if (this.xSize >= 0)
-			{
-				title.boxWidth = this.xSize;
-				this.title.render();
-			}
-		}
-		
-		/**
 		 * 
 		 */		
 		private function renderLegend():void
@@ -310,9 +297,6 @@ package com.kvs.charts.chart2D.encry
 			{
 				legendPanel.panelWidth = this.xSize;
 				legendPanel.direction = LegendPanel.HIRIZONTAL;
-				
-				if (title.ifHasTitles)
-					legendPanel.y = chartModel.chartBG.paddingTop + title.boxHeight;
 				
 				this.topContainer.addChild(legendPanel);
 				
@@ -415,8 +399,6 @@ package com.kvs.charts.chart2D.encry
 		public function set configXML(value:XML):void
 		{
 			chartProxy.configXML = value;
-			
-			this.title.fresh();
 			
 			chartProxy.setChartModel(XMLVOMapper.extendFrom(
 				chartProxy.currentStyleXML.copy(), configXML.copy()));
@@ -612,14 +594,6 @@ package com.kvs.charts.chart2D.encry
 		}
 		
 		/**
-		 */		
-		private function updateTitleStyleHandler(value:Object):void
-		{
-			title.updateStyle(chartModel.title, chartModel.subTitle);
-			this.renderTitle();
-		}
-		
-		/**
 		 * 背景区域点击后全屏模式控�
 		 */		
 		private function fullScreenHandler(evt:Event):void
@@ -644,14 +618,12 @@ package com.kvs.charts.chart2D.encry
 			addChild(chartBG);
 			addChild(seriesContainer);
 			
-			topContainer.addChild(this.title);
 			addChild(this.topContainer);
 			addChild(this.rightContainer);
 			addChild(this.bottomContainer);
 			addChild(this.leftContainer);
 			
 			XMLVOLib.addCreationHandler(Series.PIE_SERIES_CREATED, createSeriesHandler);
-			XMLVOLib.addCreationHandler(Chart2DModel.UPDATE_TITLE_STYLE, updateTitleStyleHandler);
 			XMLVOLib.addCreationHandler(Chart2DModel.UPDATE_LEGEND_STYLE, updateLegendStyleHandler);
 			
 			chartProxy = new PieChartProxy;
@@ -693,11 +665,6 @@ package com.kvs.charts.chart2D.encry
 		 * 图表背景 
 		 */		
 		protected var chartBG:ChartBGUI = new ChartBGUI;
-		
-		/**
-		 * 标题
-		 */
-		private var title:TitleBox = new TitleBox;
 		
 		/**
 		 * 

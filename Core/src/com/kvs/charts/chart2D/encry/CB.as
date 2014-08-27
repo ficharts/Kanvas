@@ -146,10 +146,15 @@ package com.kvs.charts.chart2D.encry
 			chartProxy.configXML = value;
 			
 			this.initLegend();
-			this.title.fresh();
 			
 			chartProxy.setChartModel(XMLVOMapper.extendFrom(
 				chartProxy.currentStyleXML.copy(), configXML.copy()));
+			
+			//多序列才会用到图例
+			if (chartModel.series.length > 1)
+				chartModel.legend.enable = true;
+			else
+				chartModel.legend.enable = false;
 			
 			if (value.hasOwnProperty('data') && value.data.children().length())
 				this.dataXML = XML(value.data.toXMLString());
@@ -273,7 +278,6 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		private function preRender():void
 		{
-			renderTitle();
 			renderAxis();
 			renderLegend();
 		}
@@ -339,21 +343,6 @@ package com.kvs.charts.chart2D.encry
 			gridField.drawVGidLine(this.vAxises[0].ticks, chartModel.gridField);
 		}
 
-		/**
-		 * 配置驱动下的Label渲染时可能 sizeX 还未被设定，所以此时不渲染标题
-		 */		
-		private function renderTitle():void
-		{
-			if (this.sizeX >= 0)
-			{
-				title.boxWidth = this.sizeX;
-				//title.render();
-				title.x = this.originX;
-				
-				title.y = (topSpace - this.topAxisContainer.height - title.boxHeight) * .5;
-			}
-		}
-		
 		/**
 		 * 
 		 */		
@@ -464,9 +453,7 @@ package com.kvs.charts.chart2D.encry
 			currentPattern.renderSeries();
 			
 			if (chartModel.series.changed || ifDataChanged)
-			{
 				this.currentPattern.getItemRenderFromSereis();
-			}
 			
 			currentPattern.renderItemRenderAndDrawValueLabels();
 		}
@@ -636,7 +623,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		private function get temTopSpace():Number
 		{
-			var tem:Number = chartModel.chartBG.paddingTop + this.topAxisContainer.height + this.title.boxHeight;
+			var tem:Number = chartModel.chartBG.paddingTop + this.topAxisContainer.height;
 			
 			if (tem < chartModel.minTopPadding)
 				tem = chartModel.minTopPadding;
@@ -1046,14 +1033,6 @@ package com.kvs.charts.chart2D.encry
 				this.legendPanel.setStyle(value as LegendStyle);
 		}	
 		
-		/**
-		 */		
-		private function updateTitleStyleHandler(value:Object):void
-		{
-			title.updateStyle(chartModel.title, chartModel.subTitle);
-			this.renderTitle();
-		}
-		
 		
 		
 		//----------------------------------
@@ -1163,9 +1142,9 @@ package com.kvs.charts.chart2D.encry
 			addChild(chartCanvas);
 			
 			chartMask = new Shape;
-			addChild(chartMask);
+			//addChild(chartMask);
 			
-			chartCanvas.mask = chartMask;
+			//chartCanvas.mask = chartMask;
 		}
 		
 		/**
@@ -1179,7 +1158,6 @@ package com.kvs.charts.chart2D.encry
 			XMLVOLib.addCreationHandler(AxisModel.CREATE_BOTTOM_AXIS, createHoriAxisBottomHandler);
 			XMLVOLib.addCreationHandler(Series.CHART2D_SERIES_CREATED, createSeriesHandler);
 			
-			XMLVOLib.addCreationHandler(Chart2DModel.UPDATE_TITLE_STYLE, updateTitleStyleHandler);
 			XMLVOLib.addCreationHandler(Chart2DModel.UPDATE_LEGEND_STYLE, updateLegendStyleHandler);
 			
 			this.addEventListener(ItemRenderEvent.UPDATE_VALUE_LABEL, updateValueLabelHandler, false, 0, true);
@@ -1220,11 +1198,6 @@ package com.kvs.charts.chart2D.encry
 		 * 图表背景 
 		 */		
 		protected var chartBG:ChartBGUI;
-		
-		/**
-		 * 标题
-		 */
-		private var title:TitleBox = new TitleBox;
 		
 		/**
 		 * 容器

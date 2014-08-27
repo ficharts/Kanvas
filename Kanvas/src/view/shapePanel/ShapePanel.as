@@ -62,10 +62,9 @@ package view.shapePanel
 			dialog;
 			
 			circle_shape;
-			rect_shape;
 			
 			this.app = mainApp;
-			shapeCreateProxy = new ShapeCreateProxy(mainApp);
+			shapeCreateProxy = new ShapeCreateProxy(mainApp, this);
 			
 			super();
 		}

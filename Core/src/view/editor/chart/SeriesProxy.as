@@ -17,6 +17,13 @@ package view.editor.chart
 		{
 		}
 		
+		/**
+		 */		
+		public function appendFfix(pre:String, suf:String, confg:XML):void
+		{
+			confg.@ySuffix = suf;
+			confg.@yPrefix = pre;
+		}
 		
 		/**
 		 */		

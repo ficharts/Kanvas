@@ -8,7 +8,6 @@ package com.kvs.charts.chart2D.pie.series
 	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.charts.legend.model.LegendVO;
 	import com.kvs.charts.legend.view.LegendEvent;
-	import com.kvs.ui.toolTips.TooltipStyle;
 	import com.kvs.utils.MathUtil;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.IEditableObject;
@@ -30,6 +29,7 @@ package com.kvs.charts.chart2D.pie.series
 	{
 		public function PieSeries()
 		{
+			addChild(canvas);
 		}
 		
 		/**
@@ -86,8 +86,8 @@ package com.kvs.charts.chart2D.pie.series
 			
 			if (this.ifDataChanged)
 			{
-				while (this.numChildren)
-					this.removeChildAt(0);
+				while (canvas.numChildren)
+					canvas.removeChildAt(0);
 				
 				var dataItem:PieDataItem;
 				partUIs = new Vector.<PartPieUI>;
@@ -95,17 +95,19 @@ package com.kvs.charts.chart2D.pie.series
 				for each (dataItem in this._dataItemVOs)
 				{
 					partUI = new PartPieUI(dataItem);
-					partUI.states = this.states;
+					partUI.currState = this.states.getNormal;
 					partUI.labelStyle = this.valueLabel;
-					partUI.tooltipStyle = this.tooltip;
 					partUI.init();
 					partUIs.push(partUI);
-					addChild(partUI);
+					
+					canvas.addChild(partUI.valueLabelUI);
 				}
 			}
 			
 			if (ifSizeChanged || ifDataChanged)
 			{
+				this.graphics.clear();
+				
 				for each(partUI in this.partUIs)
 				{
 					partUI.radius = this.radius;
@@ -129,7 +131,7 @@ package com.kvs.charts.chart2D.pie.series
 						partUI.rads.push(rad);
 					}
 					
-					partUI.render();
+					partUI.render(this);
 					
 					StyleManager.setEffects(this, this, this);
 				}
@@ -138,6 +140,11 @@ package com.kvs.charts.chart2D.pie.series
 				
 			}
 		}
+		
+		/**
+		 * 用来放置label的容器
+		 */		
+		private var canvas:Sprite = new Sprite;
 		
 		/**
 		 */		
@@ -161,26 +168,6 @@ package com.kvs.charts.chart2D.pie.series
 		public function set valueLabel(value:LabelStyle):void
 		{
 			_valueLabel = value;
-		}
-
-		/**
-		 */		
-		private var _tooltip:TooltipStyle;
-
-		/**
-		 * 信息提示的样式
-		 */
-		public function get tooltip():TooltipStyle
-		{
-			return _tooltip;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set tooltip(value:TooltipStyle):void
-		{
-			_tooltip = XMLVOMapper.updateObject(value, _tooltip, Model.TOOLTIP, this) as TooltipStyle;
 		}
 
 		/**

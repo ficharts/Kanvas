@@ -2,6 +2,7 @@ package view.shapePanel
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Elastic;
+	import com.kvs.ui.Panel;
 	import com.kvs.utils.graphic.BitmapUtil;
 	
 	import flash.display.BitmapData;
@@ -21,16 +22,16 @@ package view.shapePanel
 	 */	
 	public class ShapeCreateProxy
 	{
-		public function ShapeCreateProxy(mainApp:Kanvas)
+		public function ShapeCreateProxy(mainApp:Kanvas, panel:Panel)
 		{
 			this.mainApp = mainApp;
 			
 			shapeDragCreatIcon.mouseEnabled = false;
 			mainApp.stage.addChild(shapeDragCreatIcon);
 			
-			mainApp.addEventListener(CreateShapeEvent.SHAPE_CLICKED, shapeClickedHandler, false, 0, true);
-			mainApp.addEventListener(CreateShapeEvent.SHAPE_START_MOVE, startDragShapeHandelr, false, 0, true);
-			mainApp.addEventListener(CreateShapeEvent.SHAPE_STOP_MOVE, endDragShapeHandler, false, 0, true);
+			panel.addEventListener(CreateShapeEvent.SHAPE_CLICKED, shapeClickedHandler, false, 0, true);
+			panel.addEventListener(CreateShapeEvent.SHAPE_START_MOVE, startDragShapeHandelr, false, 0, true);
+			panel.addEventListener(CreateShapeEvent.SHAPE_STOP_MOVE, endDragShapeHandler, false, 0, true);
 		}
 		
 		/**

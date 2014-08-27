@@ -3,12 +3,10 @@ package com.kvs.charts.legend.view
 	import com.kvs.charts.chart2D.core.model.DataRender;
 	import com.kvs.charts.legend.LegendStyle;
 	import com.kvs.charts.legend.model.LegendVO;
-	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
 	import com.kvs.ui.label.LabelUI;
-	import com.kvs.utils.XMLConfigKit.StyleManager;
+	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
 	
 	import flash.display.Sprite;
-	import flash.events.MouseEvent;
 	
 	/**
 	 */	
@@ -27,60 +25,6 @@ package com.kvs.charts.legend.view
 			this.vo = vo;
 			this.mouseChildren = false;
 			this.addChild(canvas);
-			
-			this.addEventListener(MouseEvent.ROLL_OVER, overHandler);
-			this.addEventListener(MouseEvent.ROLL_OUT, outHandler);
-			this.addEventListener(MouseEvent.MOUSE_DOWN, clickHandler);
-			this.addEventListener(MouseEvent.MOUSE_UP, upHandler);
-		}
-		
-		/**
-		 */		
-		private function clickHandler(evt:MouseEvent):void
-		{
-			if (this.ifShow)
-			{
-				this.vo.dispatchEvent(new LegendEvent(LegendEvent.HIDE_LEGEND, vo));
-				this.filters =  StyleManager.getDisableFilter();
-				this.ifShow = false;
-				this.alpha = .8;
-			}
-			else
-			{
-				this.vo.dispatchEvent(new LegendEvent(LegendEvent.SHOW_LEGEND, vo));
-				this.filters = null;
-				this.ifShow = true;
-				this.alpha = 1;
-			}
-			
-			this.y += 1;
-		}
-		
-		/**
-		 */		
-		private function upHandler(evt:MouseEvent):void
-		{
-			this.y = sourceY;
-		}
-		
-		/**
-		 */		
-		private var sourceY:Number;
-		
-		/**
-		 */		
-		private var ifShow:Boolean = true;
-		
-		/**
-		 */		
-		private function overHandler(evt:MouseEvent):void
-		{
-		}
-		
-		/**
-		 */		
-		private function outHandler(evt:MouseEvent):void
-		{
 		}
 		
 		/**

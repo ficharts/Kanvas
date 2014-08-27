@@ -2,9 +2,8 @@ package com.kvs.charts.legend
 {
 	import com.kvs.charts.legend.model.LegendVO;
 	import com.kvs.charts.legend.view.LegendItemUI;
-	import com.kvs.utils.XMLConfigKit.XMLVOLib;
-	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
+	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	
 	import flash.display.Sprite;
 

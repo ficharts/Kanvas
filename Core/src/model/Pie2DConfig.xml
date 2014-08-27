@@ -6,53 +6,14 @@
 	</menu>
 
 	<template>
-
-		<!---------------------效果----------------------------------------------------->
-
-
-		<style id='HighLight_Icon'>
-			<border color='${color}{adjustColor:0.6}' thikness='.5'/>
-			<cover>
-				<border pixelHinting='true' color='${color}{adjustColor:1.8},${color}{adjustColor:1.4}' radioes='0, 200' angle='65' alpha='1,0' thikness='0.1'/>
-			</cover>
-		</style>
-
-		<style id='HighLight'>
-			<cover offset='0'>
-				<fill color='${color}{adjustColor:2},${color}{adjustColor:1.2}' radioes='0, 50' angle='75' alpha='1,0.2'/>
-			</cover>
-		</style>
-
-
-
-		<!-------------------字体----------------------------------------------------------------------------------->
-
         <format id='FontFormat' font='微软雅黑' size='12' color='${color}'/>
-
-        
-
-      <!---------------------序列----------------------------------------------------------------------->
-
-
-      <pie id='Simple'>
-        <states>
-            <normal>
-                <fill color='${color}{adjustColor:1.5},${color}{adjustColor:1.2}' alpha='1,1' angle='90'/>
-            </normal>
-        </states>
-     </pie>
-
-		
-		
-
-	 
-
-
-		
-
-		<!--------------------图例----------------------------------------------------------------------------------------->
-
-	
+	    <pie id='Simple'>
+	        <states>
+	            <normal>
+	                <fill color='${color}{adjustColor:1.5},${color}{adjustColor:1.2}' alpha='1,1' angle='90'/>
+	            </normal>
+	        </states>
+	   </pie>
 
 		<icon id='Simple'>
 			<circle>
@@ -65,26 +26,12 @@
 			</circle>
 		</icon>
 
-        <legend id='Simple' label="${xLabel}, ${yLabel}"  position='right' enable='true' hPadding='5' vPadding='0' vMargin='2'>
+        <legend id='Simple' label="${xLabel}, ${yLabel}"  position='right' enable='true' hPadding='5' vPadding='10' vMargin='2'>
         	<border color='FFFFFF' thikness='1' alpha='0'/>
 			<fill color='FFFFFF' alpha='0'/>
 			<icon>Simple</icon>
 			<label format='FontFormat'/>
 		</legend>
-
-
-
-		
-		
-
-
-		<!--------------------ToolTip----------------------------------------->
-
-		<tooltip id='Simple' enable='true' locked='false' format='FontFormat' radius='0' padding='5' vMargin='10' hMargin='20' text="${tooltip}">
-			<format color='FFFFFF'/>
-			<border color='FFFFFF' alpha='0.8' thikness='1' pixelHinting='false' caps='round'/>
-			<fill color='${color}{adjustColor:1.2},${color}' alpha='0.8, 0.8' angle='90'/>
-		</tooltip>
 
 
         <colors id='Heavy'>
@@ -107,7 +54,6 @@
             <color>#097DDA</color>
             <color>#728F1C</color>
             <color>#C451C8</color>
-            <color>#4AC0C0</color>
 			<color>#AB8718</color>
             <color>#EF306A</color>
             <color>#4E555F</color>
@@ -116,17 +62,11 @@
             <color>#FE5B3B</color>
             <color>#6DCFF6</color>
             <color>#9BD124</color>
+             <color>#4AC0C0</color>
 		</colors>
 
-		
 	</template>
 	
-
-
-
-
-
-
 
 
 
@@ -134,34 +74,15 @@
 	    <!--默认样式：精简版-------------------------------------------------------------------------------------->
 	    <Simple animation='true'>
 	        <pieSeriesStyle style='Simple'/>
-	   
-	        <pieSeries>
-	            <pie xField='label' yField='value'/>
-	        </pieSeries>
-	        
-	        <title hAlign='center' vMargin='0' vPadding='0' format='FontFormat'>
-	            <format size='14' color='555555' bold='true'/>
-	        </title>
-
-	        <subTitle hAlign='center' vMargin='0' vPadding='0' format='FontFormat'>
-	            <format color='555555'/>
-	        </subTitle>
-
-	        <chartBG paddingLeft='10' paddingRight='10' paddingTop='10' paddingBottom='10' radius='10' gutterTop='10' gutterRight='10'>
+	        <chartBG paddingLeft='5' paddingRight='5' paddingTop='5' paddingBottom='5' radius='10' gutterTop='5' gutterRight='5'>
 	            <border color='EEEEEE'/>
 	            <fill color='FFFFFF'/>
 	        </chartBG>
 	        
 	        <valueLabel enable='true' margin='0' padding='5' text='${valueLabel}' format='FontFormat'>
 	            <format color='FFFFFF' size='14'/>
-	            <text>
-	            	<effects>
-						<shadow color='${color}{adjustColor:0.5}' alpha='0.8' distance='1' blur='1' angle='90'/>
-					</effects>
-	            </text>
 	        </valueLabel>
 	        
-	        <tooltip style='Simple'/>
 			<legend style='Simple'/>
 
 	        <template>
@@ -169,7 +90,6 @@
 	        
 	        <colors>RGB</colors>
 	    </Simple>
-
 	    
 	</styles> 
 </theme>    

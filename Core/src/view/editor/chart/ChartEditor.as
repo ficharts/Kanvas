@@ -228,6 +228,7 @@ package view.editor.chart
 			var s:SeriesProxy;
 			
 			var series:XML = <series/>;
+			iffixed = false;
 			
 			for (i = 0; i < seriesText.length; i ++)
 			{
@@ -270,6 +271,10 @@ package view.editor.chart
 					s = new BubbleSeriesProxy;
 					(s as BubbleSeriesProxy).bubbles = bubbleData;
 				}
+				else if (type == "pie")
+				{
+					s = new PieSeriesProxy;
+				}
 				else 
 				{
 					s = new SeriesProxy;
@@ -306,6 +311,8 @@ package view.editor.chart
 			var config:XML = chart.configXML.copy();
 			config.series = series;
 			config.data = data;
+			s.appendFfix(preffix, suffix, config);
+			
 			
 			chart.configXML = config;
 			chart.render();
@@ -354,35 +361,48 @@ package view.editor.chart
 		 */		
 		public function checkPrefixAndSuffix(values:Array):void
 		{
+			if (iffixed)
+				return;
+			
 			for each (var item:String in values)
 			{
 				var formatter:Array = item.split(item.match(/-?\d+\.?\d*/g)[0]);
 				
 				if (formatter.length == 2)
 				{
-					yPreffix = formatter[0];
-					ySuffix = formatter[1];
+					preffix = formatter[0];
+					suffix = formatter[1];
+					
+					if (preffix != "" || suffix != "")
+					{
+						iffixed = true;
+						return;
+					}
 				}
 				else
 				{
 					if (item.indexOf(formatter[0]) == 0)
-						yPreffix = formatter[0];
+						preffix = formatter[0];
 					else
-						ySuffix = formatter[0];
+						suffix = formatter[0];
 				}
 					
 			}
 		}
 		
 		/**
-		 * Y值前缀
 		 */		
-		public var yPreffix:String = '';
+		private var iffixed:Boolean = false;
 		
 		/**
-		 * Y值后缀
+		 * 值前缀
 		 */		
-		public var ySuffix:String = '';
+		public var preffix:String = '';
+		
+		/**
+		 * 值后缀
+		 */	
+		public var suffix:String = '';
 		
 		
 		/**

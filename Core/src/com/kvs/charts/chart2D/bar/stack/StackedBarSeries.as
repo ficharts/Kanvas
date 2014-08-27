@@ -10,11 +10,10 @@ package com.kvs.charts.chart2D.bar.stack
 	import com.kvs.charts.chart2D.core.itemRender.PointRenderBace;
 	import com.kvs.charts.chart2D.core.model.Chart2DModel;
 	import com.kvs.charts.common.ChartColors;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.common.SeriesDataPoint;
+	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
-	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
 	
 	/**
 	 */	
@@ -139,13 +138,6 @@ package com.kvs.charts.chart2D.bar.stack
 				item.offset = baseLine;
 			}
 			
-			for each (item in this.fullDataItems)
-			{
-				item.dataItemX = horizontalAxis.valueToX(item.xValue, NaN);
-					
-				item.dataItemY = verticalAxis.valueToY(item.yValue) - columnGoupWidth / 2 +
-				this.columnSeriesIndex * (partColumnWidth + columnGroupInnerSpaceUint) + partColumnWidth / 2;
-			}
 		}
 		
 		/**
@@ -181,13 +173,6 @@ package com.kvs.charts.chart2D.bar.stack
 		}
 		
 		/**
-		 */		 	
-		override protected function get combileItemRender():PointRenderBace
-		{
-			return new StackedBarCombilePointRender;
-		}
-		
-		/**
 		 */		
 		override protected function preInitData():void
 		{
@@ -196,13 +181,11 @@ package com.kvs.charts.chart2D.bar.stack
 			var xValue:Number, yValue:Object, positiveValue:Number, negativeValue:Number;
 			var length:uint = dataProvider.length;
 			var stack:StackedSeries;
-			var combleSeriesDataItem:SeriesDataPoint;
 			var stackedSeriesDataItem:StackedSeriesDataPoint;
 			
 			dataItemVOs.length = 0;
 			horizontalValues.length = 0;
 			verticalValues.length = 0;
-			fullDataItems.length = 0;
 			
 			// 将子序列的数据节点合并到一起；
 			for each (stack in stacks)
@@ -246,31 +229,6 @@ package com.kvs.charts.chart2D.bar.stack
 						['startValue', 'endValue']);
 				}
 				
-				// 将所有堆积值求和， 数值标签取求和值， 标签的位置取决于最值， 
-				// 求和为正取最大值， 求和为负则取最小值；
-				if (this.valueLabel.enable)
-				{
-					combleSeriesDataItem = new SeriesDataPoint();
-					combleSeriesDataItem.metaData = new Object;
-					
-					combleSeriesDataItem.xValue = ((positiveValue + negativeValue) >= 0) ? positiveValue : negativeValue;
-					combleSeriesDataItem.yValue = yValue;
-					
-					combleSeriesDataItem.xLabel = horizontalAxis.getXLabel(positiveValue + negativeValue);
-					combleSeriesDataItem.yLabel = verticalAxis.getYLabel(combleSeriesDataItem.xValue);
-					
-					combleSeriesDataItem.color = uint(this.color);
-					combleSeriesDataItem.seriesName = this.seriesName;
-					
-					combleSeriesDataItem.xDisplayName = horizontalAxis.displayName;
-					combleSeriesDataItem.yDisplayName = verticalAxis.displayName;
-					
-					XMLVOMapper.pushAttributesToObject(combleSeriesDataItem, combleSeriesDataItem.metaData, 
-						['xValue', 'yValue', 'xLabel', 'yLabel', 'xDisplayName', 'yDisplayName', 'seriesName', 'color']);
-					
-					fullDataItems.push(combleSeriesDataItem); 
-				}
-				
 				verticalValues.push(yValue);
 				horizontalValues.push(positiveValue);
 				horizontalValues.push(negativeValue);
@@ -290,11 +248,6 @@ package com.kvs.charts.chart2D.bar.stack
 				series.verticalAxis = this.verticalAxis;
 			}
 			
-			//stacks.reverse();
-			
-			// 如果显示数值则坐标轴多延伸一个单元格�
-			if (this.labelDisplay != LabelStyle.NONE && horizontalAxis is LinearAxis)
-				(horizontalAxis as LinearAxis).ifExpend = true;
 		}
 		
 		
