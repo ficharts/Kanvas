@@ -511,7 +511,7 @@
 		
 		/**
 		 */		
-		public function initBtnStyle(btn:IconBtn, icon:String):void
+		public function initBtnStyle(btn:IconBtn, icon:String, btnBGStyle:XML = null):void
 		{
 			btn.w = btnWidth;
 			btn.h = btnHeight;
@@ -520,6 +520,9 @@
 				btn.iconW = btn.iconH = 25;//回撤按钮大一点，和谐
 			else
 				btn.iconW = btn.iconH = iconSize;
+			
+			if (btnBGStyle == null)
+				btnBGStyle = this.btnBGStyle;
 			
 			btn.styleXML = btnBGStyle;
 			btn.setIcons(icon, icon, icon);

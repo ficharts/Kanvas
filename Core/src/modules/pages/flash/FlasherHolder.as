@@ -49,7 +49,7 @@ package modules.pages.flash
 			
 			//绘制鼠标交互区域
 			shapeProxy.graphics.clear();
-			shapeProxy.graphics.beginFill(0, 0.5);
+			shapeProxy.graphics.beginFill(0, 0);
 			
 			//高度增高了是为了防止鼠标移出原件区域时，淡出工具条消失
 			shapeProxy.graphics.drawRect( - this.w / 2, - this.h / 2 - dis * 2, this.w, this.h + dis * 2);

@@ -110,8 +110,6 @@ package
 		private function toChartEdit(evt:KVSEvent):void
 		{
 			evt.stopPropagation();
-			
-			
 		}
 		
 		/**

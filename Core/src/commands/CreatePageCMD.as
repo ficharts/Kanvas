@@ -107,6 +107,8 @@ package commands
 					sendNotification(Command.SElECT_ELEMENT, element);
 			}
 			
+			sendNotification(Command.SElECT_ELEMENT, element);
+			
 			UndoRedoMannager.register(this);
 		}
 		
