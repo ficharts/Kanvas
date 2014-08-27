@@ -76,6 +76,11 @@ package view.element.state
 			element.dispatchEvent(new ElementEvent(ElementEvent.OUT_ELEMENT, element));
 		}
 		
+		public function doubleClick():void
+		{
+			element.dispatchEvent(new ElementEvent(ElementEvent.DOUBLE_CLICK, element));
+		}
+		
 		/**
 		 */		
 		public function startMove():void
@@ -95,8 +100,7 @@ package view.element.state
 		 */		
 		public function enable():void
 		{
-			if (element.alpha == 1)
-				return;
+			if (element.alpha == 1) return;
 			
 			element.mouseChildren = element.mouseEnabled = true;
 			element.alpha = 1;
@@ -106,7 +110,9 @@ package view.element.state
 		 */		
 		public function disable():void
 		{
-			element.alpha = 0.6;
+			if (element.alpha == .8) return;
+			
+			element.alpha = 0.8;
 			element.mouseChildren = element.mouseEnabled = false;
 			element.clearHoverEffect();
 		}

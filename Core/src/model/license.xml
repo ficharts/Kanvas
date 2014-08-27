@@ -1,0 +1,9 @@
+<license>
+	<!-- Trial, web, Intranet, Enterprise, Enterprise_Plus, Desk, App-->
+	<type>web</type>
+	<servers>
+		<url>www.kanvas.cn</url>
+		<url>kanvas.cn</url>
+	</servers>
+	<desc></desc>
+</license>

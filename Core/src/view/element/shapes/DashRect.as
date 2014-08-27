@@ -17,7 +17,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <dashRect/>
+			vo.xml = <dashRect/>;
 				
 			dl = new DashLine(this, 1, 5);
 		}

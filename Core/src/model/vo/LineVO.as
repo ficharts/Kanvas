@@ -14,6 +14,8 @@ package model.vo
 			
 			this.type = 'line';
 			this.styleType = 'line';
+			
+			this.thickness = 12;
 		}
 		
 		override public function clone():ElementVO
@@ -23,14 +25,14 @@ package model.vo
 			return vo;
 		}
 		
-		override public function exportData(template:XML):XML
+		override public function exportData():XML
 		{
-			template = super.exportData(template);
-			template.@arc = arc;
-			template.@thickness = thickness;
+			xml = super.exportData();
+			xml.@arc = arc;
+			xml.@thickness = thickness;
 			if (style && style.getBorder)
-				template.@borderAlpha = style.getBorder.alpha;
-			return template;
+				xml.@borderAlpha = style.getBorder.alpha;
+			return xml;
 		}
 		
 		override public function updatePageLayout():void

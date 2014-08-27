@@ -26,7 +26,7 @@ package com.kvs.ui
 		
 		/**
 		 */		
-		private var _isOpen:Boolean = false;
+		private var _isOpen:Boolean = true;
 
 		/**
 		 * 是否开启 

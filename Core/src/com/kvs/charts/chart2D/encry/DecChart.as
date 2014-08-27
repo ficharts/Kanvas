@@ -26,9 +26,9 @@ package com.kvs.charts.chart2D.encry
 	 * 
 	 * 负责解密、License验证、水印显示
 	 */	
-	public class Dec
+	public class DecChart
 	{
-		public function Dec()
+		public function DecChart()
 		{
 		}
 		

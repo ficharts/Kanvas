@@ -5,7 +5,9 @@ package view.ui
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import view.screenState.FullScreenState;
@@ -86,8 +88,8 @@ package view.ui
 			
 			__boundDiagonalDistance = RectangleUtil.getDiagonalDistance(bound);
 			
-			fitBgBitmapToBound();
-			synBgImageToCanvas();
+			//fitBgContentToBound();
+			synBgContentToCanvas();
 			dispatchEvent(new KVSEvent(KVSEvent.UPATE_BOUND));
 		}
 		
@@ -95,10 +97,27 @@ package view.ui
 		 */		
 		private var __bound:Rectangle;
 		
+		/**
+		 */		
 		public function get stageBound():Rectangle
 		{
-			return null;
+			return __stageBound;
 		}
+		
+		/**
+		 */		
+		public function set stageBound(value:Rectangle):void
+		{
+			lastBound = __stageBound;
+			__stageBound = value;
+			
+			updateCanvasCenter();
+			synBgContentToCanvas();
+		}
+		
+		private var __stageBound:Rectangle;
+		
+		private var lastBound:Rectangle;
 		
 		public function get boundDiagonalDistance():Number
 		{
@@ -106,7 +125,6 @@ package view.ui
 		}
 		
 		private var __boundDiagonalDistance:Number;
-		
 		
 		
 		/**
@@ -129,59 +147,126 @@ package view.ui
 		 */		
 		private var __bgColorCanvas:Sprite;
 		
-		/**
-		 * 同步canvas与背景图片的比例位置关系， 此方法在初始化， 插入背景图和画布缩放
-		 * 
-		 * 及移动时需要被调用
-		 */		
-		public function synBgImageToCanvas():void
-		{
-			bgImageCanvas.scaleX = bgImageCanvas.scaleY = Math.pow(canvas.scaleX, .1);
-			bgImageCanvas.rotation = canvas.rotation;
-			var p:Number =  Math.pow(1 / (1 + canvas.scaleX), 2);
-			var hw:Number = stage.stageWidth  * .5;
-			var hh:Number = stage.stageHeight * .5;
-			bgImageCanvas.x = hw + (canvas.x - hw) * p;
-			bgImageCanvas.y = hh + (canvas.y - hh) * p;
-		}
+		
 		
 		
 		/**
 		 * 在画布的正中心绘制背景图片
 		 */		
-		public function drawBGImg(bmd:BitmapData):void
+		public function drawBGImg(data:Object):void
 		{
 			// 图片数据为空时，仅删除背景图
-			if (bgImageBitmap && bgImageCanvas.contains(bgImageBitmap))
-				bgImageCanvas.removeChild(bgImageBitmap);
+			if (bgImageContent && bgImageCanvas.contains(bgImageContent))
+				bgImageCanvas.removeChild(bgImageContent);
 			
-			if (bmd)
+			if (data)
 			{
-				bgImageBitmap = new Bitmap(bmd);
-				bgImageBitmap.x = -.5 * bgImageBitmap.width;
-				bgImageBitmap.y = -.5 * bgImageBitmap.height;
-				bgImageCanvas.addChild(bgImageBitmap);
-				fitBgBitmapToBound();
-				synBgImageToCanvas();
+				if (data is BitmapData)
+				{
+					var bitmap:Bitmap = new Bitmap(BitmapData(data));
+					bitmap.smoothing = true;
+					bgImageCanvas.addChild(bgImageContent = bitmap);
+				}
+				else if (data is DisplayObject)
+				{
+					bgImageCanvas.addChild(bgImageContent = DisplayObject(data));
+				}
+				
+				fitBgContentToBound(false);
+				synBgContentToCanvas();
 			}
 		}
 		
-		private function fitBgBitmapToBound():void
+		/**
+		 */		
+		private function fitBgContentToBound(tween:Boolean = true):void
 		{
-			if (bgImageBitmap && bound)
+			if (bgImageContent)
 			{
-				var vw:Number = bound.width;
+				/*var vw:Number = bound.width;
 				var vh:Number = bound.height;
-				var bw:Number = bgImageBitmap.width  / bgImageBitmap.scaleX;
-				var bh:Number = bgImageBitmap.height / bgImageBitmap.scaleY;
-				var ss:Number = 1.5 * ((vw / vh > bw / bh) ? vw / bw : vh / bh);
-				TweenMax.to(bgImageBitmap, 1, {scaleX:ss, scaleY:ss, x:-.5 * bw * ss, y:-.5 * bh * ss});
+				var ow:Number = bgImageContent.width  / bgImageContent.scaleX;
+				var oh:Number = bgImageContent.height / bgImageContent.scaleY;*/
+				//var sa:Number = ((ow / oh > vw / vh) ? vw / ow : vh / oh) * 32;
+				var ow:Number = bgImageContent.width  / bgImageContent.scaleX;
+				var oh:Number = bgImageContent.height / bgImageContent.scaleY;
+				var sa:Number = 1;
+				var xa:Number = ow * sa * -.5;
+				var ya:Number = oh * sa * -.5;
+				
+				if (tween)
+				{
+					TweenMax.to(bgImageContent, .3, {
+						scaleX: sa, 
+						scaleY: sa, 
+						x: xa, y: ya});
+				}
+				else
+				{
+					bgImageContent.scaleX = bgImageContent.scaleY = sa;
+					bgImageContent.x = xa;
+					bgImageContent.y = ya;
+				}
+			}
+		}
+		
+		/**
+		 * 同步canvas与背景图片的比例位置关系， 此方法在初始化， 插入背景图和画布缩放
+		 * 
+		 * 及移动时需要被调用
+		 */		
+		public function synBgContentToCanvas():void
+		{
+			bgImageCanvas.rotation = canvas.rotation;
+			if (canvas.scaleX > 1)
+			{
+				bgImageCanvas.scaleX = bgImageCanvas.scaleY = Math.pow(canvas.scaleX, .8);
+				var wc:Number = bound.x + bound.width  * .5;
+				var hc:Number = bound.y + bound.height * .5;
+				var wo:Number = canvas.x - wc;
+				var ho:Number = canvas.y - hc;
+				var si:Number = bgImageCanvas.scaleX / canvas.scaleX;
+				bgImageCanvas.x = wc + wo * si;
+				bgImageCanvas.y = hc + ho * si;
+			}
+			else
+			{
+				bgImageCanvas.scaleX = bgImageCanvas.scaleY = canvas.scaleX;
+				bgImageCanvas.x = canvas.x;
+				bgImageCanvas.y = canvas.y;
+			}
+			
+			if (bgImageContent && bgImageContent is Bitmap)
+			{
+				Bitmap(bgImageContent).smoothing = ! ((bgImageCanvas.width < bound.width * 2) && 
+					(bgImageContent.width / bgImageContent.scaleX > bound.width));
+			}
+			
+		}
+		
+		/**
+		 */		
+		private function updateCanvasCenter():void
+		{
+			if (lastBound)
+			{
+				var lastCenter:Point = new Point((lastBound.left + lastBound.right) * .5, (lastBound.top + lastBound.bottom) * .5);
+				var center:Point = new Point((stageBound.left + stageBound.right) * .5, (stageBound.top + stageBound.bottom) * .5);
+				var vector:Point = center.subtract(lastCenter);
+				canvas.x += vector.x;
+				canvas.y += vector.y;
+			}
+			else
+			{
+				canvas.x = (bound.left + bound.right) * .5;
+				canvas.y = (bound.top + bound.bottom) * .5;
 			}
 		}
 		
 		/**
 		 */		
 		public var bgImageCanvas:Sprite;
-		private var bgImageBitmap:Bitmap;
+		
+		private var bgImageContent:DisplayObject;
 	}
 }

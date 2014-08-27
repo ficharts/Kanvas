@@ -1,5 +1,7 @@
 package 
 {
+	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.IApp;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
@@ -10,12 +12,15 @@ package
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.system.Security;
 	import flash.utils.ByteArray;
 	
 	import model.ConfigInitor;
 	import model.CoreFacade;
+	import model.DecForKvs;
 	import model.ElementProxy;
 	
 	import util.LayoutUtil;
@@ -30,6 +35,7 @@ package
 	import view.elementSelector.ElementHover;
 	import view.ui.BgColorFlasher;
 	import view.ui.Bubble;
+	import view.ui.Interact;
 	import view.ui.MainUIBase;
 	import view.ui.ThumbManager;
 
@@ -48,9 +54,12 @@ package
 		/**
 		 * 产品版本号 
 		 */		
-		public static const VER:String = "1.0.1";
+		public static const VER:String = "1.2.3";
 		
-		
+		override public function set mouseChildren(enable:Boolean):void
+		{
+			trace(enable);
+		}
 		
 		//-------------------------------------------------
 		//
@@ -70,9 +79,13 @@ package
 				facade.sendNotification(Command.RENDER_BG_COLOR);
 				drawBgInteractorShape();
 				updatePastPoint();
+				updateStageBound();
+				facade.coreMediator.updateSelector();
+				if (textEditor && textEditor.visible)
+					textEditor.updateLayout();
 			}
 			
-			this.dispatchEvent(new Event(Event.RESIZE));
+			dispatchEvent(new Event(Event.RESIZE));
 		}
 		
 		/**
@@ -144,7 +157,7 @@ package
 		 */		
 		public function hideSelector():void
 		{
-			facade.coreMediator.showSelector();
+			facade.coreMediator.hideSelector();
 		}
 		
 		/**
@@ -206,6 +219,7 @@ package
 			facade.coreMediator.paste();
 		}
 		
+				
 		/**
 		 */		
 		public function exportData():XML
@@ -218,14 +232,11 @@ package
 		public function importData(xml:XML):void
 		{
 			facade.coreProxy.importData(xml);
+			
 			if (stage && stage.stageWidth && stage.stageHeight)
-			{
 				autoZoom();
-			}
 			else
-			{
 				stage.addEventListener(Event.RESIZE, stageInitResizeHandler);
-			}
 		}
 		
 		/**
@@ -336,7 +347,7 @@ package
 		/**
 		 * 背景图加载完毕或者删除成功后通知外围程序
 		 */		
-		public function bgImgUpdated(imgData:BitmapData):void
+		public function bgImgUpdated(imgData:Object):void
 		{
 			var evt:KVSEvent = new KVSEvent(KVSEvent.UPDATE_BG_IMG);
 			evt.bgIMG = imgData;
@@ -415,6 +426,36 @@ package
 			CoreFacade.coreMediator.toUnSelectedMode();
 		}
 		
+		/**
+		 * 取消，不应用动画编辑的内容
+		 */		
+		public function cancelPageEdit():void
+		{
+			CoreFacade.coreMediator.cancelPageEdit();
+		}
+		
+		/**
+		 * 清空所有页面动画
+		 */		
+		public function resetPage():void
+		{
+			CoreFacade.coreMediator.resetPageEdit();
+		}
+		
+		/**
+		 */		
+		public function toPageEdit():void
+		{
+			CoreFacade.coreMediator.toPrevMode();
+		}
+		
+		/**
+		 */		
+		public function toUnselect():void
+		{
+			CoreFacade.coreMediator.toUnSelectedMode();
+		}
+		
 		
 		
 		
@@ -450,11 +491,24 @@ package
 			initUI();
 			initMVC();
 			
-			new ConfigInitor(this);
+			//验证模块初始化
+			dec = new DecForKvs(this);
+			dec.verify();
+			
+			for each (var item:XML in dec.c.child('template').children())
+				XMLVOLib.registWholeXML(item.@id, item, item.name().toString());
+			
+			CoreFacade.coreProxy.initThemeConfig(XML(dec.c.child('themes').toXMLString()));
+			
+			this.ready();
 			
 			// 加载嵌入子体
 			//FlowTextManager.loadFont("./FontLib.swf");
 		}
+		
+		/**
+		 */		
+		public var dec:DecForKvs;
 		
 		/**
 		 */		
@@ -496,8 +550,10 @@ package
 			
 			//自动对齐划线的UI
 			addChild(autoAlignUI);
-			
 			addChild(dragSlectUI);
+			addChild(writeShape);
+			
+			addChild(interact);
 			
 			// 文本编辑器
 			textEditor = TextEditor.instance;
@@ -542,7 +598,7 @@ package
 			canvas.x = .5 * stage.stageWidth;
 			canvas.y = .5 * stage.stageHeight;
 			
-			synBgImageToCanvas();
+			synBgContentToCanvas();
 		}
 		
 		/**
@@ -564,6 +620,11 @@ package
 		public function updatePastPoint():void
 		{
 			PAST_LOC = LayoutUtil.stagePointToElementPoint(stage.stageWidth * .5, stage.stageHeight * .5, canvas);
+		}
+		
+		private function updateStageBound():void
+		{
+			stageBound = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
 		}
 		
 		/**
@@ -620,9 +681,132 @@ package
 		 */	
 		public var autoAlignUI:Shape = new Shape;
 		
+		/**
+		 */		
+		public var writeShape:Shape = new Shape;
+		
+		/**
+		 */		
+		public var interact:Interact = new Interact;
 		
 		
 		
+		
+		//-------------------------------------------------------
+		
+		
+		/**
+		 * 预览模式下的画笔模式
+		 */
+		public function get prevDrawMode():Boolean
+		{
+			return __prevDrawMode;
+		}
+		
+		public function set prevDrawMode(value:Boolean):void
+		{
+			if (__prevDrawMode!= value)
+			{
+				__prevDrawMode = value;
+				mouseEnabled = mouseChildren = !value;
+				writeShape.graphics.clear();
+				if (value)
+				{
+					writeShape.graphics.beginFill(0, 0);
+					writeShape.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+					writeShape.graphics.endFill();
+					stage.addEventListener(MouseEvent.MOUSE_DOWN, drawMouseDown);
+				}
+				else
+				{
+					stage.removeEventListener(MouseEvent.MOUSE_DOWN, drawMouseDown);
+				}
+			}
+		}
+		
+		private var __prevDrawMode:Boolean;
+		
+		public function clearDrawMode():void
+		{
+			if (prevDrawMode)
+			{
+				writeShape.graphics.clear();
+				drawMouseUp(null);
+			}
+		}
+		
+		private function drawMouseDown(e:MouseEvent):void
+		{
+			addEventListener(Event.ENTER_FRAME, drawEnterFrame);
+			stage.addEventListener(MouseEvent.MOUSE_UP, drawMouseUp);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, drawMouseMove);
+			writeShape.graphics.lineStyle(thickness, color, drawAlpha);
+			mouseStart = new Point(mouseX, mouseY);
+		}
+		
+		private function drawMouseMove(e:MouseEvent):void
+		{
+			if (lastMouseX!= mouseX || 
+				lastMouseY!= mouseY)
+			{
+				if (!isNaN(lastMouseX) && !isNaN(lastMouseY))
+				{
+					writeShape.graphics.moveTo(lastMouseX, lastMouseY);
+					writeShape.graphics.lineTo(mouseX, mouseY);
+				}
+				lastMouseX = mouseX;
+				lastMouseY = mouseY;
+			}
+		}
+		
+		private function drawEnterFrame(e:Event):void
+		{
+			if (lastMouseX!= mouseX || 
+				lastMouseY!= mouseY)
+			{
+				if (!isNaN(lastMouseX) && !isNaN(lastMouseY))
+				{
+					writeShape.graphics.moveTo(lastMouseX, lastMouseY);
+					writeShape.graphics.lineTo(mouseX, mouseY);
+				}
+				lastMouseX = mouseX;
+				lastMouseY = mouseY;
+			}
+		}
+		
+		private function drawMouseUp(e:MouseEvent):void
+		{
+			var mouse:Point = new Point(mouseX, mouseY);
+			
+			if (mouseStart && mouse.x < 100 && mouse.y > (stage.stageHeight - 100) && Point.distance(mouse, mouseStart) < 5)
+			{
+				interact.show(0, (stage.stageHeight - 100), 100, 100);
+				prevDrawMode = false;
+			}
+			lastMouseX = NaN;
+			lastMouseY = NaN;
+			
+			removeEventListener(Event.ENTER_FRAME, drawEnterFrame);
+			stage.removeEventListener(MouseEvent.MOUSE_UP, drawMouseUp);
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE, drawMouseMove);
+		}
+		
+		private var lastMouseX:Number;
+		private var lastMouseY:Number;
+		
+		private var mouseStart:Point;
+		
+		private var thickness:Number = 2.5;
+		
+		/**
+		 * 画笔颜色
+		 */		
+		private var color:uint = 0x000000;
+		
+		/**
+		 */		
+		private var drawAlpha:Number = 1;
+
 		
 		
 		//-------------------------------------------------------
@@ -683,5 +867,7 @@ package
 		 * 是否为AIR桌面程序，此属性在客户端中设置为true。
 		 */
 		public static var isAIR:Boolean;
+		
+		
 	}
 }

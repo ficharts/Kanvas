@@ -2,10 +2,11 @@ package view.themePanel
 {
 	import com.kvs.ui.button.IconBtn;
 	import com.kvs.ui.button.LabelBtn;
-	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.graphic.BitmapUtil;
 	
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -29,7 +30,7 @@ package view.themePanel
 			imgBtn.w = w - 8;
 			imgBtn.h = h -  8;
 			imgBtn.x = imgBtn.y = 4;
-			imgBtn.text = '上传3D背景图';
+			imgBtn.text = '上传背景图';
 			imgBtn.labelStyleXML = noImgLabelStyle;
 			addChild(imgBtn);
 			
@@ -75,7 +76,7 @@ package view.themePanel
 			}
 			else
 			{
-				imgBtn.text = '上传3D背景图';
+				imgBtn.text = '上传背景图';
 				imgBtn.updateLabelStyle(noImgLabelStyle);
 				imgBtn.updateBgStyle(noImgStyleXML);
 			}
@@ -95,15 +96,30 @@ package view.themePanel
 			
 			if (hasImage)
 			{
-				var cw:Number = w - 8;
-				var ch:Number = h - 8;
-				var bw:Number = evt.bgIMG.width;
-				var bh:Number = evt.bgIMG.height;
-				var scale:Number = ((cw / ch) > (bw / bh)) ? ch / bh : cw / bw;
-				var nw:Number = bw * scale;
-				var nh:Number = bh * scale;
+				if (evt.bgIMG is BitmapData)
+				{
+					var bmd:BitmapData = BitmapData(evt.bgIMG);
+				}
+				else if (evt.bgIMG is DisplayObject)
+				{
+					var content:DisplayObject = DisplayObject(evt.bgIMG);
+					if (content.width && content.height)
+					{
+						bmd = BitmapUtil.getBitmapData(content, true);
+					}
+				}
+				if (bmd)
+				{
+					var cw:Number = w - 8;
+					var ch:Number = h - 8;
+					var bw:Number = bmd.width;
+					var bh:Number = bmd.height;
+					var scale:Number = ((cw / ch) > (bw / bh)) ? ch / bh : cw / bw;
+					var nw:Number = bw * scale;
+					var nh:Number = bh * scale;
+					BitmapUtil.drawBitmapDataToShape(bmd, imgCanvas, nw, nh, 4 + (cw - nw) * .5, 4 + (ch - nh) * .5);
+				}
 				
-				BitmapUtil.drawBitmapDataToShape(evt.bgIMG, imgCanvas, nw, nh, 4 + (cw - nw) * .5, 4 + (ch - nh) * .5);
 			}
 			
 			updateState();

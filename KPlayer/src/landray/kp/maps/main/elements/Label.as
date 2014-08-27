@@ -2,6 +2,7 @@ package landray.kp.maps.main.elements
 {
 	import com.kvs.ui.label.TextDrawer;
 	
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.text.engine.BreakOpportunity;
 	import flash.text.engine.CFFHinting;
@@ -17,22 +18,57 @@ package landray.kp.maps.main.elements
 	import util.textFlow.FlowTextManager;
 	import util.textFlow.ITextFlowLabel;
 	
+	import view.element.IText;
+	
 	/**
 	 * 
 	 */	
-	public final class Label extends Element implements ITextFlowLabel
+	public final class Label extends Element implements ITextFlowLabel, IText
 	{
 		public function Label($vo:ElementVO)
 		{
 			super($vo);
 			init();
+			
+			useBitmap();
 		}
 		
+		/**
+		 */		
+		public function useBitmap():void
+		{
+			textCanvas.visible = false;
+			shape.visible = true;
+		}
+		
+		/**
+		 */		
+		public function useText():void
+		{
+			textCanvas.visible = true;
+			shape.visible = false;
+		}
+		
+		/**
+		 */		
+		override public function get canvas():DisplayObject
+		{
+			return _canvas;
+		}
+		
+		/**
+		 */		
+		private var _canvas:Sprite = new Sprite;
+		
+		/**
+		 */		
 		private function init():void
 		{
-			textDrawer = new TextDrawer(this);
-			addChild(textCanvas = new Sprite);
+			_canvas.addChild(shape);
+			_canvas.addChild(textCanvas = new Sprite);
+			addChild(_canvas);
 			
+			textDrawer = new TextDrawer(this);
 			textManager = new TextContainerManager(textCanvas);
 			textManager.editingMode = EditingMode.READ_ONLY;
 			
@@ -44,12 +80,12 @@ package landray.kp.maps.main.elements
 			textManager.hostFormat = textLayoutFormat;
 		}
 		
-		public function check():void
+		/**
+		 */		
+		public function check(force:Boolean = false):void
 		{
-			if (visible)
-			{
-				textDrawer.checkTextBm(graphics, textCanvas, textVO.scale * ((parent) ? parent.scaleX : 1));
-			}
+			if (visible || force)
+				textDrawer.checkTextBm(graphics, textCanvas, textVO.scale * ((parent) ? parent.scaleX : 1), true, force);
 		}
 		
 		/**
@@ -59,19 +95,29 @@ package landray.kp.maps.main.elements
 			if(!rendered)
 			{
 				FlowTextManager.renderTextVOLabel(this, textVO);
+				textVO.width  = textManager.compositionWidth;
+				textVO.height = textManager.compositionHeight;
 				renderAfterLabelRender();
 				super.render();
 			}
-			check();
+			
+			check(true);
 		}
 		
+		/**
+		 */		
 		public function afterReRender():void
 		{
+			FlowTextManager.updateTexLayout(text, textManager, fixWidth);
+			
 			textVO.width  = textManager.compositionWidth;
 			textVO.height = textManager.compositionHeight;
 			
 			renderAfterLabelRender();
-			check();
+			
+			super.render();
+			
+			check(true);
 		}
 		
 		private function renderAfterLabelRender():void
@@ -80,6 +126,8 @@ package landray.kp.maps.main.elements
 			textCanvas.y = - textVO.height * .5;
 		}
 		
+		/**
+		 */		
 		public function get ifMutiLine():Boolean
 		{
 			return textVO.ifMutiLine;
@@ -89,10 +137,13 @@ package landray.kp.maps.main.elements
 			textVO.ifMutiLine = value;
 		}
 		
+		/**
+		 */		
 		public function get fixWidth():Number
 		{
 			return vo.width;
 		}
+		
 		public function set fixWidth(value:Number):void
 		{
 			vo.width = value;
@@ -134,23 +185,8 @@ package landray.kp.maps.main.elements
 		
 		private var __textLyoutFormat:TextLayoutFormat;
 		
-		public function get smooth():Boolean
-		{
-			return __smooth;
-		}
-		
-		public function set smooth(value:Boolean):void
-		{
-			if (__smooth!= value)
-			{
-				__smooth = value;
-				textCanvas.visible = smooth;
-				shape.visible = !smooth;
-			}
-		}
-		
-		private var __smooth:Boolean = true;
-		
+		/**
+		 */		
 		private function get textVO():TextVO
 		{
 			return vo as TextVO;

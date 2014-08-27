@@ -43,7 +43,7 @@ package view.elementSelector.sizeControl
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			//holder.element.disable();
 			oldDis = holder.curRDis;
@@ -57,7 +57,7 @@ package view.elementSelector.sizeControl
 		
 		/**
 		 */		
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			//holder.element.enable();
 			holder.coreMdt.autoAlignController.clear();

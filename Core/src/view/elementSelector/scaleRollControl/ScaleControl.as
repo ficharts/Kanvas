@@ -70,7 +70,7 @@ package view.elementSelector.scaleRollControl
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			//防止元素创建动画未完毕时缩放图形，这样会造成图形比例紊乱
 			TweenLite.killTweensOf(selector.element, true);
@@ -89,7 +89,7 @@ package view.elementSelector.scaleRollControl
 		
 		/**
 		 */			
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			if (!isNaN(scale))
 			{

@@ -125,6 +125,7 @@ package view.elementSelector.toolBar
 		}
 		
 		/**
+		 * 页面元素与普通元素的工具条按钮不同
 		 */		
 		protected function initPageElementConvertIcons():void
 		{
@@ -133,6 +134,7 @@ package view.elementSelector.toolBar
 				if (element.isPage)
 				{
 					toolBar.addBtn(toolBar.pageToEleBtn)
+					toolBar.addBtn(toolBar.pageEditBtn);
 					toolBar.addBtn(toolBar.zoomBtn);
 				}
 				else

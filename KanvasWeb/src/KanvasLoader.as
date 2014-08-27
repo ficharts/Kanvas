@@ -1,5 +1,6 @@
-package
+package 
 {
+	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.StageUtil;
 	import com.kvs.utils.graphic.BitmapUtil;
 	
@@ -9,9 +10,11 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.ProgressEvent;
 	import flash.net.URLRequest;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
+	import flash.text.TextField;
 	
 	/**
 	 * 负责加载主程序
@@ -27,22 +30,54 @@ package
 		 */		
 		private function init():void
 		{
-			this.addChild(logoShape);
 			
+			//有色的logo
 			var lo:BitmapData = new logo;
 			var x:Number = (stage.stageWidth - lo.width / 3) / 2;
 			var y:Number = (stage.stageHeight - lo.height / 2) / 2;
-		
 			BitmapUtil.drawBitmapDataToShape(lo, logoShape, lo.width / 3, lo.height / 3, x, y, true);
 			
+			//灰色logo
+			lo = new logo_gray;
+			BitmapUtil.drawBitmapDataToShape(lo, grayLogo, lo.width / 3, lo.height / 3, x, y, true);
+			
+			
+			//遮罩
+			logoMask.x = x;
+			logoMask.y = y;
+			
+			logoMask.graphics.clear();
+			logoMask.graphics.beginFill(0, 0);
+			logoMask.graphics.drawRect(0, 0, logoShape.width, logoShape.height);
+			logoMask.graphics.endFill();
+			
+			logoShape.mask = logoMask;
+			
+			this.addChild(grayLogo);
+			this.addChild(logoShape);
+			this.addChild(logoMask);
+			
+			
+			//加载核心程序
 			laoder = new Loader();
 			laoder.contentLoaderInfo.addEventListener(Event.COMPLETE, kanvasLoaded);
+			laoder.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, loading);
 			laoder.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioErroHander);
 			
 			var context:LoaderContext = new LoaderContext();
-			context.applicationDomain = ApplicationDomain.currentDomain;
+			laoder.load(new URLRequest('http://www.kanvas.cn/web/KanvasWeb.swf'));
 			
-			laoder.load(new URLRequest('./kanvas_kplayer/Kanvas.swf'), context);
+			//laoder.load(new URLRequest('KanvasWeb.swf'));
+			
+		}
+		
+		
+		/**
+		 */		
+		private function loading(evt:ProgressEvent):void
+		{
+			var perc:Number = evt.bytesLoaded /this.stage.loaderInfo.bytesTotal;
+			logoMask.scaleX = perc;
 		}
 		
 		/**
@@ -51,48 +86,33 @@ package
 		
 		/**
 		 */		
+		private var grayLogo:Shape = new Shape;
+		
+		/**
+		 */		
+		private var logoMask:Shape = new Shape;
+		
+		/**
+		 */		
 		private function kanvasLoaded(evt:Event):void
 		{
+			this.removeChild(grayLogo);
+			logoShape.mask = null;
+			
+			this.removeChild(logoMask);
+			this.removeChild(logoShape);
+			
 			kanvas = laoder.content as Sprite;
 			laoder.contentLoaderInfo.removeEventListener(Event.COMPLETE, kanvasLoaded);
+			laoder.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, loading);
 			laoder.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, ioErroHander);
 			laoder.unload();
 			laoder = null;
 			
-			stage.addEventListener(Event.ENTER_FRAME, hideLogoHandler);
+			addChild(kanvas);
 		}
 		
-		/**
-		 */		
-		private function hideLogoHandler(evt:Event):void
-		{
-			if (logoShape)
-			{
-				logoShape.alpha -= 0.2;
-				
-				if (logoShape.alpha <= 0)
-				{
-					logoShape.alpha = 0;
-					
-					this.removeChild(logoShape);
-					logoShape = null;
-					
-					kanvas.y = - 50;
-					addChild(kanvas);
-				}
-			}
-			else
-			{
-				this.kanvas.y += 6;
-				
-				if (kanvas.y >= 0)
-				{
-					stage.removeEventListener(Event.ENTER_FRAME, hideLogoHandler);
-					kanvas.y = 0;
-				}
-			}
-		}
-		
+	
 		/**
 		 */		
 		private function ioErroHander(e:IOErrorEvent):void

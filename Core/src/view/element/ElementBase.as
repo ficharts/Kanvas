@@ -4,6 +4,7 @@ package view.element
 	import com.kvs.ui.clickMove.IClickMove;
 	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.MathUtil;
+	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	import com.kvs.utils.StageUtil;
 	import com.kvs.utils.ViewUtil;
@@ -22,6 +23,7 @@ package view.element
 	import model.vo.PageVO;
 	
 	import modules.pages.PageEvent;
+	import modules.pages.flash.IFlash;
 	
 	import util.ElementCreator;
 	import util.LayoutUtil;
@@ -49,6 +51,8 @@ package view.element
 			
 			initState();
 			StageUtil.initApplication(this, init);
+			
+			doubleClickEnabled = true;
 		}
 		
 		/**
@@ -66,13 +70,9 @@ package view.element
 		 */		
 		public function exportData():XML
 		{
-			return vo.exportData(xmlData);
+			return vo.exportData();
 		}
 		
-		/**
-		 * 数据导出时用到，将VO的各项属性转换为XML数据
-		 */		
-		public var xmlData:XML;
 		
 		
 		
@@ -458,7 +458,7 @@ package view.element
 		{
 			if (check && stage)
 			{
-				var rect:Rectangle = LayoutUtil.getItemRect(parent as Canvas, this);
+				var rect:Rectangle = getItemRect(parent as Canvas, this);
 				
 				if (rect.width < 1 || rect.height < 1)
 				{
@@ -466,17 +466,15 @@ package view.element
 				}
 				else 
 				{
-					var boud:Rectangle = LayoutUtil.getStageRect(stage);
-					super.visible = RectangleUtil.rectOverlapping(rect, boud);
+					var boud:Rectangle = getStageRect(stage);
+					super.visible = rectOverlapping(rect, boud);
 				}
 			}
 			
 			if (parent && visible)
 			{
-				var prtScale :Number = parent.scaleX;
-				var prtRadian:Number = MathUtil.angleToRadian(parent.rotation);
-				var prtCos:Number = Math.cos(prtRadian);
-				var prtSin:Number = Math.sin(prtRadian);
+				var prtScale :Number = parent.scaleX, prtRadian:Number = MathUtil.angleToRadian(parent.rotation);
+				var prtCos:Number = Math.cos(prtRadian), prtSin:Number = Math.sin(prtRadian);
 				
 				//scale
 				var tmpX:Number = x * prtScale;
@@ -489,6 +487,7 @@ package view.element
 				super.x = tmpX * prtCos - tmpY * prtSin + parent.x;
 				super.y = tmpX * prtSin + tmpY * prtCos + parent.y;
 			}
+			
 		}
 		
 		/**
@@ -609,6 +608,7 @@ package view.element
 				vo.pageVO.removeEventListener(PageEvent.DELETE_PAGE_FROM_UI, deletePageHandler);
 				vo.pageVO.removeEventListener(PageEvent.UPDATE_PAGE_INDEX, updatePageIndex);
 			}
+			
 			if (pageVO)
 			{
 				vo.pageVO = pageVO;
@@ -654,11 +654,12 @@ package view.element
 					s = scaleX;
 				
 				numShape.width = numShape.height = 100;
-				var temSize:Number = numShape.width * s * parent.scaleX;
+				var parentScale:Number = (parent) ? parent.scaleX : 1;
+				var temSize:Number = numShape.width * s * parentScale;
 				
 				if (temSize > maxNumSize)
 				{
-					var size:Number = maxNumSize / s / parent.scaleX;
+					var size:Number = maxNumSize / s / parentScale;
 					
 					numShape.width  = size;
 					numShape.height = size;
@@ -697,6 +698,8 @@ package view.element
 			numShape.graphics.endFill();
 		}
 		
+		/**
+		 */		
 		private function clearPageNum():void
 		{
 			if (numLabel)
@@ -711,7 +714,9 @@ package view.element
 		 */		
 		private var maxNumSize:uint = 26;
 		
-		private var numLabel:LabelUI;
+		/**
+		 */		
+		public var numLabel:LabelUI;
 		
 		/**
 		 * 用来绘制页面序号 
@@ -749,9 +754,18 @@ package view.element
 			return (parent) ? parent.getChildIndex(this) : -1;
 		}
 		
+		/**
+		 */		
 		override public function get graphics():Graphics
 		{
 			return graphicShape.graphics;
+		}
+		
+		/**
+		 */		
+		public function get canvas():DisplayObject
+		{
+			return shape;
 		}
 		
 		/**
@@ -902,7 +916,7 @@ package view.element
 		 * 
 		 * 智能组合获取时，自身和组合的子元素一并被获取
 		 */		
-		public function getChilds(group:Vector.<ElementBase>):Vector.<ElementBase>
+		public function getChilds(group:Vector.<IElement>):Vector.<IElement>
 		{
 			group.push(this);
 			
@@ -961,8 +975,17 @@ package view.element
 		public function toPrevState():void
 		{
 			currentState.toPrevState();
+			
 			if (isPage)
+			{
 				numShape.visible = false;
+				
+				this.vo.pageVO.flashIndex = 0;
+				var flasher:IFlash;
+				
+				for each (flasher in vo.pageVO.flashers)
+					flasher.start();
+			}
 		}
 		
 		/**
@@ -970,8 +993,17 @@ package view.element
 		public function returnFromPrevState():void
 		{
 			currentState.returnFromPrevState();
+			
 			if (isPage)
+			{
 				numShape.visible = true;
+				
+				this.vo.pageVO.flashIndex = 0;
+				var flasher:IFlash;
+				
+				for each (flasher in vo.pageVO.flashers)
+					flasher.end();
+			}
 		}
 		
 		/**
@@ -1116,7 +1148,7 @@ package view.element
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			currentState.startMove();
 		}
@@ -1127,7 +1159,7 @@ package view.element
 		
 		/**
 		 */		
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			currentState.stopMove();
 		}
@@ -1179,8 +1211,9 @@ package view.element
 			_vo = value;
 		}
 		
+		/**
+		 */		
 		private var _vo:ElementVO;
-		
 		
 		/**
 		 * 如果该对象是复制而来，则该属性指向源对象。 
@@ -1197,5 +1230,11 @@ package view.element
 		
 		//绘制图形的画布
 		protected var graphicShape:Shape;
+		
+		private static var getItemRect:Function = LayoutUtil.getItemRect;
+		
+		private static var getStageRect:Function = LayoutUtil.getStageRect;
+		
+		private static var rectOverlapping:Function = RectangleUtil.rectOverlapping;
 	}
 }

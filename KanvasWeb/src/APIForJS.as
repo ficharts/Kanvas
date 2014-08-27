@@ -2,9 +2,9 @@ package
 {
 	import com.kvs.utils.Base64;
 	import com.kvs.utils.ExternalUtil;
+	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.net.Post;
 	
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.JPEGEncoderOptions;
 	import flash.events.Event;
@@ -32,9 +32,11 @@ package
 		 * @param core
 		 * 
 		 */
-		public function APIForJS(core:CoreApp)
+		public function APIForJS(core:CoreApp, kanvas:Kanvas)
 		{
 			super(core);
+			
+			kvs = kanvas;
 			
 			core.addEventListener(KVSEvent.LINK_CLICKED, linkBtnClicked);
 			appID = core.stage.loaderInfo.parameters['id'];
@@ -94,6 +96,8 @@ package
 			
 			ExternalUtil.addCallback("initDataServer", initDataServer);
 			
+			ExternalUtil.addCallback("initTemplates", initTemplates);
+			
 			//通知网页端，Flash初始化OK
 			ExternalUtil.call('KANVAS.ready', appID);
 			
@@ -101,12 +105,72 @@ package
 		
 		/**
 		 */		
+		private function initTemplates(data:String):void
+		{
+			kvs.templatePanel.initTemplate(XML(data));
+		}
+		
+		/**
+		 */		
+		private var kvs:Kanvas;
+		
+		/**
+		 */		
 		public var appID:String;
 		
+		/**
+		 */		
+		override public function setXMLData(data:String):void
+		{
+			super.setXMLData(data);
+			
+			//数据设定完成后关闭模版面板
+			kvs.closeTemplatePanel();
+		}
 		
+		/**
+		 */		
+		override public function openTemplate(path:String):void
+		{
+			if (RexUtil.ifHasText(path))
+			{
+				var loader:URLLoader = new URLLoader;
+				loader.addEventListener(Event.COMPLETE, loaderComplete);
+				loader.addEventListener(IOErrorEvent.IO_ERROR, loaderIOError);
+				loader.load(new URLRequest(path));
+			}
+			else
+			{
+				Bubble.show("模板路径不存在！");
+			}
+		}
 		
+		/**
+		 */		
+		private function loaderComplete(e:Event):void
+		{
+			var loader:URLLoader = URLLoader(e.target);
+			loader.removeEventListener(Event.COMPLETE, loaderComplete);
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOError);
+			
+			try
+			{
+				setBase64Data(e.target.data, false);
+			}
+			catch (o:Error)
+			{
+				Bubble.show(e.target.data);
+			}			
+		}
 		
-		
+		private function loaderIOError(e:IOErrorEvent):void
+		{
+			var loader:URLLoader = URLLoader(e.target);
+			loader.removeEventListener(Event.COMPLETE, loaderComplete);
+			loader.removeEventListener(IOErrorEvent.IO_ERROR, loaderIOError);
+			
+			Bubble.show("加载模板出错！");
+		}
 		
 		
 		//----------------------------------------------------
@@ -250,7 +314,8 @@ package
 				var bytes:ByteArray = bmd.encode(bmd.rect, jpegEncoderOptions);
 			}
 			
-			var pages:ByteArray = core.thumbManager.getPageBytes();
+			//var pages:ByteArray = core.thumbManager.getPageBytes();
+			
 			var data:Object = {};
 			data.docid  = ConfigInitor.DOC_ID;
 			data.thumbW = ConfigInitor.THUMB_WIDTH .toString();
@@ -258,7 +323,7 @@ package
 			data.thumbData = bytes;
 			data.data = Base64.encode(getXMLData());
 			
-			if (pages) data.pageImgData = pages;
+			//if (pages) data.pageImgData = pages;
 			
 			if (dataUpLoader)
 			{
@@ -317,7 +382,7 @@ package
 		/**
 		 * 指定路径, 从指定路径加载数据
 		 */		
-		private function loadDataFromServer(url:String):void
+		public function loadDataFromServer(url:String):void
 		{
 			var req:URLRequest = new URLRequest(url);
 			req.method = URLRequestMethod.GET;
@@ -334,9 +399,7 @@ package
 			//解压缩
 			data.uncompress();
 			
-			//转换为XMl格式
-			var xmlData:XML = XML(data.toString());
-			core.importData(xmlData);
+			setXMLData(data.toString());
 		}
 		
 		/**

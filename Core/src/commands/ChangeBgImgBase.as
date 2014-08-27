@@ -4,12 +4,10 @@ package commands
 	import model.vo.PageVO;
 	
 	import org.puremvc.as3.interfaces.INotification;
-	
-	import util.img.ImgInsertEvent;
-	import util.img.ImgInsertor;
-	import util.img.ImgLib;
-	import util.undoRedo.UndoRedoMannager;
 
+	/**
+	 * 
+	 */	
 	public class ChangeBgImgBase extends Command
 	{
 		public function ChangeBgImgBase()
@@ -23,10 +21,6 @@ package commands
 		{
 			sendNotification(Command.UN_SELECT_ELEMENT);
 		}
-		
-		
-		
-		
 		
 		/**
 		 */		
@@ -58,6 +52,7 @@ package commands
 			{
 				for each (var vo:PageVO in CoreFacade.coreMediator.pageManager.pages)
 				CoreFacade.coreMediator.pageManager.registUpdateThumbVO(vo);
+				
 				v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
 			}
 			else

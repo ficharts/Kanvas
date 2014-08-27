@@ -1,6 +1,6 @@
 package commands
 {
-	import com.kvs.utils.ImageExtractor;
+	import com.kvs.utils.extractor.ImageExtractor;
 	
 	import flash.display.BitmapData;
 	import flash.events.Event;
@@ -15,10 +15,10 @@ package commands
 	
 	import org.puremvc.as3.interfaces.INotification;
 	
-	import util.img.ImgInsertEvent;
-	import util.img.ImgInsertor;
 	import util.img.ImgLib;
 	import util.undoRedo.UndoRedoMannager;
+	
+	import view.ui.Bubble;
 
 	/**
 	 */	
@@ -58,10 +58,21 @@ package commands
 			var bytes:ByteArray = new ByteArray;
 			filestream.readBytes(bytes, 0, file.size);
 			
-			imgExtractor = new ImageExtractor(bytes);
-			imgExtractor.addEventListener(Event.COMPLETE, imgLoaded);
+			try
+			{
+				imgExtractor = new ImageExtractor();
+				imgExtractor.addEventListener(Event.COMPLETE, imgLoaded);
+				imgExtractor.init(bytes);
+			}
+			catch (e:Error)
+			{
+				Bubble.show(e.message);
+			}
+			
 		}
 		
+		/**
+		 */		
 		private function imgLoaded(evt:Event):void
 		{
 			if (handler != null)
@@ -84,7 +95,7 @@ package commands
 			
 			setBgImg(newImgObj, true);
 			
-			ImgLib.register(imgID.toString(), imgExtractor.bytes);
+			ImgLib.register(imgID.toString(), imgExtractor.fileBytes);
 			
 			UndoRedoMannager.register(this);
 		}

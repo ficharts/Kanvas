@@ -1,4 +1,4 @@
-package com.kvs.utils
+package com.kvs.utils.extractor
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -15,7 +15,9 @@ package com.kvs.utils
 	
 	[Event(name="ioError", type="flash.events.IOErrorEvent")]
 	
-	public class ImageExtractor extends EventDispatcher
+	/**
+	 */	
+	public class ImageExtractor extends ExtractorBase
 	{
 		/**
 		 * 图片优化处理类，传入一个二进制字节流，通过监听事件方式，获取优化后的图片字节流与位图数据。
@@ -24,27 +26,36 @@ package com.kvs.utils
 		 * @param $limit 尺寸限制，值为宽度*高度，超过该尺寸的图片，会被缩小至该尺寸以下。
 		 * @param $quality 如果是jpg，该属性为jpg图片质量。
 		 */
-		public function ImageExtractor($bytes:ByteArray, $limit:Number = 4194304, $quality:Number = 80)
+		public function ImageExtractor()
 		{
 			super();
-			if ($bytes)
-				initialize($bytes, $limit);
+		}
+		
+		/**
+		 */		
+		override public function init(bytes:ByteArray,limit:Number = 4194304, quality:Number = 80):void
+		{
+			if (bytes)
+				initialize(bytes, limit);
 			else
 				throw new ArgumentError("参数$bytes不能为空。", 2007);
 		}
 		
+		/**
+		 */		
 		private function initialize($bytes:ByteArray, $limit:Number = 4194304, $quality:Number = 80):void
 		{
 			limit   = $limit;
 			quality = $quality;
 			tempo   = new ByteArray;
 			$bytes.readBytes(tempo);
+			
 			if (tempo.length > 2)
 				analyse();
-			else
-				throw new Error("不支持的文件类型，只支持jpg，png");
 		}
 		
+		/**
+		 */		
 		private function analyse():void
 		{
 			analizeType();
@@ -251,7 +262,7 @@ package com.kvs.utils
 				__bitmapData.draw(bmd, matrix, null, null, null, true);
 				encodeBmd();
 			}
-			bytes.position = 0;
+			fileBytes.position = 0;
 		}
 		
 		private function encodeBmd():void
@@ -309,21 +320,30 @@ package com.kvs.utils
 		private var __type:String;
 		
 		/**
+		 */		
+		override public function get view():Object
+		{
+			return bitmapData;
+		}
+		
+		/**
 		 * 位图数据
 		 */
 		public function get bitmapData():BitmapData
 		{
 			return  __bitmapData;
 		}
+		
 		private var __bitmapData:BitmapData;
 		
 		/**
-		 * 字节流数据
+		 * bitmapdata 存储的图片数据
 		 */
-		public function get bytes():ByteArray
+		override public function get fileBytes():ByteArray
 		{
 			return  __bytes;
 		}
+		
 		private var __bytes:ByteArray;
 		
 		private var limit:Number;

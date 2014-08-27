@@ -1,6 +1,8 @@
 package view.ui
 {
 	import model.vo.ElementVO;
+	
+	import modules.pages.IPageManager;
 
 	public interface IMainUIMediator
 	{
@@ -28,6 +30,8 @@ package view.ui
 		 * 获取到住UI
 		 */		
 		function get mainUI():MainUIBase;
+		
+		function get pages():IPageManager;
 		
 		/**
 		 * 

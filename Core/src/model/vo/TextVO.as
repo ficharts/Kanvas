@@ -6,6 +6,8 @@ package model.vo
 	
 	import flash.text.TextFormat;
 	
+	import util.StyleUtil;
+	
 	/**
 	 * 文字数据
 	 */
@@ -21,28 +23,39 @@ package model.vo
 			this.type = 'text';
 		}
 		
+		/**
+		 */		
 		override public function clone():ElementVO
 		{
 			var vo:TextVO = super.clone() as TextVO;
+			
 			vo.text = text;
 			vo.ifMutiLine = ifMutiLine;
 			vo.styleID = styleID;
 			vo.isCustomColor = isCustomColor;
+			
+			//防止文本复制时，自定义颜色不能复制
+			vo.colorIndex = this.colorIndex;
+			StyleUtil.applyStyleToElement(vo);  
+			
 			return vo;
 		}
 		
-		override public function exportData(template:XML):XML
+		/**
+		 */		
+		override public function exportData():XML
 		{
-			template = super.exportData(template);
-			template.@ifMutiLine    = ifMutiLine;
-			template.@isCustomColor = isCustomColor;
-			template.@font =(label.format as TextFormatStyle).font;
-			template.@size = size;
+			xml = super.exportData();
+			xml.@ifMutiLine    = ifMutiLine;
+			xml.@isCustomColor = isCustomColor;
+			xml.@font =(label.format as TextFormatStyle).font;
+			xml.@size = size;
+			
 			//防止文本有特殊字符
 			if (text && text != "")
-				template.appendChild(XML('<text><![CDATA[' + text + ']]></text>'));
+				xml.appendChild(XML('<text><![CDATA[' + text + ']]></text>'));
 			
-			return template;
+			return xml;
 		}
 		
 		/**
@@ -148,5 +161,15 @@ package model.vo
 		private var _isCustomColor:Object = false;
 		
 		
+		public function get template():Boolean
+		{
+			return _template;
+		}
+		
+		public function set template(value:Boolean):void
+		{
+			_template = value;
+		}
+		private var _template:Boolean;
 	}
 }

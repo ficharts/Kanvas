@@ -1,4 +1,4 @@
-package
+package 
 {
 	import com.kvs.utils.Base64;
 	
@@ -9,6 +9,8 @@ package
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.utils.ByteArray;
+	
+	import view.templatePanel.TemplateItem;
 
 	/**
 	 * 
@@ -97,6 +99,18 @@ package
 			
 			e.target.removeEventListener(Event.COMPLETE, uploadPageData);
 			e.target.removeEventListener(IOErrorEvent.IO_ERROR, uploadPageData);
+		}
+		
+		/**
+		 *
+		 * 选择模版，web时从服务器加载xml数据，air时直接打开模版文件
+		 *  
+		 * @param template
+		 * 
+		 */		
+		public function openTemplate(path:String):void
+		{
+			
 		}
 		
 		/**

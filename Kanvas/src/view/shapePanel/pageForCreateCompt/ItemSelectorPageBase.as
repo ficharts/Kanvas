@@ -38,8 +38,8 @@ package view.shapePanel.pageForCreateCompt
 		{
 			super.init();
 			
-			boxLayout.setLoc(0, 0);
 			boxLayout.setItemSizeAndFullWidth(w, iconSize, iconSize);
+			boxLayout.setLoc(boxLayout.gap, boxLayout.gap);
 			boxLayout.ready();
 			
 			var comp:ItemSelector;

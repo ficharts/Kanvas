@@ -79,7 +79,12 @@ package com.kvs.ui.button
 			this.render();
 			
 			statesControl.enable = false;
+			isSelect = true;
 		}
+		
+		/**
+		 */		
+		public var isSelect:Boolean = false;
 		
 		/**
 		 */		
@@ -90,6 +95,8 @@ package com.kvs.ui.button
 			
 			this.currState = states.getNormal;
 			this.render();
+			
+			isSelect = false;
 		}
 		
 		/**

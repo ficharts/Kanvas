@@ -1,22 +1,26 @@
 package view.interact
 {
+	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	
 	import commands.Command;
 	
-	import consts.ConstsTip;
-	
 	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import model.CoreFacade;
 	import model.vo.ElementVO;
 	import model.vo.PageVO;
 	
+	import modules.pages.IPageManager;
 	import modules.pages.PageManager;
+	import modules.pages.Scene;
 	
 	import org.puremvc.as3.patterns.mediator.Mediator;
 	
@@ -25,6 +29,7 @@ package view.interact
 	import view.editor.EditorBase;
 	import view.element.ElementBase;
 	import view.element.GroupElement;
+	import view.element.IElement;
 	import view.element.imgElement.ImgElement;
 	import view.element.text.TextEditField;
 	import view.elementSelector.ElementSelector;
@@ -33,8 +38,8 @@ package view.interact
 	import view.interact.keyboard.*;
 	import view.interact.multiSelect.MultiSelectControl;
 	import view.interact.multiSelect.TemGroupElement;
+	import view.interact.zoomMove.GestureControl;
 	import view.interact.zoomMove.ZoomMoveControl;
-	import view.ui.Bubble;
 	import view.ui.Canvas;
 	import view.ui.IMainUIMediator;
 	import view.ui.MainUIBase;
@@ -76,10 +81,11 @@ package view.interact
 		{
 			if (element is GroupElement)
 			{
-				var group:Vector.<ElementBase> = new Vector.<ElementBase>;
+				var group:Vector.<IElement> = new Vector.<IElement>;
 				var elements:Vector.<ElementBase> = (element as GroupElement).childElements;
+				
 				for each (var child:ElementBase in elements)
-				group = child.getChilds(group);
+					group = child.getChilds(group);
 				
 				autoGroupController.setGroupElements(group);
 			}
@@ -217,7 +223,7 @@ package view.interact
 		 */		
 		public function autoZoom():void
 		{
-			sendNotification(Command.AUTO_ZOOM);
+			currentMode.autoZoom();
 		}
 		
 		/**
@@ -334,7 +340,7 @@ package view.interact
 			currentMode.toSelectMode();
 		}
 		
-		/**
+		/**`
 		 * 进入到非选择模式，当前场景中没有任何图形被选择
 		 * 
 		 * 关闭型变框
@@ -364,6 +370,30 @@ package view.interact
 		}
 		
 		/**
+		 * 切换到页面编辑状态
+		 */		
+		public function toPageEditMode():void
+		{
+			currentMode.toPageEditMode();
+		}
+		
+		/**
+		 * 取消页面内元素的动画设定
+		 * 
+		 */		
+		public function resetPageEdit():void
+		{
+			currentMode.resetPageEdit();
+		}
+		
+		/**
+		 */		
+		public function cancelPageEdit():void
+		{
+			currentMode.cancelPageEdit();
+		}
+		
+		/**
 		 * 开始型变控制框，元素被选择后续执行的动作
 		 */		
 		public function openSelector():void
@@ -376,7 +406,7 @@ package view.interact
 		 * 
 		 * 文本框的编辑状态下是不显示型变框的）
 		 */		
-		public function showSelector():void
+		public function hideSelector():void
 		{
 			currentMode.hideSelector();
 		}
@@ -394,7 +424,8 @@ package view.interact
 		 */		
 		public function updateSelector():void
 		{
-			selector.update();
+			if (selector && selector.visible)
+				selector.update();
 		}
 		
 		
@@ -454,6 +485,29 @@ package view.interact
 		}
 		
 		/**
+		 * 记录画布的尺寸位置状态
+		 */		
+		public function restoryCanvasState():void
+		{
+			curCanvasState.x = mainUI.canvas.x;
+			curCanvasState.y = mainUI.canvas.y;
+			curCanvasState.rotation = mainUI.canvas.rotation;
+			curCanvasState.scale = mainUI.canvas.scaleX;
+		}
+		
+		/**
+		 * 从演示模式返回到编辑模式时，停留在演示位置；
+		 */		
+		public function resetCanvasState():void
+		{
+			zoomMoveControl.zoomRotateMoveTo(curCanvasState.scale, curCanvasState.rotation, curCanvasState.x, curCanvasState.y);
+		}
+		
+		/**
+		 */		
+		private var curCanvasState:Scene = new Scene;
+		
+		/**
 		 * 多选控制器，总共有两种选择模式：单选模式和多选模式
 		 * 
 		 * 选择相关交互先经由multiSelectControl，再分发到currentMode;
@@ -468,6 +522,8 @@ package view.interact
 		public var unSelectedMode:ModeBase;
 		public var preMode:ModeBase;
 		public var editMode:ModeBase;
+		public var pageEditMode:ModeBase;
+		
 		
 		/**
 		 * 图形元素 选择，拖动，取消选择等交互行为控制
@@ -478,6 +534,11 @@ package view.interact
 		 * 画布缩放移动控制器
 		 */	
 		public var zoomMoveControl:ZoomMoveControl;
+		
+		/**
+		 * 画布交互手势控制
+		 */
+		public var gestureControl:GestureControl;
 		
 		/**
 		 * 预览时鼠标点击控制 
@@ -505,7 +566,14 @@ package view.interact
 		
 		public var autoLayerController:ElementAutoLayerController;
 		
+		public var mouseController:MouseController;
+		
 		public var pageManager:PageManager;
+		
+		public function get pages():IPageManager
+		{
+			return pageManager;
+		}
 		
 		/**
 		 * 属性控制器 , 快捷属性编辑, 工具条，型变控制都由其负责
@@ -513,7 +581,6 @@ package view.interact
 		public var selector:ElementSelector;
 		
 		public var mouseDown:Boolean;
-		
 		
 		
 		
@@ -535,6 +602,11 @@ package view.interact
 		override public function onRegister():void
 		{
 			zoomMoveControl = new ZoomMoveControl(this);
+			
+			pageManager = new PageManager(this);
+			
+			gestureControl = new GestureControl(this, zoomMoveControl);
+			
 			previewCliker = new PreviewClicker(this);
 			elementsInteractControl = new ElementsInteractor(coreApp, this);
 			elementMoveController = new ElementMoveController(this);
@@ -550,6 +622,7 @@ package view.interact
 			selectedMode = new SelectedMode(this);
 			unSelectedMode = new UnSelectedMode(this);
 			editMode = new EditMode(this);
+			pageEditMode = new PageEditMode(this);
 			preMode = new PrevMode(this);
 			
 			currentMode = unSelectedMode;
@@ -580,12 +653,14 @@ package view.interact
 			//层级自动控制
 			autoLayerController = new ElementAutoLayerController(this);
 			
+			mouseController = new MouseController(mainUI.stage);
+			
 			//镜头绘制
 			cameraShotShape.visible = false;
 			coreApp.addChild(cameraShotShape);
 			coreApp.addEventListener(KVSEvent.UPATE_BOUND, renderBoundHandler);
 			
-			pageManager = new PageManager(this);
+			
 		}
 		
 		/**
@@ -681,6 +756,7 @@ package view.interact
 		
 		
 		
+		
 		//-----------------------------------------
 		//
 		//
@@ -729,16 +805,16 @@ package view.interact
 		 */		
 		public function flashPlay():void
 		{
-			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-			for each (var element:ElementBase in elements)
+			if(!treking)
 			{
-				if (element is ImgElement)
+				treking = true;
+				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
+				for each (var element:ElementBase in elements)
 				{
-					(element as ImgElement).smooth = false;
-				}
-				else if (element is TextEditField)
-				{
-					(element as TextEditField).smooth = false;
+					if (element is ImgElement)
+						ImgElement(element).smooth = false;
+					//else if (element is TextEditField)
+						//TextEditField(element).smooth = false;
 				}
 			}
 		}
@@ -747,36 +823,28 @@ package view.interact
 		 */		
 		public function flashTrek():void
 		{
-			if (currentMode != preMode) 
-			{
-				currentMode.updateSelector();
-				collisionDetection.updateAfterZoomMove();
-				
-				coreApp.updatePastPoint();
-			}
-		
 			
-			//检测，重绘文本， 以达到像素精度不失真
-			//PerformaceTest.start("CoreMediator.flashTrek()")
-			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-			for each (var element:ElementBase in elements)
+			if (treking)
 			{
-				if (element.visible)
+				if (currentMode != preMode) 
 				{
-					if (element.isPage)
+					currentMode.updateSelector();
+					collisionDetection.updateAfterZoomMove();
+					coreApp.updatePastPoint();
+				}
+				//检测，重绘文本， 以达到像素精度不失真
+				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements, element:ElementBase;
+				for each (element in elements)
+				{
+					if (element.visible)
 					{
-						element.layoutPageNum();
+						if (element.isPage)
+							element.layoutPageNum();
+						if (element is TextEditField)
+							TextEditField(element).checkTextBm();
 					}
-					if (element is TextEditField)
-					{
-						(element as TextEditField).checkTextBm();
-					}
-					//刷新页面编号尺寸，防止太大
-					
 				}
 			}
-			//PerformaceTest.end("CoreMediator.flashTrek()")
-			//mainUI.drawBgInteractorShape();
 			
 		}
 		
@@ -784,19 +852,27 @@ package view.interact
 		 */		
 		public function flashStop():void
 		{
-			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-			for each (var element:ElementBase in elements)
+			if (treking)
 			{
-				if (element is ImgElement)
+				treking = false;
+				mainUI.curScreenState.enableCanvas();
+				zoomMoveControl.enableBGInteract();
+				
+				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
+				for each (var element:ElementBase in elements)
 				{
-					(element as ImgElement).smooth = true;
+					if (element is ImgElement)
+						ImgElement(element).smooth = true;
 				}
-				else if (element is TextEditField)
-				{
-					(element as TextEditField).smooth = true;
-				}
+				
+				//动画结束后再初始化页面动画，防止位置计算偏差，因为动画会让画布布局改变一下
+				if (currentMode == pageEditMode)
+					(pageEditMode as PageEditMode).init();
 			}
 		}
+		
+		private var treking:Boolean = false;
+		
 		
 		/**
 		 */		

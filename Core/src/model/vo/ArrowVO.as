@@ -18,12 +18,12 @@ package model.vo
 			return vo;
 		}
 		
-		override public function exportData(template:XML):XML
+		override public function exportData():XML
 		{
-			template = super.exportData(template);
-			template.@arrowWidth  = arrowWidth;
-			template.@trailHeight = trailHeight;
-			return template;
+			xml = super.exportData();
+			xml.@arrowWidth  = arrowWidth;
+			xml.@trailHeight = trailHeight;
+			return xml;
 		}
 		
 		/**

@@ -4,7 +4,11 @@ package view.ui
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
+	import flash.utils.Timer;
 	
 	import util.LayoutUtil;
 	
@@ -22,6 +26,47 @@ package view.ui
 			items  = new Vector.<ICanvasLayout>;
 			
 			addChild(interactorBG);
+			
+			addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			
+			addEventListener(MouseEvent.CLICK, doubleClickRetriver);
+		}
+		
+		private function doubleClickRetriver(e:MouseEvent):void
+		{
+			if (doubleClickActived)
+			{
+				doubleClickActived = false;
+				dispatchEvent(new MouseEvent(MouseEvent.DOUBLE_CLICK));
+			}
+			else
+			{
+				doubleClickActived = true;
+				var timer:Timer = new Timer(300, 1);
+				timer.addEventListener(TimerEvent.TIMER_COMPLETE, function(e:TimerEvent):void{
+					doubleClickActived = false;
+					timer = null;
+				}, false, 0, true);
+				timer.start();
+			}
+		}
+		private var doubleClickActived:Boolean;
+		
+		private function addedToStageHandler(e:Event):void
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			stage.addEventListener(Event.RENDER, renderHandler);
+		}
+		
+		private function renderHandler(e:Event):void
+		{
+			if (renderable)
+			{
+				renderable = false;
+				var item:ICanvasLayout;
+				for each (item in items)
+					item.updateView();
+			}
 		}
 		
 		/**
@@ -33,7 +78,7 @@ package view.ui
 			{
 				var item:ICanvasLayout = ICanvasLayout(child);
 				item.updateView();
-				items.push(item);
+				items[items.length] = item;
 			}
 			
 			return child;
@@ -46,7 +91,7 @@ package view.ui
 			{
 				var item:ICanvasLayout = ICanvasLayout(child);
 				item.updateView();
-				items.push(item);
+				items[items.length] = item;
 			}
 			
 			return child;
@@ -62,7 +107,6 @@ package view.ui
 				var index:int = items.indexOf(item);
 				if (index > -1) items.splice(index, 1);
 			}
-			
 			return child;
 		}
 		
@@ -81,7 +125,7 @@ package view.ui
 		override public function removeChildren(beginIndex:int = 0, endIndex:int = int.MAX_VALUE):void
 		{
 			endIndex = Math.min(numChildren, endIndex);
-			for (var i:int = beginIndex; i < endIndex; i++)
+			for (var i:int = endIndex - 1; i >= beginIndex ; i--)
 			{
 				var child:DisplayObject = getChildAt(i);
 				if (child is ICanvasLayout)
@@ -111,22 +155,22 @@ package view.ui
 				__scaleX = __scaleY = $scale;
 				__rotation = $rotation;
 				
-				page 
+				var renderable:Boolean, vector:Vector.<ICanvasLayout>, rect:Rectangle, item:ICanvasLayout;
 				
-				for each (var item:ICanvasLayout in items)
+				for each (item in items)
 				{
-					var renderable:Boolean = false;
+					renderable = false;
 					if (page)
 					{
-						var rect:Rectangle = LayoutUtil.getItemRect(this, item);
+						rect = getItemRect(this, item);
 						if (rect.width > 1 && rect.height > 1)
-							renderable = RectangleUtil.rectOverlapping(page, rect);
+							renderable = rectOverlapping(page, rect);
 					}
 					else
 					{
 						renderable = true;
 					}
-					var vector:Vector.<ICanvasLayout> = (renderable) ? previewItems : visibleItems;
+					vector = (renderable) ? previewItems : visibleItems;
 					vector.push(item);
 					item.toShotcut(renderable);
 				}
@@ -145,7 +189,8 @@ package view.ui
 				__scaleX = __scaleY = previewScale;
 				__rotation = previewRotation;
 				
-				for each (var item:ICanvasLayout in previewItems)
+				var item:ICanvasLayout;
+				for each (item in previewItems)
 					item.toPreview(true);
 				for each (item in visibleItems)
 					item.toPreview(false);
@@ -187,6 +232,14 @@ package view.ui
 			interactorBG.graphics.endFill();
 		}
 		
+		private function updateView():void
+		{
+			renderable = true;
+			if (stage) stage.invalidate();
+		}
+		
+		private var renderable:Boolean = false;
+		
 		override public function get scaleX():Number
 		{
 			return __scaleX;
@@ -197,8 +250,7 @@ package view.ui
 			if (__scaleX!= value) 
 			{
 				__scaleX = value;
-				for each (var item:ICanvasLayout in items)
-					item.updateView();
+				updateView();
 			}
 		}
 		
@@ -214,8 +266,7 @@ package view.ui
 			if (__scaleY!= value) 
 			{
 				__scaleY = value;
-				for each (var item:ICanvasLayout in items)
-					item.updateView();
+				updateView();
 			}
 		}
 		
@@ -231,8 +282,7 @@ package view.ui
 			if (__scale!= value) 
 			{
 				__scale = value;
-				for each (var item:ICanvasLayout in items)
-					item.updateView();
+				updateView();
 			}
 		}
 		
@@ -248,8 +298,7 @@ package view.ui
 			if (__rotation!= value) 
 			{
 				__rotation = value;
-				for each (var item:ICanvasLayout in items)
-					item.updateView();
+				updateView();
 			}
 		}
 		
@@ -265,8 +314,7 @@ package view.ui
 			if (__x!= value) 
 			{
 				__x = value;
-				for each (var item:ICanvasLayout in items)
-					item.updateView();
+				updateView();
 			}
 		}
 		
@@ -282,8 +330,7 @@ package view.ui
 			if (__y!= value) 
 			{
 				__y = value;
-				for each (var item:ICanvasLayout in items)
-					item.updateView();
+				updateView();
 			}
 		}
 		
@@ -303,5 +350,9 @@ package view.ui
 		/**
 		 */		
 		private var items:Vector.<ICanvasLayout>;
+		
+		private static var getItemRect:Function = LayoutUtil.getItemRect;
+		
+		private static var rectOverlapping:Function = RectangleUtil.rectOverlapping;
 	}
 }

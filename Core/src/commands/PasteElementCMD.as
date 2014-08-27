@@ -1,5 +1,8 @@
 package commands
 {
+	import flash.desktop.Clipboard;
+	import flash.desktop.ClipboardFormats;
+	
 	import model.CoreFacade;
 	import model.vo.PageVO;
 	
@@ -9,6 +12,7 @@ package commands
 	import util.undoRedo.UndoRedoMannager;
 	
 	import view.element.ElementBase;
+	import view.element.IElement;
 	import view.element.PageElement;
 	
 	/**
@@ -28,6 +32,9 @@ package commands
 		override public function execute(notification:INotification):void
 		{
 			sendNotification(Command.UN_SELECT_ELEMENT);
+			
+			var filesArray:Array = Clipboard.generalClipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+			if (filesArray) return;// 此时是从外部复制的文件内容，然后粘贴进来
 			
 			var xOff:Number;
 			var yOff:Number;
@@ -71,20 +78,28 @@ package commands
 				CoreFacade.coreMediator.autoGroupController.pastElements(xOff, yOff);
 				groupElements = CoreFacade.coreMediator.autoGroupController.elements.concat();
 				length = groupElements.length;
+				
+				var ele:ElementBase;
 				for (var i:int = 0; i < length; i++)
 				{
-					if (groupElements[i].isPage)
-						pageElements.push(groupElements[i]);
-					if (groupElements[i].screenshot)
-						CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(groupElements[i]);
+					ele = groupElements[i] as ElementBase;
+					
+					if (ele.isPage)
+						pageElements.push(ele);
+					
+					if (ele.screenshot)
+						CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(ele);
 				}
 			}
 			
 			pageElements.sort(sortOnPageIndex);
 			
-			for each (var element:ElementBase in pageElements)
+			for each (ele in pageElements)
 				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
+			if (pageElements.length)
+				CoreFacade.coreMediator.pageManager.layoutPages();
+				
 			v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
 			
 			sendNotification(Command.SElECT_ELEMENT, element);
@@ -101,7 +116,7 @@ package commands
 			{
 				for (var i:int = length - 1; i >= 0; i--)
 				{
-					elementIndexArray[i] = groupElements[i].index;
+					elementIndexArray[i] = (groupElements[i] as ElementBase).index;
 					CoreFacade.removeElement(groupElements[i]);
 				}
 			}
@@ -148,7 +163,7 @@ package commands
 		
 		/**
 		 */		
-		private var groupElements:Vector.<ElementBase>;
+		private var groupElements:Vector.<IElement>;
 		private var length:int;
 		private var pageElements:Vector.<ElementBase>;
 		private var elementIndexArray:Array;

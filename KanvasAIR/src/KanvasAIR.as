@@ -3,6 +3,7 @@ package
 	import com.kvs.ui.button.IconBtn;
 	
 	import commands.ChangeBgImgAIR;
+	import commands.Command;
 	import commands.DelImageFromAIRCMD;
 	import commands.InsertIMGFromAIR;
 	
@@ -17,17 +18,26 @@ package
 	import flash.events.InvokeEvent;
 	import flash.events.MouseEvent;
 	import flash.events.NativeDragEvent;
+	import flash.events.TimerEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.utils.ByteArray;
+	import flash.utils.Timer;
 	
 	import model.CoreFacade;
+	import model.CoreProxy;
 	import model.vo.PageVO;
 	
+	import modules.PreziDataImporter;
 	import modules.pages.PageManager;
 	
+	import org.osmf.events.TimeEvent;
+	
 	import util.textFlow.FlowTextManager;
+	
+	import view.toolBar.ToolBar;
+	import view.ui.Bubble;
 	
 	
 	/**
@@ -98,30 +108,44 @@ package
 		{
 			super.kvsReadyHandler(evt);
 			
-			this.api = new APIForAIR(kvsCore);
+			this.api = new APIForAIR(kvsCore, this);
 			
 			save_up;
 			save_over;
 			save_down;
-			saveBtn.iconW = saveBtn.iconH = 30;
-			saveBtn.w = saveBtn.h = 30;
+			saveBtn.iconW = saveBtn.iconH = ToolBar.BTN_SIZE;
+			saveBtn.w = saveBtn.h = ToolBar.BTN_SIZE;
 			saveBtn.setIcons("save_up", "save_over", "save_down");
 			saveBtn.tips = '保存';
 			saveBtn.addEventListener(MouseEvent.MOUSE_DOWN, saveHandler);
 			
+			img_save_up;
+			img_save_over;
+			img_save_down;
+			exportImgBtn.iconW = exportImgBtn.iconH = ToolBar.BTN_SIZE;
+			exportImgBtn.w = exportImgBtn.h = ToolBar.BTN_SIZE;
+			exportImgBtn.setIcons("img_save_up", "img_save_over", "img_save_down");
+			exportImgBtn.tips = "存为长图片";
+			exportImgBtn.addEventListener(MouseEvent.MOUSE_DOWN, exportImgHandler);
 			//
 			var btns:Vector.<IconBtn> = new Vector.<IconBtn>;
-			btns.push(saveBtn);
+			btns.push(saveBtn, exportImgBtn);
 			toolBar.addCustomButtons(btns);
 			
 			kvsCore.addEventListener(KVSEvent.DATA_CHANGED, dataChanged);
+			
+			templatePanel.initTemplate(XML(ByteArray(new ConfigXML).toString()));
+			templatePanel.visible = false;
 		}
+		
+		[Embed(source="templates/config.xml", mimeType="application/octet-stream")]
+		public var ConfigXML:Class;
 		
 		/**
 		 */		
 		private function dataChanged(evt:KVSEvent):void
 		{
-			this.saveBtn.selected = false;
+			saveBtn.selected = false;
 		}
 		
 		/**
@@ -129,17 +153,62 @@ package
 		 */		
 		private function saveHandler(evt:Event):void
 		{
+			_save();
+		}
+		
+		/**
+		 * 文件保存成功后触发
+		 */		
+		public function saved():void
+		{
+			if (saveTimmer == null)
+			{
+				saveTimmer = new Timer(60000);//1分钟自动保存一次
+				saveTimmer.addEventListener(TimerEvent.TIMER, saveFromTimmer);
+				saveTimmer.start();
+			}
+			else
+			{
+				//saveTimmer.reset();
+			}
+		}
+		
+		/**
+		 */		
+		private function saveFromTimmer(evt:TimerEvent):void
+		{
+			_save();
+		}
+		
+		/**
+		 */		
+		private function _save():void
+		{
 			if(!saveBtn.selected)
 			{
-				saveBtn.selected = true;
 				airAPI.saveFile();
+				saveBtn.selected = true;
 			}
+		}
+		
+		/**
+		 * 触发自动保存 
+		 */		
+		private var saveTimmer:Timer;
+		
+		/**
+		 */		
+		private function exportImgHandler(evt:Event):void
+		{
+			airAPI.exportImg();
 		}
 		
 		/**
 		 * 暂存按钮 
 		 */		
-		private var saveBtn:IconBtn = new IconBtn;
+		internal var saveBtn:IconBtn = new IconBtn;
+		
+		internal var exportImgBtn:IconBtn = new IconBtn;
 		
 		/**
 		 */		
@@ -174,6 +243,31 @@ package
 			
 			if(!NativeApplication.nativeApplication.isSetAsDefaultApplication("kvs")) 
 				NativeApplication.nativeApplication.setAsDefaultApplication("kvs");
+			
+			if(!NativeApplication.nativeApplication.isSetAsDefaultApplication("pez")) 
+				NativeApplication.nativeApplication.setAsDefaultApplication("pez");
+			
+			addEventListener(Event.COPY, copyHandler);
+			addEventListener(Event.PASTE, pastHandler);
+		}
+		
+		/**
+		 */		
+		private function copyHandler(evt:Event):void
+		{
+			
+		}
+		
+		/**
+		 */		
+		private function pastHandler(evt:Event):void
+		{
+			var filesArray:Array = Clipboard.generalClipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+			
+			if (filesArray)
+				openPastOrDropFile(filesArray);
+			
+			Clipboard.generalClipboard.clear();
 		}
 		
 		/**
@@ -193,25 +287,40 @@ package
 		private function onDragDrop(e:NativeDragEvent):void
 		{
 			var filesArray:Array = e.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+			openPastOrDropFile(filesArray);
+		}
+		
+		/**
+		 */		
+		private function openPastOrDropFile(filesArray:Array):void
+		{
 			if (filesArray.length)
 			{
-				var f:File = filesArray[0];
+				var extension:String
+				for each (var f:File in filesArray)
+				{
+					extension = f.extension.toLowerCase();
+					if (extension == "kvs" || extension == "pez")
+					{
+						if (filesArray.length == 1)
+							airAPI.openFile(f);
+					}
+					else if (extension == "jpg" || extension == "png" || extension == "swf")
+					{
+						if (this.templatePanel.isOpen == false || airAPI.file)
+							CoreFacade.sendNotification(Command.INSERT_IMAGE, f);
+					}
+					else
+					{
+						
+					}
+				}
 				
-				if (f.extension == "kvs")
-				{
-					airAPI.openFile(f);
-				}
-				else if (f.extension == "jpg" || f.extension == "png")
-				{
-					
-				}
-				else
-				{
-					
-				}
 			}
 		}
 		
+		/**
+		 */		
 		override protected function stageResizeHandler(evt:Event):void
 		{
 			super.stageResizeHandler(evt);
@@ -232,18 +341,29 @@ package
 			if (event.arguments.length > 0) 
 			{ 
 				var file:File = new File(event.arguments[0]); 
+				var extension:String = file.extension.toLowerCase();
 				
 				if (airAPI.file)
 				{
 					airAPI.openFile(file);
 				}
 				else
-				{
+				{	
 					airAPI.file = file;
 					kvsCore.addEventListener(Event.RESIZE, kvsResizeHandler);
 				}
-			} 
+			}
+			else// 正常打开应用，没有通过双击文件方式 
+			{
+				// 正在编辑文件时，窗口切换也会导致程序运行到这里
+				if (ifOpend == false)
+					templatePanel.visible = true;
+			}
+			
+			ifOpend = true;
 		} 
+		
+		private var ifOpend:Boolean = false;
 		
 		/**
 		 */		
@@ -257,6 +377,8 @@ package
 		}
 		
 		private var updater:AIRUpdater;
+		
+		
 		
 		public static const AIR_CLIENT_URL:String = "http://www.kanvas.cn/client/Kanvas.air";
 	}

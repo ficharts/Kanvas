@@ -154,7 +154,6 @@ package com.kvs.ui.button
 			var ty:Number = (currState.height - iconH) / 2;
 			BitmapUtil.drawBitmapDataToSprite(img.data, this, iconW, iconH, tx, ty, true);
 			this.graphics.endFill();
-			
 			StyleManager.setLineStyle(this.graphics, currState.getBorder, currState);
 			this.graphics.drawRoundRect(0, 0, this.currState.width, currState.height, currState.radius, currState.radius);	
 			this.graphics.endFill();

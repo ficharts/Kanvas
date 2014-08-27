@@ -1,6 +1,5 @@
 package
 {
-	import flash.display.BitmapData;
 	import flash.events.Event;
 	
 	/**
@@ -50,6 +49,21 @@ package
 		public static const DATA_CHANGED:String = "dataChanged";
 		
 		/**
+		 * 内核切换到页面编辑状态时，告知工具条也切换到相应状态 
+		 */		
+		public static const TO_PAGE_EDIT:String = "toPageEditMode";
+		
+		/**
+		 * 取消页面编辑，此事件由kanvas内部发出，告知工具条统一处理状态切换
+		 */		
+		public static const CANCEL_PAGE_EDIT:String = "cancelPageEdit";
+		
+		/**
+		 * 确定页面编辑，此事件由kanvas内部发出，告知工具条统一处理状态切换
+		 */		
+		public static const CONFIRM_PAGE_EDIT:String = "confirmPageEdit";
+		
+		/**
 		 * 样式改变 
 		 */		
 		public static const THEME_CHANGED:String = "themeChanged";
@@ -58,6 +72,8 @@ package
 		 * 保存
 		 */	
 		public static const SAVE:String = "save";
+		
+		public static const IMPORT_DATA_COMPLETE:String = "importDataComplete";
 		
 		/**
 		 */		
@@ -92,6 +108,6 @@ package
 		
 		/**
 		 */		
-		public var bgIMG:BitmapData;
+		public var bgIMG:Object;
 	}
 }

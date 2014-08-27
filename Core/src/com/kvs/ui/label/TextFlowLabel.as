@@ -16,10 +16,12 @@ package com.kvs.ui.label
 	import util.textFlow.FlowTextManager;
 	import util.textFlow.ITextFlowLabel;
 	
+	import view.element.IText;
+	
 	/**
 	 * 采用文本引擎的最小label单元
 	 */	
-	public class TextFlowLabel extends Sprite implements ITextFlowLabel
+	public class TextFlowLabel extends Sprite implements ITextFlowLabel, IText
 	{
 		public function TextFlowLabel()
 		{
@@ -39,6 +41,22 @@ package com.kvs.ui.label
 			_textLayoutFormat.breakOpportunity = BreakOpportunity.AUTO;
 			
 			_textManager.hostFormat = _textLayoutFormat;
+		}
+		
+		/**
+		 */		
+		public function useBitmap():void
+		{
+			textCanvas.visible = false;
+			shape.visible = true;
+		}
+		
+		/**
+		 */		
+		public function useText():void
+		{
+			textCanvas.visible = true;
+			shape.visible = false;
 		}
 		
 		/**

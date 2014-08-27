@@ -3,6 +3,7 @@ package landray.kp.mediator
 	import com.kvs.utils.Map;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	
+	import flash.display.BitmapData;
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
@@ -21,6 +22,8 @@ package landray.kp.mediator
 	
 	import model.vo.BgVO;
 	import model.vo.ElementVO;
+	
+	import modules.pages.IPageManager;
 	
 	import util.LayoutUtil;
 	import util.img.ImgInsertEvent;
@@ -62,13 +65,6 @@ package landray.kp.mediator
 		public function zoomAuto():void
 		{
 			config.kp_internal::controller.zoomAuto();
-		}
-		
-		/**
-		 */		
-		public function get mainUI():MainUIBase
-		{
-			return this.viewer;
 		}
 		
 		/**
@@ -143,7 +139,7 @@ package landray.kp.mediator
 			for each (var graph:Graph in graphs)
 				graph.flashTrek();
 			
-			viewer.synBgImageToCanvas();
+			viewer.synBgContentToCanvas();
 			
 			selector.render();
 		}
@@ -274,7 +270,7 @@ package landray.kp.mediator
 		 */
 		private function loaded(e:ImgInsertEvent):void
 		{
-			viewer.drawBGImg(e.bitmapData);
+			viewer.drawBGImg(e.viewData);
 		}
 		
 		/**
@@ -297,9 +293,18 @@ package landray.kp.mediator
 		 */
 		kp_internal function setBackground(value:BgVO):void
 		{
-			loader = new ImgInsertor;
-			loader.addEventListener(ImgInsertEvent.IMG_LOADED, loaded, false, 0, true);
-			loader.loadImgBytes(CoreUtil.imageLibGetData(value.imgID));
+			if (CoreUtil.imageLibHasData(value.imgID))
+			{
+				loader = new ImgInsertor;
+				loader.addEventListener(ImgInsertEvent.IMG_LOADED, loaded, false, 0, true);
+				loader.loadImgBytes(CoreUtil.imageLibGetData(value.imgID));
+			}
+			else if (CoreUtil.ifHasText(value.imgURL))
+			{
+				loader = new ImgInsertor;
+				loader.addEventListener(ImgInsertEvent.IMG_LOADED, loaded, false, 0, true);
+				loader.loadImg(value.imgURL);
+			}
 		}
 		
 		/**
@@ -379,12 +384,23 @@ package landray.kp.mediator
 			var aimY:Number = canvas.y + stageCenter.y - canvasCenter.y;
 			controller.zoomRotateMoveTo(canvasToScale, canvas.rotation, aimX, aimY, null, 1);
 			
-			viewer.synBgImageToCanvas();
+			viewer.synBgContentToCanvas();
 			
 			lastWidth  = thisWidth;
 			lastHeight = thisHeight;
 		}
 		
+		/**
+		 */		
+		public function get mainUI():MainUIBase
+		{
+			return this.viewer;
+		}
+		
+		public function get pages():IPageManager
+		{
+			return config.kp_internal::pageManager;
+		}
 		
 		private function get background():BgVO
 		{

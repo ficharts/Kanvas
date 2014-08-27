@@ -2,14 +2,20 @@ package
 {
 	import com.kvs.ui.button.IconBtn;
 	import com.kvs.utils.ExternalUtil;
+	import com.kvs.utils.RexUtil;
 	
 	import commands.*;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	
 	import model.CoreFacade;
+	
+	import view.ui.Bubble;
 	
 	/**
 	 * 网页版的kanvas
@@ -37,9 +43,10 @@ package
 		{
 			super.kvsReadyHandler(evt);
 			
-			this.api = new APIForJS(kvsCore);
+			this.api = new APIForJS(kvsCore, this);
 			initBtns();
 		}
+		
 		
 		/**
 		 * 初始化控制按钮， 给工具条添加自定义按钮，负责保存等事物
@@ -132,5 +139,6 @@ package
 		 * 提交并退出按钮
 		 */		
 		private var exitBtn:IconBtn = new IconBtn;
+		
 	}
 }

@@ -17,9 +17,11 @@ package model
 	import model.vo.ElementVO;
 	import model.vo.ImgVO;
 	import model.vo.PageVO;
-	import model.vo.TextVO;
 	
 	import modules.pages.PageEvent;
+	import modules.pages.flash.FlashIn;
+	import modules.pages.flash.FlashOut;
+	import modules.pages.flash.IFlash;
 	
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
@@ -36,7 +38,6 @@ package model
 	import view.element.GroupElement;
 	import view.element.PageElement;
 	import view.element.imgElement.ImgElement;
-	import view.element.text.TextEditField;
 	
 	/**
 	 * 负责数据，样式整体控制;
@@ -74,7 +75,7 @@ package model
 		{
 			for each (var element:ElementBase in this.elements)
 			{
-				applyStyleToElement(element.vo);
+				StyleUtil.applyStyleToElement(element.vo);
 				element.render();
 			}
 		}
@@ -171,17 +172,6 @@ package model
 		 * 全局样式模板
 		 */		
 		private var themeConfigMap:Map = new Map;
-		
-		/**
-		 * 根据元素的局部样式ID, 获取样式定义，同步至元件上;
-		 * 
-		 * 先应用样式模板，然后再应用颜色，因为有些元素除了样式模板外还有自定义颜色
-		 */		
-		public function applyStyleToElement(elementVO:ElementVO, styleID:String = null):void
-		{
-			StyleUtil.applyStyleToElement(elementVO, styleID);
-		}
-
 		
 		
 		
@@ -295,19 +285,34 @@ package model
 				elementsWidthIndex[item.index - 1] = item;
 			}
 			
-			var pageNode:XML = <pages/>;
+			var pagesNode:XML = <pages/>;
 			for each (item in elementsWidthIndex)
 			{
-				if(!(item is PageElement))
+				if(item && !(item is PageElement))// 有时候会多出一个位置，但是此为止的element为null
 					mainNode.appendChild(item.exportData());
 			}
 			
+			var pageXML:XML;
 			for each (var vo:PageVO in CoreFacade.coreMediator.pageManager.pages)
 			{
-				pageNode.appendChild(vo.exportData(<page/>));
+				pageXML = vo.exportData();
+				
+				var flashesNode:XML = <flashes/>;
+				if (vo.flashers && vo.flashers.length)
+				{
+					for each (var f:IFlash in vo.flashers)
+					{
+						//剔除无效的动画，因为于此捆绑的元素已不存在，仅保留有效的动画数据
+						if (elements.indexOf(f.element) != - 1)
+							flashesNode.appendChild(f.expertData());
+					}
+				}
+				
+				pageXML.appendChild(flashesNode);
+				pagesNode.appendChild(pageXML);
 			}
 			
-			xml.appendChild(pageNode);
+			xml.appendChild(pagesNode);
 			
 			// 背景设置
 			xml.appendChild(bgVO.xml);
@@ -327,9 +332,10 @@ package model
 		{
 			temElementMap.clear();
 			
-			//先设置总体样式风格
+			CoreFacade.coreMediator.coreApp.drawBGImg(null);
 			
-			var styleID:String = (themeConfigMap.containsKey(xml.header.@styleID)) ? xml.header.@styleID : "style_1";
+			//先设置总体样式风格, 兼容旧数据的样式
+			var styleID:String = (themeConfigMap.containsKey(xml.header.@styleID.toString())) ? xml.header.@styleID : "style_1";
 			
 			setCurrTheme(styleID);
 			
@@ -348,28 +354,28 @@ package model
 			
 			CoreFacade.clear();
 			
+			//PerformaceTest.start("渲染");
+			
 			//先创建所有元素，再匹配组合关系
 			var groupElements:Array = [];
-			var dic:Object = {};
 			var item:XML;
 			for each(item in xml.main.children())
 			{
 				var vo:ElementVO = createVO(item);
 				var element:ElementBase = createElement(vo);//创建并初始化元素
-				dic[vo.id] = element;
+				temElementMap.put(vo.id.toString(), element);//临时记录原件，用于接下来的匹配
 				
 				if (element is GroupElement)
 				{
-					element.xmlData = item;
+					element.vo.xml = item;
 					groupElements.push(element);
 				}
 			}
 			
 			//匹配组合关系
-			
 			for each(var groupElement:GroupElement in groupElements)
 			{
-				for each(item in groupElement.xmlData.children())
+				for each(item in groupElement.vo.xml.children())
 				{
 					element = temElementMap.getValue(item.@id.toString());		
 					element.toGroupState();
@@ -382,16 +388,14 @@ package model
 			for each(item in xml.pages.children())
 			{
 				var pageVO:PageVO = (createVO(item) as PageVO);
-				if (pageVO.elementID > 0 && dic[pageVO.elementID])
-				{
-					dic[pageVO.elementID].setPage(pageVO);
-					//pageVO.elementVO = vos[pageVO.elementID];
-					//pageVO.elementVO.pageVO = pageVO;
-				}
+				
+				if (pageVO.elementID > 0 && temElementMap.containsKey(pageVO.elementID.toString()))//代理页面设定
+					(temElementMap.getValue(pageVO.elementID.toString()) as ElementBase).setPage(pageVO);//页面id与元素各自独立
 				else
-				{
-					element = createElement(pageVO);
-				}
+					element = createElement(pageVO);//拍摄页面
+				
+				initPageFlashes(pageVO, item);//初始化页面内容的动画
+				
 				pages.push(pageVO);
 			}
 			
@@ -400,8 +404,10 @@ package model
 			for (var i:int = 0; i < l; i++)
 			{
 				pages[i].index = i;
-				CoreFacade.coreMediator.pageManager.addPageAt(pages[i], pages[i].index);
+				CoreFacade.coreMediator.pageManager.addPage(pages[i]);
 			}
+			
+			CoreFacade.coreMediator.pageManager.layoutPages();
 			
 			//调整当前页为第一页
 			if (pages.length)
@@ -415,8 +421,10 @@ package model
 			groupElements.length = 0;
 			groupElements = null;
 			
-			for each (element in this.elements)
-				element.render();
+			//for each (element in this.elements)
+				//element.render();
+				
+			//PerformaceTest.end("渲染结束");
 			
 			//背景图片加载
 			bgImgLoader.addEventListener(ImgInsertEvent.IMG_LOADED, initializeBgImgLoaded);
@@ -425,6 +433,42 @@ package model
 			else if (RexUtil.ifHasText(bgVO.imgURL) && bgVO.imgURL != 'null')
 				bgImgLoader.loadImg(bgVO.imgURL);
 			
+			CoreFacade.coreMediator.coreApp.dispatchEvent(new KVSEvent(KVSEvent.IMPORT_DATA_COMPLETE));
+			
+		}
+		
+		/**
+		 * 初始化页面的动画
+		 *  
+		 * @param page
+		 * 
+		 */		
+		private function initPageFlashes(page:PageVO, pageXML:XML):void
+		{
+			if (pageXML.hasOwnProperty("flashes"))
+			{
+				page.flashers = new Vector.<IFlash>;
+				
+				var f:IFlash;
+				var fxml:XML;
+				var nodeN:String;
+				for each(fxml in pageXML.flashes.children())
+				{
+					nodeN = fxml.name();
+					
+					if (nodeN == "flashIn")
+						f = new FlashIn();
+					else if (nodeN == "flashOut")
+						f = new FlashOut();
+					else
+						f = new FlashIn();
+						
+					XMLVOMapper.fuck(fxml, f);
+					f.element = temElementMap.getValue(f.elementID) as ElementBase;// 匹配动画原件
+					
+					page.flashers.push(f);
+				}
+			}
 		}
 		
 		/**
@@ -434,6 +478,8 @@ package model
 			return CoreFacade.coreMediator.coreApp as CoreApp
 		}
 		
+		/**
+		 */		
 		private function sortOnIndex(a:PageVO, b:PageVO):int
 		{
 			if (a.index < b.index)
@@ -445,19 +491,29 @@ package model
 		}
 		
 		/**
+		 * 
+		 * 基本元素与组合的集合
+		 * 
 		 * 数据导入时，辅助组合将子元素纳入组合中
+		 * 
+		 * 辅助页面与原件的匹配，辅助动画与原件的匹配
+		 * 
+		 * 
 		 */		
 		private var temElementMap:Map = new Map;
 		
+		/**
+		 */		
 		private function createVO(item:XML):ElementVO
 		{
-			var vo:ElementVO = ElementCreator.getElementVO(item.name().toString());
+			var vo:ElementVO = ElementCreator.getElementVO(item.@type.toString());
 			
 			XMLVOMapper.fuck(item, vo);
-			applyStyleToElement(vo);
+			StyleUtil.applyStyleToElement(vo);
 			
 			//再次应用xml中的属性，为了兼容旧数据的颜色，字体大小等属性；
-			XMLVOMapper.fuck(item, vo);
+			vo.colorIndex = item.@colorIndex;
+			vo.color = item.@color;
 			
 			ElementCreator.setID(vo.id);
 			
@@ -482,7 +538,6 @@ package model
 			//虽然添加到了显示列表，但元素未渲染，因为未设定样式
 			CoreFacade.addElement(element);
 			
-			temElementMap.put(vo.id.toString(), element);
 			
 			return element;
 		}
@@ -500,9 +555,14 @@ package model
 		{
 			bgImgLoader.removeEventListener(ImgInsertEvent.IMG_LOADED, initializeBgImgLoaded);
 			
-			bgVO.imgData = evt.bitmapData;
-			CoreFacade.coreMediator.coreApp.drawBGImg(evt.bitmapData);
-			coreApp.bgImgUpdated(evt.bitmapData);
+			bgVO.imgData = evt.viewData;
+			CoreFacade.coreMediator.coreApp.drawBGImg(bgVO.imgData);
+			coreApp.bgImgUpdated(bgVO.imgData);
+			
+			for each (var vo:PageVO in CoreFacade.coreMediator.pageManager.pages)
+				CoreFacade.coreMediator.pageManager.registUpdateThumbVO(vo);
+				
+			CoreFacade.coreMediator.pageManager.refreshVOThumbs();
 		}
 		
 		/**
@@ -546,7 +606,7 @@ package model
 		 */
 		public function addElement(value:ElementBase):void
 		{
-			elements.push(value);
+			elements[elements.length] = value;
 		}
 		
 		public function addElementAt(element:ElementBase, index:int):void
@@ -615,6 +675,7 @@ package model
 				if (element is ImgElement)
 					vector.push(element as ImgElement);
 			}
+			
 			return vector;
 		}
 		

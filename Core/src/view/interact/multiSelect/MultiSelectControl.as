@@ -14,6 +14,7 @@ package view.interact.multiSelect
 	
 	import view.element.ElementBase;
 	import view.element.ElementEvent;
+	import view.element.IElement;
 	import view.interact.CoreMediator;
 
 	/**
@@ -70,7 +71,8 @@ package view.interact.multiSelect
 		public function autoTemGroup():void
 		{
 			var element:ElementBase;
-			var autoGroup:Vector.<ElementBase> = new Vector.<ElementBase>;
+			var autoGroup:Vector.<IElement> = new Vector.<IElement>;
+			
 			for each (element in this.childElements)
 				autoGroup = element.getChilds(autoGroup);
 			
@@ -107,14 +109,14 @@ package view.interact.multiSelect
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			currState.startDragSelect();
 		}
 		
 		/**
 		 */			
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			currState.stopDragSelect();
 		}
@@ -421,9 +423,9 @@ package view.interact.multiSelect
 		/**
 		 * 按下了非选择状态的元件
 		 */		
-		public function unSelectElementDown(element:ElementBase):void
+		public function unSelectElement(element:ElementBase):void
 		{
-			currState.unSelectElementDown(element);
+			currState.unSelectElement(element);
 		}
 		
 		/**
@@ -431,7 +433,7 @@ package view.interact.multiSelect
 		 */		
 		public function unSelectElementClicked(element:ElementBase):void
 		{
-			currState.unSelectElementClicked(element);
+			currState.undSelectElementClicked(element);
 		}
 		
 		/**

@@ -17,5 +17,12 @@ package view.element
 		 * 绘制内容的容器
 		 */		
 		function get shape():DisplayObject
+			
+		function get canvas():DisplayObject;
+		
+		/**
+		 * 
+		 */		
+		function getChilds(group:Vector.<IElement>):Vector.<IElement>
 	}
 }

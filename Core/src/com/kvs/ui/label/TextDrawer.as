@@ -9,19 +9,21 @@ package com.kvs.ui.label
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	
+	import view.element.IText;
+	
 	/**
 	 * 将文本转化为bitmap截图
 	 */	
 	public class TextDrawer
 	{
-		public function TextDrawer(host:Sprite)
+		public function TextDrawer(host:IText)
 		{
 			this.host = host;
 		}
 		
 		/**
 		 */		
-		private var host:Sprite;
+		private var host:IText;
 		
 		/**
 		 * 检测截图是否满足要求
@@ -64,8 +66,20 @@ package com.kvs.ui.label
 				var r:Number = textBMD.width / (scale * textCanvas.width);
 				//截图有最大尺寸限制，最大宽高乘积为 imgMaxSize
 				var max:Number = scale * textCanvas.width * scale * textCanvas.height;
-				if (host.visible && max < imgMaxSize && (textBMD.width < textCanvas.width * scale * .4 || r > bmMaxScaleMultiple))
-					renderTextBMD(shape, textCanvas, scale * .8, smooth);
+				if (host.visible && max < imgMaxSize && (textBMD.width < textCanvas.width * scale || r > bmMaxScaleMultiple))
+				{
+					renderTextBMD(shape, textCanvas, scale, smooth);
+					
+					host.useBitmap();
+				}
+				else if (max > imgMaxSize && textCanvas.visible == false)
+				{
+					host.useText();
+				}
+				else if (max < imgMaxSize && textCanvas.visible)
+				{
+					host.useText();
+				}
 			}
 		}
 		

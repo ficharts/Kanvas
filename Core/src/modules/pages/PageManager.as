@@ -6,9 +6,7 @@ package modules.pages
 	
 	import commands.Command;
 	
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -34,8 +32,18 @@ package modules.pages
 	/**
 	 * 负责页面的创建，编辑，删除等
 	 */	
-	public final class PageManager extends EventDispatcher
+	public final class PageManager extends EventDispatcher implements IPageManager
 	{
+		/**
+		 * 页面缩略图的宽度
+		 */		
+		public static const THUMB_WIDTH:uint = 800;
+		
+		/**
+		 * 页面缩略图的高度
+		 */		
+		public static const THUMB_HEIGHT:uint = 600;
+		
 		/**
 		 * 
 		 * @param $coreMdt
@@ -100,6 +108,15 @@ package modules.pages
 		}
 		
 		/**
+		 * 通知页面面板更新布局 
+		 * 
+		 */		
+		public function layoutPages():void
+		{
+			this.dispatchEvent(new PageEvent(PageEvent.UPDATE_PAGES_LAYOUT));
+		}
+		
+		/**
 		 * 判断pageVO是否在队列
 		 */
 		public function contains(pageVO:PageVO):Boolean
@@ -152,24 +169,107 @@ package modules.pages
 		 */
 		public function setPageIndex(pageVO:PageVO, index:int, sendEvent:Boolean = false):void
 		{
+			coreMdt.coreApp.clearDrawMode();
 			pageQuene.setPageIndex(pageVO, index, sendEvent);
 		}
 		
+		/**
+		 *  下一页，如果页面中有动画则先把动画播放完再切换至下一页 
+		 * 
+		 */		
 		public function next():void
 		{
-			indexWithZoom = (index + 1 >= pageQuene.length) ? -1 : index + 1;
+			coreMdt.coreApp.clearDrawMode();
+			coreMdt.previewCliker.clearHistory();
+			
+			var curPage:PageVO;
+			if (index != - 1)
+				 curPage = getPageAt(index);
+			
+			var nextIndex:int = (index + 1 >= pageQuene.length) ? -1 : index + 1;
+			
+			if (curPage && curPage.flashers && curPage.flashers.length)
+			{
+				if (curPage.flashIndex < curPage.flashers.length)
+				{
+					curPage.flashers[curPage.flashIndex].next();
+					curPage.flashIndex += 1;
+				}
+				else
+				{
+					resetPageFlash(nextIndex);
+				}
+			}
+			else
+			{
+				resetPageFlash(nextIndex);
+			}
+			
 		}
 		
+		/**
+		 *
+		 * 上一页， 
+		 * 
+		 */		
 		public function prev():void
 		{
-			indexWithZoom = (index - 1 < -1) ? pageQuene.length - 1 : index - 1;
+			coreMdt.coreApp.clearDrawMode();
+			coreMdt.previewCliker.clearHistory();
+			
+			var curPage:PageVO;
+			
+			if (index != - 1)
+				curPage = getPageAt(index);
+			
+			var prevIndex:int = (index - 1 < -1) ? pageQuene.length - 1 : index - 1;
+			
+			if (curPage && curPage.flashers && curPage.flashers.length)
+			{
+				if (curPage.flashIndex == 0)
+				{
+					resetPageFlash(prevIndex);
+				}
+				else
+				{
+					curPage.flashIndex -= 1;
+					curPage.flashers[curPage.flashIndex].prev();
+				}
+			}
+			else
+			{
+				resetPageFlash(prevIndex);
+			}
 		}
 		
+		/**
+		 */		
+		private function resetPageFlash(pageIndex:int):void
+		{
+			var curPage:PageVO;
+			
+			if (pageIndex != - 1)
+				curPage = getPageAt(pageIndex);
+			
+			if (curPage)
+				curPage.dispatchEvent(new PageEvent(PageEvent.PAGE_SELECTED, curPage, false));
+			
+			indexWithZoom = pageIndex;
+			
+		}
+		
+		/**
+		 */		
 		public function reset():void
 		{
+			coreMdt.coreApp.clearDrawMode();
+			coreMdt.previewCliker.clearHistory();
+			
 			__index = -1;
 		}
 		
+		/**
+		 */		
 		private function defaultHandler(e:PageEvent):void
 		{
 			dispatchEvent(e);
@@ -218,7 +318,7 @@ package modules.pages
 		/**
 		 * 获取总页数
 		 */
-		public function get length():int
+		public function get length():uint
 		{
 			return pageQuene.length;
 		}
@@ -380,7 +480,7 @@ package modules.pages
 			
 			var rect:Rectangle = new Rectangle(-offsetX, -offsetY, w, h);
 			mainUI.canvas.toShotcutState(-tp.x, -tp.y, scale, rotation, rect);
-			mainUI.synBgImageToCanvas();
+			mainUI.synBgContentToCanvas();
 			
 			var mat:Matrix = new Matrix;
 			mat.scale(mainUI.bgImageCanvas.scaleX, mainUI.bgImageCanvas.scaleY);
@@ -392,16 +492,12 @@ package modules.pages
 			mat.translate(offsetX, offsetY);
 			var im:BitmapData = BitmapUtil.drawWithSize(mainUI.canvas, w, h, true, 0, mat, smooth);
 			
-			var sp:Sprite = new Sprite;
-			sp.addChild(new Bitmap(bg));
-			sp.addChild(new Bitmap(im));
-			//mainUI.parent.addChild(sp);
-			
 			var bmd:BitmapData = new BitmapData(w, h, false, bgColor);
-			bmd.draw(sp, null, null, null, null, true);
+			bmd.draw(bg, null, null, null, null, true);
+			bmd.draw(im, null, null, null, null, true);
 			
 			mainUI.canvas.toPreviewState();
-			mainUI.synBgImageToCanvas();
+			mainUI.synBgContentToCanvas();
 			
 			return bmd;
 		}

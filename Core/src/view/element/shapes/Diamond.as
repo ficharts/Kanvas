@@ -15,7 +15,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <diamond/>;
+			vo.xml = <diamond/>;
 		}
 		
 		/**

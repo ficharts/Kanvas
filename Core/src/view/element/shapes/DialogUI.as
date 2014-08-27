@@ -24,7 +24,7 @@ package view.element.shapes
 		{
 			super(vo);
 			
-			xmlData = <dialog/>;
+			vo.xml = <dialog/>;
 			
 		}
 		 

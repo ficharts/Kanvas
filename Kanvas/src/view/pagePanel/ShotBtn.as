@@ -35,14 +35,14 @@ package view.pagePanel
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			pagePanel.startCreatePageByDrag();
 		}
 		
 		/**
 		 */			
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			pagePanel.endCreatePageByDrag();
 		}
@@ -84,7 +84,7 @@ package view.pagePanel
 			graphics.clear();
 			StyleManager.drawRect(this, this.currState, this);
 			
-			
+			graphics.lineStyle(0, 0, 0);
 			BitmapUtil.drawBitmapDataToSprite(img.data, this, iconW, iconH, (currState.width - iconW) / 2, (currState.height - iconH) / 2, true);
 			graphics.endFill();
 		}

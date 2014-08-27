@@ -63,6 +63,7 @@ package commands
 			{
 				element.setPage(pageVO);
 				CoreFacade.coreMediator.pageManager.addPageAt(pageVO, pageVO.index);
+				CoreFacade.coreMediator.pageManager.layoutPages();
 			}
 			
 			CoreFacade.coreMediator.selector.toolBar.resetToolbar();

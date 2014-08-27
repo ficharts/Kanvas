@@ -14,6 +14,7 @@ package view.pagePanel
 	import model.vo.PageVO;
 	
 	import modules.pages.PageEvent;
+	import modules.pages.PageManager;
 	
 	import view.ui.MainUIBase;
 	
@@ -82,7 +83,7 @@ package view.pagePanel
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			this.dispatchEvent(new PagePanelEvent(PagePanelEvent.START_DRAG_PAGE, this));
 		}
@@ -101,7 +102,7 @@ package view.pagePanel
 			
 		/**
 		 */			
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			label.visible = true;
 			this.statesControl.toDown();
@@ -114,7 +115,8 @@ package view.pagePanel
 		 */		
 		private function updateThumb(evt:PageEvent = null):void
 		{
-			pageVO.bitmapData = CoreFacade.coreMediator.pageManager.getThumbByPageVO(pageVO, 480, 360, true);
+			pageVO.bitmapData = CoreFacade.coreMediator.pageManager.getThumbByPageVO(pageVO, PageManager.THUMB_WIDTH, PageManager.THUMB_HEIGHT, true);
+			
 			
 			if (bmp && con.contains(bmp)) con.removeChild(bmp);
 			
@@ -137,6 +139,7 @@ package view.pagePanel
 		 */		
 		private function delHander(evt:MouseEvent):void
 		{
+			CoreFacade.coreMediator.autoGroupController.clear();
 			pageVO.dispatchEvent(new PageEvent(PageEvent.DELETE_PAGE_FROM_UI, pageVO));
 		}
 		

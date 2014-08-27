@@ -2,6 +2,7 @@ package view.element.text
 {
 	import com.kvs.ui.label.TextDrawer;
 	
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.text.engine.BreakOpportunity;
@@ -20,6 +21,7 @@ package view.element.text
 	
 	import view.element.ElementBase;
 	import view.element.IEditElement;
+	import view.element.IText;
 	import view.element.state.IEditShapeState;
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.interact.autoGroup.IAutoGroupElement;
@@ -28,7 +30,7 @@ package view.element.text
 	/**
 	 * 文本框， 有三种状态， 非选择状态(usualState), 选择状态(selectedState)， 编辑状态(editState)
 	 */
-	public class TextEditField extends ElementBase implements IEditElement, ITextFlowLabel, IAutoGroupElement
+	public class TextEditField extends ElementBase implements IEditElement, ITextFlowLabel, IAutoGroupElement, IText
 	{
 		
 		/**
@@ -37,10 +39,26 @@ package view.element.text
 		{
 			super(vo);
 			
-			xmlData = <text/>;
+			vo.xml = <text/>;
 			textDrawer = new TextDrawer(this);
 			shape.visible = false;
 			
+		}
+		
+		/**
+		 */		
+		public function useBitmap():void
+		{
+			textCanvas.visible = false;
+			shape.visible = true;
+		}
+		
+		/**
+		 */		
+		public function useText():void
+		{
+			textCanvas.visible = true;
+			shape.visible = false;
 		}
 		
 		/**
@@ -65,8 +83,6 @@ package view.element.text
 		{
 			super.toPreview(renderable);
 		}
-		
-		
 		
 		/**
 		 */			
@@ -153,6 +169,16 @@ package view.element.text
 		//---------------------------------------------------------
 		
 		
+		public function get template():Boolean
+		{
+			return textVO.template;
+		}
+		
+		public function set template(value:Boolean):void
+		{
+			textVO.template = value;
+		}
+		
 		/**
 		 */		
 		public function get text():String
@@ -184,7 +210,7 @@ package view.element.text
 		{
 			if (visible || force)
 			{
-				textDrawer.checkTextBm(graphics, textCanvas, textVO.scale * parent.scaleX, false, force);
+				textDrawer.checkTextBm(graphics, textCanvas, textVO.scale * parent.scaleX, true, force);
 			}
 		}
 		
@@ -248,7 +274,9 @@ package view.element.text
 		{
 			super.preRender();
 			
-			addChild(textCanvas = new Sprite);
+			_canvas.addChild(shape);
+			_canvas.addChild(textCanvas = new Sprite);
+			addChild(_canvas);
 			
 			textManager = new TextContainerManager(textCanvas);
 			textManager.editingMode = EditingMode.READ_ONLY;
@@ -260,6 +288,17 @@ package view.element.text
 			
 			textManager.hostFormat = textLayoutFormat;
 		}
+		
+		/**
+		 */		
+		override public function get canvas():DisplayObject
+		{
+			return _canvas;
+		}
+		
+		/**
+		 */		
+		private var _canvas:Sprite = new Sprite;
 		
 		/**
 		 */		
@@ -305,35 +344,6 @@ package view.element.text
 		{
 			return vo as TextVO;
 		}
-		
-		
-		
-		public function get smooth():Boolean
-		{
-			return __smooth;
-		}
-		
-		public function set smooth(value:Boolean):void
-		{
-			if (__smooth!= value)
-			{
-				__smooth = value;
-				if (stageWidth > stage.stageWidth || stageHeight > stage.stageHeight)
-				{
-					textCanvas.visible = smooth;
-					shape.visible = !smooth;
-				}
-				else
-				{
-					textCanvas.visible = true;
-					shape.visible = false;
-				}
-			}
-		}
-		private var __smooth:Boolean = true;
-		
-		
-		
 		
 		/**
 		 */		

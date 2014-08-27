@@ -4,6 +4,8 @@ package model.vo
 	
 	import modules.pages.PageEvent;
 	import modules.pages.PageQuene;
+	import modules.pages.flash.FlashIn;
+	import modules.pages.flash.IFlash;
 	import modules.pages.pg_internal;
 	
 	[Event(name="updateThumb", type="modules.pages.PageEvent")]
@@ -24,6 +26,7 @@ package model.vo
 			pageVO = this;
 			this.styleType = "shape";
 			this.type = "page";
+			xml = <page/>;
 		}
 		
 		override public function clone():ElementVO
@@ -33,16 +36,31 @@ package model.vo
 			return vo;
 		}
 		
-		override public function exportData(template:XML):XML
+		/**
+		 * 当前动画序号，播放 
+		 */		
+		public var flashIndex:int = 0;
+		
+		/**
+		 * 应用在页面内容元素上的动画
+		 */		
+		public var flashers:Vector.<IFlash>;
+		
+		/**
+		 */		
+		override public function exportData():XML
 		{
-			var template:XML = super.exportData(template);
-			template.@index = index;
+			xml = super.exportData();
+			xml.@index = index;
 			
-			if (elementVO)
-				template.@elementID = elementVO.id;
-			return template;
+			if (elementVO &&　!(elementVO is PageVO))
+				xml.@elementID = elementVO.id;
+			
+			return xml;
 		}
 		
+		/**
+		 */		
 		override public function set x(value:Number):void
 		{
 			if (_x!= value)

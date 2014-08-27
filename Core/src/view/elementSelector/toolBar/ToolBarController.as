@@ -19,6 +19,7 @@
 	import model.vo.PageVO;
 	
 	import view.elementSelector.ElementSelector;
+	import view.interact.interactMode.PageEditMode;
 	
 	/**
 	 * 快捷工具条主控制类, 不同类型组件有相应的工具条控制器，具体决定工具条内容和行为；
@@ -163,6 +164,13 @@
 		 */		
 		private function zoomHandler(evt:MouseEvent):void
 		{
+			_zoomPage();
+		}
+		
+		/**
+		 */		
+		private function _zoomPage():void
+		{
 			var selector:ElementSelector = selector;
 			
 			var pageVO:PageVO;
@@ -170,9 +178,24 @@
 				pageVO = selector.element.vo.pageVO;
 			else
 				pageVO = selector.element.vo as PageVO;
-				
+			
 			selector.coreMdt.zoomMoveControl.zoomElement(pageVO);
-			selector.coreMdt.toUnSelectedMode();
+			selector.coreMdt.sendNotification(Command.UN_SELECT_ELEMENT);
+		}
+		
+		/**
+		 * 页面缩放，并进入编辑状态
+		 */		
+		private function pageEditHandler(evt:MouseEvent):void
+		{
+			//先设定好当前页面， 页面缩放结束后在初始化页面动画
+			(selector.coreMdt.pageEditMode as PageEditMode).curPage = selector.element;
+			selector.coreMdt.restoryCanvasState();
+			
+			_zoomPage();
+			selector.coreMdt.toPageEditMode();
+			
+			selector.coreMdt.mainUI.dispatchEvent(new KVSEvent(KVSEvent.TO_PAGE_EDIT));
 		}
 		
 		
@@ -322,6 +345,7 @@
 			clear();
 			if (curToolBar)
 				curToolBar.render();
+			
 			renderBG();
 		}
 		
@@ -577,6 +601,11 @@
 			initBtnStyle(zoomBtn, 'zoom');
 			zoomBtn.addEventListener(MouseEvent.CLICK, zoomHandler, false, 0, true);
 			
+			flash;
+			pageEditBtn.tips = '页面动画';
+			initBtnStyle(pageEditBtn, 'flash');
+			pageEditBtn.addEventListener(MouseEvent.CLICK, pageEditHandler, false, 0, true);
+			
 			styleBtn.tips = '颜色/样式';
 			this.styleBtn.w = btnWidth;
 			this.styleBtn.h = btnHeight;
@@ -645,6 +674,11 @@
 		 * 页面才会有，按下后页面自动对焦
 		 */		
 		public var zoomBtn:IconBtn = new IconBtn;
+		
+		/**
+		 * 页面才会有，按下后页面进入动画编辑模式 
+		 */		
+		public var pageEditBtn:IconBtn = new IconBtn;
 		
 		/**
 		 * 注册点到工具面板的距离

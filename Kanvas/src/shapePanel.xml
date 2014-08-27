@@ -4,6 +4,13 @@
 		<selector type='shapePage' icon='shapes' tips='点击进入图形面板'/>
 	</page>
 	<page id='shapePage' title='图形'>
+		
+		<selector icon='circleFrame'>
+			<shape type='circle' styleType='border' styleID='Border' width='120' height='120' />
+		</selector>
+		<selector icon='rectFrame'>
+			<shape type='rect' styleType='border' styleID='Border' width='120' height='120' radius='10'/>
+		</selector>
 		<selector icon='circle'>
 			<shape type='circle' styleType='fill' styleID='Fill' width='120' height='120' />
 		</selector>
@@ -54,12 +61,7 @@
 		
 		<!--  -->
 		
-		<selector icon='circleFrame'>
-			<shape type='circle' styleType='border' styleID='Border' width='120' height='120' />
-		</selector>
-		<selector icon='rectFrame'>
-			<shape type='rect' styleType='border' styleID='Border' width='120' height='120' radius='10'/>
-		</selector>
+		
 		<selector icon='diamondFrame'>
 			<shape type='diamond' styleType='border' styleID='Border' width='120' height='120' />
 		</selector>

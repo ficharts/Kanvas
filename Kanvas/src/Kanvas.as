@@ -16,6 +16,7 @@ package
 	
 	import view.pagePanel.PagePanel;
 	import view.shapePanel.ShapePanel;
+	import view.templatePanel.TemplatePanel;
 	import view.themePanel.ThemePanel;
 	import view.toolBar.ToolBar;
 	import view.toolBar.ZoomToolBar;
@@ -38,7 +39,11 @@ package
 			
 			kvsCore.externalUI = uiContainer;
 			kvsCore.addEventListener(KVSEvent.READY, kvsReadyHandler);
-		
+			kvsCore.addEventListener(KVSEvent.TO_PAGE_EDIT, toPageEditMode);
+			kvsCore.addEventListener(KVSEvent.CANCEL_PAGE_EDIT, cancelPageEdit);
+			kvsCore.addEventListener(KVSEvent.CONFIRM_PAGE_EDIT, confirmPageEdit);
+			kvsCore.addEventListener(KVSEvent.IMPORT_DATA_COMPLETE, importDataComplete);
+			
 			addChild(kvsCore);
 			addChild(uiContainer);
 			
@@ -50,6 +55,7 @@ package
 			uiContainer.addChild(themePanel);
 			uiContainer.addChild(shapePanel);
 			uiContainer.addChild(toolBar);
+			uiContainer.addChild(templatePanel);
 			
 			stage.addEventListener(Event.RESIZE, stageResizeHandler, false, 0, true);
 			
@@ -67,6 +73,46 @@ package
 				zoomToolBar.controller = CoreFacade.coreMediator.zoomMoveControl;
 		}
 		
+		/**
+		 */		
+		private function toPageEditMode(evt:KVSEvent):void
+		{
+			evt.stopPropagation();
+			mainNavControl.toPageEditMode();
+		}
+		
+		/**
+		 */		
+		private function cancelPageEdit(evt:KVSEvent):void
+		{
+			evt.stopPropagation();
+			mainNavControl.cancelPageEditFromCore();
+		}
+		
+		/**
+		 */		
+		private function confirmPageEdit(evt:KVSEvent):void
+		{
+			evt.stopPropagation();
+			mainNavControl.confirmPageEditFromCore();
+		}
+		
+		/**
+		 */		
+		private function importDataComplete(evt:KVSEvent):void
+		{
+			evt.stopPropagation();
+			
+			closeTemplatePanel();
+		}
+		
+		/**
+		 */		
+		public function closeTemplatePanel():void
+		{
+			if (templatePanel && templatePanel.visible)
+				templatePanel.close(stage.stageWidth * .5, stage.stageHeight * .5 + 10);
+		}
 		
 		/**
 		 */		
@@ -98,6 +144,14 @@ package
 			//多页面列表
 			pagePanel = new PagePanel(this);
 			pagePanel.bgStyleXML = panelBGStyleXML;
+			
+			//模板
+			templatePanel = new TemplatePanel(this);
+			templatePanel.bgStyleXML = <style>
+									<border color='#eeeeee' alpha='1'/>
+									<fill color='#eeeeee' alpha='1'/>
+								 </style>;;
+			templatePanel.titleStyleXML = panelTitleStyleXML;
 		}
 		
 		/**
@@ -112,6 +166,7 @@ package
 				shapePanel.updateLayout();
 				themePanel.updateLayout();
 				pagePanel.updateLayout();
+				templatePanel.updateLayout();
 				
 				kvsCore.resize();
 			}
@@ -191,13 +246,14 @@ package
 		protected function kvsReadyHandler(evt:KVSEvent):void
 		{
 			kvsCore.changeTheme('style_1', false);
+			
 			pagePanel.initPageManager();
 		}
 		
 		/**
 		 * web版与桌面版的接口不同
 		 */		
-		protected var api:KanvasAPI;
+		public var api:KanvasAPI;
 		
 		/**
 		 * 装载工具条，面板的容器
@@ -217,6 +273,10 @@ package
 		/**
 		 */		
 		public var pagePanel:PagePanel;
+		
+		/**
+		 */		
+		public var templatePanel:TemplatePanel;
 		
 		/**
 		 * 工具条
@@ -241,7 +301,7 @@ package
 		/**
 		 * 工具提示控制器
 		 */		
-		private var toolTipsManager:ToolTipsManager;
+		public var toolTipsManager:ToolTipsManager;
 		
 		
 		

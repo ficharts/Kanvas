@@ -47,9 +47,16 @@
 			chart.swf = document.getElementById(chart.id);
 		
 		var navigatorType = checkNavigator();
-		if (chart.transparent || navigatorType == KANVAS.navigatorType.SAFARI) 
+
+		if (chart.isPlayer) {//kplayer 一定需要js鼠标滚动
 			registerMouseWheelEvt(chart.swf);
-			
+		} else if (navigatorType == KANVAS.navigatorType.SAFARI){ //kanvas 只有在fafari中才需要js鼠标滚动辅助
+			registerMouseWheelEvt(chart.swf);
+		} else {
+
+		}
+
+
 		chart.ready();
 
 	};
@@ -230,11 +237,12 @@
 		return this;
     };
     
-	Kanvas.swfURL = "KanvasWeb.swf";
+	Kanvas.swfURL = "KanvasLoader.swf";
 	Kanvas.prototype = function() {
 		
 		//继承至基类
 		var that = kvsBase();
+		that.isPlayer = false;
 		
 		//重写构造函数
 		that.constructor = function(arg) {
@@ -403,6 +411,12 @@
 				this.swf.initDataServer(url, docID, thumbW, thumbH);
 			};
 		};
+
+		that.initTemplates = function(data) {
+			if (this.ifReady) {
+				this.swf.initTemplates(data);
+			};
+		};
 		
 		return that;
 		
@@ -426,6 +440,8 @@
 	KPlayer.prototype = function() {
 		
 		var that = kvsBase();
+		that.isPlayer = true;
+
 		that.constructor = function(arg){
 			this.swfURL = getSWFURL(KPlayer.swfURL);
 			init(this, arg, true);
@@ -588,6 +604,18 @@
 		
 		var onMouseWheel = function(){
 			var evt = window.event || arguments[0];
+
+			//先判断鼠标是否停留在target区域，只有该区域内滚动鼠标时才有效
+			var x = evt.clientX;  
+            var y = evt.clientY;  
+
+            var divx1 = target.offsetLeft;  
+            var divy1 = target.offsetTop;  
+            var divx2 = target.offsetLeft + target.offsetWidth;  
+            var divy2 = target.offsetTop + target.offsetHeight;  
+            if( x < divx1 || x > divx2 || y < divy1 || y > divy2) return;  
+             
+
 			if (navigatorType == KANVAS.navigatorType.FIREFOX) {
 				evt.preventDefault();
 				evt.stopPropagation();
@@ -676,7 +704,6 @@
 				var params = {};
 	            params.quality = "high";
 	            params.allowscriptaccess = "*";
-	            //params.allowFullScreenInteractive = "true"; 这行要被注释掉
 	            params.allowFullScreen = "true";
 	            
 	            //kplayer的此属性为true，是为了防止悬浮div被遮盖；

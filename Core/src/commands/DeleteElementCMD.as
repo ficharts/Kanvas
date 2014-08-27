@@ -8,7 +8,7 @@ package commands
 	import util.undoRedo.UndoRedoMannager;
 	
 	import view.element.ElementBase;
-	import view.element.PageElement;
+	import view.element.IElement;
 
 	/**
 	 * 图形删除指令, 负责删除图形，线条和图片
@@ -30,6 +30,7 @@ package commands
 			elementIndex = CoreFacade.getElementIndex(element);
 			CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
 			CoreFacade.removeElement(element);
+			
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
@@ -42,10 +43,12 @@ package commands
 				var l:int = groupElements.length;
 				for (var i:int = 0; i < l; i ++)
 				{
-					var item:ElementBase = groupElements[i];
+					var item:ElementBase = groupElements[i] as ElementBase;
+					
 					elementIndexArray[i] = CoreFacade.getElementIndex(item);
 					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(item);
 					CoreFacade.removeElement(item);
+					
 					if (item.isPage)
 						CoreFacade.coreMediator.pageManager.removePage(item.vo.pageVO);
 				}
@@ -68,16 +71,24 @@ package commands
 				var l:int = groupElements.length;
 				for (var i:int = l - 1; i >= 0; i --)
 				{
-					var item:ElementBase = groupElements[i];
-					CoreFacade.addElementAt(groupElements[i], elementIndexArray[i]);
+					var item:ElementBase = groupElements[i] as ElementBase;;
+					CoreFacade.addElementAt(item, elementIndexArray[i]);
+					
 					if (item.isPage)
+					{
 						CoreFacade.coreMediator.pageManager.addPageAt(item.vo.pageVO, item.vo.pageVO.index);
+						CoreFacade.coreMediator.pageManager.layoutPages();						
+					}
 				}
 			}
 			
 			CoreFacade.addElementAt(element, elementIndex);
+			
 			if (element.isPage)
+			{
 				CoreFacade.coreMediator.pageManager.addPageAt(element.vo.pageVO, element.vo.pageVO.index);
+				CoreFacade.coreMediator.pageManager.layoutPages();
+			}
 			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
 			
@@ -89,6 +100,7 @@ package commands
 		override public function redoHandler():void
 		{
 			CoreFacade.removeElement(element);
+			
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
@@ -115,7 +127,7 @@ package commands
 		
 		private var elementIndexArray:Array;
 		
-		private var groupElements:Vector.<ElementBase>;
+		private var groupElements:Vector.<IElement>;
 		
 		private var autoGroupEnabled:Boolean;
 		

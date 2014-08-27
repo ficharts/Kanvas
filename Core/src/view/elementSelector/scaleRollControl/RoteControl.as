@@ -51,7 +51,7 @@ package view.elementSelector.scaleRollControl
 		
 		/**
 		 */		
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			if (!isNaN(rotation))
 			{
@@ -96,7 +96,7 @@ package view.elementSelector.scaleRollControl
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			oldAngle = selector.currentRote;
 			oldRotation = selector.rotation;

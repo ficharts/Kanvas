@@ -1,14 +1,9 @@
 package view.element
 {
-	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	
-	import flash.display.Sprite;
-	
 	import model.vo.PageVO;
-	
-	import modules.pages.PageEvent;
 	
 	import view.element.state.ElementPrevState;
 	import view.elementSelector.ElementSelector;
@@ -17,7 +12,7 @@ package view.element
 	
 	
 	/**
-	 * 页面
+	 * 页面, 虚框
 	 */	
 	public final class PageElement extends ElementBase implements IAutoGroupElement
 	{
@@ -25,12 +20,22 @@ package view.element
 		{
 			super(vo);
 			
-			xmlData = <page/>;
+			vo.xml = <page/>;
 			_screenshot = false;
 			_elementPageConvertable = false;
-			mouseChildren = true		
+			mouseChildren = true;
 		}
 		
+		/**
+		 * 非选择状态下的页面，从左侧页面列表也可以删除
+		 */		
+		override public function del():void
+		{
+			dispatchEvent(new ElementEvent(ElementEvent.DEL_SHAPE, this));
+		}
+		
+		/**
+		 */		
 		override public function disable():void
 		{
 			super.disable();
@@ -38,6 +43,10 @@ package view.element
 			mouseChildren = true;
 		}
 		
+		override protected function init():void
+		{
+			super.init();
+		}
 		
 		
 		/**

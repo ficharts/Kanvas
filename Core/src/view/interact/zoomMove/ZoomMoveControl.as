@@ -28,6 +28,28 @@ package view.interact.zoomMove
 		}
 		
 		/**
+		 * 开启滚动拖放 
+		 */		
+		public function enable():void
+		{
+			_enable = true;
+			enableBGInteract();
+		}
+		
+		/**
+		 * 关闭滚动拖放, 此时画布不可以被拖动，缩放 
+		 */		
+		public function disable():void
+		{
+			_enable = false;
+			disableBgInteract();
+		}
+		
+		/**
+		 */		
+		private var _enable:Boolean = true;
+		
+		/**
 		 * 将镜头对焦到元素上
 		 */		
 		public function zoomElement(elementVO:ElementVO):void
@@ -79,23 +101,26 @@ package view.interact.zoomMove
 		
 		/**
 		 */		
-		public function zoomIn(isMouseCenter:Boolean = false):void
+		public function zoomIn(center:* = false):void
 		{
-			zoomer.zoomIn(isMouseCenter);
+			if (_enable)
+				zoomer.zoomIn(center);
 		}
 		
 		/**
 		 */		
-		public function zoomOut(isMouseCenter:Boolean = false):void
+		public function zoomOut(center:* = false):void
 		{
-			zoomer.zoomOut(isMouseCenter);
+			if (_enable)
+				zoomer.zoomOut(center);
 		}
 		
 		/**
 		 */		
 		public function zoomAuto(originalScale:Boolean = false):void
 		{
-			zoomer.zoomAuto(originalScale);
+			if (_enable)
+				zoomer.zoomAuto(originalScale);
 		}
 		
 		/**
@@ -119,6 +144,11 @@ package view.interact.zoomMove
 			return flasher.isFlashing;
 		}
 		
+		public function set isTweening(value:Boolean):void
+		{
+			flasher.isFlashing = value;
+		}
+		
 		/**
 		 */		
 		private function get canvas():Canvas
@@ -126,17 +156,35 @@ package view.interact.zoomMove
 			return mainUI.canvas;
 		}
 		
+		/**
+		 * 鼠标滚轮滑动时的倍数
+		 */		
 		public var zoomScale:Number = 1.5;
 		
-		public var speedScale:Number = 4;
+		/**
+		 * 每秒缩放倍数 
+		 */		
+		public var speedScale:Number = 2;
 		
+		/**
+		 * 每秒旋转90度 
+		 */		
 		public var speedRotation:Number = 90;
 		
-		public var maxTweenTime:Number = 4;
+		/**
+		 * 
+		 */		
+		public var maxTweenTime:Number = 10;
 		
-		public var minTweenTime:Number = 1;
+		/**
+		 * 
+		 */		
+		public var minTweenTime:Number = 1.3;
 		
-		public var plusScale:Number = .5;
+		/**
+		 * 
+		 */		
+		public var gestureControl:Boolean = false;
 		
 		/**
 		 * 默认不管画布中的元素有多大都自动对焦， 关闭后则

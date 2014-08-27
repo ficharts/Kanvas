@@ -1,5 +1,6 @@
 package view.interact.zoomMove
 {
+	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	import com.greensock.easing.*;
 	import com.kvs.utils.MathUtil;
@@ -52,6 +53,7 @@ package view.interact.zoomMove
 				ease : easeFlash, 
 				onUpdate : updated,
 				onComplete : finishZoom});
+			
 		}
 		
 		/**
@@ -64,36 +66,56 @@ package view.interact.zoomMove
 				MathUtil.equals(canvas.y, canvasTargetY))
 				return;
 			
-			if (Math.max(canvasTargetScale / canvas.scaleX, canvas.scaleX / canvasTargetScale) > 1.0005)
-				control.mainUI.curScreenState.disableCanvas();
-			
-			if(!easeFlash)
-				easeFlash = Cubic.easeInOut;
-			
-			if(!packer) 
-				packer = new CanvasLayoutPacker(control.mainUI);
-			else
-				TweenMax.killTweensOf(packer, false);
-			
-			canvasTargetRotation = MathUtil.modTargetRotation(packer.rotation, canvasTargetRotation);
-			
-			var canvasMiddleScale:Number = packer.modCanvasPositionStart(canvasTargetX, canvasTargetY, canvasTargetScale, canvasTargetRotation);
-			
-			if (isNaN(time))
+			if (time == 0)
 			{
-				var timeScale:Number = getScalePlus(canvasMiddleScale);
-				var timeRotation:Number = Math.abs(canvasTargetRotation - packer.rotation) / speedRotation;
-				time = Math.min(Math.max(timeScale, timeRotation, control.minTweenTime), control.maxTweenTime);
+				canvas.scaleX = canvas.scaleY = canvasTargetScale;
+				canvas.rotation = canvasTargetRotation;
+				canvas.x = canvasTargetX;
+				canvas.y = canvasTargetY;
+				control.mainUI.synBgContentToCanvas();
+				updated();
+				finishZoom();
+			}
+			else
+			{
+				if (Math.max(canvasTargetScale / canvas.scaleX, canvas.scaleX / canvasTargetScale) > 1.0005)
+					control.mainUI.curScreenState.disableCanvas();
+				
+				if(!easeFlash)
+					easeFlash = Cubic.easeInOut;
+				
+				if(!packer) 
+					packer = new CanvasLayoutPacker(control.mainUI);
+				else
+					TweenMax.killTweensOf(packer, false);
+				
+				canvasTargetRotation = MathUtil.modTargetRotation(packer.rotation, canvasTargetRotation);
+				
+				var canvasMiddleScale:Number = packer.modCanvasPositionStart(canvasTargetX, canvasTargetY, canvasTargetScale, canvasTargetRotation);
+				
+				if (isNaN(time))
+				{
+					var timeScale:Number = getScalePlus(canvasMiddleScale);
+					var timeRotation:Number = Math.abs(canvasTargetRotation - packer.rotation) / control.speedRotation;
+					time = Math.min(Math.max(timeScale, timeRotation, control.minTweenTime), control.maxTweenTime);
+				}
+				
+				
+				/*if (!isNaN(canvasMiddleScale))
+				{
+					easeFlash = (canvas.scaleX < canvasTargetScale) ? Quart.easeIn : Quart.easeOut;
+				}*/
+				 
+				TweenMax.to(packer, time, {
+					progress:1, 
+					rotation:canvasTargetRotation, 
+					ease:easeFlash, 
+					onUpdate:updated, 
+					onComplete:finishZoom
+				});
 			}
 			
-			TweenMax.to(packer, time, {
-				progress:1, 
-				rotation:canvasTargetRotation, 
-				ease:easeFlash, 
-				onUpdate:updated, 
-				onComplete:finishZoom
-			});
-			
+			trace(TweenLite.rootFrame);
 		}
 		
 		/**
@@ -104,24 +126,23 @@ package view.interact.zoomMove
 			var log2E:Number = MathUtil.log2(canvasTargetScale);
 			var log2M:Number = MathUtil.log2(canvasMiddleScale);
 			
-			return ((isNaN(log2M)) ? Math.abs(log2E - log2S) : (Math.abs(log2E - log2M) + Math.abs(log2M - log2S))) / speedScale;
+			return ((isNaN(log2M)) ? Math.abs(log2E - log2S) : (Math.abs(log2E - log2M) + Math.abs(log2M - log2S))) / control.speedScale;
 		}
 		
 		/**
 		 */		
 		private function updated():void
 		{
-			if (packer) packer.modCanvasPosition();
-			
-			control.mainUI.synBgImageToCanvas();
-			
-			control.uiMediator.flashTrek();
-			
 			if (isFlashing == false)
 			{
 				control.uiMediator.flashPlay();
 				isFlashing = true;
 			}
+			if (packer) packer.modCanvasPosition();
+			
+			control.mainUI.synBgContentToCanvas();
+			
+			control.uiMediator.flashTrek();
 		}
 		
 		/**
@@ -165,8 +186,6 @@ package view.interact.zoomMove
 		/**
 		 * 
 		 */		
-		private var speedScale:Number = 2.5;
-		private var speedRotation:Number = 90;
 		private var packer:CanvasLayoutPacker;
 	}
 }

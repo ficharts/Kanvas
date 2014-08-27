@@ -26,8 +26,10 @@ package model.vo
 		{
 			var target:ElementVO = ElementCreator.getElementVO(type);
 			ElementUtil.cloneVO(target, this);
+			
 			if (pageVO && pageVO != this)
 				target.pageVO = PageVO(pageVO.clone());
+			
 			return target;
 		}
 		
@@ -37,28 +39,32 @@ package model.vo
 		 * @return
 		 *
 		 */	
-		public function exportData(template:XML):XML
+		public function exportData():XML
 		{
-			if(!template)
-				template = <element/>;
+			if(!xml)
+				xml = <element/>;
 			
-			template.@id = id;
+			delete xml.*;
 			//template.@property = property;
-			template.@type = type;
-			template.@styleType = styleType;
-			template.@styleID = styleID;
-			template.@x = x;
-			template.@y = y;
-			template.@width = width;
-			template.@height = height;
-			template.@rotation = rotation;
-			template.@color = color.toString(16);
-			template.@colorIndex = colorIndex;
-			template.@scale = scale;
 			
-			return template;
+			xml.@id = id.toString();
+			xml.@type = type;
+			xml.@styleType = styleType;
+			xml.@styleID = styleID;
+			xml.@x = x;
+			xml.@y = y;
+			xml.@width = width;
+			xml.@height = height;
+			xml.@rotation = rotation;
+			xml.@color = color.toString(16);
+			xml.@colorIndex = colorIndex;
+			xml.@scale = scale;
+			
+			return xml;
 		}
 		
+		/**
+		 */		
 		public function updatePageLayout():void
 		{
 			if (pageVO && pageVO != this) 
@@ -324,5 +330,7 @@ package model.vo
 		
 		
 		public var pageVO:PageVO;
+		
+		public var xml:XML;
 	}
 }

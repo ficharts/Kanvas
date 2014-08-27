@@ -10,6 +10,7 @@ package view.interact.autoGroup
 	import util.StyleUtil;
 	
 	import view.element.ElementBase;
+	import view.element.IElement;
 	import view.element.imgElement.ImgElement;
 	import view.interact.CoreMediator;
 
@@ -44,22 +45,28 @@ package view.interact.autoGroup
 		{
 			_elements.length = 0;
 			
-			elementsCopied.sort(sortOnIndex);
-			
-			for each (var element:ElementBase in this.elementsCopied)
+			if (elementsCopied)
 			{
-				var newElement:ElementBase = element.clone();
-				StyleUtil.applyStyleToElement(newElement.vo);
+				elementsCopied.sort(sortOnIndex);
 				
-				newElement.vo.x += xOff;
-				newElement.vo.y += yOff;
-				
-				CoreFacade.addElement(newElement);
-				
-				_elements.push(newElement);
+				for each (var element:ElementBase in this.elementsCopied)
+				{
+					var newElement:ElementBase = element.clone();
+					StyleUtil.applyStyleToElement(newElement.vo);
+					
+					newElement.vo.x += xOff;
+					newElement.vo.y += yOff;
+					
+					CoreFacade.addElement(newElement);
+					
+					_elements.push(newElement);
+				}
 			}
+			
 		}
 		
+		/**
+		 */		
 		private function sortOnIndex(a:ElementBase, b:ElementBase):int
 		{
 			if (a.index < b.index)
@@ -78,12 +85,12 @@ package view.interact.autoGroup
 		
 		/**
 		 */		
-		private var elementsCopied:Vector.<ElementBase>;
+		private var elementsCopied:Vector.<IElement>;
 		
 		/**
 		 * 设定智能组合的内容，对临时组合进行编辑时会用到
 		 */		
-		public function setGroupElements(elements:Vector.<ElementBase>):void
+		public function setGroupElements(elements:Vector.<IElement>):void
 		{
 			clear();
 			
@@ -254,9 +261,10 @@ package view.interact.autoGroup
 		
 		/**
 		 */		
-		public function resetElements(elements:Vector.<ElementBase>):void
+		public function resetElements(elements:Vector.<IElement>):void
 		{
 			this.clear();
+			
 			_elements = _elements.concat(elements);
 		}
 		
@@ -264,14 +272,14 @@ package view.interact.autoGroup
 		
 		/**
 		 */		
-		public function get elements():Vector.<ElementBase>
+		public function get elements():Vector.<IElement>
 		{
 			return _elements.concat();
 		}
 		
 		/**
 		 */		
-		public var _elements:Vector.<ElementBase> = new Vector.<ElementBase>;
+		public var _elements:Vector.<IElement> = new Vector.<IElement>;
 		
 		public var enabled:Boolean = true;
 		

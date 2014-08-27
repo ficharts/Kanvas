@@ -63,7 +63,7 @@ package view.interact.zoomMove
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			if (ifEnable)
 			{
@@ -75,7 +75,7 @@ package view.interact.zoomMove
 		
 		/**
 		 */		
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			control.isMoving = false;
 		}
@@ -85,8 +85,9 @@ package view.interact.zoomMove
 		 */		
 		public function moveOff(xOff:Number, yOff:Number):void
 		{
-			if (ifEnable)
+			if (ifEnable && !GestureControl.gestureControl)
 			{
+				
 				flasher.canvasTargetX += xOff;
 				flasher.canvasTargetY += yOff;
 				flasher.flash(0.15);

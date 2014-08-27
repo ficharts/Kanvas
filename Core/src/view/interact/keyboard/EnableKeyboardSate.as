@@ -129,8 +129,6 @@ package view.interact.keyboard
 				altKey = false;
 			}
 			
-			
-			
 			switch(evt.keyCode)
 			{
 				case Keyboard.Z:
@@ -169,8 +167,29 @@ package view.interact.keyboard
 					mainUIMediator.autoAlignController.enabled = true;
 					break;
 				
+				case Keyboard.P:
+					if (mainUIMediator.currentMode is PrevMode)
+					{
+						mainUIMediator.coreApp.prevDrawMode = !mainUIMediator.coreApp.prevDrawMode;
+					}
+					break;
+				
 				case Keyboard.DELETE:
 					mainUIMediator.del();
+					break;
+				
+				case 8:// Mac系统下delete的按键编码是8
+					mainUIMediator.del();
+					break;
+				
+				case Keyboard.PAGE_UP:
+					if (mainUIMediator.currentMode is PrevMode)
+						mainUIMediator.pageManager.prev();
+					break;
+				
+				case Keyboard.PAGE_DOWN:
+					if (mainUIMediator.currentMode is PrevMode)
+						mainUIMediator.pageManager.next();
 					break;
 				
 				case Keyboard.UP:

@@ -85,7 +85,7 @@ package model.vo
 		
 		/**
 		 */		
-		public var imgData:BitmapData;
+		public var imgData:Object;
 
 
 	}

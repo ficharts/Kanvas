@@ -4,11 +4,13 @@ package view.interact.interactMode
 	
 	import flash.geom.Rectangle;
 	
+	import model.CoreFacade;
 	import model.vo.ElementVO;
 	
 	import view.element.ElementBase;
 	import view.element.GroupElement;
 	import view.element.shapes.LineElement;
+	import view.element.state.ElementSelected;
 	import view.interact.CoreMediator;
 	import view.interact.multiSelect.TemGroupElement;
 	
@@ -22,11 +24,20 @@ package view.interact.interactMode
 		}
 		
 		/**
+		 * 对焦到被选择的元素
+		 */		
+		override public function autoZoom():void
+		{
+			if (mainMediator.currentElement.isPage)
+				mainMediator.pageManager.indexWithZoom = mainMediator.currentElement.vo.pageVO.index;
+			else
+				mainMediator.zoomMoveControl.zoomElement(mainMediator.currentElement.vo);
+		}
+		
+		/**
 		 */		
 		override public function drawShotFrame():void
 		{
-			
-			
 			return;//暂时只保留
 			var layout:ElementVO = mainMediator.layoutTransformer.getLayoutInfo(mainMediator.currentElement);
 			var tx:Number = layout.x + ((mainMediator.currentElement is LineElement) ? 0 : - layout.width / 2);
@@ -180,17 +191,15 @@ package view.interact.interactMode
 		 */		
 		override public function toEditMode():void
 		{
-			mainMediator.showSelector();		
+			mainMediator.hideSelector();		
 			mainMediator.disableKeyboardControl();
 			mainMediator.currentMode = mainMediator.editMode;
-			
-			mainMediator.cameraShotShape.graphics.clear();
 		}
 		
 		/**
 		 * 单选模式时，取消选择当前元件
 		 */		
-		override public function unSelectElementDown(element:ElementBase):void
+		override public function unSelectElement(element:ElementBase):void
 		{
 			mainMediator.sendNotification(Command.UN_SELECT_ELEMENT);
 			mainMediator.checkAutoGroup(element);
@@ -199,7 +208,7 @@ package view.interact.interactMode
 		/**
 		 * 多选模式下被调用，将当前点击元件添加到临时组合
 		 */		
-		override public function unSelectElementClicked(element:ElementBase):void
+		override public function multiSelectElement(element:ElementBase):void
 		{
 			mainMediator.multiSelectControl.addToTemGroup(element);
 		}

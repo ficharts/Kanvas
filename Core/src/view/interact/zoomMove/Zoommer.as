@@ -66,7 +66,7 @@ package view.interact.zoomMove
 		/**
 		 * 放大画布
 		 */
-		public function zoomIn(notMouseCenter:Boolean = false):void
+		public function zoomIn(center:* = false):void
 		{
 			flasher.ready();
 			
@@ -78,7 +78,7 @@ package view.interact.zoomMove
 				Bubble.show(ConstsTip.TIP_ZOOM_MAX);
 			}
 			
-			zoom(newScale, notMouseCenter);
+			zoom(newScale, center);
 			
 			flasher.flash(0.5);
 		}
@@ -86,7 +86,7 @@ package view.interact.zoomMove
 		/**
 		 * 缩小画布
 		 */
-		public function zoomOut(notMouseCenter:Boolean = false):void
+		public function zoomOut(center:* = false):void
 		{
 			flasher.ready();
 			
@@ -97,7 +97,7 @@ package view.interact.zoomMove
 				Bubble.show(ConstsTip.TIP_ZOOM_MIN);
 			}
 			
-			zoom(newScale, notMouseCenter);
+			zoom(newScale, center);
 			
 			flasher.flash(0.5);
 		}
@@ -128,21 +128,29 @@ package view.interact.zoomMove
 		 * 
 		 * 整个过程中画布中心点为图形的注册点， 缩放是以此为基准进行的
 		 */		
-		private function zoom(newScale:Number, notMouseCenter:Boolean = false):void
+		private function zoom(newScale:Number, center:* = false):void
 		{
 			var curScale:Number = canvas.scaleX;
 			var scaleDis:Number = newScale - curScale;
 			flasher.canvasTargetScale = newScale;
 			
-			if (notMouseCenter) 
+			if (center is Point)
 			{
-				point.x = canvas.stage.stageWidth  * .5;
-				point.y = canvas.stage.stageHeight * .5;
+				point.x = center.x;
+				point.y = center.y;
 			}
-			else 
+			else
 			{
-				point.x = canvas.stage.mouseX;
-				point.y = canvas.stage.mouseY;
+				if (center) 
+				{
+					point.x = canvas.stage.stageWidth  * .5;
+					point.y = canvas.stage.stageHeight * .5;
+				}
+				else 
+				{
+					point.x = canvas.stage.mouseX;
+					point.y = canvas.stage.mouseY;
+				}
 			}
 			
 			flasher.canvasTargetX = (canvas.stage.stageWidth / 2 - point.x) * scaleDis / curScale 
@@ -161,18 +169,15 @@ package view.interact.zoomMove
 		{
 			flasher.ready();
 			
+			flasher.canvasTargetRotation = 0;
+			
 			if (canvas.ifHasElements)
 			{
-				/*var rect:Rectangle = LayoutUtil.getItemRect(canvas, canvas.getChildAt(1) as ICanvasLayout, false, true, false);
-				CoreUtil.drawRect(0xFF0000, rect);
-				return;*/
 				canvasBound = LayoutUtil.getContentRect(canvas, false);
 				
 				var scale:Number = (canvasBound.width / canvasBound.height > mainUI.bound.width / mainUI.bound.height)
 					? mainUI.bound.width  / canvasBound.width
 					: mainUI.bound.height / canvasBound.height;
-				
-				flasher.canvasTargetRotation = 0;
 				
 				//画布保持原比例，不缩放
 				flasher.canvasTargetScale = (originalScale || (!control.ifAutoZoom && !(canvasBound.width < mainUI.bound.width && canvasBound.height < mainUI.bound.height))) ? 1 : scale;

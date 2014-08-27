@@ -58,7 +58,7 @@ package view.shapePanel.pageForCreateCompt
 		
 		/**
 		 */		
-		public function startMove():void
+		public function startDragMove():void
 		{
 			if (curSelectedShape)
 			{
@@ -71,7 +71,7 @@ package view.shapePanel.pageForCreateCompt
 			
 		/**
 		 */			
-		public function stopMove():void
+		public function stopDragMove():void
 		{
 			if (curSelectedShape)
 			{
