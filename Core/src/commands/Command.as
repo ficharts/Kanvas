@@ -10,7 +10,10 @@ package commands
 	 */	
 	public class Command extends SimpleCommand implements ICommand
 	{
-		
+		/**
+		 * 
+		 */		
+		public static const CREAT_CHART:String = "creatChart";
 		
 		/**
 		 * 设置为当前元素, 并且将其设置为选择状态 

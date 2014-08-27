@@ -1,14 +1,12 @@
 package com.kvs.charts.chart2D.area2D
 {
-	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.common.SeriesDataPoint;
-	import com.kvs.utils.PerformaceTest;
-	import com.kvs.utils.XMLConfigKit.style.StatesControl;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
+	import com.kvs.utils.XMLConfigKit.style.StatesControl;
 	
 	/**
 	 */	
-	public class SimpleAreaRender implements ISeriesRenderPattern
+	public class SimpleAreaRender
 	{
 		public function SimpleAreaRender(series:AreaSeries2D)
 		{
@@ -20,26 +18,6 @@ package com.kvs.charts.chart2D.area2D
 		/**
 		 */		
 		private var series:AreaSeries2D;
-		
-		/**
-		 */		
-		public function toClassicPattern():void
-		{
-			if(series.classicPattern)
-			{
-				series.curRenderPattern = series.classicPattern;
-			}
-			else
-			{
-				series.curRenderPattern = new ClassicAreaRender(series);
-			}
-		}
-		
-		/**
-		 */		
-		public function toSimplePattern():void
-		{
-		}
 		
 		/**
 		 */		

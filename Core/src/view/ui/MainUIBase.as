@@ -74,7 +74,7 @@ package view.ui
 		/**
 		 * 画布自动缩放的范围(剔除工具条，面板等)
 		 */
-		public function get bound():Rectangle
+		public function get autofitRect():Rectangle
 		{
 			return __bound;
 		}
@@ -82,16 +82,20 @@ package view.ui
 		/**
 		 * @private
 		 */
-		public function set bound(value:Rectangle):void
+		public function set autofitRect(value:Rectangle):void
 		{
 			__bound = value;
 			
-			__boundDiagonalDistance = RectangleUtil.getDiagonalDistance(bound);
+			__boundDiagonalDistance = RectangleUtil.getDiagonalDistance(autofitRect);
 			
 			//fitBgContentToBound();
 			synBgContentToCanvas();
 			dispatchEvent(new KVSEvent(KVSEvent.UPATE_BOUND));
 		}
+		
+		/**
+		 */		
+		public var contentRect:Rectangle;
 		
 		/**
 		 */		
@@ -221,8 +225,8 @@ package view.ui
 			if (canvas.scaleX > 1)
 			{
 				bgImageCanvas.scaleX = bgImageCanvas.scaleY = Math.pow(canvas.scaleX, .8);
-				var wc:Number = bound.x + bound.width  * .5;
-				var hc:Number = bound.y + bound.height * .5;
+				var wc:Number = autofitRect.x + autofitRect.width  * .5;
+				var hc:Number = autofitRect.y + autofitRect.height * .5;
 				var wo:Number = canvas.x - wc;
 				var ho:Number = canvas.y - hc;
 				var si:Number = bgImageCanvas.scaleX / canvas.scaleX;
@@ -238,8 +242,8 @@ package view.ui
 			
 			if (bgImageContent && bgImageContent is Bitmap)
 			{
-				Bitmap(bgImageContent).smoothing = ! ((bgImageCanvas.width < bound.width * 2) && 
-					(bgImageContent.width / bgImageContent.scaleX > bound.width));
+				Bitmap(bgImageContent).smoothing = ! ((bgImageCanvas.width < autofitRect.width * 2) && 
+					(bgImageContent.width / bgImageContent.scaleX > autofitRect.width));
 			}
 			
 		}
@@ -258,8 +262,8 @@ package view.ui
 			}
 			else
 			{
-				canvas.x = (bound.left + bound.right) * .5;
-				canvas.y = (bound.top + bound.bottom) * .5;
+				canvas.x = (autofitRect.left + autofitRect.right) * .5;
+				canvas.y = (autofitRect.top + autofitRect.bottom) * .5;
 			}
 		}
 		

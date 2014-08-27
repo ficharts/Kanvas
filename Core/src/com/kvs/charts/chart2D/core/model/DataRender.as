@@ -123,6 +123,8 @@ package com.kvs.charts.chart2D.core.model
 		{
 			for each (var shape:IShape in shapes)
 			{
+				shape.style = shape.states.getNormal;
+				
 				if (isNaN(radius) == false)
 					shape.style.radius = radius;
 					
@@ -151,30 +153,6 @@ package com.kvs.charts.chart2D.core.model
 		public function set angle(value:int):void
 		{
 			_angle = - value;
-		}
-		
-		/**
-		 */		
-		public function toNormal():void
-		{
-			for each (var shape:IShape in shapes)
-				shape.style = shape.states.getNormal;
-		}
-		
-		/**
-		 */		
-		public function toHover():void
-		{
-			for each (var shape:IShape in shapes)
-				shape.style = shape.states.getHover;
-		}
-		
-		/**
-		 */		
-		public function toDown():void
-		{
-			for each (var shape:IShape in shapes)
-				shape.style = shape.states.getDown;
 		}
 		
 		/**

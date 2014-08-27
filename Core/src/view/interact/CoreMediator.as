@@ -1,17 +1,14 @@
 package view.interact
 {
-	import com.kvs.utils.PerformaceTest;
+	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	
 	import commands.Command;
 	
 	import flash.display.Shape;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.geom.Matrix;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import model.CoreFacade;
@@ -30,6 +27,7 @@ package view.interact
 	import view.element.ElementBase;
 	import view.element.GroupElement;
 	import view.element.IElement;
+	import view.element.chart.ChartElement;
 	import view.element.imgElement.ImgElement;
 	import view.element.text.TextEditField;
 	import view.elementSelector.ElementSelector;
@@ -297,13 +295,21 @@ package view.interact
 		}
 		
 		/**
+		 */		
+		public function toChartEditMode():void
+		{
+			currentMode.toChartEditMode();
+		}
+		
+		/**
 		 * 应用从编辑状态进入非选择状态时，关闭编辑器
 		 * 
 		 * 由编辑器决定创建或者更新原件
 		 */		
 		public function closeEditor():void
 		{
-			currentEditor.close();
+			if (currentEditor)
+				currentEditor.close();
 		}
 		
 		
@@ -366,7 +372,7 @@ package view.interact
 		 */		
 		public function toEditMode():void
 		{
-			currentMode.toEditMode();
+			currentMode.toTextEditMode();
 		}
 		
 		/**
@@ -396,7 +402,7 @@ package view.interact
 		/**
 		 * 开始型变控制框，元素被选择后续执行的动作
 		 */		
-		public function openSelector():void
+		public function showSelector():void
 		{
 			currentMode.showSelector();
 		}
@@ -518,11 +524,16 @@ package view.interact
 		 * 编辑状态：非选择，选择，编辑
 		 */		
 		public var currentMode:ModeBase;
+		
 		public var selectedMode:ModeBase;
 		public var unSelectedMode:ModeBase;
 		public var preMode:ModeBase;
-		public var editMode:ModeBase;
+		
+		/**
+		 */		
+		public var textEditMode:ModeBase;
 		public var pageEditMode:ModeBase;
+		public var chartEditMode:ChartEditMode;
 		
 		
 		/**
@@ -621,8 +632,10 @@ package view.interact
 			//状态
 			selectedMode = new SelectedMode(this);
 			unSelectedMode = new UnSelectedMode(this);
-			editMode = new EditMode(this);
+			textEditMode = new TextEditMode(this);
 			pageEditMode = new PageEditMode(this);
+			chartEditMode = new ChartEditMode(this);
+			
 			preMode = new PrevMode(this);
 			
 			currentMode = unSelectedMode;
@@ -856,7 +869,7 @@ package view.interact
 			{
 				treking = false;
 				mainUI.curScreenState.enableCanvas();
-				zoomMoveControl.enableBGInteract();
+				//zoomMoveControl.enableBGInteract();//生效会导致动画编辑时背景可被拖动
 				
 				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
 				for each (var element:ElementBase in elements)

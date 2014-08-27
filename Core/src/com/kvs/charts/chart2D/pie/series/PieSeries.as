@@ -1,17 +1,18 @@
 package com.kvs.charts.chart2D.pie.series
 {
 	import com.kvs.charts.chart2D.core.itemRender.ItemRenderEvent;
+	import com.kvs.charts.chart2D.encry.ISeries;
 	import com.kvs.charts.chart2D.pie.PieChartModel;
 	import com.kvs.charts.chart2D.pie.PieDataFormatter;
 	import com.kvs.charts.common.ChartColors;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.charts.legend.model.LegendVO;
 	import com.kvs.charts.legend.view.LegendEvent;
-	import com.kvs.ui.toolTips.TooltipStyle;
 	import com.kvs.utils.MathUtil;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.IEditableObject;
+	import com.kvs.utils.XMLConfigKit.Model;
+	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.effect.Effects;
@@ -19,17 +20,62 @@ package com.kvs.charts.chart2D.pie.series
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
 	import com.kvs.utils.XMLConfigKit.style.States;
 	import com.kvs.utils.XMLConfigKit.style.elements.IStyleElement;
-	import com.kvs.utils.dec.NullPad;
-	import com.kvs.utils.XMLConfigKit.StyleManager;
 	
 	import flash.display.Sprite;
 
 	/**
 	 */	
-	public class PieSeries extends Sprite implements IEditableObject, IStyleElement, IEffectable
+	public class PieSeries extends Sprite implements IEditableObject, IStyleElement, IEffectable, ISeries
 	{
 		public function PieSeries()
 		{
+			addChild(canvas);
+		}
+		
+		/**
+		 */		
+		public function get type():String
+		{
+			return "pie";
+		}
+		
+		/**
+		 */
+		private var _seriesName:String = "";
+		
+		public function get seriesName():String
+		{
+			return _seriesName;
+		}
+		
+		public function set seriesName(value:String):void
+		{
+			_seriesName = value;
+		}
+		
+		/**
+		 * 
+		 */		
+		public function get labels():Vector.<String>
+		{
+			var labels:Vector.<String> = new Vector.<String>;
+			
+			for each (var p:PieDataItem in _dataItemVOs)
+				labels.push(p.xLabel);
+			
+			return labels;
+		}
+		
+		/**
+		 */		
+		public function exportValues(split:String):String
+		{
+			var labels:Vector.<String> = new Vector.<String>
+			
+			for each (var data:PieDataItem in _dataItemVOs)
+				labels.push(data.yLabel);
+			
+			return seriesName + ":\n" + labels.join(split);;
 		}
 		
 		/**
@@ -40,26 +86,28 @@ package com.kvs.charts.chart2D.pie.series
 			
 			if (this.ifDataChanged)
 			{
-				while (this.numChildren)
-					this.removeChildAt(0);
+				while (canvas.numChildren)
+					canvas.removeChildAt(0);
 				
 				var dataItem:PieDataItem;
 				partUIs = new Vector.<PartPieUI>;
 				
-				for each (dataItem in this.dataItemVOs)
+				for each (dataItem in this._dataItemVOs)
 				{
 					partUI = new PartPieUI(dataItem);
-					partUI.states = this.states;
+					partUI.currState = this.states.getNormal;
 					partUI.labelStyle = this.valueLabel;
-					partUI.tooltipStyle = this.tooltip;
 					partUI.init();
 					partUIs.push(partUI);
-					addChild(partUI);
+					
+					canvas.addChild(partUI.valueLabelUI);
 				}
 			}
 			
 			if (ifSizeChanged || ifDataChanged)
 			{
+				this.graphics.clear();
+				
 				for each(partUI in this.partUIs)
 				{
 					partUI.radius = this.radius;
@@ -83,7 +131,7 @@ package com.kvs.charts.chart2D.pie.series
 						partUI.rads.push(rad);
 					}
 					
-					partUI.render();
+					partUI.render(this);
 					
 					StyleManager.setEffects(this, this, this);
 				}
@@ -92,6 +140,11 @@ package com.kvs.charts.chart2D.pie.series
 				
 			}
 		}
+		
+		/**
+		 * 用来放置label的容器
+		 */		
+		private var canvas:Sprite = new Sprite;
 		
 		/**
 		 */		
@@ -115,26 +168,6 @@ package com.kvs.charts.chart2D.pie.series
 		public function set valueLabel(value:LabelStyle):void
 		{
 			_valueLabel = value;
-		}
-
-		/**
-		 */		
-		private var _tooltip:TooltipStyle;
-
-		/**
-		 * 信息提示的样式
-		 */
-		public function get tooltip():TooltipStyle
-		{
-			return _tooltip;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set tooltip(value:TooltipStyle):void
-		{
-			_tooltip = XMLVOMapper.updateObject(value, _tooltip, Model.TOOLTIP, this) as TooltipStyle;
 		}
 
 		/**
@@ -283,7 +316,7 @@ package com.kvs.charts.chart2D.pie.series
 			var dataSum:Number = 0;
 			var startRad:Number = 0;
 			var partRad:Number = 0;
-			dataItemVOs = new Vector.<PieDataItem>;
+			_dataItemVOs = new Vector.<PieDataItem>;
 			
 			var precision:uint = 0;
 			var temPrecision:uint = 0;
@@ -295,8 +328,8 @@ package com.kvs.charts.chart2D.pie.series
 				seriesDataItem.metaData = item;
 				//XMLVOMapper.pushXMLDataToVO(item, seriesDataItem.metaData);//将XML转化为对象
 				
-				seriesDataItem.label = item[this.labelField]; 
-				seriesDataItem.value = item[this.valueField]; 
+				seriesDataItem.label = item[this.xField]; 
+				seriesDataItem.value = item[this.yField]; 
 				
 				if (RexUtil.ifTextNull(seriesDataItem.label)&& RexUtil.ifTextNull(seriesDataItem.value))
 				{
@@ -316,7 +349,7 @@ package com.kvs.charts.chart2D.pie.series
 					seriesDataItem.color = chartColorManager.chartColor;
 				
 				dataSum += Number(seriesDataItem.value);
-				dataItemVOs.push(seriesDataItem);
+				_dataItemVOs.push(seriesDataItem);
 				
 				// 计算小数点保留位数用
 				temPrecision = RexUtil.checkPrecision(seriesDataItem.value.toString())
@@ -328,7 +361,7 @@ package com.kvs.charts.chart2D.pie.series
 			
 			startRad = this.angleToRad(startAngle);
 			 
-			for each (seriesDataItem in dataItemVOs)
+			for each (seriesDataItem in _dataItemVOs)
 			{
 				seriesDataItem.xLabel = dataFormatter.formatLabel(seriesDataItem.label);
 				seriesDataItem.yLabel = dataFormatter.formatValue(seriesDataItem.value);
@@ -374,7 +407,19 @@ package com.kvs.charts.chart2D.pie.series
 		
 		/**
 		 */		
-		private var dataItemVOs:Vector.<PieDataItem>;
+		public function get dataItemVOs():Vector.<SeriesDataPoint>
+		{
+			var points:Vector.<SeriesDataPoint> = new Vector.<SeriesDataPoint>;
+			
+			for each (var p:PieDataItem in _dataItemVOs)
+				points.push(p);
+			
+			return dataItemVOs;
+		}
+		
+		/**
+		 */		
+		private var _dataItemVOs:Vector.<PieDataItem>;
 		
 		/**
 		 */		
@@ -383,7 +428,7 @@ package com.kvs.charts.chart2D.pie.series
 			var legendVOes:Vector.<LegendVO> = new Vector.<LegendVO>;
 			var legendVO:LegendVO;
 			
-			for each(var item:SeriesDataPoint in dataItemVOs)	
+			for each(var item:SeriesDataPoint in _dataItemVOs)	
 			{
 				legendVO = new LegendVO();
 				legendVO.metaData = item; // 用于精确控制节点的状态
@@ -403,7 +448,7 @@ package com.kvs.charts.chart2D.pie.series
 
 		/**
 		 */
-		public function get labelField():String
+		public function get xField():String
 		{
 			return _labelField;
 		}
@@ -411,7 +456,7 @@ package com.kvs.charts.chart2D.pie.series
 		/**
 		 * @private
 		 */
-		public function set labelField(value:String):void
+		public function set xField(value:String):void
 		{
 			_labelField = value;
 		}
@@ -420,12 +465,12 @@ package com.kvs.charts.chart2D.pie.series
 		 */		
 		private var _valueField:String;
 
-		public function get valueField():String
+		public function get yField():String
 		{
 			return _valueField;
 		}
 
-		public function set valueField(value:String):void
+		public function set yField(value:String):void
 		{
 			_valueField = value;
 		}

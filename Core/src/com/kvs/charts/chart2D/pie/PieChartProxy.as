@@ -7,9 +7,9 @@ package com.kvs.charts.chart2D.pie
 	import com.kvs.charts.chart2D.pie.series.Series;
 	import com.kvs.charts.common.ChartColors;
 	import com.kvs.charts.common.ChartDataFormatter;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.legend.LegendStyle;
 	import com.kvs.ui.toolTips.TooltipStyle;
+	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 
@@ -19,19 +19,19 @@ package com.kvs.charts.chart2D.pie
 	{
 		public function PieChartProxy()
 		{
-			XMLVOLib.registerCustomClasses(<colors path='com.fiCharts.utils.XMLConfigKit.style.Colors'/>);
+			XMLVOLib.registerCustomClasses(<colors path='com.kvs.utils.XMLConfigKit.style.Colors'/>);
 			
 			Series;
-			XMLVOLib.registerCustomClasses(<pieSeries path='com.fiCharts.charts.chart2D.pie.series.Series'/>);
+			XMLVOLib.registerCustomClasses(<series path='com.kvs.charts.chart2D.pie.series.Series'/>);
 			
 			PieSeries;
-			XMLVOLib.registerCustomClasses(<pie path='com.fiCharts.charts.chart2D.pie.series.PieSeries'/>);
+			XMLVOLib.registerCustomClasses(<pie path='com.kvs.charts.chart2D.pie.series.PieSeries'/>);
 			
 			ChartBGStyle;
-			XMLVOLib.registerCustomClasses(<chartBG path='com.fiCharts.charts.chart2D.core.model.ChartBGStyle'/>);
+			XMLVOLib.registerCustomClasses(<chartBG path='com.kvs.charts.chart2D.core.model.ChartBGStyle'/>);
 			
 			ChartDataFormatter;
-			XMLVOLib.registerCustomClasses(<dataFormatter path='com.fiCharts.charts.common.ChartDataFormatter'/>);
+			XMLVOLib.registerCustomClasses(<dataFormatter path='com.kvs.charts.common.ChartDataFormatter'/>);
 			
 			XMLVOLib.setASLabelStyleKey('title');
 			XMLVOLib.setASLabelStyleKey('subTitle');
@@ -50,13 +50,13 @@ package com.kvs.charts.chart2D.pie
 			XMLVOLib.registerObjectToProperty('label', 'text', 'value');
 			
 			TooltipStyle;
-			XMLVOLib.registerCustomClasses(<tooltip path='com.fiCharts.ui.toolTips.TooltipStyle'/>);
+			XMLVOLib.registerCustomClasses(<tooltip path='com.kvs.ui.toolTips.TooltipStyle'/>);
 			
 			LegendStyle;
-			XMLVOLib.registerCustomClasses(<legend path='com.fiCharts.charts.legend.LegendStyle'/>);
+			XMLVOLib.registerCustomClasses(<legend path='com.kvs.charts.legend.LegendStyle'/>);
 			
 			DataRender;
-			XMLVOLib.registerCustomClasses(<icon path='com.fiCharts.charts.chart2D.core.model.DataRender'/>);
+			XMLVOLib.registerCustomClasses(<icon path='com.kvs.charts.chart2D.core.model.DataRender'/>);
 		}
 		
 		private var _configXML:XML;

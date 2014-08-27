@@ -135,7 +135,7 @@ package com.kvs.ui.label
 			}
 			else
 			{
-				this.y = y - this.width / 2;	
+				this.y = y - this.height / 2;	
 			}
 		}
 		

@@ -162,8 +162,7 @@ package view.editor.text
 			else
 				FlowTextManager.updateTexLayout(text, textManager);
 			
-			editor.textScale.update();
-			editor.updateAfterInput();
+			editor.updateWidthTextinput();
 		}
 		
 		/**

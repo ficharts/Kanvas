@@ -17,7 +17,10 @@ package com.kvs.utils.XMLConfigKit.style
 		{
 			super.radius = value;
 			
-			this._out.radius = this._hover.radius = this._down.radius = value; 
+			this._out.radius = value;
+			
+			if (_hover)
+				this._hover.radius = this._down.radius = value; 
 		}
 		
 		/**
@@ -25,7 +28,11 @@ package com.kvs.utils.XMLConfigKit.style
 		override public function set width(value:Number):void
 		{
 			super.width = value;
-			this._out.width = this._hover.width = this._down.width = value; 
+			
+			this._out.width = value;
+				
+			if (this._hover)
+				this._hover.width = this._down.width = value; 
 		}
 		
 		/**
@@ -33,7 +40,11 @@ package com.kvs.utils.XMLConfigKit.style
 		override public function set height(value:Number):void
 		{
 			super.height = value;
-			this._out.height = this._hover.height = this._down.height = value; 
+			
+			this._out.height = value;
+				
+			if (this._hover)
+				this._hover.height = this._down.height = value; 
 		}
 		
 		/**
@@ -41,7 +52,11 @@ package com.kvs.utils.XMLConfigKit.style
 		override public function set tx(value:Number):void
 		{
 			super.tx = value;
-			this._out.tx = this._hover.tx = this._down.tx = value; 
+			
+			this._out.tx = value;
+				
+			if (this._hover)
+				this._hover.tx = this._down.tx = value; 
 		}
 		
 		/**
@@ -49,7 +64,10 @@ package com.kvs.utils.XMLConfigKit.style
 		override public function set ty(value:Number):void
 		{
 			super.ty = value;
-			this._out.ty = this._hover.ty = this._down.ty = value; 
+			this._out.ty = value;
+			
+			if (this._hover)
+				this._hover.ty = this._down.ty = value; 
 		}
 		
 		/**

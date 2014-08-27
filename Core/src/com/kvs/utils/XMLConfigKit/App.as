@@ -1,6 +1,8 @@
 package com.kvs.utils.XMLConfigKit
 {
 	
+	import commands.PreviewBgColorCMD;
+	
 	import flash.display.Sprite;
 	
 	/**
@@ -27,7 +29,7 @@ package com.kvs.utils.XMLConfigKit
 		 * 保证当前库为此应用的
 		 * 
 		 */		
-		public function resetLib():void
+		public function setLib():void
 		{
 			XMLVOLib.currentLib = xmlVOLib;
 		}

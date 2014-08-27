@@ -55,9 +55,7 @@ package com.kvs.charts.chart2D.column2D.stack
 			this.updateLabelDisplay(itemRender);
 			
 			itemRender.dataRender = this.dataRender;
-			itemRender.tooltip = this.tooltip;
 			
-			itemRender.initToolTips();
 			itemRenders.push(itemRender);
 		}
 		

@@ -1,7 +1,7 @@
 package com.kvs.charts.chart2D.marker
 {
 	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
-	
+
 	public class ClassicMarkerRender implements ISeriesRenderPattern
 	{
 		/**
@@ -14,34 +14,6 @@ package com.kvs.charts.chart2D.marker
 		/**
 		 */		
 		private var marker:MarkerSeries;
-		
-		/**
-		 */		
-		public function toClassicPattern():void
-		{
-		}
-		
-		/**
-		 */		
-		public function toSimplePattern():void
-		{
-			if (marker.simplePattern)
-			{
-				marker.curRenderPattern = marker.simplePattern;
-			}
-			else
-			{
-				marker.curRenderPattern = marker.simplePattern = new SimpleMarkerRender(marker);
-			}
-			
-			marker.clearCanvas();
-		}
-		
-		/**
-		 */		
-		public function renderScaledData():void
-		{
-		}
 		
 		/**
 		 */		

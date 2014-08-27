@@ -1,6 +1,7 @@
 package com.kvs.charts.chart2D.core.series
 {
 	import com.kvs.charts.chart2D.encry.SB;
+	import com.kvs.ui.label.LabelUI;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -36,7 +37,7 @@ package com.kvs.charts.chart2D.core.series
 		
 		/**
 		 */		
-		public function addValueLabel(bm:Bitmap):void
+		public function addValueLabel(bm:LabelUI):void
 		{
 			valueLabelsCanvas.addChild(bm);
 		}
@@ -98,11 +99,18 @@ package com.kvs.charts.chart2D.core.series
 		 */		
 		public function addSeries(series:Vector.<SB>):void
 		{
-			while (seriesCanvas.numChildren)
-				seriesCanvas.removeChildAt(0);
+			removeSeries();
 			
 			for each (var seriesItem:SB in series)
 				seriesCanvas.addChild(seriesItem);
+		}
+		
+		/**
+		 */		
+		public function removeSeries():void
+		{
+			while (seriesCanvas.numChildren)
+				seriesCanvas.removeChildAt(0);
 		}
 		
 	}

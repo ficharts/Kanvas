@@ -1,7 +1,6 @@
 package view.interact.interactMode
 {
 	import com.kvs.ui.toolTips.ToolTipsEvent;
-	import com.kvs.ui.toolTips.ToolTipsManager;
 	
 	import commands.Command;
 	
@@ -32,7 +31,7 @@ package view.interact.interactMode
 		 */		
 		override public function drawShotFrame():void
 		{
-			mainMediator.drawShotFrame(mainMediator.coreApp.bound);
+			mainMediator.drawShotFrame(mainMediator.coreApp.autofitRect);
 		}
 		
 		/**
@@ -65,10 +64,10 @@ package view.interact.interactMode
 		
 		/**
 		 */		
-		override public function toEditMode():void
+		override public function toTextEditMode():void
 		{
 			mainMediator.disableKeyboardControl();
-			mainMediator.currentMode = mainMediator.editMode;
+			mainMediator.currentMode = mainMediator.textEditMode;
 		}
 		
 		/**

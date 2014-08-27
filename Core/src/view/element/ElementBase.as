@@ -25,6 +25,8 @@ package view.element
 	import modules.pages.PageEvent;
 	import modules.pages.flash.IFlash;
 	
+	import org.osmf.net.ABRUtils;
+	
 	import util.ElementCreator;
 	import util.LayoutUtil;
 	
@@ -1074,6 +1076,14 @@ package view.element
 			updateLayout();
 			drawBG();
 			layoutPageNum();
+		}
+		
+		/**
+		 * 通常resize相当于重新渲染，但对于特殊的复杂组件，调节宽高时渲染会很消耗性能，需要特殊处理
+		 */		
+		public function resizing():void
+		{
+			render();
 		}
 		
 		/**

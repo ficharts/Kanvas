@@ -10,6 +10,61 @@ package com.kvs.utils
 		}
 		
 		/**
+		 * 剔除数组中每个元素前后的空格
+		 *  
+		 * @param arr
+		 * 
+		 */		
+		public static function trimArray(arr:Array):void
+		{
+			var myFunction:Function = function(item:Object,index:int,arr:Array):void {
+				arr[index] = RexUtil.trim(item.toString());
+			};
+			
+			arr.forEach(myFunction);
+		}
+		
+		/**
+		 * 将字符串中属于数字类型的值剥离出来 
+		 */		
+		public static  function filterNumValue(value:String):String
+		{
+			var result:String;
+			
+			if (RexUtil.ifHasNumValue(value))
+				return value.match(/-?\d+\.?\d*/g)[0]
+			else
+				return value;
+			
+			return result;
+		}
+		
+		/**
+		 * 剔除字符前后空格 
+		 */		
+		public static function trim(s:String):String
+		{
+			return s.replace(/(^\s*)|(\s*$)/g, "");  
+		}
+		
+		/**
+		 *
+		 * 替换字符串中某个字符
+		 *  
+		 * @param s
+		 * @param old
+		 * @param n
+		 * @return 
+		 * 
+		 */		
+		public static function replace(s:String, old:String, n:String):String
+		{
+			var re:RegExp = new RegExp('\\' + old, "g");
+			
+			return s.replace(re, n);  
+		}
+		
+		/**
 		 */		
 		public static function ifHasNumValue(value:String):Boolean
 		{

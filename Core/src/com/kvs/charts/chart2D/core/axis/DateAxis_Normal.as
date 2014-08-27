@@ -36,25 +36,9 @@ package com.kvs.charts.chart2D.core.axis
 		
 		/**
 		 */		
-		override public function toNormalPattern():void
-		{
-		}
-		
-		/**
-		 */		
 		private function get dateAxis():DateAxis
 		{
 			return _axis as DateAxis;
-		}
-		
-		/**
-		 */		
-		override public function toZoomPattern():void
-		{
-			if (dateAxis.zoomPattern)
-				dateAxis.curPattern = dateAxis.zoomPattern;
-			else
-				dateAxis.curPattern = new DateAxis_DataScale(dateAxis);
 		}
 		
 		/**

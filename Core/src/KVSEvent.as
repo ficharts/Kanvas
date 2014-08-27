@@ -2,6 +2,8 @@ package
 {
 	import flash.events.Event;
 	
+	import view.element.ElementBase;
+	
 	/**
 	 * 核心Core向外部发送的事件，告知外部程序
 	 * 
@@ -64,6 +66,16 @@ package
 		public static const CONFIRM_PAGE_EDIT:String = "confirmPageEdit";
 		
 		/**
+		 * 告知工具条切换到编辑状态 
+		 */		
+		public static const TOOLBAR_TO_CHART:String = "toolbarToChart";
+		
+		/**
+		 * 告知工具条恢复到正常状态 
+		 */		
+		public static const TOOLBAR_TO_NORMAL:String = "toobarToNormal";
+		
+		/**
 		 * 样式改变 
 		 */		
 		public static const THEME_CHANGED:String = "themeChanged";
@@ -73,6 +85,8 @@ package
 		 */	
 		public static const SAVE:String = "save";
 		
+		/**
+		 */		
 		public static const IMPORT_DATA_COMPLETE:String = "importDataComplete";
 		
 		/**
@@ -88,6 +102,10 @@ package
 		{
 			return new KVSEvent(this.type);
 		}
+		
+		/**
+		 */		
+		public var element:ElementBase;
 		
 		/**
 		 */		

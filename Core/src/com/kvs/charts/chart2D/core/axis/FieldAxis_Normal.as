@@ -1,7 +1,5 @@
 package com.kvs.charts.chart2D.core.axis
 {
-	import com.kvs.charts.chart2D.core.model.Zoom;
-	
 	import flash.text.TextField;
 	
 	/**
@@ -48,35 +46,18 @@ package com.kvs.charts.chart2D.core.axis
 		
 		/**
 		 */		
-		public function adjustZoomFactor(model:Zoom):void
-		{
-		}
-		
-		/**
-		 */		
-		public function toNormalPattern():void
-		{
-		}
-		
-		/**
-		 */		
-		public function toZoomPattern():void
-		{
-			if (axis.zoomPattern)
-				axis.curPattern = axis.zoomPattern;
-			else
-				axis.curPattern = axis.getZoomPattern();
-		}
-		
-		/**
-		 */		
 		public function valueToSize(value:Object, index:int):Number
 		{
 			// 有些节点为空，不能仅根据index信息计算
 			//if (index == - 1)
 				index = axis.sourceValues.indexOf(value.toString())
 					
-			var result:Number = axis.unitSize * .5 + index * axis.unitSize;
+			var result:Number;
+			
+			if (axis.ifEdgeSpace)
+				result = axis.unitSize * .5 + index * axis.unitSize;
+			else
+				result = axis.unitSize * index;
 			
 			if (axis.inverse)
 				return axis.size - result;
@@ -98,7 +79,10 @@ package com.kvs.charts.chart2D.core.axis
 				axis.labelVOes.push(labelData);
 			}
 			
-			axis.unitSize = axis.size / axis.sourceValues.length;
+			if (axis.ifEdgeSpace)
+				axis.unitSize = axis.size / axis.sourceValues.length;
+			else
+				axis.unitSize = axis.size / (axis.sourceValues.length - 1);
 		}
 		
 		/**

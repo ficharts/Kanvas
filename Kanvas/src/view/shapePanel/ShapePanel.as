@@ -17,7 +17,6 @@ package view.shapePanel
 	
 	import view.ItemSelector;
 	import view.shapePanel.pageForCreateCompt.*;
-	import view.ui.Canvas;
 	
 	/**
 	 * 图形创建面板，这里是创建各种元素的工厂
@@ -63,10 +62,9 @@ package view.shapePanel
 			dialog;
 			
 			circle_shape;
-			rect_shape;
 			
 			this.app = mainApp;
-			shapeCreateProxy = new ShapeCreateProxy(mainApp);
+			shapeCreateProxy = new ShapeCreateProxy(mainApp, this);
 			
 			super();
 		}
@@ -99,7 +97,7 @@ package view.shapePanel
 		 */		
 		private function exitHandler(evt:MouseEvent):void
 		{
-			this.dispatchEvent(new InteractEvent(InteractEvent.CLOSE_SHAPE_PANE));
+			this.dispatchEvent(new InteractEvent(InteractEvent.CLOSE_PANEL));
 		}
 		
 		/**

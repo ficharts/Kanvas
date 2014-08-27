@@ -32,36 +32,5 @@ package com.kvs.charts.chart2D.bar
 			StyleManager.drawRect(this, currState, mdata);
 		}
 		
-		/**
-		 */		
-		override public function hoverHandler():void
-		{
-			super.hoverHandler();
-			
-			y = this.dataItem.y;
-		}
-		
-		/**
-		 */		
-		override public function downHandler():void
-		{
-			y = this.dataItem.y + 1;
-			
-			var event:FiChartsEvent = new FiChartsEvent(FiChartsEvent.ITEM_CLICKED);
-			event.dataItem = this.dataItem;
-			this.dispatchEvent(event);
-		}
-		
-		/**
-		 */		
-		override public function normalHandler():void
-		{
-			super.normalHandler()
-				
-			//dataItem.dispatchEvent(new ItemRenderEvent(ItemRenderEvent.HIDE_TOOLTIP));
-			
-			y = this.dataItem.y;
-		}
-		
 	}
 }

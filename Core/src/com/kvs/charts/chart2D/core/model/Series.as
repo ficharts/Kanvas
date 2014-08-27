@@ -1,6 +1,8 @@
 package com.kvs.charts.chart2D.core.model
 {
+	import com.kvs.charts.chart2D.bar.stack.StackedBarSeries;
 	import com.kvs.charts.chart2D.column2D.ColumnSeries2D;
+	import com.kvs.charts.chart2D.column2D.stack.StackedColumnSeries;
 	import com.kvs.charts.chart2D.encry.SB;
 	import com.kvs.charts.chart2D.marker.MarkerSeries;
 	import com.kvs.charts.common.ChartColors;
@@ -187,8 +189,6 @@ package com.kvs.charts.chart2D.core.model
 		 */		
 		public function created():void
 		{
-			items.reverse();
-			
 			var length:uint = _items.length;
 			var index:uint = 0;
 			var columnSereisIndex:uint = 0;
@@ -207,8 +207,7 @@ package com.kvs.charts.chart2D.core.model
 				seriesIndex = seriesItem.initSeriesName(seriesIndex);
 				
 				// 按照序列的顺序指定序列颜色
-				if (!seriesItem.color)
-					seriesItem.color = colorMananger.chartColor.toString(16);
+				seriesItem.setColor(colorMananger);
 				
 				if (seriesItem is ColumnSeries2D)
 					columnSeriesAmount += 1;

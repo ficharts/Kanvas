@@ -3,11 +3,10 @@ package com.kvs.charts.chart2D.marker
 	import com.kvs.charts.chart2D.core.itemRender.PointRenderBace;
 	import com.kvs.charts.chart2D.core.model.Chart2DModel;
 	import com.kvs.charts.chart2D.core.model.DataRender;
-	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.chart2D.encry.SB;
 	import com.kvs.charts.common.ChartColors;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.common.SeriesDataPoint;
+	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 
@@ -21,21 +20,10 @@ package com.kvs.charts.chart2D.marker
 		public function MarkerSeries()
 		{
 			super();
+			
+			curRenderPattern = new ClassicMarkerRender(this);
 		}
 		
-		/**
-		 */		
-		override protected function getClassicPattern():ISeriesRenderPattern
-		{
-			return new ClassicMarkerRender(this);	
-		}
-		
-		/**
-		 */		
-		override protected function getSimplePattern():ISeriesRenderPattern
-		{
-			return new SimpleMarkerRender(this);
-		}
 		
 		
 		
@@ -75,7 +63,7 @@ package com.kvs.charts.chart2D.marker
 		
 		/**
 		 */		
-		override protected function get type():String
+		override public function get type():String
 		{
 			return "marker";
 		}
@@ -146,12 +134,10 @@ package com.kvs.charts.chart2D.marker
 			this.updateLabelDisplay(itemRender);
 			
 			itemRender.dataRender = this.dataRender;
-			itemRender.tooltip = this.tooltip;
 			
 			initTipString(item, itemRender.xTipLabel, 
 				itemRender.yTipLabel,itemRender.zTipLabel,itemRender.isHorizontal);
 			
-			itemRender.initToolTips();
 			itemRenders.push(itemRender);
 		}
 		

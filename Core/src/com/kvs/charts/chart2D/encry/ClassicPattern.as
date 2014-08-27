@@ -2,21 +2,17 @@ package com.kvs.charts.chart2D.encry
 {
 	import com.kvs.charts.chart2D.bubble.BubblePointRender;
 	import com.kvs.charts.chart2D.column2D.ColumnSeries2D;
-	import com.kvs.charts.chart2D.column2D.stack.StackedColumnCombiePointRender;
 	import com.kvs.charts.chart2D.core.axis.AxisBase;
 	import com.kvs.charts.chart2D.core.events.FiChartsEvent;
 	import com.kvs.charts.chart2D.core.itemRender.ItemRenderEvent;
 	import com.kvs.charts.chart2D.core.itemRender.PointRenderBace;
 	import com.kvs.charts.chart2D.marker.MarkerSeries;
 	import com.kvs.charts.common.IDisCombilePointRender;
+	import com.kvs.ui.label.LabelUI;
 	import com.kvs.ui.toolTips.TooltipDataItem;
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.PixelSnapping;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
-	import flash.geom.Matrix;
 	import flash.utils.Timer;
 	
 	/**
@@ -32,14 +28,6 @@ package com.kvs.charts.chart2D.encry
 		
 		/**
 		 */		
-		public function initPattern():void
-		{
-			for each(var series:SB in chartMain.series)
-			series.toClassicPattern();
-		}
-		
-		/**
-		 */		
 		public function preConfig():void
 		{
 			
@@ -49,7 +37,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function renderSeries():void
 		{
-			for each(var series:SB in chartMain.series)
+			for each(var series:SB in chartMain.chartSeries)
 				series.render();
 		}
 		
@@ -67,17 +55,6 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function toZoomPattern():void
 		{
-			if (chartMain.zoomPattern)
-			{
-				chartMain.currentPattern = chartMain.zoomPattern;
-				
-				// 添加事件监听器， 控制数据缩放
-				chartMain.currentPattern.init();				
-			}
-			else
-			{
-				chartMain.currentPattern = chartMain.zoomPattern =  new ZoomPattern(chartMain);
-			}
 		}
 		
 		/**
@@ -100,7 +77,7 @@ package com.kvs.charts.chart2D.encry
 			chartMain.chartCanvas.clearItemRenders();
 			
 			// 汇总  节点渲染器；
-			for each (var seriesItem:SB in chartMain.series)
+			for each (var seriesItem:SB in chartMain.chartSeries)
 			{
 				// 柱状图与散点图的节点渲染器优先作为主体渲染节点
 				if (seriesItem is ColumnSeries2D || seriesItem is MarkerSeries)
@@ -136,8 +113,6 @@ package com.kvs.charts.chart2D.encry
 					itemRender.layout();
 			}
 			
-			combileItemRender();
-			
 			chartMain.chartCanvas.clearValuelabels();
 			drawValueLabels(itemRenders);
 		}
@@ -157,9 +132,7 @@ package com.kvs.charts.chart2D.encry
 		{
 			var px:Number;
 			var py:Number;
-			var bd:BitmapData;
-			var bm:Bitmap = new Bitmap(bd);
-			var mar:Matrix = new Matrix;
+			var bd:LabelUI;
 			
 			for each (var itemRender:PointRenderBace in renders)
 			{
@@ -169,25 +142,13 @@ package com.kvs.charts.chart2D.encry
 				px = itemRender.x + itemRender.valueLabelUI.x;
 				py = itemRender.y + itemRender.valueLabelUI.y;
 				
-				mar.tx = px;
-				mar.ty = py;
-				
-				bd = itemRender.valueLabelUI.bitmapData.clone();
+				bd = itemRender.valueLabelUI;
 				
 				if (itemRender.valueLabelUI.visible && itemRender.isEnable && itemRender.visible)
 				{
-					if (itemRender.valueLabelUI.rotation == 0)
-					{
-						chartMain.chartCanvas.drawValueLabel(bd, mar, px, py);
-					}
-					else
-					{
-						bm = new Bitmap(bd, PixelSnapping.ALWAYS, true);
-						bm.x = px;
-						bm.y = py;
-						bm.rotation = itemRender.valueLabelUI.rotation;
-						chartMain.chartCanvas.addValueLabel(bm);
-					}
+					bd.x = px;
+					bd.y = py;
+					chartMain.chartCanvas.addValueLabel(bd);
 				}
 			}
 		}
@@ -231,74 +192,6 @@ package com.kvs.charts.chart2D.encry
 		}
 		
 		/**
-		 * 将距离较近的节点渲染器合并
-		 */		
-		private function combileItemRender():void
-		{
-			var itemRenderLength:uint = itemRenders.length;
-			var prevItemRender:PointRenderBace;
-			var nextItemRender:PointRenderBace;
-			var prevLabels:Vector.<TooltipDataItem>;
-			var nextLabels:Vector.<TooltipDataItem>;
-			var itemDistance:Number;
-			var xDis:Number;
-			var yDis:Number;
-			var labelVO:TooltipDataItem;
-			
-			for (var i:uint = 0; i < itemRenderLength; i ++)
-			{
-				prevItemRender = itemRenders[i];
-				
-				for (var j:uint = i + 1; j < itemRenderLength; j ++)
-				{
-					nextItemRender = itemRenders[j];
-					
-					// 有可能序列中根本就没有数据
-					if (prevItemRender == null || nextItemRender == null)
-						continue;
-						
-					// 两个数据结点均不在渲染范围内，忽略
-					if (prevItemRender.visible == false && nextItemRender.visible == false)
-						continue;
-					
-					// 开启 工具提示时才会合并将要显示的toolTip;  
-					if (prevItemRender.tooltip.enable && nextItemRender.tooltip.enable)
-					{
-						prevLabels = prevItemRender.toolTipsHolder.tooltips;
-						nextLabels = nextItemRender.toolTipsHolder.tooltips;
-						
-						if (prevItemRender is IDisCombilePointRender || nextItemRender is IDisCombilePointRender)
-						{
-							j ++;	
-							continue;	
-						}
-						
-						xDis = Math.abs(prevItemRender.itemVO.dataItemX - nextItemRender.itemVO.dataItemX);
-						yDis = Math.abs(prevItemRender.itemVO.dataItemY - nextItemRender.itemVO.dataItemY)
-						itemDistance = Math.sqrt(xDis * xDis + yDis * yDis);
-						
-						for each (labelVO in nextLabels)
-						{
-							// 合并节点
-							if (itemDistance <= (prevItemRender.radius + nextItemRender.radius) &&
-								prevLabels.indexOf(labelVO) == - 1 && nextItemRender.isEnable && !(nextItemRender is BubblePointRender)) 
-							{
-								prevLabels.push(labelVO);
-								nextItemRender.disable();// 销毁节点渲染器， 不再接受事件；
-							}// 分离节点
-							else if (itemDistance > (prevItemRender.radius + nextItemRender.radius) && 
-								prevLabels.indexOf(labelVO) != - 1 && !nextItemRender.isEnable)
-							{
-								prevLabels.splice(prevLabels.indexOf(labelVO), 1);
-								nextItemRender.enable();
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		/**
 		 */
 		protected var itemRenders:Array;
 		
@@ -324,7 +217,7 @@ package com.kvs.charts.chart2D.encry
 				flashSeriesPercent = 1;
 			}
 			
-			for each (seriesItem in chartMain.series)
+			for each (seriesItem in chartMain.chartSeries)
 			seriesItem.setPercent(flashSeriesPercent);
 			
 			//播放动画
@@ -357,7 +250,7 @@ package com.kvs.charts.chart2D.encry
 				flashTimmer.start();
 			}
 			
-			for each (var seriesItem:SB in chartMain.series)
+			for each (var seriesItem:SB in chartMain.chartSeries)
 				seriesItem.setPercent(flashSeriesPercent);
 		}
 		

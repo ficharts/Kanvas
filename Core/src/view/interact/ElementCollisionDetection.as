@@ -114,7 +114,7 @@ package view.interact
 		 */		
 		public function updateAfterZoomMove():void
 		{
-			var stage:Rectangle = coreMdt.coreApp.bound, w:Number = stage.width, h:Number = stage.height;
+			var stage:Rectangle = coreMdt.coreApp.autofitRect, w:Number = stage.width, h:Number = stage.height;
 			//minLineInteractSizeSquare, maxLineInteractSizeSquare
 			var minLineSquare:Number = minInteractSize * minInteractSize * .25, maxLineSquare:Number = w * w;
 			

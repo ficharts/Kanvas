@@ -207,7 +207,7 @@ package view.interact.interactMode
 		
 		/**
 		 */		
-		override public function toUnSelectedMode():void
+		override public function toSelectMode():void
 		{
 			var fh:FlasherHolder;
 			
@@ -217,7 +217,7 @@ package view.interact.interactMode
 				curPage.vo.pageVO.flashers = new Vector.<IFlash>;
 				
 				for each (fh in holders)
-					curPage.vo.pageVO.flashers.push(fh.flasher);
+				curPage.vo.pageVO.flashers.push(fh.flasher);
 			}
 			
 			//重设页面的动画
@@ -235,7 +235,7 @@ package view.interact.interactMode
 			curPage = null;
 			
 			mainMediator.enableKeyboardControl();
-			mainMediator.currentMode = mainMediator.unSelectedMode;
+			mainMediator.currentMode = mainMediator.selectedMode;
 			
 			mainMediator.zoomMoveControl.enable();
 			

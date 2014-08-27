@@ -22,6 +22,7 @@ package
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import flash.net.dns.AAAARecord;
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 	
@@ -137,9 +138,6 @@ package
 			templatePanel.initTemplate(XML(ByteArray(new ConfigXML).toString()));
 			templatePanel.visible = false;
 		}
-		
-		[Embed(source="templates/config.xml", mimeType="application/octet-stream")]
-		public var ConfigXML:Class;
 		
 		/**
 		 */		
@@ -376,9 +374,12 @@ package
 			}
 		}
 		
+		/**
+		 */		
 		private var updater:AIRUpdater;
 		
-		
+		[Embed(source="templates/config.xml", mimeType="application/octet-stream")]
+		public var ConfigXML:Class;
 		
 		public static const AIR_CLIENT_URL:String = "http://www.kanvas.cn/client/Kanvas.air";
 	}

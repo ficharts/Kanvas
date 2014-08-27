@@ -1,19 +1,16 @@
 package control
 {
 	import com.greensock.TweenLite;
-	import com.kvs.ui.Panel;
+	
+	import control.panelState.ChartPanelState;
+	import control.panelState.CloseState;
+	import control.panelState.PanelState;
+	import control.panelState.ShapePanelState;
+	import control.panelState.ThemePanelState;
 	
 	import flash.display.StageDisplayState;
-	import flash.events.Event;
 	import flash.events.FullScreenEvent;
 	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	
-	import model.CoreFacade;
-	
-	import util.undoRedo.UndoRedoEvent;
-	
-	import view.element.text.TextEditField;
 
 	/**
 	 * 主程序交互控制器, 
@@ -26,31 +23,30 @@ package control
 		{
 			this.app = main;
 			
+			closeState = new CloseState(this);
+			chartState = new ChartPanelState(this);
+			shapeState = new ShapePanelState(this);
+			themeState = new ThemePanelState(this);
+			curPanelState = closeState;
+			
+			
 			app.addEventListener(InteractEvent.INSERT_IMAGE, insertImageHandler, false, 0, true);
+			
 			app.addEventListener(InteractEvent.OPEN_SHAPE_PANEL, openShapePanelHandler, false, 0, true);
-			app.addEventListener(InteractEvent.CLOSE_SHAPE_PANE, closeShapePanelHandler, false, 0, true);
-			
 			app.addEventListener(InteractEvent.OPEN_THEME_PANEL, openThemePanelHandler, false, 0, true);
-			app.addEventListener(InteractEvent.CLOSE_THEME_PANEL, closeThemePanelHandler, false, 0, true);
+			app.addEventListener(InteractEvent.OPEN_CHART_PANEL, openChartPanel, false, 0, true);
 			
-			app.kvsCore.addEventListener(UndoRedoEvent.ENABLE, enableHandler, false, 0, true);
-			app.kvsCore.addEventListener(UndoRedoEvent.DISABLE, disableHandler, false, 0, true);
-			app.toolBar.undoBtn.addEventListener(MouseEvent.CLICK, fallbackHandler, false, 0, true);
-			app.toolBar.redoBtn.addEventListener(MouseEvent.CLICK, redoHandler, false, 0, true);
-			
+			app.addEventListener(InteractEvent.CLOSE_PANEL, closePanel, false, 0, true);
 			
 			app.stage.addEventListener(KeyboardEvent.KEY_UP, keyUpHandler, false, 0, true);
 			app.addEventListener(InteractEvent.PREVIEW, previewPanelHandler, false, 0, true);
-			
-			app.toolBar.cancelBtn.addEventListener(MouseEvent.CLICK, cancelPageEdit);
-			app.toolBar.confirmBtn.addEventListener(MouseEvent.CLICK, confirmPageEdit);
 		}
 		
 		/**
 		 */		
 		public function toPageEditMode():void
 		{
-			_closePanels();
+			curPanelState.close();
 			app.toolBar.toPageEditMode();
 			
 			app.zoomToolBar.visible = false;
@@ -58,44 +54,41 @@ package control
 		
 		/**
 		 */		
-		public function cancelPageEditFromCore():void
+		public function cancelPageEdit():void
 		{
 			app.kvsCore.cancelPageEdit();
-			_confirmPageEdit();
+			toNormal();
 		}
 		
 		/**
 		 */		
-		public function confirmPageEditFromCore():void
+		public function confirmPageEdit():void
 		{
-			_confirmPageEdit();
+			toNormal();
 		}
 		
 		/**
+		 * 整体应用进入到正常模式下
 		 */		
-		private function confirmPageEdit(evt:Event):void
+		public function toNormal():void
 		{
-			_confirmPageEdit();
-		}
-		
-		/**
-		 */		
-		private function cancelPageEdit(evt:Event):void
-		{
-			app.kvsCore.cancelPageEdit();
-			_confirmPageEdit();
-		}
-		
-		/**
-		 * 退出页面编辑状态并保存数据
-		 */		
-		private function _confirmPageEdit():void
-		{
-			_openPanels();
-			app.toolBar.toNormalMode();
-			app.zoomToolBar.visible = true;
+			curPanelState.open();
 			
-			app.kvsCore.toUnselect();
+			app.kvsCore.toSelect();
+			app.toolBar.toNormalMode();
+			
+			app.zoomToolBar.visible = true;
+		}
+		
+		/**
+		 */		
+		private function toChartEdit(evt:KVSEvent):void
+		{
+			curPanelState.close();
+			
+			
+			app.toolBar.toChartEditMode();
+			app.zoomToolBar.visible = false;
 		}
 		
 		/**
@@ -104,9 +97,7 @@ package control
 		{
 			//全屏预览模式, 从F1 ～  F9 任意键按下触发全屏
 			if (evt.keyCode >= 112 && evt.keyCode <= 120)
-			{
 				toPreview();
-			}
 		}
 		
 		/**
@@ -122,25 +113,17 @@ package control
 		public function toPreview():void
 		{
 			app.stage.displayState = (CoreApp.isAIR) ? StageDisplayState.FULL_SCREEN_INTERACTIVE : StageDisplayState.FULL_SCREEN;
-			app.updateKvsContenBound();
-			app.kvsCore.toPreview();
-			
 			app.stage.addEventListener(FullScreenEvent.FULL_SCREEN, closeFullScreenHandler);
 			
 			app.zoomToolBar.y = 10000;
 			
-			_closePanels();
+			curPanelState.close();
+			TweenLite.to(app.pagePanel, 0.5, {x: - app.pagePanel.w - 50/*防止滚动条可见，给的值稍大*/});
 			TweenLite.to(app.toolBar, 0.5, {y: - app.toolBar.h});
+			
+			app.updateKvsContenBound();
+			app.kvsCore.toPreview();
 		}
-		
-		
-		/**
-		 */		
-		private var isThemPanelOpen:Boolean = false;
-		
-		/**
-		 */		
-		private var isShapePanelOpen:Boolean = false;
 		
 		/**
 		 */		
@@ -148,9 +131,9 @@ package control
 		{
 			app.stage.removeEventListener(FullScreenEvent.FULL_SCREEN, closeFullScreenHandler);
 			
-			_openPanels();
+			curPanelState.open();
+			TweenLite.to(app.pagePanel, 0.5, {x: 0});
 			TweenLite.to(app.toolBar, 0.5, {y: 0});
-			
 			app.zoomToolBar.y = (app.stage.stageHeight - app.zoomToolBar.height) * .5;
 			
 			app.updateKvsContenBound();
@@ -158,140 +141,26 @@ package control
 		}
 		
 		/**
-		 */		
-		private function openThemePanelHandler(evt:InteractEvent):void
-		{
-			if (app.shapePanel.isOpen)
-				_closeShapePanel();
-			
-			_openThemePanel();
-			
-			this.app.updateKvsContenBound();
-			
-			autofit(1, 0);
-		}
-		
-		/**
-		 * 关闭除工具条以外的面板 
+		 * 窗口缩放时，将右侧面板重新对齐
 		 * 
 		 */		
-		private function _closePanels():void
+		public function alginToRight():void
 		{
-			if (app.themePanel.isOpen)
-			{
-				isThemPanelOpen = true;
-				_closeThemPanel();
-			}
-			else
-			{
-				isThemPanelOpen = false;
-			}
-			
-			if (app.shapePanel.isOpen)
-			{
-				isShapePanelOpen = true;	
-				_closeShapePanel();
-			}
-			else
-			{
-				isShapePanelOpen = false;
-			}
-			
-			TweenLite.to(app.pagePanel, 0.5, {x: - app.pagePanel.w - 50/*防止滚动条可见，给的值稍大*/});
+			curPanelState.alginToRight();
 		}
 		
 		/**
 		 */		
-		private function _openPanels():void
+		public function get rightPanelWidth():Number
 		{
-			if (isThemPanelOpen)
-			{
-				_openThemePanel();
-			}
-			else if (isShapePanelOpen)
-			{
-				_openShapePanel();
-			}
-			
-			TweenLite.to(app.pagePanel, 0.5, {x: 0});
+			return curPanelState.rightPanelWidth;
 		}
 		
 		/**
 		 */		
-		private function autofit(xDir:int = 0, yDir:int = 0):void
+		private function closePanel(evt:InteractEvent):void
 		{
-			if (CoreFacade.coreMediator.currentElement)
-			{
-				if (CoreFacade.coreMediator.currentElement is TextEditField && CoreFacade.coreMediator.coreApp.textEditor.visible)
-					CoreFacade.coreMediator.autofitController.autofitEditorModifyText(CoreFacade.coreMediator.currentElement, xDir, yDir);
-				else
-					CoreFacade.coreMediator.autofitController.autofitElementPosition(CoreFacade.coreMediator.currentElement, xDir, yDir);
-			}
-			else if (CoreFacade.coreMediator.coreApp.textEditor.visible)
-			{
-				CoreFacade.coreMediator.autofitController.autofitEditorInputText(xDir, yDir);
-			}
-		}
-		
-		/**
-		 */		
-		private function _openThemePanel():void
-		{
-			app.toolBar.themeBtn.selected = true;
-			app.themePanel.open(app.stage.stageWidth - app.themePanel.w, app.toolBar.h);
-			
-			moveZBLeft(app.themePanel);
-		}
-		
-		/**
-		 */		
-		private function closeThemePanelHandler(evt:InteractEvent):void
-		{
-			_closeThemPanel();
-			
-			this.app.updateKvsContenBound();
-		}
-		
-		/**
-		 */		
-		private function _closeThemPanel():void
-		{
-			app.toolBar.themeBtn.selected = false;
-			app.themePanel.close(app.stage.stageWidth, app.toolBar.h);
-			
-			moveZBRight();
-		}
-		
-		/**
-		 */		
-		private function moveZBRight():void
-		{
-			TweenLite.killTweensOf(app.zoomToolBar, false);
-			TweenLite.to(app.zoomToolBar, .5, {x:app.stage.stageWidth - app.zoomToolBar.width - 20});
-		}
-		
-		/**
-		 */		
-		private function moveZBLeft(panel:Panel):void
-		{
-			TweenLite.killTweensOf(app.zoomToolBar, false);
-			TweenLite.to(app.zoomToolBar, .5, {x:app.stage.stageWidth - panel.w - app.zoomToolBar.width - 20});
-		}
-			
-		
-		/**
-		 */		
-		private function openShapePanelHandler(evt:InteractEvent):void
-		{
-			if (app.themePanel.isOpen)
-				_closeThemPanel();
-			
-			_openShapePanel();
-			
-			this.app.updateKvsContenBound();
-			
-			
-			autofit(1, 0);
+			curPanelState.toClose();
 		}
 		
 		/**
@@ -303,86 +172,36 @@ package control
 		
 		/**
 		 */		
-		private function _openShapePanel():void
+		private function openChartPanel(evt:InteractEvent):void
 		{
-			app.toolBar.addBtn.selected = true;
-			app.shapePanel.open(app.stage.stageWidth - app.shapePanel.w, app.toolBar.h);
+			curPanelState.toChartPanel();
+		}
 			
-			moveZBLeft(app.shapePanel);
-			
-			
-		}
-
 		/**
 		 */		
-		private function closeShapePanelHandler(evt:InteractEvent):void
+		private function openShapePanelHandler(evt:InteractEvent):void
 		{
-			_closeShapePanel();
-			
-			this.app.updateKvsContenBound();
-		}
-		
-		
-		/**
-		 */		
-		private function _closeShapePanel():void
-		{
-			app.toolBar.addBtn.selected = false;
-			app.shapePanel.close(app.stage.stageWidth, app.toolBar.h);
-			
-			moveZBRight();
-		}
-		
-		
-		
-		
-		
-		
-		//---------------------------------------------------
-		//
-		//
-		// 撤销控制
-		//
-		//
-		//----------------------------------------------------
-		
-		/**
-		 */		
-		private function enableHandler(evt:UndoRedoEvent):void
-		{
-			if (evt.operation == "undo")
-				app.toolBar.undoBtn.selected = false;
-			else if (evt.operation == "redo")
-				app.toolBar.redoBtn.selected = false;
+			curPanelState.toShapePanel();
 		}
 		
 		/**
 		 */		
-		private function disableHandler(evt:UndoRedoEvent):void
+		private function openThemePanelHandler(evt:InteractEvent):void
 		{
-			if (evt.operation == "undo")
-				app.toolBar.undoBtn.selected = true;
-			else if (evt.operation == "redo")
-				app.toolBar.redoBtn.selected = true;
-		}
-		
-		
-		
-		/**
-		 */		
-		private function fallbackHandler(evt:MouseEvent):void
-		{
-			app.kvsCore.undo();
-		}
-		
-		private function redoHandler(evt:MouseEvent):void
-		{
-			app.kvsCore.redo();
+			curPanelState.toThemePanel();
 		}
 		
 		
 		/**
 		 */		
-		private var app:Kanvas;
+		public var curPanelState:PanelState;
+		public var closeState:PanelState;
+		public var chartState:PanelState;
+		public var shapeState:PanelState;
+		public var themeState:PanelState;
+		
+		/**
+		 */		
+		public var app:Kanvas;
 	}
 }

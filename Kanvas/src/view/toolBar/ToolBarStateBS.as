@@ -46,6 +46,13 @@ package view.toolBar
 			
 		}
 		
+		/**
+		 */		
+		public function toChartEdit():void
+		{
+			
+		}
+		
 		public function addCustomButtons(btns:Vector.<IconBtn>):void
 		{
 			

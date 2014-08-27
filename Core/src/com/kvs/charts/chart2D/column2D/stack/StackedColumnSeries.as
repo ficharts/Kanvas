@@ -5,14 +5,12 @@ package com.kvs.charts.chart2D.column2D.stack
 	import com.kvs.charts.chart2D.core.axis.LinearAxis;
 	import com.kvs.charts.chart2D.core.itemRender.PointRenderBace;
 	import com.kvs.charts.chart2D.core.model.Chart2DModel;
-	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
-	import com.kvs.charts.chart2D.core.zoomBar.ZoomBar;
 	import com.kvs.charts.chart2D.encry.SB;
 	import com.kvs.charts.common.ChartColors;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.charts.legend.model.LegendVO;
 	import com.kvs.charts.legend.view.LegendEvent;
+	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
@@ -28,38 +26,42 @@ package com.kvs.charts.chart2D.column2D.stack
 		public function StackedColumnSeries()
 		{
 			super();
+			
+			curRenderPattern = new ClassicStackedColumnRender(this);
 		}
 		
 		/**
 		 */		
-		override public function setZoomBarData(zoomBar:ZoomBar):void
+		override public function get labels():Vector.<String>
 		{
+			var labels:Vector.<String> = new Vector.<String>
+			var dataItemVOs:Vector.<SeriesDataPoint> = stacks[0].dataItemVOs;
+			
+			for each (var data:SeriesDataPoint in dataItemVOs)
+				labels.push(data.xLabel);
+			
+			return labels;
 		}
 		
 		/**
-		 * 
 		 */		
-		override public function dataResizedByRange(min:Number, max:Number):void
+		override public function exportValues(split:String):String
 		{
+			var s:String = "";
+			
+			for each (var stack:StackedSeries in stacks)
+			{
+				s += stack.exportValues(split);
+				s += '\n\n';
+			}
+			
+			return s;
 		}
+		
 		
 		/**
 		 */		
-		override protected function getClassicPattern():ISeriesRenderPattern
-		{
-			return new ClassicStackedColumnRender(this);
-		}
-		
-		/**
-		 */		
-		override protected function getSimplePattern():ISeriesRenderPattern
-		{
-			return new SimpleStackedColumnRender(this);
-		}
-		
-		/**
-		 */		
-		override protected function get type():String
+		override public function get type():String
 		{
 			return "stackedColumn";
 		}
@@ -79,6 +81,12 @@ package com.kvs.charts.chart2D.column2D.stack
 		override protected function draw():void
 		{
 			
+		}
+		
+		/**
+		 */		
+		override public function setColor(colorMng:ChartColors):void
+		{
 		}
 		
 		/**
@@ -136,18 +144,6 @@ package com.kvs.charts.chart2D.column2D.stack
 				item.dataItemY = verticalAxis.valueToY((item as StackedSeriesDataPoint).endValue);
 				item.offset = baseLine;
 			}
-			
-			if(fullDataItems == null || fullDataItems.length == 0) return;//百分百堆积图没有总数据节�
-			
-			for (i = startIndex; i <= endIndex; i += step)
-			{
-				item = fullDataItems[i];
-				
-				item.dataItemX = item.x = horizontalAxis.valueToX(item.xVerifyValue, - 1) - columnGoupWidth / 2 +
-					this.columnSeriesIndex * (partColumnWidth + columnGroupInnerSpaceUint) + partColumnWidth / 2;
-				
-				item.y = item.dataItemY = verticalAxis.valueToY(item.yVerifyValue);
-			}
 		}
 		
 		/**
@@ -156,9 +152,6 @@ package com.kvs.charts.chart2D.column2D.stack
 		override public function createItemRenders():void
 		{
 			super.createItemRenders();
-			
-			for each (var item:SeriesDataPoint in fullDataItems)
-				initItemRender(combileItemRender, item);
 		}
 		
 		/**
@@ -186,17 +179,8 @@ package com.kvs.charts.chart2D.column2D.stack
 			}
 			
 			itemRender.dataRender = this.dataRender;
-			itemRender.tooltip = this.tooltip;
 			
-			itemRender.initToolTips();
 			itemRenders.push(itemRender);
-		}
-		
-		/**
-		 */		
-		protected function get combileItemRender():PointRenderBace
-		{
-			return new StackedColumnCombiePointRender;
 		}
 		
 		/**
@@ -211,13 +195,11 @@ package com.kvs.charts.chart2D.column2D.stack
 			var xVerifyValue:Object, yVerifyValue:Number, xValue:Object, yValue:Object, positiveValue:Number, negativeValue:Number;
 			var length:uint = dataProvider.length;
 			var stack:StackedSeries;
-			var combleSeriesDataItem:SeriesDataPoint;
 			var stackedSeriesDataItem:StackedSeriesDataPoint;
 			
 			dataItemVOs.length = 0;
 			horizontalValues.length = 0;
 			verticalValues.length = 0;
-			fullDataItems.length = 0;
 			
 			
 			// 将子序列的数据节点合并到一起；
@@ -260,32 +242,6 @@ package com.kvs.charts.chart2D.column2D.stack
 					
 					XMLVOMapper.pushAttributesToObject(stackedSeriesDataItem, stackedSeriesDataItem.metaData, 
 						['startValue', 'endValue']);
-				}
-				
-				// 将所有堆积值求和， 数值标签取求和值， 标签的位置取决于最值， 
-				// 求和为正取最大值， 求和为负则取最小值；
-				if (this.valueLabel.enable)
-				{
-					combleSeriesDataItem = new SeriesDataPoint();
-					combleSeriesDataItem.index = i;
-					combleSeriesDataItem.metaData = new Object;
-					
-					combleSeriesDataItem.xValue = combleSeriesDataItem.xVerifyValue = xVerifyValue;
-					combleSeriesDataItem.yValue = combleSeriesDataItem.yVerifyValue = ((positiveValue + negativeValue) >= 0) ? positiveValue : negativeValue;
-					
-					combleSeriesDataItem.xLabel = horizontalAxis.getXLabel(combleSeriesDataItem.xVerifyValue);
-					combleSeriesDataItem.yLabel = verticalAxis.getYLabel(positiveValue + negativeValue);
-					
-					combleSeriesDataItem.color = uint(this.color);
-					combleSeriesDataItem.seriesName = this.seriesName;
-					
-					combleSeriesDataItem.xDisplayName = horizontalAxis.displayName;
-					combleSeriesDataItem.yDisplayName = verticalAxis.displayName;
-					
-					XMLVOMapper.pushAttributesToObject(combleSeriesDataItem, combleSeriesDataItem.metaData, 
-						['xValue', 'yValue', 'xLabel', 'yLabel', 'xDisplayName', 'yDisplayName', 'seriesName', 'color']);
-					
-					fullDataItems.push(combleSeriesDataItem); 
 				}
 				
 				horizontalValues.push(xVerifyValue);
@@ -349,9 +305,6 @@ package com.kvs.charts.chart2D.column2D.stack
 		 */		
 		override public function configed(colorMananger:ChartColors):void
 		{
-			if (this.labelDisplay != LabelStyle.NONE && verticalAxis is LinearAxis)
-				(verticalAxis as LinearAxis).ifExpend = true;
-			
 			for each (var series:StackedSeries in this.stacks)
 			{
 				if (!series.color)// 如果未指�序列颜色则采用自动分配颜�
@@ -361,12 +314,7 @@ package com.kvs.charts.chart2D.column2D.stack
 				series.verticalAxis = this.verticalAxis;
 			}
 			
-			//stacks.reverse();
 		}
-		
-		/**
-		 */		
-		protected var fullDataItems:Vector.<SeriesDataPoint> = new Vector.<SeriesDataPoint>;
 		
 		/**
 		 */		

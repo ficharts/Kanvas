@@ -1,7 +1,5 @@
 package com.kvs.charts.chart2D.core.axis
 {
-	import com.kvs.charts.chart2D.core.model.Zoom;
-
 	public interface IAxisPattern
 	{
 		/**
@@ -11,19 +9,6 @@ package com.kvs.charts.chart2D.core.axis
 		/**
 		 */		
 		function updateTipsData():void;
-		
-		/**
-		 * 调节数据缩放的最值，比率等参数
-		 */		
-		function adjustZoomFactor(model:Zoom):void;
-		
-		/**
-		 */		
-		function toNormalPattern():void;
-		
-		/**
-		 */		
-		function toZoomPattern():void;
 		
 		/**
 		 */		

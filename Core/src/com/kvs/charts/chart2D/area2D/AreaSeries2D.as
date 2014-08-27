@@ -26,27 +26,15 @@ package com.kvs.charts.chart2D.area2D
 		public function AreaSeries2D()
 		{
 			super();
+			
+			curRenderPattern = new ClassicAreaRender(this);
 		}
 		
 		/**
 		 */		
-		override protected function get type():String
+		override public function get type():String
 		{
 			return "area";
-		}
-		
-		/**
-		 */		
-		override protected function getClassicPattern():ISeriesRenderPattern
-		{
-			return new ClassicAreaRender(this);
-		}
-		
-		/**
-		 */		
-		override protected function getSimplePattern():ISeriesRenderPattern
-		{
-			return new SimpleAreaRender(this);
 		}
 		
 		/**

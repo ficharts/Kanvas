@@ -96,18 +96,6 @@ package com.kvs.charts.chart2D.core.axis
 			
 		}
 			
-		override internal function getNormalPatter():IAxisPattern
-		{
-			return new DateAxis_Normal(this);
-		}
-		
-		/**
-		 */		
-		override internal function getZoomPattern():IAxisPattern
-		{
-			return new DateAxis_DataScale(this);
-		}
-		
 		private var _input:String = 'YYYY/MM/DD';
 
 		/**

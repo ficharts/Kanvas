@@ -6,11 +6,11 @@ package view.interact.interactMode
 	import view.interact.CoreMediator;
 	
 	/**
-	 * 编辑模式
+	 * 文本编辑模式
 	 */	
-	public class EditMode extends ModeBase
+	public class TextEditMode extends ModeBase
 	{
-		public function EditMode(mainMediator:CoreMediator)
+		public function TextEditMode(mainMediator:CoreMediator)
 		{
 			super(mainMediator);
 		}
@@ -25,7 +25,8 @@ package view.interact.interactMode
 		 */		
 		override public function updateSelector():void
 		{
-			mainMediator.currentEditor.updateLayout();
+			if (mainMediator.currentEditor)
+				mainMediator.currentEditor.updateLayout();
 		}
 		
 		/**

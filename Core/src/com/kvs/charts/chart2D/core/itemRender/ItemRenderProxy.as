@@ -22,23 +22,17 @@ package com.kvs.charts.chart2D.core.itemRender
 		 */		 
 		override public function disable():void
 		{
-			_itemVO.removeEventListener(ItemRenderEvent.SHOW_TOOLTIP, showTooltipHandler);
-			_itemVO.removeEventListener(ItemRenderEvent.HIDE_TOOLTIP, hideTooltipHandler);
-			
 			_itemVO.removeEventListener(ItemRenderEvent.SHOW_ITEM_RENDER, showItemRenderHandler);
 			_itemVO.removeEventListener(ItemRenderEvent.HIDE_ITEM_RENDER, hideItemRenderHandler);
 			
-			this.statesControl.enable = this._isEnable = false;
+			this._isEnable = false;
 		}
 		
 		/**
 		 */		
 		override public function enable():void
 		{
-			this.statesControl.enable = this._isEnable = true;
-			
-			_itemVO.addEventListener(ItemRenderEvent.SHOW_TOOLTIP, showTooltipHandler, false, 0, true);
-			_itemVO.addEventListener(ItemRenderEvent.HIDE_TOOLTIP, hideTooltipHandler, false, 0, true);
+			this._isEnable = true;
 			
 			_itemVO.addEventListener(ItemRenderEvent.SHOW_ITEM_RENDER, showItemRenderHandler, false, 0, true);
 			_itemVO.addEventListener(ItemRenderEvent.HIDE_ITEM_RENDER, hideItemRenderHandler, false, 0, true);
@@ -50,8 +44,6 @@ package com.kvs.charts.chart2D.core.itemRender
 		{
 			super.itemVO = value;
 			
-			_itemVO.addEventListener(ItemRenderEvent.SHOW_TOOLTIP, showTooltipHandler, false, 0, true);
-			_itemVO.addEventListener(ItemRenderEvent.HIDE_TOOLTIP, hideTooltipHandler, false, 0, true);
 			
 			_itemVO.addEventListener(ItemRenderEvent.SHOW_ITEM_RENDER, showItemRenderHandler, false, 0, true);
 			_itemVO.addEventListener(ItemRenderEvent.HIDE_ITEM_RENDER, hideItemRenderHandler, false, 0, true);
@@ -73,18 +65,5 @@ package com.kvs.charts.chart2D.core.itemRender
 			canvas.visible = false;
 		}
 		
-		/**
-		 */		
-		protected function showTooltipHandler(evt:ItemRenderEvent):void
-		{
-			showToolTips();
-		}
-		
-		/**
-		 */		
-		protected function hideTooltipHandler(evt:ItemRenderEvent):void
-		{
-			hideToolTips();
-		}
 	}
 }

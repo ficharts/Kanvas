@@ -2,19 +2,18 @@ package com.kvs.charts.chart2D.core.axis
 {
 	import com.kvs.charts.chart2D.core.events.FiChartsEvent;
 	import com.kvs.charts.chart2D.core.model.SeriesDataFeature;
-	import com.kvs.charts.chart2D.core.model.Zoom;
-	import com.kvs.charts.chart2D.core.zoomBar.ZoomBar;
 	import com.kvs.charts.common.ChartDataFormatter;
+	import com.kvs.ui.label.LabelUI;
+	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
-	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.XMLConfigKit.style.elements.BorderLine;
 	import com.kvs.utils.graphic.BitmapUtil;
-	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.graphic.TextBitmapUtil;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.PixelSnapping;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -51,9 +50,6 @@ package com.kvs.charts.chart2D.core.axis
 			addChild(labelsMask);
 			labelUIsCanvas.mask = labelsMask;
 			labelUIsCanvas.addEventListener(MouseEvent.CLICK, labelsClickHandler, false, 0, true);
-			
-			// 初始化当前模�
-			curPattern = this.getNormalPatter();
 		}
 		
 		/**
@@ -169,68 +165,7 @@ package com.kvs.charts.chart2D.core.axis
 		
 		/**
 		 */		
-		public function adjustZoomFactor(scaleModel:Zoom):void
-		{
-			curPattern.adjustZoomFactor(scaleModel);
-		}
-		
-		/**
-		 */		
-		public function toNomalPattern():void
-		{
-			if(curPattern)
-				curPattern.toNormalPattern();
-			else
-				curPattern = getNormalPatter();
-			
-			zoomBar.distory();
-			this.removeChild(zoomBar)
-			zoomBar = null;
-		}
-		
-		/**
-		 */		
-		public function toZoomPattern():void
-		{
-			if (curPattern)
-				curPattern.toZoomPattern();
-			else
-				curPattern = getZoomPattern();
-			
-			this.curPattern.dataUpdated();
-			
-			if (zoomBar == null)
-			{
-				zoomBar = new ZoomBar(this);
-				this.addChild(zoomBar);
-			}
-		}
-		
-		/**
-		 */		
-		internal function getNormalPatter():IAxisPattern
-		{
-			return null;
-		}
-		
-		/**
-		 */		
-		internal function getZoomPattern():IAxisPattern
-		{
-			return null;
-		}
-		
-		/**
-		 */		
 		internal var curPattern:IAxisPattern;
-		
-		/**
-		 */		
-		internal var normalPattern:IAxisPattern;
-		
-		/**
-		 */		
-		internal var zoomPattern:IAxisPattern;
 		
 		/**
 		 * 根据原始数据得到其在总数据中的百分比位置，用来做尺寸缩放
@@ -298,7 +233,6 @@ package com.kvs.charts.chart2D.core.axis
 			if (changed && this.labelVOes.length)
 			{
 				this.labelsMask.graphics.clear();
-				labelRender.style = this.label;
 				
 				this.curPattern.renderHorLabelUIs();
 				
@@ -333,7 +267,7 @@ package com.kvs.charts.chart2D.core.axis
 		 */		
 		internal function renderHoriLabelUIs(startIndex:int, endIndex:int, length:int):void
 		{
-			var labelUI:BitmapData;
+			var labelUI:LabelUI;
 			var labelVO:AxisLabelData;
 			var valuePositon:Number;
 			
@@ -356,6 +290,8 @@ package com.kvs.charts.chart2D.core.axis
 			
 			labelUI = createLabelUI(labelIndex);
 			temUintSize = minUintSize;//轴的尺寸刷新�minUintSize 会重新计算，避免之前的大尺寸和谐掉后继的小尺�
+			
+			var uintAmount:uint = length;
 			
 			// 自动调整label布局模式
 			if(isAutoLabelLayout)
@@ -386,13 +322,12 @@ package com.kvs.charts.chart2D.core.axis
 			
 			//保证标签间距大于最小单元宽度， 防止标签重叠�
 			var addFactor:uint = 1;
-			var uintAmount:uint = length;
-			while (size > 0 && (size / uintAmount) < temUintSize)
+			/*while (size > 0 && (size / uintAmount) < temUintSize)
 			{
 				addFactor += 1;
 				uintAmount = length / addFactor;
-			}
-			
+			}*/
+		
 			// 布局和显示数据范围内的label
 			_ticks.length = 0;
 			
@@ -432,7 +367,7 @@ package com.kvs.charts.chart2D.core.axis
 		
 		/**
 		 */		
-		private var _isAutoLabelLayout:Object = false;
+		private var _isAutoLabelLayout:Object = true;
 		
 		/**
 		 */		
@@ -455,31 +390,27 @@ package com.kvs.charts.chart2D.core.axis
 
 		/**
 		 */		
-		private function drawHoriLabelUI(labelUI:BitmapData, valuePositon:Number):void
+		private function drawHoriLabelUI(labelUI:LabelUI, valuePositon:Number):void
 		{
 			var labelX:Number = 0;
 			var labelY:Number = 0;
-			var bm:Bitmap;
 			
 			if (label.layout == LabelStyle.ROTATION)
 			{
-				bm = new Bitmap(labelUI, PixelSnapping.ALWAYS, true);
-				bm.x = - Math.cos(Math.PI / 4) * labelUI.width + valuePositon;
-				
 				labelY = Math.sin(Math.PI / 4) * labelUI.width;
 				if (this.position == 'bottom')
 					labelY = label.margin + labelY;
 				else
 					labelY = - label.margin - labelUI.height - labelY;
 				
-				bm.y = labelY;
-				bm.rotation = - 45
-				labelUIsCanvas.addChild(bm);
+				labelUI.x = - Math.cos(Math.PI / 4) * labelUI.width + valuePositon;
+				labelUI.y = labelY;
+				labelUI.rotation = - 45
+				labelUIsCanvas.addChild(labelUI);
 			}
 			else if (label.layout == LabelStyle.VERTICAL)
 			{
-				bm = new Bitmap(labelUI);
-				bm.x = - labelUI.height / 2 + valuePositon;
+				
 				
 				labelY = labelUI.width;
 				if (this.position == 'bottom')
@@ -487,34 +418,37 @@ package com.kvs.charts.chart2D.core.axis
 				else
 					labelY = - label.margin - labelUI.height - labelY;
 				
-				bm.y = labelY;
-				bm.rotation = - 90;
-				labelUIsCanvas.addChild(bm);
+				labelUI.x = - labelUI.height / 2 + valuePositon;
+				labelUI.y = labelY;
+				labelUI.rotation = - 90;
+				labelUIsCanvas.addChild(labelUI);
 			}
 			else
 			{
-				labelMartrix.tx = - labelUI.width / 2 + valuePositon;
+				labelUI.x = - labelUI.width / 2 + valuePositon;
 				
 				if (this.position == 'bottom')
-					labelMartrix.ty = label.margin;
+					labelUI.y = label.margin;
 				else
-					labelMartrix.ty = - label.margin - labelUI.height;
+					labelUI.y = - label.margin - labelUI.height;
 				
-				labelUIsCanvas.graphics.beginBitmapFill(labelUI, labelMartrix, false);
-				labelUIsCanvas.graphics.drawRect(labelMartrix.tx, labelMartrix.ty, labelUI.width, labelUI.height);
+				labelUIsCanvas.addChild(labelUI);
 			}
 		}
 		
 		/**
 		 * 
 		 */		
-		private function createLabelUI(index:uint):BitmapData
+		private function createLabelUI(index:uint):LabelUI
 		{
-			var labelVO:AxisLabelData, ui:BitmapData;
+			var labelVO:AxisLabelData, ui:LabelUI;
 			
 			labelVO = labelVOes[index];
 			labelVO.label = getXLabel(labelVO.value);
 			labelVO.color = mdata.color;
+			
+			labelRender = new LabelUI;
+			labelRender.style = this.label;
 			labelRender.mdata = labelVO;
 			
 			// 如果label换行显示，那么先以单元宽度为�
@@ -524,7 +458,7 @@ package com.kvs.charts.chart2D.core.axis
 			labelRender.render();
 			
 			// 这里的labelUI可考虑用bitmap data绘制来优化渲�
-			ui = labelUIs[index] = TextBitmapUtil.getUIBmd(labelRender);
+			ui = labelUIs[index] = labelRender;
 			
 			return ui;
 		}
@@ -547,7 +481,7 @@ package com.kvs.charts.chart2D.core.axis
 				this.clearLabels();
 				this.labelsMask.graphics.clear();
 				
-				var labelUI:BitmapData;
+				var labelUI:LabelUI;
 				var length:uint = this.labelVOes.length;
 				var valuePositon:Number;
 				
@@ -569,11 +503,13 @@ package com.kvs.charts.chart2D.core.axis
 							labelVO = labelVOes[i];
 							labelVO.label = this.getYLabel(labelVO.value);
 							labelVO.color = this.mdata.color;
+							
+							labelRender = new LabelUI;
 							labelRender.style = this.label;
 							labelRender.mdata = labelVO;
 							labelRender.render();
 							
-							labelUI = labelUIs[i] = TextBitmapUtil.getUIBmd(labelRender);
+							labelUI = labelUIs[i] = labelRender;
 							restoreLabel(labelVO, labelUI);// 创建一对，存储一对儿
 						}
 						
@@ -612,14 +548,13 @@ package com.kvs.charts.chart2D.core.axis
 						labelUI = labelUIs[i];
 						
 						if (position == "left")
-							labelMartrix.tx = - labelUI.width - label.margin;
+							labelUI.x = - labelUI.width - label.margin;
 						else
-							labelMartrix.tx = label.margin;
+							labelUI.x = label.margin;
 							
-						labelMartrix.ty =  valuePositon -  labelUI.height / 2;
+						labelUI.y =  valuePositon -  labelUI.height / 2;
 						
-						labelUIsCanvas.graphics.beginBitmapFill(labelUI, labelMartrix, false);
-						labelUIsCanvas.graphics.drawRect(labelMartrix.tx, labelMartrix.ty, labelUI.width, labelUI.height);
+						labelUIsCanvas.addChild(labelUI);
 					}
 				}
 				
@@ -634,6 +569,7 @@ package com.kvs.charts.chart2D.core.axis
 					this.labelsMask.graphics.drawRect(0, temUintSize / 2, 
 						 this.labelUIsCanvas.width + 2, - this.size - this.temUintSize);
 				}
+				
 				labelsMask.graphics.endFill();
 				
 				if (enable)
@@ -653,7 +589,7 @@ package com.kvs.charts.chart2D.core.axis
 		 * 
 		 * 这个开销挺大�
 		 */		
-		protected function restoreLabel(vo:AxisLabelData, ui:BitmapData):void
+		protected function restoreLabel(vo:AxisLabelData, ui:LabelUI):void
 		{
 			
 		}
@@ -703,35 +639,30 @@ package com.kvs.charts.chart2D.core.axis
 		 */		
 		protected function createHoriticalTitle():void
 		{
-			if(titleLabel.parent)
-				this.removeChild(titleLabel);
+			if(titleLabelH && titleLabelH.parent)
+				this.removeChild(titleLabelH);
 			
 			if (title && title.text.value)
 			{
-				titleLabel.style = title;
-				titleLabel.mdata = this.mdata;
-				titleLabel.render();
+				if (titleLabelH == null)
+					titleLabelH = new LabelUI;
 				
-				titleLabel.x = size * .5 - titleLabel.width * .5;
+				titleLabelH.style = title;
+				titleLabelH.mdata = this.mdata;
+				titleLabelH.render();
+				
+				titleLabelH.x = size * .5 - titleLabelH.width * .5;
 				
 				if (position == 'bottom')
 				{
-					
-					if (this.zoomBar)
-					{
-						titleLabel.y = this.labelUIsCanvas.height + title.margin + zoomBar.barHeight;
-					}
-					else
-					{
-						titleLabel.y = this.labelUIsCanvas.height + title.margin;
-					}
+					titleLabelH.y = this.labelUIsCanvas.height + title.margin;
 				}
 				else
 				{
-					titleLabel.y = - labelUIsCanvas.height - title.margin - titleLabel.height;
+					titleLabelH.y = - labelUIsCanvas.height - title.margin - titleLabelH.height;
 				}
 				
-				this.addChild(titleLabel);
+				this.addChild(titleLabelH);
 			}
 		}
 		
@@ -739,25 +670,27 @@ package com.kvs.charts.chart2D.core.axis
 		 */		
 		protected function createVerticalTitle():void
 		{
-			if(titileBitmap && titileBitmap.parent)
-				this.removeChild(titileBitmap);
+			if(titleLabelH && titleLabelV && titleLabelV.parent)
+				this.removeChild(titleLabelV);
 			
 			if (title && title.text.value)
 			{
-				titleLabel.mdata = this.mdata;
-				titleLabel.style = title;
-				titleLabel.render();
+				if (titleLabelV == null)
+					titleLabelV = new LabelUI;
 				
-				titileBitmap = BitmapUtil.getBitmap(titleLabel);
-				titileBitmap.rotation =  - 90;
+				titleLabelV.mdata = this.mdata;
+				titleLabelV.style = title;
+				titleLabelV.render();
+				
+				titleLabelV.rotation =  - 90;
 				
 				if(this.position == "left")
-					titileBitmap.x = - this.labelUIsCanvas.width - title.margin - titileBitmap.width;
+					titleLabelV.x = - this.labelUIsCanvas.width - title.margin - titleLabelV.width;
 				else
-					titileBitmap.x = labelUIsCanvas.width + title.margin;
+					titleLabelV.x = labelUIsCanvas.width + title.margin;
 				
-				titileBitmap.y = - size * .5 + titileBitmap.height * .5;
-				addChild(titileBitmap);
+				titleLabelV.y = - size * .5 + titleLabelV.height * .5;
+				addChild(titleLabelV);
 			}
 		}
 		
@@ -784,24 +717,27 @@ package com.kvs.charts.chart2D.core.axis
 		}
 		
 		/**
-		 * 这两个全局唯一，用来渲染label，然后将bitmapdata其绘制到坐标�
 		 */		
-		internal var labelMartrix:Matrix = new Matrix;
-		internal var labelRender:LabelUI = new LabelUI;
+		internal var labelRender:LabelUI;
 		
 		/**
 		 */		
 		private var labelsMask:Shape = new Shape;
 		internal var labelUIs:Array = [];
+		
 		/**
 		 * label的容器用来数据缩放时整体移动label，辅助遮罩效�
 		 */		
 		public var labelUIsCanvas:Sprite = new Sprite;
-		private var titleLabel:LabelUI = new LabelUI;
+		
+		/**
+		 * 
+		 */		
+		private var titleLabelH:LabelUI;
 		
 		/**
 		 */		
-		private var titileBitmap:Bitmap;
+		private var titleLabelV:LabelUI;
 		
 		/**
 		 * 轴标签数�
@@ -969,7 +905,7 @@ package com.kvs.charts.chart2D.core.axis
 		
 		/**
 		 */		
-		public var minUintSize:uint = 10;
+		public var minUintSize:uint = 30;
 		/**
 		 * @param value
 		 */		
@@ -1287,43 +1223,6 @@ package com.kvs.charts.chart2D.core.axis
 			_metaData = value;
 		}
 		
-		
-		
-		
-		
-		//--------------------------------------------------------------
-		//
-		//  
-		// 数据滚动条的控制
-		//
-		//
-		//---------------------------------------------------------------
-		
-		
-		/**
-		 */		
-		internal function updateScrollBarSize(startPerc:Number, endPerc:Number):void
-		{
-			zoomBar.updateWindowSize(startPerc, endPerc);
-		}
-		
-		/**
-		 */		
-		internal function updateScrollBarPos(perc:Number):void
-		{
-			zoomBar.updateWindowPos(perc);
-		}
-		
-		/**
-		 */		
-		internal function upateDataStep(value:uint):void
-		{
-			zoomBar.updateChartDataStep(value);
-		}
-		
-		/**
-		 */		
-		public var zoomBar:ZoomBar;
 
 	}
 }

@@ -498,7 +498,7 @@ package view.themePanel
 		 */		
 		private function exitHandler(evt:MouseEvent):void
 		{
-			this.dispatchEvent(new InteractEvent(InteractEvent.CLOSE_THEME_PANEL));
+			this.dispatchEvent(new InteractEvent(InteractEvent.CLOSE_PANEL));
 		}
 		
 		/**

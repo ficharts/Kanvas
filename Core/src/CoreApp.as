@@ -1,24 +1,21 @@
 package 
 {
-	import com.greensock.TweenLite;
-	import com.greensock.TweenMax;
+	import com.kvs.charts.chart2D.encry.SB;
 	import com.kvs.utils.RexUtil;
+	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.IApp;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	
 	import commands.Command;
 	
-	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.system.Security;
 	import flash.utils.ByteArray;
 	
-	import model.ConfigInitor;
 	import model.CoreFacade;
 	import model.DecForKvs;
 	import model.ElementProxy;
@@ -29,6 +26,7 @@ package
 	import util.undoRedo.UndoRedoEvent;
 	import util.undoRedo.UndoRedoMannager;
 	
+	import view.editor.chart.ChartEditor;
 	import view.editor.text.TextEditor;
 	import view.element.ElementBase;
 	import view.element.imgElement.ImgElement;
@@ -54,12 +52,11 @@ package
 		/**
 		 * 产品版本号 
 		 */		
-		public static const VER:String = "1.2.3";
+		public static const VER:String = "1.2.5";
 		
-		override public function set mouseChildren(enable:Boolean):void
-		{
-			trace(enable);
-		}
+		
+		
+		
 		
 		//-------------------------------------------------
 		//
@@ -81,8 +78,11 @@ package
 				updatePastPoint();
 				updateStageBound();
 				facade.coreMediator.updateSelector();
+				
 				if (textEditor && textEditor.visible)
 					textEditor.updateLayout();
+				
+				chartEditor.resize();
 			}
 			
 			dispatchEvent(new Event(Event.RESIZE));
@@ -106,7 +106,7 @@ package
 		 */			
 		public function createShape(proxy:ElementProxy):void
 		{
-			resetLib();
+			setLib();
 			
 			facade.sendNotification(Command.CREATE_SHAPE, proxy);
 		}
@@ -120,13 +120,20 @@ package
 		}
 		
 		/**
+		 * 创建图表
+		 */		
+		public function createChart():void
+		{
+			facade.sendNotification(Command.CREAT_CHART);
+		}
+		
+		/**
 		 * 插入图片
 		 */		
 		public function insertIMG():void
 		{
 			facade.sendNotification(Command.INSERT_IMAGE);
 		}
-		
 		
 		/**
 		 * 拖动当前原件，拖动创建时用到；
@@ -149,7 +156,7 @@ package
 		 */		
 		public function showSelector():void
 		{
-			facade.coreMediator.openSelector();
+			facade.coreMediator.showSelector();
 		}
 		
 		/**
@@ -254,7 +261,7 @@ package
 		 */		
 		public function exportZipData():ByteArray
 		{
-			resetLib();
+			setLib();
 			
 			return facade.coreProxy.exportZipData();
 		}
@@ -446,7 +453,14 @@ package
 		 */		
 		public function toPageEdit():void
 		{
-			CoreFacade.coreMediator.toPrevMode();
+			CoreFacade.coreMediator.toPageEditMode();
+		}
+		
+		/**
+		 */		
+		public function toSelect():void
+		{
+			CoreFacade.coreMediator.toSelectedMode();
 		}
 		
 		/**
@@ -477,8 +491,13 @@ package
 		public function CoreApp()
 		{
 			super();
-			
-			//Security.allowDomain("*");
+		}
+		
+		/**
+		 */		
+		public function applyTextToChart():void
+		{
+			chartEditor.applyTextToChart();
 		}
 		
 		/**
@@ -486,7 +505,7 @@ package
 		 */
 		public function startInit():void
 		{
-			resetLib();
+			setLib();
 			
 			initUI();
 			initMVC();
@@ -495,10 +514,10 @@ package
 			dec = new DecForKvs(this);
 			dec.verify();
 			
-			for each (var item:XML in dec.c.child('template').children())
+			for each (var item:XML in DecForKvs.kvsConfig.child('template').children())
 				XMLVOLib.registWholeXML(item.@id, item, item.name().toString());
 			
-			CoreFacade.coreProxy.initThemeConfig(XML(dec.c.child('themes').toXMLString()));
+			CoreFacade.coreProxy.initThemeConfig(XML(DecForKvs.kvsConfig.child('themes').toXMLString()));
 			
 			this.ready();
 			
@@ -512,7 +531,7 @@ package
 		
 		/**
 		 */		
-		public function resetLib():void
+		public function setLib():void
 		{
 			XMLVOLib.currentLib = xmlLib;
 		}
@@ -533,7 +552,6 @@ package
 			bgColorFlasher = new BgColorFlasher(this);
 
 			Bubble.init(stage);
-
 			
 			//画布与舞台布局信息转换器
 			layoutTransformer = new LayoutTransformer(canvas);
@@ -560,12 +578,16 @@ package
 			textEditor.layoutTransformer = this.layoutTransformer;
 			addChild(textEditor);
 			
+			
+			chartEditor = new ChartEditor(this);
+			ViewUtil.hide(chartEditor);
+			addChild(chartEditor);
+			
 			drawBgInteractorShape();
 			updatePastPoint();
 		}
 		
 		/**
-		 * 
 		 */		
 		public var thumbManager:ThumbManager;
 		
@@ -682,12 +704,19 @@ package
 		public var autoAlignUI:Shape = new Shape;
 		
 		/**
+		 * 
 		 */		
 		public var writeShape:Shape = new Shape;
 		
 		/**
+		 * 画笔
 		 */		
 		public var interact:Interact = new Interact;
+		
+		/**
+		 * 图表编辑器 
+		 */		
+		public var chartEditor:ChartEditor;
 		
 		
 		

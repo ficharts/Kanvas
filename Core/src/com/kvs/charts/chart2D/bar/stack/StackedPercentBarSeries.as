@@ -38,12 +38,10 @@ package com.kvs.charts.chart2D.bar.stack
 			this.updateLabelDisplay(itemRender);
 			
 			itemRender.dataRender = this.dataRender;
-			itemRender.tooltip = this.tooltip;
 			
 			initTipString(item, itemRender.xTipLabel, 
 				itemRender.yTipLabel, this.getZTip(item),itemRender.isHorizontal);
 			
-			itemRender.initToolTips();
 			itemRenders.push(itemRender);
 		}
 		
@@ -90,7 +88,6 @@ package com.kvs.charts.chart2D.bar.stack
 			dataItemVOs.length = 0;
 			horizontalValues.length = 0;
 			verticalValues.length = 0;
-			fullDataItems.length = 0;
 			
 			// 将子序列的数据节点合并到一起；
 			for each (stack in stacks)

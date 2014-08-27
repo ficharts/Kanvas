@@ -3,6 +3,7 @@ package model
 	import commands.*;
 	
 	import model.vo.ArrowVO;
+	import model.vo.ChartVO;
 	import model.vo.DialogVO;
 	import model.vo.ElementVO;
 	import model.vo.GroupVO;
@@ -20,6 +21,8 @@ package model
 	
 	import view.MediatorNames;
 	import view.element.*;
+	import view.element.chart.ChartElement;
+	import view.element.chart.PieElement;
 	import view.element.imgElement.ImgElement;
 	import view.element.imgElement.SWFElement;
 	import view.element.shapes.*;
@@ -149,6 +152,9 @@ package model
 			ElementCreator.registerElement('dashRect', DashRect, ShapeVO);
 			ElementCreator.registerElement('dialog', DialogUI, DialogVO);
 			ElementCreator.registerElement("page", PageElement, PageVO);
+			
+			ElementCreator.registerElement("chart2d", ChartElement, ChartVO);
+			ElementCreator.registerElement("pie2d", PieElement, ChartVO);
 		}
 		
 		/**
@@ -233,6 +239,9 @@ package model
 			registerCommand(Command.CONVERT_ELEMENT_2_PAGE, ConvertElement2PageCMD);
 			
 			registerCommand(Command.CHANGE_PAGE_INDEX, ChangePageIndexCMD);
+			
+			
+			registerCommand(Command.CREAT_CHART, CreatChartCMD);
 		}
 		
 		/**

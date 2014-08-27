@@ -2,15 +2,11 @@ package view.toolBar
 {
 	import com.kvs.ui.FiUI;
 	import com.kvs.ui.button.IconBtn;
-	import com.kvs.ui.button.LabelBtn;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.Style;
 	
-	import control.InteractEvent;
-	
 	import flash.display.Shape;
-	import flash.events.MouseEvent;
 
 	/**
 	 * 工具条
@@ -21,16 +17,29 @@ package view.toolBar
 		
 		/**
 		 */		
-		public function ToolBar()
+		public function ToolBar(main:Kanvas)
 		{
 			super();
+			
+			this.main  = main;
 		}
+		
+		/**
+		 */		
+		internal var main:Kanvas;
 		
 		/**
 		 */		
 		public function toPageEditMode():void
 		{
 			currentState.toPageEdit();
+		}
+		
+		/**
+		 */		
+		public function toChartEditMode():void
+		{
+			currentState.toChartEdit();
 		}
 		
 		/**
@@ -58,6 +67,10 @@ package view.toolBar
 			pageEditState.init();
 			pageEditState.updateLayout();	
 			
+			chartEditState = new ChartEditState(this);
+			chartEditState.init();
+			chartEditState.updateLayout();
+			
 			currentState = normalState;
 		}
 		
@@ -67,7 +80,7 @@ package view.toolBar
 		{
 			normalState.updateLayout();
 			pageEditState.updateLayout();	
-			
+			chartEditState.updateLayout();
 		}
 		
 		/**
@@ -97,6 +110,8 @@ package view.toolBar
 		
 		internal var pageEditState:ToolBarStateBS;
 		
+		internal var chartEditState:ToolBarStateBS;
+		
 		
 		
 		/**
@@ -104,20 +119,6 @@ package view.toolBar
 		 */		
 		internal var bgShape:Shape = new Shape;
 		
-		/**
-		 * 撤销按钮
-		 */		
-		public function get undoBtn():IconBtn
-		{
-			return (normalState as NormalState).undoBtn;
-		}
-		
-		/**
-		 * 反撤销按钮
-		 */	
-		public function get  redoBtn():IconBtn{
-			return (normalState as NormalState).redoBtn;
-		}
 		/**
 		 * 元素创建按钮，点击后会弹出元素创建面板 
 		 */		
@@ -132,20 +133,9 @@ package view.toolBar
 			return (normalState as NormalState).themeBtn;
 		}
 		
-		/**
-		 */		
-		public function get confirmBtn():LabelBtn
-		{
-			return (pageEditState as PageEditState).confirmBtn;
+		public function get chartBtn():IconBtn{
+			return (normalState as NormalState).chartBtn;
 		}
-		
-		/**
-		 */		
-		public function get cancelBtn():LabelBtn
-		{
-			return (pageEditState as PageEditState).cancelBtn;
-		}
-		
 		
 		
 		

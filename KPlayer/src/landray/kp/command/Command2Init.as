@@ -51,8 +51,9 @@ package landray.kp.command
 			
 			//解析配置文件， 后面在验证
 			dec = new DecForKvs(config.kp_internal::viewer);
+			
 			if(!provider.styleXML) 
-				provider.styleXML = dec.c;
+				provider.styleXML = DecForKvs.kvsConfig;
 			
 			config.kp_internal::mediator    = new MediatorViewer;
 			config.kp_internal::controller  = new ZoomMoveControl(config.kp_internal::mediator);

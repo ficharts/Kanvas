@@ -1,8 +1,6 @@
 package com.kvs.charts.chart2D.bubble
 {
-	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
-	
-	public class SimpleBubbleRender implements ISeriesRenderPattern
+	public class SimpleBubbleRender
 	{
 		public function SimpleBubbleRender(bubble:BubbleSeries)
 		{
@@ -12,30 +10,6 @@ package com.kvs.charts.chart2D.bubble
 		/**
 		 */		
 		private var bubble:BubbleSeries
-		
-		/**
-		 */		
-		public function toClassicPattern():void
-		{
-			if (bubble.classicPattern)
-				bubble.curRenderPattern = bubble.classicPattern;
-			else
-				bubble.curRenderPattern = bubble.classicPattern = new ClassicBubbleRender(bubble);
-			
-			bubble.clearCanvas();
-		}
-		
-		/**
-		 */		
-		public function toSimplePattern():void
-		{
-		}
-		
-		/**
-		 */		
-		public function renderScaledData():void
-		{
-		}
 		
 		/**
 		 */		

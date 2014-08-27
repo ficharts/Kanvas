@@ -9,7 +9,6 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.StageUtil;
 	import com.kvs.utils.XMLConfigKit.App;
-	import com.kvs.utils.XMLConfigKit.IApp;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
@@ -22,7 +21,6 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.utils.system.OS;
 	
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	import flash.events.ContextMenuEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -36,6 +34,8 @@ package com.kvs.charts.chart2D.encry
 	import flash.ui.ContextMenu;
 	import flash.ui.ContextMenuItem;
 	import flash.utils.ByteArray;
+	
+	import model.DecForKvs;
 	
 	/**
 	 */
@@ -84,13 +84,19 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		private function preInit():void
 		{
-			resetLib();
-			dec.run(this);
+			setLib();
+			
+			initStyle();
+			
+			this.init();
 		}
 		
 		/**
 		 */		
-		protected var dec:DecChart;
+		protected function initStyle():void
+		{
+			
+		}
 		
 		/**
 		 * 注入图表的基础配置文件�此配置文件包含默认的样式模板, 菜单语言配置等；
@@ -98,18 +104,16 @@ package com.kvs.charts.chart2D.encry
 		 * 图表初始化时先初始此文件�
 		 * 
 		 */		
-		internal function initStyleTempalte(value:String):void
+		public function initStyleTempalte(chartConfig:XML):void
 		{
-			var defaultConfig:XML = XML(value);
-			
-			for each (var item:XML in defaultConfig.styles.children())
+			for each (var item:XML in chartConfig.styles.children())
 				Chart2DStyleTemplate.pushTheme(XML(item.toXMLString()));
 			
 			//注册全局样式模板
-			for each (item in defaultConfig.child('template').children())
+			for each (item in chartConfig.child('template').children())
 				XMLVOLib.registWholeXML(item.@id, item, item.name().toString());
 			
-			XMLVOMapper.fuck(defaultConfig.menu, menu);
+			XMLVOMapper.fuck(chartConfig.menu, menu);
 		}
 		
 		
@@ -148,71 +152,6 @@ package com.kvs.charts.chart2D.encry
 		
 		
 		/**
-		 */		
-		private var _ifDataScalable:Boolean = false;
-
-		/**
-		 * 是否开启数据缩放，开启后<code>scaleData</code>方法才会生效
-		 */
-		public function get ifDataScalable():Boolean
-		{
-			return _ifDataScalable;
-		}
-
-		/**
-		 * @private
-		 */
-		public function set ifDataScalable(value:Boolean):void
-		{
-			_ifDataScalable = value;
-			
-			if (ifReady)
-				chart.setDataScalable(_ifDataScalable);
-			else
-				ifDataScalableChanged = true;
-		}
-		
-		/**
-		 */		
-		private var ifDataScalableChanged:Boolean = false;
-		
-		/**
-		 * 
-		 * 根据数据范围缩放图表
-		 * 
-		 * @param valueFrom 数据范围的起点�
-		 * @param valueTo   数据范围的终点�
-		 * 
-		 */		
-		public function scaleData(valueFrom:Object, valueTo:Object):void
-		{
-			if (ifReady)
-			{
-				chart.scaleData(valueFrom, valueTo);
-			}
-			else
-			{
-				dataScaleForm = valueFrom;
-				dataScaleTo = valueTo;
-				ifScaleDataChanged = true;
-			}
-		}
-		
-		/**
-		 */		
-		private var ifScaleDataChanged:Boolean = false;
-		
-		/**
-		 */		
-		private var dataScaleForm:Object;
-		
-		/**
-		 */		
-		private var dataScaleTo:Object;
-		
-		
-		
-		/**
 		 * 设置配置文件
 		 *  
 		 * @param value  XML格式的字符串
@@ -220,13 +159,16 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function setConfigXML(value:String):void
 		{	
+			if (this._configXML == value) return;
+			
+			this._configXML = value;
+			
 			if (ifReady)
 			{
-				setConfigXMLHandler(value);
+				setConfigXMLHandler(_configXML);
 			}
 			else
 			{
-				this._configXML = value;
 				this.ifConfigChanged = true;
 			}
 		}
@@ -393,7 +335,7 @@ package com.kvs.charts.chart2D.encry
 		{
 			if (value)
 			{
-				this.resetLib();				
+				this.setLib();				
 				chart.configXML = XML(value);
 			}
 		}
@@ -402,7 +344,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		private function setStyleHandler(value:String):void
 		{
-			this.resetLib();
+			this.setLib();
 			chart.setStyle(value);
 		}
 		
@@ -410,7 +352,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		private function setCustomStyleHandler(value:String):void
 		{
-			this.resetLib();
+			this.setLib();
 			chart.setCustomStyle(XML(value));
 		}
 		
@@ -748,9 +690,7 @@ package com.kvs.charts.chart2D.encry
 		//-----------------------------------------------------
 		protected function initInterfaces():void
 		{
-			ExternalUtil.addCallback("ifDataScalable", ifChartDataScalable);
 			
-			ExternalUtil.addCallback("setConfigXML", setConfigXMLHandler);
 			ExternalUtil.addCallback("setConfigFile", requestConfigURL);
 			
 			ExternalUtil.addCallback("setStyle", setStyleHandler);
@@ -776,15 +716,8 @@ package com.kvs.charts.chart2D.encry
 			this.loadingDataInfo = stage.loaderInfo.parameters['loadingDataInfo'];
 			this.loadingDataErrorInfo = stage.loaderInfo.parameters['loadingDataErrorInfo'];
 			
-			ExternalUtil.call("FiCharts.beforeInit", id);
 		}
 		
-		/**
-		 */		
-		private function ifChartDataScalable():Boolean
-		{
-			return chart.ifDataScalable();
-		}
 		
 		
 		
@@ -872,18 +805,6 @@ package com.kvs.charts.chart2D.encry
 				ifPreRender = false;
 			}
 			
-			if (ifDataScalableChanged)
-			{
-				this.chart.setDataScalable(this.ifDataScalable);
-				ifDataScalableChanged = false;
-			}
-			
-			if (this.ifScaleDataChanged && this.ifDataScalable)
-			{
-				this.scaleData(this.dataScaleTo, dataScaleTo);
-				ifScaleDataChanged = false;
-			}
-			
 			if (this.ifConfigFileURLChanged)
 			{
 				this.setConfigFileURL(this._configFileURL);
@@ -891,7 +812,7 @@ package com.kvs.charts.chart2D.encry
 			}
 			
 			// 初始化过程完�
-			this.dispatchEvent(new FiChartsEvent(FiChartsEvent.READY));
+			this.dispatchEvent(new FiChartsEvent(FiChartsEvent.CHART_READY));
 		}
 		
 		/**
@@ -959,7 +880,7 @@ package com.kvs.charts.chart2D.encry
 		
 		/**
 		 */		
-		protected var chart:IChart;
+		public var chart:IChart;
 		
 		/**
 		 */		

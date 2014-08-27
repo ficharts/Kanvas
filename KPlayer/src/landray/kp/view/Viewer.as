@@ -76,7 +76,7 @@ package landray.kp.view
 				toolBarZoom.updateLayout();
 				toolBarSlid.updateLayout();
 				//指定自适应矩形范围
-				bound = new Rectangle(5, 5, width - 10, height - ((toolBarSlid.visible) ? 50 : 10));
+				autofitRect = new Rectangle(5, 5, width - 10, height - ((toolBarSlid.visible) ? 50 : 10));
 			}
 		}
 		

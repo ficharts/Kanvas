@@ -2,6 +2,9 @@ package view.toolBar
 {
 	import com.kvs.ui.button.LabelBtn;
 	import com.kvs.ui.label.LabelUI;
+	
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 
 	/**
 	 * 页面动画效果编辑时的工具条
@@ -19,7 +22,7 @@ package view.toolBar
 		{
 			this.ctner.visible = false;
 			
-			title.text = "点击页面中的原件，为其添加动画效果";
+			title.text = "点击图片，文字，图形，为其添加闪现效果";
 			title.styleXML = <label radius='0' vPadding='5' hPadding='5'>
 									<format color='#eeeeee' font='微软雅黑' size='12'/>
 								  </label>
@@ -64,6 +67,23 @@ package view.toolBar
 				
 			cancelBtn.text = "取消";
 			this.ctner.addChild(cancelBtn);
+			
+			cancelBtn.addEventListener(MouseEvent.CLICK, cancelEdit);
+			confirmBtn.addEventListener(MouseEvent.CLICK, confirmEdit);
+		}
+		
+		/**
+		 */		
+		private function cancelEdit(evt:Event):void
+		{
+			tb.main.mainNavControl.cancelPageEdit();
+		}
+		
+		/**
+		 */		
+		private function confirmEdit(evt:Event):void
+		{
+			tb.main.mainNavControl.confirmPageEdit();
 		}
 		
 		/**

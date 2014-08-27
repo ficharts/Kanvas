@@ -1,6 +1,7 @@
 package com.kvs.charts.chart2D.core.axis
 {
 	import com.kvs.charts.chart2D.core.model.SeriesDataFeature;
+	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.ArrayUtil;
 	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
@@ -20,6 +21,8 @@ package com.kvs.charts.chart2D.core.axis
 		public function LinearAxis()
 		{
 			super();
+			
+			curPattern = new LinearAxis_Normal(this);
 		}
 		
 		/**
@@ -36,20 +39,6 @@ package com.kvs.charts.chart2D.core.axis
 		 * 原始数据序列化后的间�
 		 */		
 		internal  var confirmedSourceValueDis:Number = 0;
-		
-		/**
-		 */
-		override internal function getNormalPatter():IAxisPattern
-		{
-			return new LinearAxis_Normal(this);
-		}
-		
-		/**
-		 */		
-		override internal function getZoomPattern():IAxisPattern
-		{
-			return new LinearAxis_DataScale(this);
-		}
 		
 		/**
 		 */		
@@ -592,7 +581,7 @@ package com.kvs.charts.chart2D.core.axis
 		
 		/**
 		 */		
-		override protected function restoreLabel(vo:AxisLabelData, ui:BitmapData):void
+		override protected function restoreLabel(vo:AxisLabelData, ui:LabelUI):void
 		{
 			sourceLabelVOs.push(vo);
 			sourceLabelUIs.push(ui);

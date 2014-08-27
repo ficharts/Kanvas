@@ -96,15 +96,19 @@ package view.interact
 			if (align)
 			{
 				if (curMovingElement == null) return;
+				
 				if (! isNaN(align.x))
 					point.x = curMovingElement.x + align.x;
+				
 				if (! isNaN(align.y))
 					point.y = curMovingElement.y + align.y;
+				
 				if (curMovingElement.autoGroupChangable)
 				{
 					coreMdt.autoGroupController.move(curMovingElement.x - curMovingElement.vo.x, 
 													 curMovingElement.y - curMovingElement.vo.y, group);
 				}
+				
 				curMovingElement.x = point.x;
 				curMovingElement.y = point.y;
 			}
@@ -134,6 +138,7 @@ package view.interact
 			{
 				if (coreMdt.currentElement.vo is PageVO)
 					PageVO(coreMdt.currentElement.vo).thumbUpdatable = true;
+				
 				coreMdt.createNewShape = false;
 				coreMdt.createNewShapeMouseUped = true;
 				if (coreMdt.createNewShapeMouseUped && coreMdt.createNewShapeTweenOver)

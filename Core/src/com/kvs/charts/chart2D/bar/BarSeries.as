@@ -9,8 +9,8 @@ package com.kvs.charts.chart2D.bar
 	import com.kvs.charts.chart2D.core.model.Chart2DModel;
 	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.common.ChartColors;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.common.SeriesDataPoint;
+	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
@@ -23,7 +23,34 @@ package com.kvs.charts.chart2D.bar
 		{
 			super();
 			
+			curRenderPattern = new ClassicBarRender(this)
+			
 			this.value = 'xValue';
+		}
+		
+		/**
+		 * 条图的label为纵轴方向
+		 */		
+		override public function get labels():Vector.<String>
+		{
+			var labels:Vector.<String> = new Vector.<String>
+			
+			for each (var data:SeriesDataPoint in dataItemVOs)
+				labels.push(data.yLabel);
+			
+			return labels.reverse();
+		}
+		
+		/**
+		 */		
+		override public function exportValues(split:String):String
+		{
+			var labels:Vector.<String> = new Vector.<String>
+			
+			for each (var data:SeriesDataPoint in dataItemVOs)
+				labels.push(data.xLabel);
+			
+			return seriesName + ":\n" + labels.reverse().join(split);
 		}
 		
 		/**
@@ -40,21 +67,7 @@ package com.kvs.charts.chart2D.bar
 		
 		/**
 		 */		
-		override protected function getClassicPattern():ISeriesRenderPattern
-		{
-			return new ClassicBarRender(this)
-		}
-		
-		/**
-		 */		
-		override protected function getSimplePattern():ISeriesRenderPattern
-		{
-			return new SimpleBarRender(this);
-		}
-		
-		/**
-		 */		
-		override protected function get type():String
+		override public function get type():String
 		{
 			return "bar";
 		}
@@ -76,12 +89,10 @@ package com.kvs.charts.chart2D.bar
 				this.updateLabelDisplay(itemRender);
 			
 			itemRender.dataRender = this.dataRender;
-			itemRender.tooltip = this.tooltip;
 			
 			initTipString(item, itemRender.xTipLabel, 
 				itemRender.yTipLabel,itemRender.zTipLabel,itemRender.isHorizontal);
 			
-			itemRender.initToolTips();
 			itemRenders.push(itemRender);
 		}
 		

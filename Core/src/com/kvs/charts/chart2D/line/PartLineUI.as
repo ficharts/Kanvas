@@ -2,10 +2,8 @@ package com.kvs.charts.chart2D.line
 {
 	import com.kvs.charts.chart2D.core.series.SeriesItemUIBase;
 	import com.kvs.charts.common.SeriesDataPoint;
-	import com.kvs.utils.RexUtil;
 	
 	import flash.display.Shape;
-	import flash.display.Sprite;
 	
 	/**
 	 */	

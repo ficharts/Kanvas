@@ -7,7 +7,7 @@ package com.kvs.utils.XMLConfigKit
 		 * 
 		 * 更新到唯一的公共库上 
 		 */		
-		function resetLib():void;
+		function setLib():void;
 		
 	}
 }

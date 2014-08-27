@@ -230,12 +230,15 @@ package view.editor.text
 			textScale.hide();
 		}
 		
-		internal function updateAfterInput():void
+		/**
+		 * 文字输入后告知文本编辑器刷新UI
+		 */		
+		public function updateWidthTextinput():void
 		{
+			textScale.update();
+			
 			if (mainUIMediator)
-			{
 				mainUIMediator.autofitController.autofitEditorInputText(1, 1);
-			}
 		}
 		
 		/**

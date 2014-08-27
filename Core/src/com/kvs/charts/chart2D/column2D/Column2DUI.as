@@ -17,35 +17,6 @@ package com.kvs.charts.chart2D.column2D
 		
 		/**
 		 */		
-		override public function downHandler():void
-		{
-			this.y = 1;
-			
-			var event:FiChartsEvent = new FiChartsEvent(FiChartsEvent.ITEM_CLICKED);
-			event.dataItem = this.dataItem;
-			this.dispatchEvent(event);
-		}
-		
-		/**
-		 */		
-		override public function hoverHandler():void
-		{
-			super.hoverHandler();
-			
-			y = 0;
-		}
-		
-		/**
-		 */		
-		override public function normalHandler():void
-		{
-			super.normalHandler();
-			
-			y = 0;
-		}
-		
-		/**
-		 */		
 		public function resize():void
 		{
 			this.width = columnWidth;

@@ -3,6 +3,13 @@ package view.ui
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
+	/**
+	 *
+	 * 画笔
+	 *  
+	 * @author wanglei
+	 * 
+	 */	
 	public final class Interact extends Sprite
 	{
 		public function Interact()

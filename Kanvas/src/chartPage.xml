@@ -1,0 +1,202 @@
+<charts id='chartPage' title='图表'>		
+
+	<selector icon='columnChart'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config>
+			    <axis>
+			        <x type="field"/>
+			        <y type="linear"/>
+			    </axis>
+			    <series>
+			        <column xField='label' yField='value1'/>
+			        <column xField='label' yField='value2'/>
+			    </series>
+			    <data>
+			       <set label='四月' value1='17' value2='55'/>
+			       <set label='五月' value1='26' value2='43'/>
+			       <set label='六月' value1='53' value2='70'/>
+			       <set label='七月' value1='96' value2='58'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+
+	<selector icon='stackedColumnChart'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config>
+			    <axis>
+			        <x type="field"/>
+			        <y type="linear"/>
+			    </axis>
+			    <series>
+			        <stackedColumn>
+			            <stack xField='label' yField='value1'/>
+			            <stack xField='label' yField='value2'/>
+			        </stackedColumn>
+			    </series>
+			    <data>
+			        <set label='四月' value1='27' value2='55'/>
+			        <set label='五月' value1='36' value2='43'/>
+			        <set label='六月' value1='63' value2='80'/>
+			        <set label='七月' value1='143' value2='48'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+
+	<selector icon='barChart'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config>
+			    <axis>
+			        <y type="field"/>
+			        <x type="linear"/>
+			    </axis>
+			    <series>
+			        <bar xField='value1' yField='label'/>
+			        <bar xField='value2' yField='label'/>
+			    </series>
+			    <data>
+			        <set label='四月' value1='17' value2='55'/>
+			        <set label='五月' value1='26' value2='43'/>
+			        <set label='六月' value1='53' value2='70'/>
+			        <set label='七月' value1='96' value2='58'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+
+	<selector icon='stackedBarChart'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config>
+			    <axis>
+			        <x type='linear'/>
+			        <y type='field'/>
+			    </axis>
+			    <series>
+			        <stackedBar>
+			            <stack xField='value1' yField='label'/>
+			            <stack xField='value2' yField='label'/>
+			        </stackedBar>
+			    </series>
+			    <data>
+			        <set label='四月' value1='17' value2='55'/>
+			        <set label='五月' value1='26' value2='43'/>
+			        <set label='六月' value1='53' value2='70'/>
+			        <set label='七月' value1='96' value2='58'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+
+	<selector icon='areaChart'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config ySuffix="万">
+			    <axis>
+			        <x type="field" ifEdgeSpace='false'/>
+			        <y type="linear"/>
+			    </axis>
+			    <series>
+			        <area xField='label' yField='value1'/>
+			        <area xField='label' yField='value2'/>
+			    </series>
+			    <data>
+			        <set label='四月' value1='17' value2='55'/>
+			        <set label='五月' value1='26' value2='43'/>
+			        <set label='六月' value1='53' value2='70'/>
+			        <set label='七月' value1='96' value2='58'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+
+	<selector icon='pieChart'>
+		<shape type='pie2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config precision="2">
+				<series>
+		            <pie seriesName="序列1" xField='label' yField='value'/>
+		        </series>
+				<data>
+					<set label="四月" value="91"/>
+					<set label="五月" value="76"/>
+					<set label="六月" value="28"/>
+					<set label="七月" value="26"/>
+					<set label="八月" value="21"/>
+					<set label="九月" value="18"/>
+				</data>
+			</config>
+		</shape>
+	</selector>
+
+	<selector icon='lineChart'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config>
+			    <axis>
+			        <x type="field" ifEdgeSpace='false'/>
+			        <y type="linear"/>
+			    </axis>
+			    <series>
+			        <line xField='label' yField='value1'/>
+			        <line xField='label' yField='value2'/>
+			    </series>
+			    <data>
+			        <set label='四月' value1='17' value2='55'/>
+			        <set label='五月' value1='26' value2='43'/>
+			        <set label='六月' value1='53' value2='70'/>
+			        <set label='七月' value1='96' value2='58'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+
+	<selector icon='markerChart'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config>
+			    <axis>
+			        <x type="linear"/>
+			        <y type="linear"/>
+			    </axis>
+			    <series>
+			        <marker seriesName='四月' xField='label' yField='value1'/>
+			        <marker seriesName='五月' xField='label' yField='value2'/>
+			        <marker seriesName='六月' xField='label' yField='value3'/>
+			    </series>
+			    <data>
+			        <set label='1' value1='2' value2='4' value3='0'/>
+			        <set label='3' value1='4' value2='7' value3='2'/>
+			        <set label='5' value1='5' value2='8' value3='4'/>
+			        <set label='6' value1='8' value2='11' value3='6'/>
+			        <set label='8' value1='13' valu2='14' value3='8'/>
+			        <set label='9' value1='16' value2='15' value3='12'/>
+			        <set label='11' value1='18' value2='17' value3='15'/>
+			        <set label='12' value1='20' value2='20' value3='18'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+	
+	<selector icon='bubbleChart'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config>
+			    <axis>
+			        <x type="linear"/>
+			        <y type="linear"/>
+			    </axis>
+			    <series>
+			        <bubble xField='label' yField='value' radiusField='radius'/>
+			    </series>
+			    <data>
+			        <set label='1' value='2' radius='20'/>
+			        <set label='3' value='4' radius='34'/>
+			        <set label='5' value='5' radius='12'/>
+			        <set label='6' value='8' radius='50'/>
+			        <set label='8' value='13' radius='70'/>
+			        <set label='9' value='16' radius='35'/>
+			        <set label='11' value='18' radius='68'/>
+			        <set label='12' value='20' radius='22'/>
+			        <set label='15' value='24' radius='35'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+	
+</charts>

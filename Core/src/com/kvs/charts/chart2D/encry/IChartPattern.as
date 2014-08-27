@@ -39,15 +39,6 @@ package com.kvs.charts.chart2D.encry
 	{
 		function init():void
 		
-		function toZoomPattern():void
-			
-		function toClassicPattern():void
-			
-		/**
-		 * 
-		 */			
-		function initPattern():void
-			
 		/**
 		 * 定义序列，坐标轴的模式： 经典还是数据缩放模式
 		 * 
@@ -81,9 +72,6 @@ package com.kvs.charts.chart2D.encry
 			
 		function updateValueLabelHandler(evt:ItemRenderEvent):void
 			
-		/**
-		 */			
-		function scaleData(startValue:Object, endValue:Object):void;
 			
 	}
 }

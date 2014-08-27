@@ -48,6 +48,7 @@
 			group = new GroupToolbar(this);
 			wholeShape = new WholeShapeToolBar(this);
 			cameraShape = new CameraShape(this);
+			chart = new ChartToolBar(this);
 		}
 		
 		/**
@@ -404,6 +405,11 @@
 		 * 文本工具条
 		 */		
 		public var text:ToolBarBase;
+		
+		/**
+		 * 图表工具条
+		 */		
+		public var chart:ChartToolBar;
 		
 		/**
 		 */		
