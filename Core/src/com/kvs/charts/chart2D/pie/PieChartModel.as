@@ -202,39 +202,6 @@ package com.kvs.charts.chart2D.pie
 		//
 		//-------------------------------------------------
 		
-		/**
-		 */		
-		private var _title:LabelStyle;
-		
-		/**
-		 */		
-		public function get title():LabelStyle
-		{
-			return _title;
-		}
-		
-		/**
-		 */		
-		public function set title(value:LabelStyle):void
-		{
-			_title = value;
-			XMLVOLib.dispatchCreation(Chart2DModel.UPDATE_TITLE_STYLE);
-		}
-		
-		/**
-		 */		
-		private var _subTitle:LabelStyle
-		
-		public function get subTitle():LabelStyle
-		{
-			return _subTitle;
-		}
-		
-		public function set subTitle(value:LabelStyle):void
-		{
-			_subTitle = value;
-			XMLVOLib.dispatchCreation(Chart2DModel.UPDATE_TITLE_STYLE);
-		}
 		
 		
 		

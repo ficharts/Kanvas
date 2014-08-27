@@ -55,6 +55,14 @@ package com.kvs.charts.chart2D.encry
 		
 		/**
 		 */		
+		public function setColor(colorMng:ChartColors):void
+		{
+			if (!color)
+				color = colorMng.chartColor.toString(16);
+		}
+		
+		/**
+		 */		
 		public function get labels():Vector.<String>
 		{
 			var labels:Vector.<String> = new Vector.<String>

@@ -25,9 +25,20 @@ package view.chartPanel
 			chartsConfig = XML(ByteArray(new ConfigXML).toString());
 			
 			this.app = mainApp;
-			shapeCreateProxy = new ShapeCreateProxy(mainApp);
+			shapeCreateProxy = new ShapeCreateProxy(mainApp, this);
 			
 			this.app = mainApp;
+			
+			
+			lineChart;
+			columnChart;
+			barChart;
+			bubbleChart;
+			pieChart;
+			areaChart;
+			markerChart;
+			stackedBarChart;
+			stackedColumnChart;
 		}
 		
 		/**
@@ -59,9 +70,9 @@ package view.chartPanel
 			exitBtn.addEventListener(MouseEvent.CLICK, exitHandler, false, 0, true);
 			
 			
-			//scrollHolder = new ChartScrollProy(this);
-			//scrollHolder.updateMask();
-			//scrollHolder.update();
+			scrollHolder = new ChartScrollProy(this);
+			scrollHolder.updateMask();
+			scrollHolder.update();
 			
 			XMLVOLib.resisterClass('shape', ElementProxy);
 			XMLVOLib.resisterClass('selector', ItemSelector);

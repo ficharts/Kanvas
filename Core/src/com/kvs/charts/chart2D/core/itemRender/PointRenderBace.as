@@ -141,11 +141,9 @@ package com.kvs.charts.chart2D.core.itemRender
 			if (this.valueLabel.enable)
 			{
 				if(valueLabelUI == null)
-				{
-					valueLabelUI = createValueLabelUI()
-					//addChild(valueLabelUI);
-					layoutValueLabel();
-				}
+					valueLabelUI = createValueLabelUI();
+				
+				layoutValueLabel();
 			}
 		}
 		

@@ -22,7 +22,7 @@ package com.kvs.charts.chart2D.pie
 			XMLVOLib.registerCustomClasses(<colors path='com.kvs.utils.XMLConfigKit.style.Colors'/>);
 			
 			Series;
-			XMLVOLib.registerCustomClasses(<pieSeries path='com.kvs.charts.chart2D.pie.series.Series'/>);
+			XMLVOLib.registerCustomClasses(<series path='com.kvs.charts.chart2D.pie.series.Series'/>);
 			
 			PieSeries;
 			XMLVOLib.registerCustomClasses(<pie path='com.kvs.charts.chart2D.pie.series.PieSeries'/>);

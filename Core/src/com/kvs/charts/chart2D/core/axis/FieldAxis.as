@@ -138,7 +138,7 @@ package com.kvs.charts.chart2D.core.axis
 		public function get ifTickCenter():Object
 		{
 			return _ifTickCenter;
-		}
+		}	
 
 		/**
 		 * @private
@@ -146,6 +146,26 @@ package com.kvs.charts.chart2D.core.axis
 		public function set ifTickCenter(value:Object):void
 		{
 			_ifTickCenter = XMLVOMapper.boolean(value);
+		}
+		
+		/**
+		 * 关闭后，边缘的单元宽度会少去一半
+		 */		
+		private var _ifEdgeSpace:Boolean = true;
+
+		/**
+		 */
+		public function get ifEdgeSpace():Object
+		{
+			return _ifEdgeSpace;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set ifEdgeSpace(value:Object):void
+		{
+			_ifEdgeSpace = XMLVOMapper.boolean(value);;
 		}
 
 		/**

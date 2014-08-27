@@ -47,7 +47,7 @@ package view.chartPanel
 		 */		
 		public function get viewCanvas():DisplayObjectContainer
 		{
-			return panel;
+			return panel.chartPage;
 		}
 		
 		/**

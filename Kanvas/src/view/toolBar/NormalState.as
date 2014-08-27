@@ -155,9 +155,12 @@ package view.toolBar
 			
 			var gap:uint = 12;
 			
+			chart_up;
+			chart_over;
+			chart_down;
 			chartBtn.iconW = chartBtn.iconH = ToolBar.BTN_SIZE;
 			chartBtn.w = chartBtn.h = ToolBar.BTN_SIZE;
-			chartBtn.setIcons("img_up", "img_over", "img_down");
+			chartBtn.setIcons("chart_up", "chart_over", "chart_down");
 			chartBtn.tips = '图表';
 			centerBtnsC.addChild(chartBtn);
 			chartBtn.addEventListener(MouseEvent.CLICK, addChartHander, false, 0, true);

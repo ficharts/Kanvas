@@ -10,6 +10,14 @@ package view.editor.chart
 		}
 		
 		/**
+		 */		
+		override public function appendFfix(pre:String, suf:String, confg:XML):void
+		{
+			confg.@xSuffix = suf;
+			confg.@xPrefix = pre;
+		}
+		
+		/**
 		 * 
 		 */			
 		override public function applyData(data:XML, index:uint):void

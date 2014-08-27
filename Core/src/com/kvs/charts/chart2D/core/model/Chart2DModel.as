@@ -1,11 +1,10 @@
 package com.kvs.charts.chart2D.core.model
 {
 	import com.kvs.charts.common.ChartDataFormatter;
-	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.charts.legend.LegendStyle;
+	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
-	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
 	
 	/**
 	 */
@@ -17,19 +16,7 @@ package com.kvs.charts.chart2D.core.model
 		
 		/**
 		 */		
-		public static const UPDATE_TITLE_STYLE:String = 'upateTitleStyle';
-		
-		/**
-		 */		
-		public static const UPDATE_SUB_TITLE_STYLE:String = 'updateSubTitleStyle';
-		
-		/**
-		 */		
 		public static const UPDATE_LEGEND_STYLE:String = 'updateLegendStyle';
-		
-		/**
-		 */		
-		public static const UPDATE_TOOLTIP_STYLE:String = 'updateToolTipStyle';
 		
 		/**
 		 * 每个序列都有自己单独的数据渲染相关样� 这包�tootip, valueLabel, dataRender;
@@ -164,7 +151,7 @@ package com.kvs.charts.chart2D.core.model
 			
 			XMLVOLib.dispatchCreation(Chart2DModel.UPDATE_LEGEND_STYLE, value);
 		}
-
+		
 		/**
 		 * 数据格式定义�
 		 */		
@@ -337,46 +324,6 @@ package com.kvs.charts.chart2D.core.model
 			_series = value;
 		}
 		
-		
-		//-------------------------------------------------
-		//
-		// 标题样式与设�
-		//
-		//-------------------------------------------------
-
-		/**
-		 */		
-		private var _title:LabelStyle;
-
-		/**
-		 */		
-		public function get title():LabelStyle
-		{
-			return _title;
-		}
-		
-		/**
-		 */		
-		public function set title(value:LabelStyle):void
-		{
-			_title = value;
-			XMLVOLib.dispatchCreation(Chart2DModel.UPDATE_TITLE_STYLE);
-		}
-		
-		/**
-		 */		
-		private var _subTitle:LabelStyle
-
-		public function get subTitle():LabelStyle
-		{
-			return _subTitle;
-		}
-
-		public function set subTitle(value:LabelStyle):void
-		{
-			_subTitle = value;
-			XMLVOLib.dispatchCreation(Chart2DModel.UPDATE_TITLE_STYLE);
-		}
 
 		
 		//-------------------------------------------------

@@ -5,7 +5,6 @@ package com.kvs.charts.chart2D.column2D.stack
 	import com.kvs.charts.chart2D.core.axis.LinearAxis;
 	import com.kvs.charts.chart2D.core.itemRender.PointRenderBace;
 	import com.kvs.charts.chart2D.core.model.Chart2DModel;
-	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.chart2D.encry.SB;
 	import com.kvs.charts.common.ChartColors;
 	import com.kvs.charts.common.SeriesDataPoint;
@@ -86,6 +85,12 @@ package com.kvs.charts.chart2D.column2D.stack
 		
 		/**
 		 */		
+		override public function setColor(colorMng:ChartColors):void
+		{
+		}
+		
+		/**
+		 */		
 		override public function layoutAndRenderUIs():void
 		{
 			var index:uint;
@@ -139,18 +144,6 @@ package com.kvs.charts.chart2D.column2D.stack
 				item.dataItemY = verticalAxis.valueToY((item as StackedSeriesDataPoint).endValue);
 				item.offset = baseLine;
 			}
-			
-			if(fullDataItems == null || fullDataItems.length == 0) return;//百分百堆积图没有总数据节�
-			
-			for (i = startIndex; i <= endIndex; i += step)
-			{
-				item = fullDataItems[i];
-				
-				item.dataItemX = item.x = horizontalAxis.valueToX(item.xVerifyValue, - 1) - columnGoupWidth / 2 +
-					this.columnSeriesIndex * (partColumnWidth + columnGroupInnerSpaceUint) + partColumnWidth / 2;
-				
-				item.y = item.dataItemY = verticalAxis.valueToY(item.yVerifyValue);
-			}
 		}
 		
 		/**
@@ -159,9 +152,6 @@ package com.kvs.charts.chart2D.column2D.stack
 		override public function createItemRenders():void
 		{
 			super.createItemRenders();
-			
-			for each (var item:SeriesDataPoint in fullDataItems)
-				initItemRender(combileItemRender, item);
 		}
 		
 		/**
@@ -194,13 +184,6 @@ package com.kvs.charts.chart2D.column2D.stack
 		}
 		
 		/**
-		 */		
-		protected function get combileItemRender():PointRenderBace
-		{
-			return new StackedColumnCombiePointRender;
-		}
-		
-		/**
 		 * 序列数据�坐标轴数据的创建
 		 * 
 		 * 这里把原始的数据节点与计算得出的汇总数据节点分离；
@@ -212,13 +195,11 @@ package com.kvs.charts.chart2D.column2D.stack
 			var xVerifyValue:Object, yVerifyValue:Number, xValue:Object, yValue:Object, positiveValue:Number, negativeValue:Number;
 			var length:uint = dataProvider.length;
 			var stack:StackedSeries;
-			var combleSeriesDataItem:SeriesDataPoint;
 			var stackedSeriesDataItem:StackedSeriesDataPoint;
 			
 			dataItemVOs.length = 0;
 			horizontalValues.length = 0;
 			verticalValues.length = 0;
-			fullDataItems.length = 0;
 			
 			
 			// 将子序列的数据节点合并到一起；
@@ -261,32 +242,6 @@ package com.kvs.charts.chart2D.column2D.stack
 					
 					XMLVOMapper.pushAttributesToObject(stackedSeriesDataItem, stackedSeriesDataItem.metaData, 
 						['startValue', 'endValue']);
-				}
-				
-				// 将所有堆积值求和， 数值标签取求和值， 标签的位置取决于最值， 
-				// 求和为正取最大值， 求和为负则取最小值；
-				if (this.valueLabel.enable)
-				{
-					combleSeriesDataItem = new SeriesDataPoint();
-					combleSeriesDataItem.index = i;
-					combleSeriesDataItem.metaData = new Object;
-					
-					combleSeriesDataItem.xValue = combleSeriesDataItem.xVerifyValue = xVerifyValue;
-					combleSeriesDataItem.yValue = combleSeriesDataItem.yVerifyValue = ((positiveValue + negativeValue) >= 0) ? positiveValue : negativeValue;
-					
-					combleSeriesDataItem.xLabel = horizontalAxis.getXLabel(combleSeriesDataItem.xVerifyValue);
-					combleSeriesDataItem.yLabel = verticalAxis.getYLabel(positiveValue + negativeValue);
-					
-					combleSeriesDataItem.color = uint(this.color);
-					combleSeriesDataItem.seriesName = this.seriesName;
-					
-					combleSeriesDataItem.xDisplayName = horizontalAxis.displayName;
-					combleSeriesDataItem.yDisplayName = verticalAxis.displayName;
-					
-					XMLVOMapper.pushAttributesToObject(combleSeriesDataItem, combleSeriesDataItem.metaData, 
-						['xValue', 'yValue', 'xLabel', 'yLabel', 'xDisplayName', 'yDisplayName', 'seriesName', 'color']);
-					
-					fullDataItems.push(combleSeriesDataItem); 
 				}
 				
 				horizontalValues.push(xVerifyValue);
@@ -350,9 +305,6 @@ package com.kvs.charts.chart2D.column2D.stack
 		 */		
 		override public function configed(colorMananger:ChartColors):void
 		{
-			if (this.labelDisplay != LabelStyle.NONE && verticalAxis is LinearAxis)
-				(verticalAxis as LinearAxis).ifExpend = true;
-			
 			for each (var series:StackedSeries in this.stacks)
 			{
 				if (!series.color)// 如果未指�序列颜色则采用自动分配颜�
@@ -362,12 +314,7 @@ package com.kvs.charts.chart2D.column2D.stack
 				series.verticalAxis = this.verticalAxis;
 			}
 			
-			//stacks.reverse();
 		}
-		
-		/**
-		 */		
-		protected var fullDataItems:Vector.<SeriesDataPoint> = new Vector.<SeriesDataPoint>;
 		
 		/**
 		 */		
