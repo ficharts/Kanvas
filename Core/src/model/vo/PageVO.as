@@ -4,7 +4,6 @@ package model.vo
 	
 	import modules.pages.PageEvent;
 	import modules.pages.PageQuene;
-	import modules.pages.flash.FlashIn;
 	import modules.pages.flash.IFlash;
 	import modules.pages.pg_internal;
 	
@@ -71,6 +70,8 @@ package model.vo
 			}
 		}
 		
+		/**
+		 */		
 		override public function set y(value:Number):void
 		{
 			if (_y!= value)
@@ -81,6 +82,8 @@ package model.vo
 			}
 		}
 		
+		/**
+		 */		
 		override public function set width(value:Number):void
 		{
 			if (_width!= value)
@@ -91,6 +94,8 @@ package model.vo
 			}
 		}
 		
+		/**
+		 */		
 		override public function set height(value:Number):void
 		{
 			if (_height!= value)
@@ -101,6 +106,8 @@ package model.vo
 			}
 		}
 		
+		/**
+		 */		
 		override public function set scale(value:Number):void
 		{
 			if (_scale!= value)
@@ -111,6 +118,8 @@ package model.vo
 			}
 		}
 		
+		/**
+		 */		
 		override public function set rotation(value:Number):void
 		{
 			if (_rotation!= value)
@@ -121,6 +130,8 @@ package model.vo
 			}
 		}
 		
+		/**
+		 */		
 		public function get parent():PageQuene
 		{
 			return pg_internal::parent;
@@ -141,12 +152,20 @@ package model.vo
 		{
 			return __index;
 		}
+		
+		/**
+		 */		
 		private var __index:int = -1;
 		
+		/**
+		 */		
 		public function get thumbUpdatable():Boolean
 		{
 			return __thumbUpdatable;
 		}
+		
+		/**
+		 */		
 		public function set thumbUpdatable(value:Boolean):void
 		{
 			if (__thumbUpdatable!= value)
@@ -171,9 +190,12 @@ package model.vo
 			_elementID = value;
 		}
 
-		
+		/**
+		 */		
 		public var bitmapData:BitmapData;
 		
+		/**
+		 */		
 		public var elementVO:ElementVO;
 	}
 }

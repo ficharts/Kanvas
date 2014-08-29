@@ -16,6 +16,7 @@ package view.interact
 	import view.element.text.TextEditField;
 	import view.interact.autoGroup.AutoGroupController;
 	import view.interact.autoGroup.IAutoGroupElement;
+	import view.ui.IMainUIMediator;
 	
 	/**
 	 * 碰撞检测，辅助智能组合，画布缩放过程中的的图形交互失效，隐藏等
@@ -25,7 +26,7 @@ package view.interact
 		/**
 		 * 控制智能群组的移动，缩放和大图形是否可以被点击
 		 */		
-		public function ElementCollisionDetection(mdt:CoreMediator, elements:Vector.<ElementBase>, hitObject:DisplayObject)
+		public function ElementCollisionDetection(mdt:IMainUIMediator, elements:Vector.<ElementBase>, hitObject:DisplayObject)
 		{
 			this.coreMdt = mdt;
 			this.elements = elements;
@@ -34,7 +35,7 @@ package view.interact
 		
 		/**
 		 */		
-		private var coreMdt:CoreMediator;
+		private var coreMdt:IMainUIMediator;
 		
 		/**
 		 */		
@@ -105,6 +106,17 @@ package view.interact
 		}
 		
 		/**
+		 *
+		 * 判断某个原件是否在可视范围内
+		 */		
+		public function ifElementInView(element:ElementBase):Boolean
+		{
+			var point:Point = LayoutUtil.elementPointToStagePoint(element.vo.x, element.vo.y, coreMdt.canvas);
+			
+			return coreMdt.mainUI.autofitRect.containsPoint(point);
+		}
+		
+		/**
 		 * 
 		 * 显示区域外的元件会被隐藏
 		 * 
@@ -114,7 +126,7 @@ package view.interact
 		 */		
 		public function updateAfterZoomMove():void
 		{
-			var stage:Rectangle = coreMdt.coreApp.autofitRect, w:Number = stage.width, h:Number = stage.height;
+			var stage:Rectangle = coreMdt.mainUI.autofitRect, w:Number = stage.width, h:Number = stage.height;
 			//minLineInteractSizeSquare, maxLineInteractSizeSquare
 			var minLineSquare:Number = minInteractSize * minInteractSize * .25, maxLineSquare:Number = w * w;
 			

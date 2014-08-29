@@ -3,7 +3,6 @@ package landray.kp.mediator
 	import com.kvs.utils.Map;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	
-	import flash.display.BitmapData;
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
@@ -119,7 +118,7 @@ package landray.kp.mediator
 		/**
 		 * 画布开始动画
 		 */		
-		public function flashPlay():void
+		public function flashStart():void
 		{
 			for each (var graph:Graph in graphs)
 				graph.flashPlay();
@@ -134,7 +133,7 @@ package landray.kp.mediator
 				graph.flashStop();
 		}
 		
-		public function flashTrek():void
+		public function flashing():void
 		{
 			for each (var graph:Graph in graphs)
 				graph.flashTrek();
@@ -412,7 +411,7 @@ package landray.kp.mediator
 			return config.kp_internal::viewer;
 		}
 		
-		private function get canvas():Canvas
+		public function get canvas():Canvas
 		{
 			return config.kp_internal::viewer.canvas;
 		}

@@ -61,6 +61,13 @@ package view.interact.interactMode
 		
 		/**
 		 */		
+		public function playElement():void
+		{
+			
+		}
+		
+		/**
+		 */		
 		public function overEle(ele:ElementBase):void
 		{
 			(mainMediator.mainUI as CoreApp).hoverEffect.element = ele;

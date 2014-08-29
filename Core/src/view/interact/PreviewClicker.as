@@ -2,16 +2,20 @@ package view.interact
 {
 	import com.kvs.ui.clickMove.ClickMoveControl;
 	import com.kvs.ui.clickMove.IClickMove;
+	import com.kvs.utils.XMLConfigKit.style.Text;
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.utils.Timer;
 	
 	import model.vo.ElementVO;
 	import model.vo.PageVO;
+	import model.vo.TextVO;
 	
 	import util.LayoutUtil;
 	
@@ -91,6 +95,8 @@ package view.interact
 			}
 		}
 		
+		/**
+		 */		
 		private function viewHit():void
 		{
 			if (elementsHit.length)
@@ -111,7 +117,21 @@ package view.interact
 				{
 					//mdt.zoomElement(targetElement["vo"]);
 				}
-				mdt.zoomElement(targetElement["vo"]);
+				
+				var elementVO:ElementVO = targetElement["vo"];
+				
+				if (elementVO is TextVO)
+				{
+					var t:String = (elementVO as TextVO).text;
+					
+					if (t.indexOf("http://") != - 1 || t.indexOf("https://") != - 1)
+					{
+						flash.net.navigateToURL(new URLRequest(t), "_blank");
+						return;
+					}
+				}
+				
+				mdt.zoomElement(elementVO);
 			}
 		}
 		

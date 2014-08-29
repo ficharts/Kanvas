@@ -1,9 +1,11 @@
+
 package view.interact.interactMode
 {
 	import commands.Command;
 	
 	import flash.ui.Mouse;
 	
+	import view.element.ElementBase;
 	import view.interact.CoreMediator;
 	
 	/**
@@ -14,6 +16,30 @@ package view.interact.interactMode
 		public function PrevMode(mainMediator:CoreMediator)
 		{
 			super(mainMediator);
+		}
+		
+		/**
+		 */		
+		override public function playElement():void
+		{
+			var elements:Vector.<ElementBase> = mainMediator.collisionDetection.elements;
+			var ele:ElementBase;
+			var curPage:ElementBase;
+			
+			
+			
+			var eleInPage:ElementBase;
+			
+			for each (ele in elements)
+			{
+				eleInPage = mainMediator.collisionDetection.ifElementIn(ele, curPage);
+				
+				//检测原件在页面内, 并且自身不是页面
+				if (eleInPage && eleInPage != curPage)
+				{
+					
+				}
+			}
 		}
 		
 		/**

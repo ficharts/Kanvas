@@ -125,6 +125,13 @@ package modules.pages
 		}
 		
 		/**
+		 */		
+		public function get currentPage():PageVO
+		{
+			return getPageAt(index);
+		}
+		
+		/**
 		 * 获取序号为index的pageVO
 		 */
 		public function getPageAt(index:int):PageVO

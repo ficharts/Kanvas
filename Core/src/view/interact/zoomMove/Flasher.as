@@ -114,8 +114,6 @@ package view.interact.zoomMove
 					onComplete:finishZoom
 				});
 			}
-			
-			trace(TweenLite.rootFrame);
 		}
 		
 		/**
@@ -135,14 +133,14 @@ package view.interact.zoomMove
 		{
 			if (isFlashing == false)
 			{
-				control.uiMediator.flashPlay();
+				control.uiMediator.flashStart();
 				isFlashing = true;
 			}
 			if (packer) packer.modCanvasPosition();
 			
 			control.mainUI.synBgContentToCanvas();
 			
-			control.uiMediator.flashTrek();
+			control.uiMediator.flashing();
 		}
 		
 		/**

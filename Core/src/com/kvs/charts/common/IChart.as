@@ -8,6 +8,10 @@ package com.kvs.charts.common
 	 */	
 	public interface IChart
 	{
+		
+		function resetFlash():void;
+		function flash():void;
+		
 		/**
 		 * 绘制图表， 当设定了图表的配置信息与数值后调用此方法重新绘制图表；
 		 * 

@@ -38,6 +38,20 @@ package com.kvs.charts.chart2D.encry
 		}
 		
 		/**
+		 */		
+		public function resetFlash():void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function flash():void
+		{
+			
+		}
+		
+		/**
 		 * 
 		 */		
 		public function set setSeries(xml:XML):void

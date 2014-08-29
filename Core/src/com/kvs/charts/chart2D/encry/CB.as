@@ -76,6 +76,20 @@ package com.kvs.charts.chart2D.encry
 			init();
 		}
 		
+		/**
+		 */		
+		public function resetFlash():void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function flash():void
+		{
+			
+		}
+		
 		
 		
 		//----------------------------------
