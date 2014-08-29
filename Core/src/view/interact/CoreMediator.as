@@ -816,7 +816,7 @@ package view.interact
 		
 		/**
 		 */		
-		public function flashPlay():void
+		public function flashStart():void
 		{
 			if(!treking)
 			{
@@ -834,9 +834,8 @@ package view.interact
 		
 		/**
 		 */		
-		public function flashTrek():void
+		public function flashing():void
 		{
-			
 			if (treking)
 			{
 				if (currentMode != preMode) 
@@ -884,8 +883,17 @@ package view.interact
 			}
 		}
 		
-		private var treking:Boolean = false;
+		/**
+		 * 演示模式下，页面动画结束时，播放元素内部动画(视频播放/图表动画)
+		 */		
+		private function playElementInPage():void
+		{
+			currentMode.playElement();
+		}
 		
+		/**
+		 */		
+		private var treking:Boolean = false;
 		
 		/**
 		 */		
@@ -1179,7 +1187,7 @@ package view.interact
 		 */		
 		public function get canvas():Canvas
 		{
-			return coreApp.canvas;
+			return mainUI.canvas;
 		}
 	}
 }

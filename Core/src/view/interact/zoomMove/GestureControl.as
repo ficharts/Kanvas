@@ -84,7 +84,7 @@ package view.interact.zoomMove
 						canvas.x = gesture.location.x - temp.x;
 						canvas.y = gesture.location.y - temp.y;
 						mediator.mainUI.synBgContentToCanvas();
-						mediator.flashTrek();
+						mediator.flashing();
 						//control.zoomRotateMoveTo(offsetScale, canvas.rotation, gesture.location.x - temp.x, gesture.location.y - temp.y, null, 0);
 					}
 				}
@@ -120,7 +120,7 @@ package view.interact.zoomMove
 				gestureControl = true;
 				control.disableBgInteract();
 				control.mainUI.curScreenState.disableCanvas();
-				mediator.flashPlay();
+				mediator.flashStart();
 			}
 		}
 		

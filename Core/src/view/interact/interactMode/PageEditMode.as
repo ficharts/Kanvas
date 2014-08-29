@@ -140,7 +140,7 @@ package view.interact.interactMode
 				eleInPage = mainMediator.collisionDetection.ifElementIn(ele, curPage);
 				
 				//检测原件在页面内, 并且自身不是页面
-				if (eleInPage && eleInPage != curPage && eleInPage.isPage == false)
+				if (eleInPage && eleInPage != curPage)
 				{
 					fh = new FlasherHolder(eleInPage, mainMediator, this);
 					
