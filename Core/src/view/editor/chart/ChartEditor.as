@@ -260,8 +260,6 @@ package view.editor.chart
 				RexUtil.trimArray(sdata);
 				checkPrefixAndSuffix(sdata);
 				
-				
-				
 				// 先建立模型
 				if (type == "bar")
 				{

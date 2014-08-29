@@ -3,7 +3,6 @@ package view.element.imgElement
 	import com.kvs.utils.extractor.SWFExtractor;
 	
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.ByteArray;
 	
@@ -23,6 +22,37 @@ package view.element.imgElement
 		public function SWFElement(vo:ElementVO)
 		{
 			super(vo);
+		}
+		
+		/**
+		 */		
+		override public function toPrevState():void
+		{
+			super.toPrevState();
+			this.mouseChildren = this.mouseEnabled = true;
+		}
+		
+		/**
+		 */		
+		override public function toNomalState():void
+		{
+			super.toNomalState();
+			
+			this.mouseChildren = false;
+		}
+		
+		/**
+		 */		
+		override public function enable():void
+		{
+			//currentState.enable();
+		}
+		
+		/**
+		 */		
+		override public function disable():void
+		{
+			//currentState.disable();
 		}
 		
 		/**
