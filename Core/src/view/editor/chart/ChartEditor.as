@@ -250,8 +250,17 @@ package view.editor.chart
 					sdata = sa[1].split(",");
 				}
 				
+				//含有非数字内容的值时，退出
+				for each (var item:String in sdata)
+				{
+					if (RexUtil.ifHasNumValue(item) == false)
+						return;
+				}
+				
 				RexUtil.trimArray(sdata);
 				checkPrefixAndSuffix(sdata);
+				
+				
 				
 				// 先建立模型
 				if (type == "bar")
@@ -315,7 +324,9 @@ package view.editor.chart
 			
 			
 			chart.configXML = config;
+			
 			chart.render();
+			
 		}
 		
 		/**
