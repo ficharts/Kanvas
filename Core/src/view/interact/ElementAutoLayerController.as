@@ -67,7 +67,7 @@ package view.interact
 					
 					
 					//重新排列元素
-					//swapElements(_indexChangeElement, order);
+					swapElements(_indexChangeElement, order);
 					// 因为智能图层有时会让原来原件的图层顺序错乱，后记要改称当前原件图层调整，不改变其他原件的相对图层位置
 				}
 			}

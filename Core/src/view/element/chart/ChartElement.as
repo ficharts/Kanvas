@@ -22,7 +22,7 @@ package view.element.chart
 	 * 图表组件，包含所有图表
 	 * 
 	 */	
-	public class ChartElement extends ElementBase implements IAutoGroupElement
+	public class ChartElement extends ElementBase implements IAutoGroupElement, IPlayElement
 	{
 		public function ChartElement(vo:ElementVO)
 		{
@@ -31,6 +31,32 @@ package view.element.chart
 			createChart();
 			
 			addChild(chart);
+		}
+		
+		/**
+		 */		
+		override public function toPrevState():void
+		{
+			super.toPrevState();
+			
+			chart.chart.resetFlash();
+			
+		}
+		
+		/**
+		 */		
+		override public function returnFromPrevState():void
+		{
+			super.returnFromPrevState();
+			
+			chart.chart.flash();
+		}
+		
+		/**
+		 */		
+		override public function play():void
+		{
+			chart.chart.flash();
 		}
 		
 		/**

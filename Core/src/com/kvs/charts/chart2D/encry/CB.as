@@ -1,5 +1,8 @@
 package com.kvs.charts.chart2D.encry
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Back;
+	import com.greensock.easing.Ease;
 	import com.kvs.charts.chart2D.area2D.AreaSeries2D;
 	import com.kvs.charts.chart2D.bar.BarSeries;
 	import com.kvs.charts.chart2D.bar.stack.StackedBarSeries;
@@ -37,6 +40,8 @@ package com.kvs.charts.chart2D.encry
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	
+	import view.ui.Bubble;
 	
 	/**
 	 */
@@ -80,14 +85,38 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function resetFlash():void
 		{
+			for each (var seriesItem:SB in chartSeries)
+				seriesItem.percent = 0;
 			
+			chartCanvas.valueLabelsCanvas.alpha = 0;
+			chartCanvas.itemRenderCanvas.alpha = 0;
 		}
 		
 		/**
 		 */		
 		public function flash():void
 		{
-			
+			for each (var seriesItem:SB in chartSeries)
+			{
+				if (seriesItem is BubbleSeries || seriesItem is MarkerSeries)
+					chartCanvas.itemRenderCanvas.alpha = 1;
+				
+				TweenLite.to(seriesItem, 1, {percent:1, ease:Back.easeOut});
+			}
+				
+			TweenLite.to(chartCanvas.valueLabelsCanvas, 1, {alpha:1, delay:1});
+			TweenLite.to(chartCanvas.itemRenderCanvas, 1, {alpha:1, delay:1});
+		}
+		
+		/**
+		 */		
+		public function toFlashEnd():void
+		{
+			for each (var seriesItem:SB in chartSeries)
+				seriesItem.percent = 1;
+				
+			chartCanvas.valueLabelsCanvas.alpha = 1;
+			chartCanvas.itemRenderCanvas.alpha = 1;
 		}
 		
 		

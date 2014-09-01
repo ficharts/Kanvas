@@ -177,6 +177,8 @@ package view.interact
 		 */		
 		public var elements:Vector.<ElementBase>;
 		
+		/**
+		 */		
 		private static var getItemRect:Function = LayoutUtil.getItemRect;
 	}
 }

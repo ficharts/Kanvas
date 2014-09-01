@@ -24,6 +24,30 @@ package com.kvs.charts.chart2D.marker
 			curRenderPattern = new ClassicMarkerRender(this);
 		}
 		
+		/**
+		 */		
+		override public function set percent(value:Number):void
+		{
+			_percent = value;
+			
+			for each (var item:PointRenderBace in itemRenders)
+			{
+				item.alpha = _percent;
+				item.scaleY = item.scaleX = _percent;
+			}
+		}
+		
+		/**
+		 */		
+		override public function get percent():Number
+		{
+			return _percent;
+		}
+		
+		/**
+		 */		
+		private var _percent:Number = 0;
+		
 		
 		
 		
@@ -86,12 +110,6 @@ package com.kvs.charts.chart2D.marker
 			chartColorManager = new ChartColors;
 		}
 		
-		/**
-		 */		
-		override public function setPercent(value:Number):void
-		{
-			canvas.alpha = value;
-		}
 		
 		/**
 		 * Render PlotChart.

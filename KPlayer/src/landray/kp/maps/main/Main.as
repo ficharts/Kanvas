@@ -85,8 +85,8 @@ package landray.kp.maps.main
 					{
 						CoreUtil.applyStyle(element.vo);
 						CoreUtil.mapping(xml, vo);
-						element.render();
 						viewer.canvas.addChild(element);
+						element.render();
 						
 						elements.push(element);
 						config.kp_internal::elementMap.put(element.vo.id.toString(), element);

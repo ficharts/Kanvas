@@ -316,7 +316,7 @@ package model
 			
 			// 背景设置
 			xml.appendChild(bgVO.xml);
-				
+			
 			return xml;
 		}
 		

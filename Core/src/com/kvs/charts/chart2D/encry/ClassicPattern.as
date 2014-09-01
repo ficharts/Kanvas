@@ -218,7 +218,7 @@ package com.kvs.charts.chart2D.encry
 			}
 			
 			for each (seriesItem in chartMain.chartSeries)
-			seriesItem.setPercent(flashSeriesPercent);
+			seriesItem.percent = flashSeriesPercent;
 			
 			//播放动画
 			if (chartMain.chartModel.animation && ifFirstRender)
@@ -251,7 +251,7 @@ package com.kvs.charts.chart2D.encry
 			}
 			
 			for each (var seriesItem:SB in chartMain.chartSeries)
-				seriesItem.setPercent(flashSeriesPercent);
+				seriesItem.percent = flashSeriesPercent;
 		}
 		
 		/**

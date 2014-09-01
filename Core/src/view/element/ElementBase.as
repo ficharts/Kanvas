@@ -4,7 +4,6 @@ package view.element
 	import com.kvs.ui.clickMove.IClickMove;
 	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.MathUtil;
-	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	import com.kvs.utils.StageUtil;
 	import com.kvs.utils.ViewUtil;
@@ -24,8 +23,6 @@ package view.element
 	
 	import modules.pages.PageEvent;
 	import modules.pages.flash.IFlash;
-	
-	import org.osmf.net.ABRUtils;
 	
 	import util.ElementCreator;
 	import util.LayoutUtil;
@@ -973,6 +970,7 @@ package view.element
 		}
 		
 		/**
+		 * 进入演示模式时，需要先设置好动画到开始位置
 		 */		
 		public function toPrevState():void
 		{
@@ -991,6 +989,15 @@ package view.element
 		}
 		
 		/**
+		 * 播放元素内部的动画
+		 */		
+		public function play():void
+		{
+			
+		}
+		
+		/**
+		 * 演示结束后，即便没有播放的动画也要设定到动画播放完毕状态
 		 */		
 		public function returnFromPrevState():void
 		{
@@ -1219,6 +1226,13 @@ package view.element
 		public function set vo(value:ElementVO):void
 		{
 			_vo = value;
+		}
+		
+		/**
+		 */		
+		public function get pageVO():PageVO
+		{
+			return vo.pageVO;
 		}
 		
 		/**

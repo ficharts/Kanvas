@@ -4,6 +4,8 @@ package landray.kp.maps.main.consts
 	
 	import model.vo.*;
 	
+	import view.element.chart.Chart2D;
+	
 	public class MainConsts
 	{
 		public static const SHAPE_UI_MAP :XML = 
@@ -29,6 +31,8 @@ package landray.kp.maps.main.consts
 				<element type="camera"          voClassPath="model.vo.ElementVO"/>
 				<element type="group"            voClassPath="model.vo.GroupVO"/>
 				<element type="page"            voClassPath="model.vo.PageVO"/>
+				<element type="chart2d"            voClassPath="model.vo.ChartVO"/>
+				<element type="pie2d"            voClassPath="model.vo.ChartVO"/>
 			</elements>;
 		
 		public static const SHAPE_UI:Object = 
@@ -53,6 +57,8 @@ package landray.kp.maps.main.consts
 			dashRect       :landray.kp.maps.main.elements.DashRect, 
 			camera         :landray.kp.maps.main.elements.Camera,
 			group         :landray.kp.maps.main.elements.Group,
+			chart2d		   :landray.kp.maps.main.elements.ChartElement,
+			pie2d		   :landray.kp.maps.main.elements.PieChartElement,
 			page           :landray.kp.maps.main.elements.Page
 		};
 	}

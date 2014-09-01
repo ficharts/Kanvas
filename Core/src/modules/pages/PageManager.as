@@ -128,7 +128,10 @@ package modules.pages
 		 */		
 		public function get currentPage():PageVO
 		{
-			return getPageAt(index);
+			if (index != - 1)
+				return getPageAt(index);
+			
+			return null;
 		}
 		
 		/**
