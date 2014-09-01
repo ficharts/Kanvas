@@ -161,9 +161,16 @@ package com.kvs.charts.chart2D.line
 		
 		/**
 		 */		
-		override public function setPercent(value:Number):void
+		override public function set percent(value:Number):void
 		{
 			canvas.scaleY = value;
+		}
+		
+		/**
+		 */		
+		override public function get percent():Number
+		{
+			return canvas.scaleY;
 		}
 		
 		/**

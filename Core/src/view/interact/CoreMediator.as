@@ -147,7 +147,7 @@ package view.interact
 		 */		
 		public function removeElementFromView(element:ElementBase):void
 		{
-			if (canvas.contains(element))
+			if (element && canvas.contains(element))
 				canvas.removeChild(element);
 		}
 		
@@ -880,6 +880,8 @@ package view.interact
 				//动画结束后再初始化页面动画，防止位置计算偏差，因为动画会让画布布局改变一下
 				if (currentMode == pageEditMode)
 					(pageEditMode as PageEditMode).init();
+				
+				playElementInPage();
 			}
 		}
 		

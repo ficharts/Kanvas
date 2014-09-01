@@ -89,11 +89,11 @@ package com.kvs.charts.chart2D.core.series
 		
 		/**
 		 */		
-		private var itemRenderCanvas:Sprite = new Sprite;
+		public var itemRenderCanvas:Sprite = new Sprite;
 		
 		/**
 		 */		
-		private var valueLabelsCanvas:Sprite = new Sprite;
+		public var valueLabelsCanvas:Sprite = new Sprite;
 		
 		/**
 		 */		

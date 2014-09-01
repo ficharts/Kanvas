@@ -4,7 +4,6 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.charts.chart2D.bar.BarSeries;
 	import com.kvs.charts.chart2D.core.axis.AxisBase;
 	import com.kvs.charts.chart2D.core.axis.LinearAxis;
-	import com.kvs.charts.chart2D.core.events.DataResizeEvent;
 	import com.kvs.charts.chart2D.core.itemRender.ItemRenderEvent;
 	import com.kvs.charts.chart2D.core.itemRender.PointRenderBace;
 	import com.kvs.charts.chart2D.core.model.Chart2DModel;
@@ -17,8 +16,6 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.charts.common.SeriesDataPoint;
 	import com.kvs.charts.legend.model.LegendVO;
 	import com.kvs.charts.legend.view.LegendEvent;
-	import com.kvs.ui.toolTips.TooltipDataItem;
-	import com.kvs.ui.toolTips.TooltipStyle;
 	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.IEditableObject;
@@ -35,8 +32,6 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.utils.XMLConfigKit.style.elements.IStyleElement;
 	
 	import flash.display.Sprite;
-	
-	import org.osmf.net.ABRUtils;
 
 	/**
 	 * 序列的基�
@@ -354,10 +349,18 @@ package com.kvs.charts.chart2D.encry
 		/**
 		 *  动画渲染时传入动画进度百分比�各序列执行自己的动画方式�
 		 */		
-		public function setPercent(value:Number):void
+		public function set percent(value:Number):void
 		{
 			
 		}
+		
+		/**
+		 */		
+		public function get percent():Number
+		{
+			return 0;
+		}
+		
 		
 		
 

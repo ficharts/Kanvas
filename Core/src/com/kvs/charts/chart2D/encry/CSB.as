@@ -159,7 +159,7 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function setConfigXML(value:String):void
 		{	
-			if (this._configXML == value) return;
+			//if (this._configXML == value) return;
 			
 			this._configXML = value;
 			

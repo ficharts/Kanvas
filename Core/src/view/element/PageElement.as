@@ -137,6 +137,12 @@ package view.element
 				graphics.lineTo(right - frameSize * 2, top);
 				graphics.lineTo(right, top);
 				graphics.endFill();
+				
+				//
+				graphics.lineStyle(0,0, 0);
+				graphics.beginFill(0, 0);
+				graphics.drawRect(left, top, width, height)
+				graphics.endFill();
 			}
 		}
 		
@@ -182,13 +188,16 @@ package view.element
 			ViewUtil.show(selector.scaleRollControl);
 		}
 		
-		
+		/**
+		 */		
 		override public function get isPage():Boolean
 		{
 			return true;
 		}
 		
-		private function get pageVO():PageVO
+		/**
+		 */		
+		override public function get pageVO():PageVO
 		{
 			return vo as PageVO;
 		}

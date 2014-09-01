@@ -3,7 +3,6 @@ package com.kvs.charts.chart2D.bubble
 	import com.kvs.charts.chart2D.core.axis.LinearAxis;
 	import com.kvs.charts.chart2D.core.itemRender.PointRenderBace;
 	import com.kvs.charts.chart2D.core.model.Chart2DModel;
-	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.chart2D.encry.SB;
 	import com.kvs.charts.common.ChartColors;
 	import com.kvs.charts.common.SeriesDataPoint;
@@ -22,6 +21,30 @@ package com.kvs.charts.chart2D.bubble
 			
 			curRenderPattern = new ClassicBubbleRender(this);	
 		}
+		
+		/**
+		 */		
+		override public function set percent(value:Number):void
+		{
+			_percent = value;
+			
+			for each (var item:PointRenderBace in itemRenders)
+			{
+				item.alpha = _percent;
+				item.scaleY = item.scaleX = _percent;
+			}
+		}
+		
+		/**
+		 */		
+		override public function get percent():Number
+		{
+			return _percent;
+		}
+		
+		/**
+		 */		
+		private var _percent:Number = 0;
 		
 		/**
 		 */		

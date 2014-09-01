@@ -5,7 +5,10 @@ package view.interact.interactMode
 	
 	import flash.ui.Mouse;
 	
+	import model.vo.PageVO;
+	
 	import view.element.ElementBase;
+	import view.element.chart.IPlayElement;
 	import view.interact.CoreMediator;
 	
 	/**
@@ -26,19 +29,50 @@ package view.interact.interactMode
 			var ele:ElementBase;
 			var curPage:ElementBase;
 			
-			
-			
-			var eleInPage:ElementBase;
-			
+			var pages:Vector.<ElementBase> = new Vector.<ElementBase>;
+			var players:Vector.<ElementBase> = new Vector.<ElementBase>;
+				
+			var curPageVO:PageVO = 	mainMediator.pageManager.currentPage;
 			for each (ele in elements)
 			{
-				eleInPage = mainMediator.collisionDetection.ifElementIn(ele, curPage);
-				
-				//检测原件在页面内, 并且自身不是页面
-				if (eleInPage && eleInPage != curPage)
+				if (ele.isPage)
 				{
+					if (ele.pageVO == curPageVO)
+						curPage = ele;
 					
+					pages.push(ele);
 				}
+				
+				if (ele is IPlayElement)
+					players.push(ele);
+			}
+			
+			if (curPage)
+			{
+				var eleInPage:ElementBase;
+				
+				for each (ele in elements)
+				{
+					eleInPage = mainMediator.collisionDetection.ifElementIn(ele, curPage);
+					
+					//检测原件在页面内, 并且自身不是页面
+					if (eleInPage)
+						eleInPage.play();
+				}
+				
+				curPage.play();
+			}
+			
+			//没有在页面中的图表要播放
+			for each (var chart:ElementBase in players)
+			{
+				var ifInPage:Object = false;
+				
+				for each (ele in pages)
+					ifInPage = mainMediator.collisionDetection.ifElementIn(chart, ele);
+				
+				if (chart.isPage == false && !ifInPage)	
+					chart.play();
 			}
 		}
 		

@@ -15,7 +15,7 @@ package model.vo
 		{
 			var xml:XML = super.exportData();
 			
-			xml.appendChild(config);
+			xml.appendChild(XML(config.toString()));
 			
 			return xml;
 		}

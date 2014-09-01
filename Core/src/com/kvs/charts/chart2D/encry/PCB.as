@@ -1,5 +1,7 @@
 package com.kvs.charts.chart2D.encry
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Back;
 	import com.kvs.charts.chart2D.core.TitleBox;
 	import com.kvs.charts.chart2D.core.backgound.ChartBGUI;
 	import com.kvs.charts.chart2D.core.events.FiChartsEvent;
@@ -41,14 +43,50 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function resetFlash():void
 		{
+			renderPieSeries(0);
 			
+			if (legendPanel)
+				legendPanel.alpha = 0;
+			
+			_percent = 0;
 		}
 		
 		/**
 		 */		
 		public function flash():void
 		{
+			TweenLite.to(this, 1, {percent:1});
 			
+			if (legendPanel)
+				TweenLite.to(legendPanel, 1, {alpha:1, delay:1});
+		}
+		
+		private var _percent:Number = 0;
+
+		/**
+		 */
+		public function get percent():Number
+		{
+			return _percent;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set percent(value:Number):void
+		{
+			_percent = value;
+			renderPieSeries(_percent);
+		}
+
+		/**
+		 */		
+		public function toFlashEnd():void
+		{
+			renderPieSeries(1);
+			
+			if (legendPanel)
+				legendPanel.alpha = 1;
 		}
 		
 		/**

@@ -42,6 +42,8 @@ package view.editor.chart
 			dataField.addEventListener(Event.PASTE, pastHandler);
 			
 			addChild(dataField);
+			
+			resize();
 		}
 		
 		/**
@@ -419,7 +421,7 @@ package view.editor.chart
 		public function resize():void
 		{
 			this.graphics.clear();
-			this.graphics.beginFill(0, 0);
+			this.graphics.beginFill(0xffffff, 1);
 			this.graphics.drawRect(app.contentRect.x, app.contentRect.y, app.contentRect.width, app.contentRect.height);
 			this.graphics.endFill();
 			
