@@ -59,7 +59,7 @@ package modules.pages.flash
 			var gap:uint = 3;
 			btnsCtner.graphics.clear();
 			var w:Number = btnsCtner.width;
-			var h:Number = btnsCtner.height;
+			var h:Number = 24//btnsCtner.height;
 			
 			//绘制箭头
 			btnsCtner.graphics.beginFill(0x555555);
@@ -115,7 +115,7 @@ package modules.pages.flash
 		 */		
 		private function initBtnStyle(btn:LabelBtn):void
 		{
-			btn.minWidth = 39;
+			btn.minWidth = 42;
 			btn.labelStyleXML = <label vAlign="center" hpadding='2'>
 									<format color='ffffff' font='微软雅黑' size='12' letterSpacing="3"/>
 								</label>
