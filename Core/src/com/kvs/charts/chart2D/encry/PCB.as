@@ -180,7 +180,8 @@ package com.kvs.charts.chart2D.encry
 					renderBG();
 					layout();// 调整布局�计算出饼图位置及半径�
 					
-					openFlash();	
+					//openFlash();	
+					renderPieSeries(1);
 					
 					isRendering = ifSizeChanged = ifDataChanged = ifStyleChanged = false;
 				}

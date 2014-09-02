@@ -1,6 +1,5 @@
 package view.interact
 {
-	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	
 	import commands.Command;
@@ -27,7 +26,6 @@ package view.interact
 	import view.element.ElementBase;
 	import view.element.GroupElement;
 	import view.element.IElement;
-	import view.element.chart.ChartElement;
 	import view.element.imgElement.ImgElement;
 	import view.element.text.TextEditField;
 	import view.elementSelector.ElementSelector;

@@ -13,6 +13,7 @@ package view.interact.interactMode
 	import util.LayoutUtil;
 	
 	import view.element.ElementBase;
+	import view.element.PageElement;
 	import view.interact.CoreMediator;
 	
 	/**
@@ -137,10 +138,13 @@ package view.interact.interactMode
 			//将页面内的基本原件交给flasherholder临时管理
 			for each (ele in elements)
 			{
-				eleInPage = mainMediator.collisionDetection.ifElementIn(ele, curPage);
+				if (ele == curPage && !(ele is PageElement))
+					eleInPage = ele;
+				else
+					eleInPage = mainMediator.collisionDetection.ifElementIn(ele, curPage);
 				
 				//检测原件在页面内, 并且自身不是页面
-				if (eleInPage && eleInPage != curPage)
+				if (eleInPage)
 				{
 					fh = new FlasherHolder(eleInPage, mainMediator, this);
 					

@@ -3,14 +3,17 @@ package landray.kp.maps.main.elements
 	import com.kvs.charts.chart2D.encry.CSB;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	
+	import flash.display.DisplayObject;
+	
 	import model.vo.ChartVO;
 	import model.vo.ElementVO;
 	
 	import view.element.chart.Chart2D;
+	import view.element.chart.IChartElement;
 	
 	/**
 	 */	
-	public class ChartElement extends Element
+	public class ChartElement extends Element implements IChartElement
 	{
 		public function ChartElement($vo:ElementVO)
 		{
@@ -18,6 +21,27 @@ package landray.kp.maps.main.elements
 			
 			chart = new Chart2D;
 			addChild(chart);
+		}
+		
+		/**
+		 */		
+		public function resetFlash():void
+		{
+			chart.chart.resetFlash();
+		}
+		
+		/**
+		 */		
+		public function flash():void
+		{
+			chart.chart.flash();
+		}
+		
+		/**
+		 */		
+		public function toFlashEnd():void
+		{
+			chart.chart.toFlashEnd();
 		}
 		
 		/**
@@ -38,6 +62,13 @@ package landray.kp.maps.main.elements
 			chart.y = - chart.height / 2;
 			
 			XMLVOLib.unsetLib();
+		}
+		
+		/**
+		 */		
+		override public function get shape():DisplayObject
+		{
+			return chart;
 		}
 		
 		/**

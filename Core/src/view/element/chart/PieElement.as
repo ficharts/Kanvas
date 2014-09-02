@@ -2,7 +2,9 @@ package view.element.chart
 {
 	import model.vo.ElementVO;
 	
-	public class PieElement extends ChartElement
+	/**
+	 */	
+	public class PieElement extends ChartElement implements IChartElement
 	{
 		public function PieElement(vo:ElementVO)
 		{

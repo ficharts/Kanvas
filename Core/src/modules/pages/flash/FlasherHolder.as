@@ -7,6 +7,7 @@ package modules.pages.flash
 	import flash.events.MouseEvent;
 	
 	import view.element.ElementBase;
+	import view.element.chart.IChartElement;
 	import view.interact.CoreMediator;
 	import view.interact.interactMode.PageEditMode;
 	
@@ -93,36 +94,47 @@ package modules.pages.flash
 		 */		
 		private function initFlashBtns():void
 		{
-			flashInBtn.minWidth = flashOutBtn.minWidth = 39;
-			flashInBtn.labelStyleXML = flashOutBtn.labelStyleXML = <label vAlign="center" hpadding='2'>
-														                <format color='ffffff' font='黑体' size='12' letterSpacing="3"/>
-														            </label>
+			initBtnStyle(flashInBtn);
+			initBtnStyle(flashOutBtn);
 			
-			flashInBtn.bgStyleXML = flashOutBtn.bgStyleXML = <states>
-																<normal>
-																	<fill color='#1b7ed1' alpha='0'/>
-																</normal>
-																<hover>
-																	<fill color='#68a9df' alpha='1'/>
-																</hover>
-																<down>
-																	<fill color='#1b7ed1' alpha='1' angle="90"/>
-																</down>
-															</states>
-			
-				
 			flashInBtn.text = "淡入";
 			flashOutBtn.text = "淡出";
 			
-			flashInBtn.render();
-			flashOutBtn.render();
-			flashOutBtn.x = flashInBtn.width + 2;
+			if (ele is IChartElement)
+			{
+				chartBtn.text = "图表";
+				initBtnStyle(chartBtn);
+			}
 			
-			btnsCtner.addChild(flashInBtn);
-			btnsCtner.addChild(flashOutBtn);
 			btnsCtner.visible = false;
 			addChild(btnsCtner);
 			btnsCtner.addEventListener(MouseEvent.CLICK, flashBtnClicked);
+		}
+		
+		/**
+		 */		
+		private function initBtnStyle(btn:LabelBtn):void
+		{
+			btn.minWidth = 39;
+			btn.labelStyleXML = <label vAlign="center" hpadding='2'>
+									<format color='ffffff' font='微软雅黑' size='12' letterSpacing="3"/>
+								</label>
+			
+			btn.bgStyleXML = <states>
+								<normal>
+									<fill color='#1b7ed1' alpha='0'/>
+								</normal>
+								<hover>
+									<fill color='#68a9df' alpha='1'/>
+								</hover>
+								<down>
+									<fill color='#1b7ed1' alpha='1' angle="90"/>
+								</down>
+							</states>
+				
+			btn.x = btnsCtner.width + 2;
+			btn.render();
+			btnsCtner.addChild(btn);
 		}
 		
 		/**
@@ -131,7 +143,10 @@ package modules.pages.flash
 		private var flashOutBtn:LabelBtn = new LabelBtn;
 		
 		/**
-		 * 
+		 */		
+		private var chartBtn:LabelBtn = new LabelBtn;
+		
+		/**
 		 */		
 		private var btnsCtner:Sprite = new Sprite;
 			
@@ -177,6 +192,8 @@ package modules.pages.flash
 					f = new FlashIn();
 				else if (curFlashBtn == flashOutBtn)
 					f = new FlashOut();
+				else if (curFlashBtn == chartBtn)
+					f = new FlashChart();
 				
 				f.element = ele;
 				f.elementID = ele.vo.id;
@@ -210,6 +227,7 @@ package modules.pages.flash
 		}
 		
 		/**
+		 * 点击原件，默认被添加的动画
 		 */		
 		private function clickEle(evt:MouseEvent):void
 		{
@@ -223,10 +241,20 @@ package modules.pages.flash
 			}
 			else
 			{
-				curFlashBtn = flashInBtn;
+				var f:IFlash;
+				if (ele is IChartElement)
+				{
+					curFlashBtn = chartBtn;
+					f = new FlashChart();
+				}
+				else
+				{
+					curFlashBtn = flashInBtn;
+					f = new FlashIn;
+				}
+				
 				curFlashBtn.selected();
 				
-				var f:FlashIn = new FlashIn();
 				f.element = ele;
 				f.elementID = ele.vo.id;
 				
@@ -260,6 +288,8 @@ package modules.pages.flash
 				curFlashBtn = flashInBtn;
 			else if (flasher is FlashOut)
 				curFlashBtn = flashOutBtn;
+			else if (flasher is FlashChart)
+				curFlashBtn = chartBtn;
 			
 			curFlashBtn.selected();
 		}
