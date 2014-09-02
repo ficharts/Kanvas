@@ -85,17 +85,22 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function resetFlash():void
 		{
+			this.visible = false;
+			
 			for each (var seriesItem:SB in chartSeries)
 				seriesItem.percent = 0;
 			
 			chartCanvas.valueLabelsCanvas.alpha = 0;
 			chartCanvas.itemRenderCanvas.alpha = 0;
+			
 		}
 		
 		/**
 		 */		
 		public function flash():void
 		{
+			this.visible = true;
+			
 			for each (var seriesItem:SB in chartSeries)
 			{
 				if (seriesItem is BubbleSeries || seriesItem is MarkerSeries)
@@ -112,6 +117,8 @@ package com.kvs.charts.chart2D.encry
 		 */		
 		public function toFlashEnd():void
 		{
+			this.visible = true;
+			
 			for each (var seriesItem:SB in chartSeries)
 				seriesItem.percent = 1;
 				
@@ -344,7 +351,7 @@ package com.kvs.charts.chart2D.encry
 		{
 			this.chartModel.axis.changed = chartModel.series.changed = ifDataChanged = isRendering = false;
 			
-			this.currentPattern.renderEnd();
+			//this.currentPattern.renderEnd();
 			
 			GC.run();
 		}

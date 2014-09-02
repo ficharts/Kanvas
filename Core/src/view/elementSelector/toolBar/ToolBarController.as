@@ -170,7 +170,7 @@
 		
 		/**
 		 */		
-		private function _zoomPage():void
+		private function _zoomPage(off:uint = 0):void
 		{
 			var selector:ElementSelector = selector;
 			
@@ -180,7 +180,7 @@
 			else
 				pageVO = selector.element.vo as PageVO;
 			
-			selector.coreMdt.zoomMoveControl.zoomElement(pageVO);
+			selector.coreMdt.zoomMoveControl.zoomElement(pageVO, off);
 			selector.coreMdt.sendNotification(Command.UN_SELECT_ELEMENT);
 		}
 		
@@ -193,7 +193,7 @@
 			(selector.coreMdt.pageEditMode as PageEditMode).curPage = selector.element;
 			selector.coreMdt.restoryCanvasState();
 			
-			_zoomPage();
+			_zoomPage(15);//防止动画编辑按钮顶部被遮住
 			selector.coreMdt.toPageEditMode();
 			
 			selector.coreMdt.mainUI.dispatchEvent(new KVSEvent(KVSEvent.TO_PAGE_EDIT));

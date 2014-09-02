@@ -19,6 +19,7 @@ package model
 	import model.vo.PageVO;
 	
 	import modules.pages.PageEvent;
+	import modules.pages.flash.FlashChart;
 	import modules.pages.flash.FlashIn;
 	import modules.pages.flash.FlashOut;
 	import modules.pages.flash.IFlash;
@@ -460,6 +461,8 @@ package model
 						f = new FlashIn();
 					else if (nodeN == "flashOut")
 						f = new FlashOut();
+					else if (nodeN == "flashChart")
+						f = new FlashChart();
 					else
 						f = new FlashIn();
 						

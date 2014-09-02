@@ -11,6 +11,7 @@ package landray.kp.manager
 	
 	import modules.pages.IPageManager;
 	import modules.pages.PageQuene;
+	import modules.pages.flash.FlashChart;
 	import modules.pages.flash.FlashIn;
 	import modules.pages.flash.FlashOut;
 	import modules.pages.flash.IFlash;
@@ -234,6 +235,8 @@ package landray.kp.manager
 						f = new FlashIn();
 					else if (nodeN == "flashOut")
 						f = new FlashOut();
+					else if (nodeN == "flashChart")
+						f = new FlashChart();
 					else
 						f = new FlashIn();
 					

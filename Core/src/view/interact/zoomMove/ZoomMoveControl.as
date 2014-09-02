@@ -52,12 +52,12 @@ package view.interact.zoomMove
 		/**
 		 * 将镜头对焦到元素上
 		 */		
-		public function zoomElement(elementVO:ElementVO):void
+		public function zoomElement(elementVO:ElementVO,yOff:uint = 0):void
 		{
 			if (elementVO)
 			{
 				var scene:Scene = PageUtil.getSceneFromVO(elementVO, mainUI);
-				zoomRotateMoveTo(scene.scale, scene.rotation, scene.x, scene.y);
+				zoomRotateMoveTo(scene.scale, scene.rotation, scene.x, scene.y + yOff);
 			}
 		}
 		
