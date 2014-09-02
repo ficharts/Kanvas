@@ -25,6 +25,16 @@ package view.interact.interactMode
 		}
 		
 		/**
+		 */		
+		override public function flashing():void
+		{
+			super.flashing();
+			
+			updateSelector();
+			mainMediator.coreApp.updatePastPoint();
+		}
+		
+		/**
 		 * 对焦到被选择的元素
 		 */		
 		override public function autoZoom():void
@@ -40,6 +50,7 @@ package view.interact.interactMode
 		override public function drawShotFrame():void
 		{
 			return;//暂时只保留
+			
 			var layout:ElementVO = mainMediator.layoutTransformer.getLayoutInfo(mainMediator.currentElement);
 			var tx:Number = layout.x + ((mainMediator.currentElement is LineElement) ? 0 : - layout.width / 2);
 			var ty:Number = layout.y - layout.height / 2;

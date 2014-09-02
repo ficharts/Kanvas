@@ -19,6 +19,14 @@ package view.interact.interactMode
 		
 		/**
 		 */		
+		override public function toPlayMode():void
+		{
+			mainMediator.currentMode = mainMediator.playMode;
+			mainMediator.previewCliker.enable = false;
+		}
+		
+		/**
+		 */		
 		override public function playElement():void
 		{
 			

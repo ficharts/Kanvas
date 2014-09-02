@@ -535,6 +535,7 @@ package view.interact
 		public var selectedMode:ModeBase;
 		public var unSelectedMode:ModeBase;
 		public var preMode:ModeBase;
+		public var playMode:ModeBase;
 		
 		/**
 		 */		
@@ -644,6 +645,7 @@ package view.interact
 			chartEditMode = new ChartEditMode(this);
 			
 			preMode = new PrevMode(this);
+			playMode = new PlayMode(this);
 			
 			currentMode = unSelectedMode;
 			
@@ -833,8 +835,6 @@ package view.interact
 				{
 					if (element is ImgElement)
 						ImgElement(element).smooth = false;
-					//else if (element is TextEditField)
-						//TextEditField(element).smooth = false;
 				}
 			}
 		}
@@ -844,27 +844,7 @@ package view.interact
 		public function flashing():void
 		{
 			if (treking)
-			{
-				if (currentMode != preMode) 
-				{
-					currentMode.updateSelector();
-					collisionDetection.updateAfterZoomMove();
-					coreApp.updatePastPoint();
-				}
-				//检测，重绘文本， 以达到像素精度不失真
-				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements, element:ElementBase;
-				for each (element in elements)
-				{
-					if (element.visible)
-					{
-						if (element.isPage)
-							element.layoutPageNum();
-						if (element is TextEditField)
-							TextEditField(element).checkTextBm();
-					}
-				}
-			}
-			
+				currentMode.flashing();
 		}
 		
 		/**
@@ -874,31 +854,10 @@ package view.interact
 			if (treking)
 			{
 				treking = false;
-				mainUI.curScreenState.enableCanvas();
-				//zoomMoveControl.enableBGInteract();//生效会导致动画编辑时背景可被拖动
-				
-				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-				for each (var element:ElementBase in elements)
-				{
-					if (element is ImgElement)
-						ImgElement(element).smooth = true;
-				}
-				
-				//动画结束后再初始化页面动画，防止位置计算偏差，因为动画会让画布布局改变一下
-				if (currentMode == pageEditMode)
-					(pageEditMode as PageEditMode).init();
-				
-				playElementInPage();
+				currentMode.flashStop();
 			}
 		}
 		
-		/**
-		 * 演示模式下，页面动画结束时，播放元素内部动画(视频播放/图表动画)
-		 */		
-		private function playElementInPage():void
-		{
-			currentMode.playElement();
-		}
 		
 		/**
 		 */		

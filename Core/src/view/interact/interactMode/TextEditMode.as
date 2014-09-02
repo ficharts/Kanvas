@@ -17,8 +17,19 @@ package view.interact.interactMode
 		
 		/**
 		 */		
+		override public function flashing():void
+		{
+			super.flashing();
+			
+			updateSelector();
+			mainMediator.coreApp.updatePastPoint();
+		}
+		
+		/**
+		 */		
 		override public function selectAll():void
 		{
+			
 		}
 		
 		/**

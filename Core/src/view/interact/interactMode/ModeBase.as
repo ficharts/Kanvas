@@ -8,6 +8,8 @@ package view.interact.interactMode
 	import model.vo.PageVO;
 	
 	import view.element.ElementBase;
+	import view.element.imgElement.ImgElement;
+	import view.element.text.TextEditField;
 	import view.interact.CoreMediator;
 
 	/**
@@ -57,6 +59,42 @@ package view.interact.interactMode
 		public function ModeBase(mainMediator:CoreMediator)
 		{
 			this.mainMediator = mainMediator;
+		}
+		
+		/**
+		 */		
+		public function flashing():void
+		{
+			//检测，重绘文本， 以达到像素精度不失真
+			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements, element:ElementBase;
+			for each (element in elements)
+			{
+				if (element.visible)
+				{
+					if (element.isPage)
+						element.layoutPageNum();
+					
+					if (element is TextEditField)
+						TextEditField(element).checkTextBm();
+				}
+			}
+			
+			mainMediator.collisionDetection.updateAfterZoomMove();
+		}
+		
+		/**
+		 */		
+		public function flashStop():void
+		{
+			mainMediator.mainUI.curScreenState.enableCanvas();
+			//zoomMoveControl.enableBGInteract();//生效会导致动画编辑时背景可被拖动
+			
+			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
+			for each (var element:ElementBase in elements)
+			{
+				if (element is ImgElement)
+					ImgElement(element).smooth = true;
+			}
 		}
 		
 		/**
@@ -326,6 +364,13 @@ package view.interact.interactMode
 		/**
 		 */		
 		public function toPrevMode():void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function toPlayMode():void
 		{
 			
 		}

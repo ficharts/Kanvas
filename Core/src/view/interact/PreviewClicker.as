@@ -13,10 +13,12 @@ package view.interact
 	import flash.utils.Timer;
 	
 	import model.vo.ElementVO;
+	import model.vo.SWFVO;
 	import model.vo.TextVO;
 	
 	import util.LayoutUtil;
 	
+	import view.element.imgElement.SWFElement;
 	import view.interact.zoomMove.GestureControl;
 	import view.ui.ICanvasLayout;
 	import view.ui.IMainUIMediator;
@@ -133,6 +135,11 @@ package view.interact
 						flash.net.navigateToURL(new URLRequest(t), "_blank");
 						return;
 					}
+				}
+				else if (elementVO is SWFVO)
+				{
+					
+					return;
 				}
 				
 				mdt.zoomElement(elementVO);

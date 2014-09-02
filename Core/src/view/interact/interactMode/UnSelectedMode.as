@@ -19,6 +19,14 @@ package view.interact.interactMode
 			super(mainMediator);
 		}
 		
+		/**
+		 */		
+		override public function flashing():void
+		{
+			super.flashing();
+			
+			mainMediator.coreApp.updatePastPoint();
+		}
 		
 		/**
 		 */		
