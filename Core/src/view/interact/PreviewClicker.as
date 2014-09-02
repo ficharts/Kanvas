@@ -2,7 +2,6 @@ package view.interact
 {
 	import com.kvs.ui.clickMove.ClickMoveControl;
 	import com.kvs.ui.clickMove.IClickMove;
-	import com.kvs.utils.XMLConfigKit.style.Text;
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -14,7 +13,6 @@ package view.interact
 	import flash.utils.Timer;
 	
 	import model.vo.ElementVO;
-	import model.vo.PageVO;
 	import model.vo.TextVO;
 	
 	import util.LayoutUtil;
@@ -48,25 +46,31 @@ package view.interact
 		{
 			if (enable && !GestureControl.gestureControl)
 			{
-				if (mdt.pages.length && mdt.mainUI.stage.mouseX < 150 || mdt.mainUI.stage.mouseX > (mdt.mainUI.stage.stageWidth - 150))
+				if (mdt.pagesMnger.length && mdt.mainUI.stage.mouseX < 150 || mdt.mainUI.stage.mouseX > (mdt.mainUI.stage.stageWidth - 150))
 				{
 					if (mdt.mainUI.stage.mouseX < 150)
 					{
 						if (mdt.mainUI.stage.mouseX > 100 || mdt.mainUI.stage.mouseY < (mdt.mainUI.stage.stageHeight - 100))
 						{
-							try{
+							try
+							{
 								Object(mdt.mainUI).interact.show(0, 0, 150, mdt.mainUI.stage.stageHeight);
-							} catch (e:Error) { }
-							callLater(mdt.pages.prev);
+							} 
+							catch (e:Error) { }
+							
+							callLater(mdt.prev);
 							//mdt.pages.prev();
 						}
 					}
 					else
 					{
-						try{
+						try
+						{
 							Object(mdt.mainUI).interact.show((mdt.mainUI.stage.stageWidth - 150), 0, 150, mdt.mainUI.stage.stageHeight);
-						} catch (e:Error) { }
-						callLater(mdt.pages.next);
+						} 
+						catch (e:Error) { }
+						
+						callLater(mdt.next);
 						//mdt.pages.next();
 					}
 				}

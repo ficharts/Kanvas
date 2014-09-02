@@ -193,12 +193,6 @@ package view.interact.interactMode
 		{
 			
 		}
-				
-		/**
-		 */		
-		public function moveOff(xOff:Number, yOff:Number):void
-		{
-		}
 		
 		/**
 		 * 选择状态下，移动元素时同步更新选择器位置
@@ -226,6 +220,20 @@ package view.interact.interactMode
 		 * 选择和编辑模式下有效
 		 */		
 		public function esc():void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function prev(xOff:Number, yOff:Number):void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function next(xOff:Number, yOff:Number):void
 		{
 			
 		}

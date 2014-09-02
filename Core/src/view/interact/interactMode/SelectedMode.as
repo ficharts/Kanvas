@@ -61,7 +61,21 @@ package view.interact.interactMode
 		/**
 		 * 由键盘控制的图形移动
 		 */		
-		override public function moveOff(xOff:Number, yOff:Number):void
+		override public function prev(xOff:Number, yOff:Number):void
+		{
+			moveOff(xOff, yOff);
+		}
+		
+		/**
+		 */		
+		override public function next(xOff:Number, yOff:Number):void
+		{
+			moveOff(xOff, yOff);
+		}
+		
+		/**
+		 */		
+		private function moveOff(xOff:Number, yOff:Number):void
 		{
 			var oldPropertyObj:Object = {};
 			oldPropertyObj.x = mainMediator.selector.element.x;

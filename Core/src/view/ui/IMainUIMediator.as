@@ -31,7 +31,18 @@ package view.ui
 		 */		
 		function get mainUI():MainUIBase;
 		
-		function get pages():IPageManager;
+		/**
+		 */		
+		function get pagesMnger():IPageManager;
+		
+		/**
+		 * 承载着翻页，平移原件的功能
+		 */		
+		function prev(xOff:Number = 0, yOff:Number = 0):void;
+		
+		/**
+		 */		
+		function next(xOff:Number = 0, yOff:Number = 0):void;
 		
 		/**
 		 * 

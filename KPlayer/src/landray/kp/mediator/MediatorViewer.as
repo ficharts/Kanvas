@@ -46,6 +46,20 @@ package landray.kp.mediator
 		
 		/**
 		 */		
+		public function prev(xOff:Number = 0, yOff:Number = 0):void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function next(xOff:Number = 0, yOff:Number = 0):void
+		{
+			
+		}
+		
+		/**
+		 */		
 		public function setPageIndex(value:int):void
 		{
 			pageManager.index = value;
@@ -396,7 +410,7 @@ package landray.kp.mediator
 			return this.viewer;
 		}
 		
-		public function get pages():IPageManager
+		public function get pagesMnger():IPageManager
 		{
 			return config.kp_internal::pageManager;
 		}

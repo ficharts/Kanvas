@@ -28,6 +28,7 @@ package view.interact.interactMode
 		 */		
 		override public function autoZoom():void
 		{
+			mainMediator.pageManager.reset();
 			mainMediator.sendNotification(Command.AUTO_ZOOM);
 		}
 		

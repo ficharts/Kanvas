@@ -203,9 +203,18 @@ package view.interact
 			currentMode.esc();
 		}
 		
-		public function moveOff(xOff:Number, yOff:Number):void
+		/**
+		 */		
+		public function prev(xOff:Number = 0, yOff:Number = 0):void
 		{
-			currentMode.moveOff(xOff, yOff);
+			currentMode.prev(xOff, yOff);
+		}
+		
+		/**
+		 */		
+		public function next(xOff:Number = 0, yOff:Number = 0):void
+		{
+			currentMode.next(xOff, yOff);
 		}
 		
 		/**
@@ -579,7 +588,7 @@ package view.interact
 		
 		public var pageManager:PageManager;
 		
-		public function get pages():IPageManager
+		public function get pagesMnger():IPageManager
 		{
 			return pageManager;
 		}

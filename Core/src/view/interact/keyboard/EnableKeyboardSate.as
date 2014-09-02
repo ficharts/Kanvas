@@ -183,47 +183,32 @@ package view.interact.keyboard
 					break;
 				
 				case Keyboard.PAGE_UP:
-					if (mainUIMediator.currentMode is PrevMode)
-						mainUIMediator.pageManager.prev();
+						mainUIMediator.prev();
 					break;
 				
 				case Keyboard.PAGE_DOWN:
-					if (mainUIMediator.currentMode is PrevMode)
-						mainUIMediator.pageManager.next();
+						mainUIMediator.next();
 					break;
 				
 				case Keyboard.UP:
-					if (mainUIMediator.currentMode is PrevMode)
-						mainUIMediator.pageManager.prev();
-					else
-						mainUIMediator.moveOff(0, (evt.shiftKey) ? -5 : -1);
+						mainUIMediator.prev(0, (evt.shiftKey) ? -5 : -1);
 					break;
 				
 				case Keyboard.DOWN:
-					if (mainUIMediator.currentMode is PrevMode)
-						mainUIMediator.pageManager.next();
-					else
-						mainUIMediator.moveOff(0, (evt.shiftKey) ?  5 :  1);
+						mainUIMediator.next(0, (evt.shiftKey) ?  5 :  1);
 					break;
 				
 				case Keyboard.LEFT:
-					if (mainUIMediator.currentMode is PrevMode)
-						mainUIMediator.pageManager.prev();
-					else
-						mainUIMediator.moveOff((evt.shiftKey) ? -5 : - 1, 0);
+						mainUIMediator.prev((evt.shiftKey) ? -5 : - 1, 0);
 					break;
 				
 				case Keyboard.RIGHT:
-					if (mainUIMediator.currentMode is PrevMode)
-						mainUIMediator.pageManager.next();
-					else
-						mainUIMediator.moveOff((evt.shiftKey) ?  5 :  1, 0);
+						mainUIMediator.next((evt.shiftKey) ?  5 :  1, 0);
 					break;
 				
 				case Keyboard.SPACE:
 					if (!evt.ctrlKey)
 					{
-						mainUIMediator.pageManager.reset();
 						mainUIMediator.autoZoom();
 					}
 					
