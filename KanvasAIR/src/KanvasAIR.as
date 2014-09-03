@@ -6,6 +6,7 @@ package
 	import commands.Command;
 	import commands.DelImageFromAIRCMD;
 	import commands.InsertIMGFromAIR;
+	import commands.InsertVideoCommand;
 	
 	import flash.desktop.Clipboard;
 	import flash.desktop.ClipboardFormats;
@@ -59,6 +60,9 @@ package
 			CoreFacade.inserImgCommad = InsertIMGFromAIR;
 			CoreFacade.insertBgCommand = ChangeBgImgAIR;
 			CoreFacade.delImgCommad = DelImageFromAIRCMD;
+			
+			CoreFacade.instance.registerCommand(Command.INSERT_VIDEO, InsertVideoCommand);
+			
 			
 			FlowTextManager.ifUseEmbedFont = true;
 			kvsCore.addEventListener(KVSEvent.SAVE, saveHandler);
@@ -307,6 +311,11 @@ package
 					{
 						if (this.templatePanel.isOpen == false || airAPI.file)
 							CoreFacade.sendNotification(Command.INSERT_IMAGE, f);
+					}
+					else if (extension == "flv" || extension == "mp4")
+					{
+						if (this.templatePanel.isOpen == false || airAPI.file)
+							CoreFacade.sendNotification(Command.INSERT_VIDEO, f);
 					}
 					else
 					{

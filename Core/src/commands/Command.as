@@ -10,6 +10,11 @@ package commands
 	 */	
 	public class Command extends SimpleCommand implements ICommand
 	{
+		
+		/**
+		 */		
+		public static const INSERT_VIDEO:String = "insertVideo";
+		
 		/**
 		 * 
 		 */		
