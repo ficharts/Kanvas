@@ -22,6 +22,26 @@ package com.kvs.charts.common
 		
 		/**
 		 */		
+		public function clone():ChartDataFormatter
+		{
+			var format:ChartDataFormatter = new ChartDataFormatter;
+			format.xPrefix = this.xPrefix;
+			format.xSuffix = this.xSuffix;
+			
+			format.yPrefix = this.yPrefix;
+			format.ySuffix = this.ySuffix;
+			
+			format.zPrefix = this.zPrefix;
+			format.zSuffix = this.zSuffix;
+			
+			format.precision = this.precision;
+			format.useGrouping = this.useGrouping;
+			
+			return format;
+		}
+		
+		/**
+		 */		
 		public function formatXString(value:Object):String
 		{
 			return this.xPrefix + value +  xSuffix;

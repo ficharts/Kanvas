@@ -44,7 +44,13 @@ package model.vo
 		public function set config(value:Object):void
 		{
 			_config = value;
+			
+			ifDataChanged = true;
 		}
+		
+		/**
+		 */		
+		public var ifDataChanged:Boolean = false;
 
 	}
 		

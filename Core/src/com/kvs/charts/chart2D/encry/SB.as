@@ -32,6 +32,8 @@ package com.kvs.charts.chart2D.encry
 	import com.kvs.utils.XMLConfigKit.style.elements.IStyleElement;
 	
 	import flash.display.Sprite;
+	
+	import view.editor.chart.SeriesProxy;
 
 	/**
 	 * 序列的基�
@@ -48,6 +50,67 @@ package com.kvs.charts.chart2D.encry
 			addChild(canvas);
 		}
 		
+		/**
+		 */		
+		public function get proxy():SeriesProxy
+		{
+			var proxy:SeriesProxy = new SeriesProxy;
+			proxy.type = this.type;
+			
+			
+			
+			return proxy;
+		}
+		
+		/**
+		 * 设置坐标轴的格式
+		 * 
+		 * 除了全局数据格式，序列也可以单独定义自己的数据格式
+		 */		
+		public function resetAxisFormat():void
+		{
+			// 这里目前仅仅定义了数值方向上的格式
+			
+			if (RexUtil.ifHasText(valuePrefix))
+				verticalAxis.dataFormatter.yPrefix = valuePrefix;
+			
+			if (RexUtil.ifHasText(valueSuffix))
+				verticalAxis.dataFormatter.ySuffix = valueSuffix;
+		}
+		
+		/**
+		 */		
+		private var _valuePrefix:String
+		
+		/**
+		 */
+		public function get valuePrefix():String
+		{
+			return _valuePrefix;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set valuePrefix(value:String):void
+		{
+			_valuePrefix = value;
+		}
+		
+		/**
+		 */		
+		private var _valueSuffix:String
+
+		public function get valueSuffix():String
+		{
+			return _valueSuffix;
+		}
+
+		public function set valueSuffix(value:String):void
+		{
+			_valueSuffix = value;
+		}
+
 		/**
 		 */		
 		public function setColor(colorMng:ChartColors):void

@@ -8,18 +8,11 @@ package com.kvs.charts.chart2D.core.axis
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
 	import com.kvs.utils.XMLConfigKit.style.elements.BorderLine;
-	import com.kvs.utils.graphic.BitmapUtil;
-	import com.kvs.utils.graphic.TextBitmapUtil;
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.DisplayObject;
-	import flash.display.PixelSnapping;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.geom.Matrix;
 
 	/**
 	 * 坐标轴的基类，主要负责绘制坐标轴，具体计算都由不同类型的轴负�
@@ -1029,7 +1022,7 @@ package com.kvs.charts.chart2D.core.axis
 		{
 			// 默认采用全局配置�也可单独配置�
 			if (this._dataFormatter == null)
-				_dataFormatter = value;
+				_dataFormatter = value.clone();
 		}
 		
 		

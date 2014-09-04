@@ -103,18 +103,23 @@ package view.element.chart
 		{
 			super.render();
 			
-			chart.setLib();
-			
 			chart.width = chartVO.width;
 			chart.height = chartVO.height;
 			
-			chart.setConfigXML(chartVO.config.toString());
-			chart.render();
-			
+			//if (chartVO.ifDataChanged)
+			//{
+				chart.setLib();
+				
+				chart.setConfigXML(chartVO.config.toString());
+				chart.render();
+				
+				XMLVOLib.unsetLib();
+				
+				chartVO.ifDataChanged = false;
+			//}
+				
 			chart.x = - chart.width / 2;
 			chart.y = - chart.height / 2;
-			
-			XMLVOLib.unsetLib();
 			
 			if (ifSizing)
 			{

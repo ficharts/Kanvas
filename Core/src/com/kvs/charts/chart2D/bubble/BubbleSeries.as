@@ -11,6 +11,9 @@ package com.kvs.charts.chart2D.bubble
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	
+	import view.editor.chart.BubbleSeriesProxy;
+	import view.editor.chart.SeriesProxy;
+	
 	/**
 	 */	
 	public class BubbleSeries extends SB
@@ -20,6 +23,14 @@ package com.kvs.charts.chart2D.bubble
 			super();
 			
 			curRenderPattern = new ClassicBubbleRender(this);	
+		}
+		
+		override public function get proxy():SeriesProxy
+		{
+			var proxy:SeriesProxy = new BubbleSeriesProxy;
+			proxy.type = this.type;
+			
+			return proxy;
 		}
 		
 		/**

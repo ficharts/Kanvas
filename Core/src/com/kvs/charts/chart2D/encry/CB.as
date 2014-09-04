@@ -898,6 +898,8 @@ package com.kvs.charts.chart2D.encry
 				{
 					seriesItem.horizontalAxis = getAxisByID(seriesItem.xAxis, this.hAxises);
 					seriesItem.verticalAxis = getAxisByID(seriesItem.yAxis, this.vAxises);
+					seriesItem.resetAxisFormat();//坐标轴默认采用全局数据格式，每个序列也可以重写自己的数据格式
+					
 					
 					if (seriesItem is BubbleSeries)
 					{

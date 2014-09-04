@@ -1,6 +1,8 @@
 package com.kvs.charts.chart2D.encry
 {
 	import com.kvs.charts.common.SeriesDataPoint;
+	
+	import view.editor.chart.SeriesProxy;
 
 	/**
 	 *
@@ -11,6 +13,14 @@ package com.kvs.charts.chart2D.encry
 	 */	
 	public interface ISeries
 	{
+		/**
+		 */		
+		function get proxy():SeriesProxy
+		
+		/**
+		 */		
+		function get yAxis():String
+			
 		/**
 		 * 
 		 * 获取序列的节点数据，节点数据包含了详细的信息

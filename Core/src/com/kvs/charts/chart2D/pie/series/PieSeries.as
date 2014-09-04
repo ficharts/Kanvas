@@ -3,6 +3,7 @@ package com.kvs.charts.chart2D.pie.series
 	import com.kvs.charts.chart2D.core.itemRender.ItemRenderEvent;
 	import com.kvs.charts.chart2D.encry.ISeries;
 	import com.kvs.charts.chart2D.pie.PieChartModel;
+	import com.kvs.charts.chart2D.pie.PieChartProxy;
 	import com.kvs.charts.chart2D.pie.PieDataFormatter;
 	import com.kvs.charts.common.ChartColors;
 	import com.kvs.charts.common.SeriesDataPoint;
@@ -22,6 +23,9 @@ package com.kvs.charts.chart2D.pie.series
 	import com.kvs.utils.XMLConfigKit.style.elements.IStyleElement;
 	
 	import flash.display.Sprite;
+	
+	import view.editor.chart.PieSeriesProxy;
+	import view.editor.chart.SeriesProxy;
 
 	/**
 	 */	
@@ -30,6 +34,31 @@ package com.kvs.charts.chart2D.pie.series
 		public function PieSeries()
 		{
 			addChild(canvas);
+		}
+		
+		/**
+		 */		
+		public function get proxy():SeriesProxy
+		{
+			var proxy:SeriesProxy = new PieSeriesProxy;
+			proxy.type = this.type;
+			
+			
+			return proxy;
+		}
+		
+		/**
+		 */		
+		public function get yAxis():String
+		{
+			return null;
+		}
+			
+		/**
+		 */			
+		public function get valueSuffix():String
+		{
+			return null;
 		}
 		
 		/**
