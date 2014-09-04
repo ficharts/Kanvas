@@ -10,10 +10,14 @@ package com.kvs.charts.chart2D.bar
 	import com.kvs.charts.chart2D.core.series.ISeriesRenderPattern;
 	import com.kvs.charts.common.ChartColors;
 	import com.kvs.charts.common.SeriesDataPoint;
+	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
+	
+	import view.editor.chart.BarSeriesProxy;
+	import view.editor.chart.SeriesProxy;
 	
 	/**
 	 */	
@@ -26,6 +30,28 @@ package com.kvs.charts.chart2D.bar
 			curRenderPattern = new ClassicBarRender(this)
 			
 			this.value = 'xValue';
+		}
+		
+		/**
+		 */		
+		override public function get proxy():SeriesProxy
+		{
+			var proxy:SeriesProxy = new BarSeriesProxy;
+			proxy.type = this.type;
+			
+			return proxy;
+		}
+		
+		/**
+		 */		 	
+		override public function resetAxisFormat():void
+		{
+			// 这里目前仅仅定义了数值方向上的格式
+			if (RexUtil.ifHasText(yAxis))
+				horizontalAxis.dataFormatter.xPrefix = valuePrefix;
+			
+			if (RexUtil.ifHasText(valueSuffix))
+				horizontalAxis.dataFormatter.xSuffix = valueSuffix;
 		}
 		
 		/**

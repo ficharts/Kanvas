@@ -15,6 +15,9 @@ package com.kvs.charts.chart2D.column2D.stack
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
 	import com.kvs.utils.XMLConfigKit.style.LabelStyle;
 	
+	import view.editor.chart.SeriesProxy;
+	import view.editor.chart.StackedColumnProxy;
+	
 	/**
 	 * 堆积序列群组类；
 	 * 
@@ -28,6 +31,16 @@ package com.kvs.charts.chart2D.column2D.stack
 			super();
 			
 			curRenderPattern = new ClassicStackedColumnRender(this);
+		}
+		
+		/**
+		 */		
+		override public function get proxy():SeriesProxy
+		{
+			var proxy:SeriesProxy = new StackedColumnProxy;
+			proxy.type = this.type;
+			
+			return proxy;
 		}
 		
 		/**

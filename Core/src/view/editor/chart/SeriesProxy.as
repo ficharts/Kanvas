@@ -1,6 +1,8 @@
 package view.editor.chart
 {
+	import com.kvs.charts.chart2D.encry.ISeries;
 	import com.kvs.utils.RexUtil;
+	import com.kvs.utils.dec.NullPad;
 
 	/**
 	 *
@@ -16,6 +18,41 @@ package view.editor.chart
 		public function SeriesProxy()
 		{
 		}
+		
+		/**
+		 */		
+		private function checkPrefixAndSuffix():void
+		{
+			for each (var item:String in values)
+			{
+				var formatter:Array = item.split(item.match(/-?\d+\.?\d*/g)[0]);
+				
+				if (formatter.length == 2)
+				{
+					preffix = formatter[0];
+					suffix = formatter[1];
+					
+					if (preffix != "" || suffix != "")
+						return;
+				}
+				else
+				{
+					if (item.indexOf(formatter[0]) == 0)
+						preffix = formatter[0];
+					else
+						suffix = formatter[0];
+				}
+				
+			}
+		}
+		
+		/**
+		 */		
+		private var preffix:String = '';
+		
+		/**
+		 */		
+		private var suffix:String = '';
 		
 		/**
 		 */		
@@ -35,9 +72,29 @@ package view.editor.chart
 		
 		/**
 		 */		
+		public function setYAxis(ss:Vector.<ISeries>, index:uint):void
+		{
+			if (index >= ss.length)
+			{
+				yAxis = ss[0].yAxis;
+			}
+			else
+			{
+				yAxis = ss[index].yAxis;
+			}
+		}
+		
+		/**
+		 */		
+		private var yAxis:String = null;
+		
+		/**
+		 */		
 		public function setXml(series:XML):void
 		{
-			var xml:XML = <{type} seriesName={name} xField={labelField} yField={valueField}/>;
+			checkPrefixAndSuffix();
+			
+			var xml:XML = <{type} seriesName={name} xField={labelField} yField={valueField} valuePrefix={preffix} valueSuffix={suffix} yAxis={yAxis}/>;
 			
 			series.appendChild(xml);
 		}

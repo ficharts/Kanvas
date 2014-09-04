@@ -166,9 +166,10 @@ package view.editor.chart
 		{
 			formatText();
 			
+			var sourceSeries:Vector.<ISeries> = chart.series;
+			
 			//现有图表的序列类型
 			var type:String = chart.series[0].type;
-			
 			
 			//文本数据
 			var text:String = dataField.text;
@@ -230,7 +231,6 @@ package view.editor.chart
 			var s:SeriesProxy;
 			
 			var series:XML = <series/>;
-			iffixed = false;
 			
 			for (i = 0; i < seriesText.length; i ++)
 			{
@@ -260,40 +260,20 @@ package view.editor.chart
 				}
 				
 				RexUtil.trimArray(sdata);
-				checkPrefixAndSuffix(sdata);
+			
+				if (sourceSeries.length <= i)
+					s = sourceSeries[0].proxy;
+				else
+					s = sourceSeries[i].proxy;
 				
-				// 先建立模型
-				if (type == "bar")
-				{
-					s = new BarSeriesProxy;
-				}
-				else if (type == "stackedColumn")
-				{
-					s = new StackedColumnProxy;
-				}
-				else if (type == "stackedBar")
-				{
-					s = new StackedBarProxy;
-				}
-				else if (type == "bubble")
-				{
-					s = new BubbleSeriesProxy;
+				if (s is BubbleSeriesProxy)
 					(s as BubbleSeriesProxy).bubbles = bubbleData;
-				}
-				else if (type == "pie")
-				{
-					s = new PieSeriesProxy;
-				}
-				else 
-				{
-					s = new SeriesProxy;
-				}
 					
-				s.type = type;
 				s.name = sn;
 				s.index = i;
 				s.labels = labels;
 				s.values = sdata;
+				s.setYAxis(sourceSeries, i);
 				ss.push(s);
 				
 				s.setXml(series);
@@ -320,8 +300,6 @@ package view.editor.chart
 			var config:XML = chart.configXML.copy();
 			config.series = series;
 			config.data = data;
-			s.appendFfix(preffix, suffix, config);
-			
 			
 			chart.configXML = config;
 			
@@ -370,51 +348,6 @@ package view.editor.chart
 		 * @param values
 		 * 
 		 */		
-		public function checkPrefixAndSuffix(values:Array):void
-		{
-			if (iffixed)
-				return;
-			
-			for each (var item:String in values)
-			{
-				var formatter:Array = item.split(item.match(/-?\d+\.?\d*/g)[0]);
-				
-				if (formatter.length == 2)
-				{
-					preffix = formatter[0];
-					suffix = formatter[1];
-					
-					if (preffix != "" || suffix != "")
-					{
-						iffixed = true;
-						return;
-					}
-				}
-				else
-				{
-					if (item.indexOf(formatter[0]) == 0)
-						preffix = formatter[0];
-					else
-						suffix = formatter[0];
-				}
-					
-			}
-		}
-		
-		/**
-		 */		
-		private var iffixed:Boolean = false;
-		
-		/**
-		 * 值前缀
-		 */		
-		public var preffix:String = '';
-		
-		/**
-		 * 值后缀
-		 */	
-		public var suffix:String = '';
-		
 		
 		/**
 		 */		

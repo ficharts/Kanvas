@@ -39,6 +39,7 @@ package view.chartPanel
 			markerChart;
 			stackedBarChart;
 			stackedColumnChart;
+			ColumnLineChart;
 		}
 		
 		/**

@@ -11,9 +11,13 @@ package com.kvs.charts.chart2D.bar.stack
 	import com.kvs.charts.chart2D.core.model.Chart2DModel;
 	import com.kvs.charts.common.ChartColors;
 	import com.kvs.charts.common.SeriesDataPoint;
+	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
+	
+	import view.editor.chart.SeriesProxy;
+	import view.editor.chart.StackedBarProxy;
 	
 	/**
 	 */	
@@ -24,6 +28,28 @@ package com.kvs.charts.chart2D.bar.stack
 			super();
 			
 			this.value = 'xValue';
+		}
+		
+		/**
+		 */		
+		override public function get proxy():SeriesProxy
+		{
+			var proxy:SeriesProxy = new StackedBarProxy;
+			proxy.type = this.type;
+			
+			return proxy;
+		}
+		
+		/**
+		 */		
+		override public function resetAxisFormat():void
+		{
+			// 这里目前仅仅定义了数值方向上的格式
+			if (RexUtil.ifHasText(yAxis))
+				horizontalAxis.dataFormatter.xPrefix = valuePrefix;
+			
+			if (RexUtil.ifHasText(valueSuffix))
+				horizontalAxis.dataFormatter.xSuffix = valueSuffix;
 		}
 		
 		/**

@@ -165,7 +165,7 @@
 			        <set label='3' value1='4' value2='7' value3='2'/>
 			        <set label='5' value1='5' value2='8' value3='4'/>
 			        <set label='6' value1='8' value2='11' value3='6'/>
-			        <set label='8' value1='13' valu2='14' value3='8'/>
+			        <set label='8' value1='13' value2='14' value3='8'/>
 			        <set label='9' value1='16' value2='15' value3='12'/>
 			        <set label='11' value1='18' value2='17' value3='15'/>
 			        <set label='12' value1='20' value2='20' value3='18'/>
@@ -194,6 +194,36 @@
 			        <set label='11' value='18' radius='68'/>
 			        <set label='12' value='20' radius='22'/>
 			        <set label='15' value='24' radius='35'/>
+			    </data>
+			</config>
+		</shape>
+	</selector>
+	
+	<selector icon='ColumnLineChart'>
+		<shape type='chart2d' styleType='chart' styleID='chart' width='400' height='300'>
+			<config>
+			    <axis>
+			        <x type="field"/>
+			        <y id="a" type="linear">
+			        	<label>
+			                <format color='${color}'/>
+			            </label>
+			        </y>
+			        <y id="b" type="linear">
+			       		<label>
+			                <format color='${color}'/>
+			            </label>
+			        </y>
+			    </axis>
+			    <series>
+			        <column xField='label' yField='value2' yAxis="a"/>
+			        <line xField='label' yField='value1' yAxis="b" valueSuffix='%'/>
+			    </series>
+			    <data>
+			        <set label='四月' value1='17' value2='55'/>
+			        <set label='五月' value1='26' value2='43'/>
+			        <set label='六月' value1='53' value2='70'/>
+			        <set label='七月' value1='96' value2='58'/>
 			    </data>
 			</config>
 		</shape>

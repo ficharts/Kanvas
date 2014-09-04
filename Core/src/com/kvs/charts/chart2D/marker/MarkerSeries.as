@@ -9,6 +9,8 @@ package com.kvs.charts.chart2D.marker
 	import com.kvs.utils.XMLConfigKit.Model;
 	import com.kvs.utils.XMLConfigKit.XMLVOLib;
 	import com.kvs.utils.XMLConfigKit.XMLVOMapper;
+	
+	import view.editor.chart.SeriesProxy;
 
 	/**
 	 */	
@@ -22,6 +24,16 @@ package com.kvs.charts.chart2D.marker
 			super();
 			
 			curRenderPattern = new ClassicMarkerRender(this);
+		}
+		
+		/**
+		 */		
+		override public function get proxy():SeriesProxy
+		{
+			var proxy:SeriesProxy = new SeriesProxy
+			proxy.type = this.type;
+			
+			return proxy;
 		}
 		
 		/**
