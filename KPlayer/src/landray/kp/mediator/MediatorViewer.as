@@ -11,6 +11,7 @@ package landray.kp.mediator
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 	
 	import landray.kp.components.Selector;
 	import landray.kp.core.*;
@@ -210,6 +211,14 @@ package landray.kp.mediator
 					break;
 				case 39:
 				case 40:
+					pageManager.next();
+					break;
+				
+				case Keyboard.PAGE_UP:
+					pageManager.prev();
+					break;
+				
+				case Keyboard.PAGE_DOWN:
 					pageManager.next();
 					break;
 			}
