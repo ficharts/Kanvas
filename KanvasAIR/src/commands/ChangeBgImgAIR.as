@@ -95,7 +95,7 @@ package commands
 			
 			setBgImg(newImgObj, true);
 			
-			ImgLib.register(imgID.toString(), imgExtractor.fileBytes);
+			ImgLib.register(imgID.toString(), imgExtractor.fileBytes, imgExtractor.type);
 			
 			UndoRedoMannager.register(this);
 		}

@@ -18,6 +18,7 @@ package landray.kp.maps.main.elements
 	import view.element.IElement;
 	import view.ui.Canvas;
 	import view.ui.ICanvasLayout;
+	import view.ui.IMainUIMediator;
 	
 	/**
 	 * 
@@ -33,6 +34,13 @@ package landray.kp.maps.main.elements
 			super();
 			vo = $vo;
 			init();
+		}
+		
+		/**
+		 */		
+		public function clickedForPreview(cmt:IMainUIMediator):void
+		{
+			cmt.zoomElement(vo);
 		}
 		
 		/**

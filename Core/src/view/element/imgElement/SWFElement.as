@@ -12,16 +12,24 @@ package view.element.imgElement
 	import util.ElementUtil;
 	
 	import view.element.ElementBase;
+	import view.element.ISource;
 	import view.interact.autoGroup.IAutoGroupElement;
+	import view.ui.IMainUIMediator;
 	
 	/**
 	 */	
-	public class SWFElement extends ImgElementBase implements IAutoGroupElement
-		
+	public class SWFElement extends ImgElementBase implements IAutoGroupElement, ISource
 	{
 		public function SWFElement(vo:ElementVO)
 		{
 			super(vo);
+		}
+		
+		/**
+		 */		
+		override public function clickedForPreview(cmt:IMainUIMediator):void
+		{
+			
 		}
 		
 		/**

@@ -5,6 +5,7 @@ package view.element.text
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
+	import flash.net.URLRequest;
 	import flash.text.engine.BreakOpportunity;
 	import flash.text.engine.CFFHinting;
 	
@@ -25,6 +26,7 @@ package view.element.text
 	import view.element.state.IEditShapeState;
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.interact.autoGroup.IAutoGroupElement;
+	import view.ui.IMainUIMediator;
 	
 	
 	/**
@@ -43,6 +45,18 @@ package view.element.text
 			textDrawer = new TextDrawer(this);
 			shape.visible = false;
 			
+		}
+		
+		/**
+		 */		
+		override public function clickedForPreview(cmt:IMainUIMediator):void
+		{
+			var t:String = textVO.text;
+			
+			if (t.indexOf("http://") != - 1 || t.indexOf("https://") != - 1)
+				flash.net.navigateToURL(new URLRequest(t), "_blank");
+			else
+				cmt.zoomElement(vo);
 		}
 		
 		/**

@@ -32,5 +32,13 @@ package com.kvs.utils.extractor
 		{
 			return null;
 		}
+		
+		/**
+		 * 资源类型，对应文件的扩展名
+		 */		
+		public function get type():String
+		{
+			return null;
+		}
 	}
 }

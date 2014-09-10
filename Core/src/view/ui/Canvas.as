@@ -340,7 +340,7 @@ package view.ui
 		 */		
 		public function get elements():Vector.<ICanvasLayout>
 		{
-			return  items.concat();
+			return items.concat();
 		}
 		
 		/**

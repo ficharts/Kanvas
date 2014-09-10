@@ -32,6 +32,7 @@ package view.element
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.ui.Canvas;
 	import view.ui.ICanvasLayout;
+	import view.ui.IMainUIMediator;
 	
 	/**
 	 * 所有元素UI的基类
@@ -52,6 +53,13 @@ package view.element
 			StageUtil.initApplication(this, init);
 			
 			doubleClickEnabled = true;
+		}
+		
+		/**
+		 */		
+		public function clickedForPreview(cmt:IMainUIMediator):void
+		{
+			cmt.zoomElement(vo);
 		}
 		
 		/**

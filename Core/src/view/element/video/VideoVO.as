@@ -11,6 +11,20 @@ package view.element.video
 		public function VideoVO()
 		{
 			super();
+			
+			type = "video";
+		}
+		
+		/**
+		 */		
+		override public function exportData():XML
+		{
+			var xml:XML = super.exportData();
+			
+			xml.@videoID = videoID;
+			xml.@videoType = videoType;
+			
+			return xml;
 		}
 		
 		/**
@@ -19,6 +33,15 @@ package view.element.video
 		
 		/**
 		 */		
+		public var url:String;
+		
+		/**
+		 */		
 		public var videoID:uint = 0;
+		
+		/**
+		 */		
+		public var videoType:String;
+		
 	}
 }

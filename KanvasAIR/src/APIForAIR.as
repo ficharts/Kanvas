@@ -26,6 +26,7 @@ package
 	import util.img.ImgLib;
 	
 	import view.element.ElementBase;
+	import view.element.ISource;
 	import view.element.imgElement.ImgElementBase;
 	import view.ui.Bubble;
 
@@ -125,6 +126,7 @@ package
 			var imgIDsInKvs:Array = new Array;
 				
 			var imgData:ByteArray;
+			var fileName:String;
 			
 			for each(var entry:ZipEntry in list)
 			{
@@ -135,11 +137,12 @@ package
 				else
 				{
 					imgData = reader.unzip(entry);
-					imgID = entry.getFilename().split('.')[0].toString();
+					fileName = entry.getFilename();
+					imgID = fileName.split('.')[0].toString();
 					
 					if (uint(imgID) != 0)
 					{
-						ImgLib.register(imgID, imgData);
+						ImgLib.register(imgID, imgData, fileName.split('.')[1].toString());
 						imgIDsInKvs.push(imgID);
 					}
 				}
@@ -155,8 +158,8 @@ package
 			var imgIDsInXML:Array = [];
 			for each (var element:ElementBase in CoreFacade.coreProxy.elements)
 			{
-				if (element is ImgElementBase)
-					imgIDsInXML.push((element as ImgElementBase).imgVO.imgID.toString());
+				if (element is ISource)
+					imgIDsInXML.push((element as ISource).dataID);
 			}
 			
 			//不能忘记背景图
@@ -183,6 +186,7 @@ package
 			
 			var list:Array = reader.getEntries();
 			var imgIDsInKvs:Array = new Array;
+			var fileName:String;
 			
 			for each(var entry:ZipEntry in list)
 			{
@@ -205,7 +209,7 @@ package
 					
 					if (uint(imgID) != 0)
 					{
-						ImgLib.register(imgID, imgData);
+						ImgLib.register(imgID, imgData, name.split('.')[1].toString());
 						imgIDsInKvs.push(imgID);
 					}
 				}
@@ -432,19 +436,25 @@ package
 				//fileData.clear();
 				
 				//图片相关
-				var imgIDs:Array = ImgLib.imgKeys;
+				var imgIDs:Array = ImgLib.keys;
 				var imgDataBytes:ByteArray;
 				
-				//缩略图
-				var bmd:BitmapData = core.thumbManager.getShotCut(ConfigInitor.THUMB_WIDTH, ConfigInitor.THUMB_HEIGHT);
-				if (bmd)
+				try 
 				{
-					imgDataBytes = bmd.encode(bmd.rect, new PNGEncoderOptions);
-					writer.addBytes(imgDataBytes,"preview.png");
+					//缩略图
+					var bmd:BitmapData = core.thumbManager.getShotCut(ConfigInitor.THUMB_WIDTH, ConfigInitor.THUMB_HEIGHT);
+					if (bmd)
+					{
+						imgDataBytes = bmd.encode(bmd.rect, new PNGEncoderOptions);
+						writer.addBytes(imgDataBytes,"preview.png");
+						
+						//保存缩略图用于模版截图
+						saveFileImageForTemplate(imgDataBytes);
+					}
+				}
+				catch(e:Error)
+				{
 					
-					
-					//保存缩略图用于模版截图
-					saveFileImageForTemplate(imgDataBytes);
 				}
 				
 				// 添加图片资源数据
@@ -458,7 +468,7 @@ package
 					imgDataBytes.writeBytes(imgBytes, 0, imgBytes.bytesAvailable);
 					imgDataBytes.position = 0;
 					
-					writer.addBytes(imgDataBytes,imgID.toString() + '.png');
+					writer.addBytes(imgDataBytes,imgID.toString() + '.' + ImgLib.getType(imgID));
 				}
 				
 				writer.close();

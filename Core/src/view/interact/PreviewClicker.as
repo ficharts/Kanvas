@@ -18,7 +18,7 @@ package view.interact
 	
 	import util.LayoutUtil;
 	
-	import view.element.imgElement.SWFElement;
+	import view.element.IElement;
 	import view.interact.zoomMove.GestureControl;
 	import view.ui.ICanvasLayout;
 	import view.ui.IMainUIMediator;
@@ -108,7 +108,7 @@ package view.interact
 			if (elementsHit.length)
 			{
 				elementsHit.sort(sortOnSize);
-				var targetElement:ICanvasLayout = elementsHit[0];
+				var targetElement:IElement = elementsHit[0];
 				
 				//点击区域的最小尺寸页面 ＝ 当前页面
 				if (pagesHit.length)
@@ -117,32 +117,9 @@ package view.interact
 					pagesHit.sort(sortOnSize);
 					var nearPage:ICanvasLayout = pagesHit[0];
 					mdt.setPageIndex((nearPage["vo"].pageVO).index);
-					//mdt.zoomElement(nearPage["vo"]);
-				}
-				else
-				{
-					//mdt.zoomElement(targetElement["vo"]);
 				}
 				
-				var elementVO:ElementVO = targetElement["vo"];
-				
-				if (elementVO is TextVO)
-				{
-					var t:String = (elementVO as TextVO).text;
-					
-					if (t.indexOf("http://") != - 1 || t.indexOf("https://") != - 1)
-					{
-						flash.net.navigateToURL(new URLRequest(t), "_blank");
-						return;
-					}
-				}
-				else if (elementVO is SWFVO)
-				{
-					
-					return;
-				}
-				
-				mdt.zoomElement(elementVO);
+				targetElement.clickedForPreview(mdt);
 			}
 		}
 		
@@ -280,7 +257,7 @@ package view.interact
 		/**
 		 * 点击碰撞到的元素
 		 */		
-		private var elementsHit:Vector.<ICanvasLayout> = new Vector.<ICanvasLayout>;
+		private var elementsHit:Vector.<IElement> = new Vector.<IElement>;
 		
 		/**
 		 * 点击碰撞到的页面
