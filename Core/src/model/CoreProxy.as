@@ -266,7 +266,7 @@ package model
 		 */
 		public function exportData():XML
 		{
-			CoreFacade.coreMediator.toUnSelectedMode();
+			//CoreFacade.coreMediator.toUnSelectedMode();
 			
 			var xml:XML = dataXML.copy();
 			
