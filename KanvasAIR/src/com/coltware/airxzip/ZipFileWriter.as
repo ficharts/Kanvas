@@ -10,6 +10,7 @@ package com.coltware.airxzip {
 	
 	import com.coltware.airxzip.crypt.ICrypto;
 	import com.coltware.airxzip.crypt.ZipCrypto;
+	import com.kvs.utils.PerformaceTest;
 	
 	import flash.events.*;
 	import flash.filesystem.*;
@@ -285,7 +286,12 @@ package com.coltware.airxzip {
 				filename = task.filename;
 				bytes = task.bytes;
 				var date:Date = task.date;
+				
+				PerformaceTest.ifRun = true;
+				PerformaceTest.start(filename);
 				zipHeader = this.internalAddBytes(false,filename,bytes,date);
+				PerformaceTest.end(filename);
+				
 			}
 			else if(task.type == "dir"){
 				zipHeader = this.internalAddBytes(true,task.filename);
@@ -385,9 +391,11 @@ package com.coltware.airxzip {
 				header._compressMethod = 8;
 				header._version = 20;
 				header._versionBy = (_host << 8 | 20 );
-				header._crc32 = ZipCRC32.getByteArrayValue(data);
+				//header._crc32 = ZipCRC32.getByteArrayValue(data);//这句在遇到大文件时会很耗时，去掉暂时没发现有影响，可能对设置了密码的zip压缩有影响吧
 				header._uncompressSize = data.length;
+				
 				data.compress(CompressionAlgorithm.DEFLATE);
+				
 				header._compressSize = data.length;
 				
 				if(_host == 3){
@@ -407,7 +415,7 @@ package com.coltware.airxzip {
 					_stream.writeBytes(_crypt.encrypt(data));
 				}
 				else{
-						header.writeLocalHeader(_stream);
+					header.writeLocalHeader(_stream);
 				    _stream.writeBytes(data);
 				}
 			}

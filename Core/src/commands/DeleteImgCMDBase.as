@@ -37,6 +37,7 @@ package commands
 			
 			CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
 			CoreFacade.removeElement(element);
+			
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			

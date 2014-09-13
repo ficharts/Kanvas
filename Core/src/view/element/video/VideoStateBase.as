@@ -11,6 +11,27 @@ package view.element.video
 		
 		/**
 		 */		
-		private var videoEle:VideoElement;
+		public function play():void
+		{
+			 
+		}
+		
+		/**
+		 */		
+		public function pause():void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function stop():void
+		{
+			
+		}
+		
+		/**
+		 */		
+		protected var videoEle:VideoElement;
 	}
 }

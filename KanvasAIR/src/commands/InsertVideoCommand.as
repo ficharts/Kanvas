@@ -10,6 +10,7 @@ package commands
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import util.LayoutUtil;
+	import util.img.ImgLib;
 	import util.layout.LayoutTransformer;
 	import util.undoRedo.UndoRedoMannager;
 	
@@ -36,17 +37,9 @@ package commands
 			
 			videoFile = notification.getBody() as File;
 			videoFile.addEventListener(Event.COMPLETE, fileLoaded);
-			videoFile.load();
-			//new NetStream().appendBytes(
-		}
-		
-		/**
-		 */		
-		private function fileLoaded(evt:Event):void
-		{
-			var videoVO:VideoVO = new VideoVO;
-			videoVO.source = new ByteArray;
-			videoVO.source.writeBytes(videoFile.data, 0, videoFile.data.bytesAvailable);
+			
+			
+			videoVO = new VideoVO;
 			videoVO.url = videoFile.nativePath;
 			videoVO.videoType = videoFile.extension;
 			
@@ -77,7 +70,25 @@ package commands
 			
 			sendNotification(Command.SElECT_ELEMENT, element);
 			UndoRedoMannager.register(this);
+			
+			//加载视频
+			videoFile.load();
 		}
+		
+		/**
+		 */		
+		private function fileLoaded(evt:Event):void
+		{
+			videoVO.source = new ByteArray;
+			videoVO.source.writeBytes(videoFile.data, 0, videoFile.data.bytesAvailable);
+		
+			videoVO.videoID = ImgLib.imgID;
+			ImgLib.register(videoVO.videoID.toString(), videoVO.source, videoVO.videoType);
+		}
+		
+		/**
+		 */		
+		private var videoVO:VideoVO
 		
 		/**
 		 */		

@@ -29,6 +29,19 @@ package view.element.video
 		
 		/**
 		 */		
+		override public function clone():ElementVO
+		{
+			var videoVO:VideoVO = super.clone() as VideoVO;
+			
+			videoVO.source = this.source;
+			videoVO.videoID = videoID;
+			videoVO.videoType = videoType;
+			
+			return videoVO;
+		}
+		
+		/**
+		 */		
 		public var source:ByteArray;
 		
 		/**

@@ -24,6 +24,7 @@ package view.interact
 	
 	import view.editor.EditorBase;
 	import view.element.ElementBase;
+	import view.element.ElementEvent;
 	import view.element.GroupElement;
 	import view.element.IElement;
 	import view.element.imgElement.ImgElement;
@@ -682,7 +683,15 @@ package view.interact
 			coreApp.addChild(cameraShotShape);
 			coreApp.addEventListener(KVSEvent.UPATE_BOUND, renderBoundHandler);
 			
-			
+			mainUI.addEventListener(ElementEvent.UPDATE_SELECTOR, updateSelectorHandler);
+		}
+		
+		/**
+		 * 视频插入后需要等到开始播放时才能知道其尺寸，此时需要刷新一下选择器的布局
+		 */		
+		private function updateSelectorHandler(evt:ElementEvent):void
+		{
+			selector.update();
 		}
 		
 		/**

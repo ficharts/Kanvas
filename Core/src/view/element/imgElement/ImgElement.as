@@ -12,6 +12,7 @@ package view.element.imgElement
 	import util.ElementUtil;
 	
 	import view.element.ElementBase;
+	import view.element.ISource;
 	
 	
 	/**
@@ -27,8 +28,9 @@ package view.element.imgElement
 			addChild(_canvas);
 		}
 		
-		
-
+		/**
+		 * 
+		 */
 		override public function clone():ElementBase
 		{
 			var imgVO:ImgVO = new ImgVO;

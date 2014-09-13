@@ -1,5 +1,6 @@
 package view.element.video
 {
+	import flash.events.MouseEvent;
 	import flash.events.NetStatusEvent;
 	import flash.media.Video;
 	import flash.net.NetConnection;
@@ -12,7 +13,12 @@ package view.element.video
 	import util.img.ImgLib;
 	
 	import view.element.ElementBase;
+	import view.element.ElementEvent;
 	import view.element.ISource;
+	import view.element.state.ElementGroupState;
+	import view.element.state.ElementMultiSelected;
+	import view.element.state.ElementPrevState;
+	import view.element.state.ElementUnSelected;
 	import view.ui.IMainUIMediator;
 	
 	/**
@@ -27,34 +33,71 @@ package view.element.video
 		public function VideoElement(vo:ElementVO)
 		{
 			super(vo);
+			
+			playState = new PlayState(this);
+			pauseState = new PauseState(this);
+			
+			this.doubleClickEnabled = true;
+			this.addEventListener(MouseEvent.DOUBLE_CLICK, resetVideoHandler);
 		}
+		
+		/**
+		 */		
+		private function resetVideoHandler(evt:MouseEvent):void
+		{
+			this.reset();
+		}
+		
+		/**
+		 */		
+		internal var playState:VideoStateBase;
+		internal var pauseState:VideoStateBase;
+		
+		/**
+		 */		
+		internal var videoState:VideoStateBase;
 		
 		/**
 		 */		
 		override public function play():void
 		{
-			
+			videoState.play();
 		}
 		
 		/**
 		 */		
 		public function pause():void
 		{
-			
+			videoState.pause();
 		}
 		
 		/**
 		 */		
 		public function stop():void
 		{
-			
+			videoState.stop();
 		}
 		
 		/**
 		 */		
 		override public function clickedForPreview(cmt:IMainUIMediator):void
 		{
+			cmt.zoomElement(vo);
 			
+			play();
+		}
+		
+		/**
+		 */		
+		override protected function initState():void
+		{
+			selectedState = new VideoSelectedState(this);
+			unSelectedState = new VideoUnselected(this);
+			multiSelectedState = new ElementMultiSelected(this);
+			groupState = new ElementGroupState(this);
+			prevState = new VideoPrevState(this);
+			
+			currentState = unSelectedState;
 		}
 		
 		/**
@@ -63,16 +106,8 @@ package view.element.video
 		{
 			preRender();
 			
-			if (data)
-			{
-				videoVO.videoID = ImgLib.imgID;
-				ImgLib.register(videoVO.videoID.toString(), data, videoVO.videoType);
-			}
-			else
-			{
-				if (ImgLib.ifHasData(videoVO.videoID))
-					videoVO.source = ImgLib.getData(videoVO.videoID);
-			}
+			if (!data && ImgLib.ifHasData(videoVO.videoID))
+				videoVO.source = ImgLib.getData(videoVO.videoID);
 			
 			video = new Video(vo.width, vo.height);
 			addChild(video);
@@ -82,19 +117,44 @@ package view.element.video
 			
 			ns = new NetStream(nc);
 			ns.client = {};
+			ns.backBufferTime = 0;
+			ns.addEventListener(NetStatusEvent.NET_STATUS, status);
 			video.attachNetStream(ns);
 			
-			ns.backBufferTime = 3;
-			ns.play(null);
-			ns.appendBytesAction(NetStreamAppendBytesAction.RESET_BEGIN);
-			ns.addEventListener(NetStatusEvent.NET_STATUS, status);
-			
-			data.position = 0;
-			ns.appendBytes(data);
-			
-			ns.pause();
-			
+			reset();
 			render();
+		}
+		
+		/**
+		 */		
+		public function reset():void
+		{
+			ns.close();
+			
+			if (data)
+			{
+				ns.play(null);
+				ns.appendBytesAction(NetStreamAppendBytesAction.RESET_BEGIN);	
+				
+				data.position = 0;
+				ns.appendBytes(data);
+			}
+			else
+			{
+				ns.play("file://" + videoVO.url); 
+			}
+			
+			videoState = pauseState;
+			ns.pause();
+		}
+		
+		/**
+		 */		
+		override public function del():void
+		{
+			super.del();
+			
+			ns.close();
 		}
 		
 		/**
@@ -105,16 +165,21 @@ package view.element.video
 		 */		
 		private function status(evt:NetStatusEvent):void
 		{
-			trace(evt.info);
-			
-			if (evt.info.code == "NetStream.Play.Stop") {
+			if (evt.info.code == "NetStream.Play.Stop") 
+			{
 				ns.appendBytesAction(NetStreamAppendBytesAction.END_SEQUENCE);
+			}
+			else if (evt.info.code == "NetStream.Play.Start") 
+			{
+				render();
+				
+				this.dispatchEvent(new ElementEvent(ElementEvent.UPDATE_SELECTOR));
 			}
 		}
 		
 		/**
 		 */		
-		private function get data():ByteArray
+		internal function get data():ByteArray
 		{
 			return (vo as VideoVO).source;
 		}
@@ -135,7 +200,7 @@ package view.element.video
 		
 		/**
 		 */		
-		private var ns:NetStream;
+		internal var ns:NetStream;
 		
 		/**
 		 */		
@@ -146,14 +211,16 @@ package view.element.video
 		 */
 		override public function render():void
 		{
-			vo.width = video.width = video.videoWidth;
-			vo.height = video.height = video.videoHeight;
-			
-			video.x = - vo.width / 2;
-			video.y = - vo.height / 2;
-			
-			super.render();
-			
+			if(video.videoWidth > 0)
+			{
+				vo.width = video.width = video.videoWidth;
+				vo.height = video.height = video.videoHeight;
+				
+				video.x = - vo.width / 2;
+				video.y = - vo.height / 2;
+				
+				super.render();
+			}
 		}
 		
 		/**

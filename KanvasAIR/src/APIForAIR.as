@@ -122,8 +122,7 @@ package
 			
 			var list:Array = reader.getEntries();
 			var xml:String;
-			var imgID:String;
-			var imgIDsInKvs:Array = new Array;
+			var assetID:String;
 				
 			var imgData:ByteArray;
 			var fileName:String;
@@ -138,15 +137,14 @@ package
 				{
 					imgData = reader.unzip(entry);
 					fileName = entry.getFilename();
-					imgID = fileName.split('.')[0].toString();
+					assetID = fileName.split('.')[0].toString();
 					
-					if (uint(imgID) != 0)
-					{
-						ImgLib.register(imgID, imgData, fileName.split('.')[1].toString());
-						imgIDsInKvs.push(imgID);
-					}
+					if (uint(assetID) != 0)
+						ImgLib.register(assetID, imgData, fileName.split('.')[1].toString());
 				}
 			}
+			
+			unsetUnusedAssets();
 			
 			reader.close();
 			PerformaceTest.end("文件解压缩结束");
@@ -154,6 +152,31 @@ package
 			PerformaceTest.start("解析xml");
 			this.setXMLData(xml);
 			
+			PerformaceTest.end("xml解析结束");
+			
+		}
+		
+		/**
+		 * 将没有用到的资源卸载掉
+		 */		
+		private function unsetUnusedAssets():void
+		{
+			var sourceEles:Array = eleIDsHasAsset;
+			var assetIDs:Array = ImgLib.keys;
+			
+			//如果数据中的图片id不存在于xml中，则说明此图片是多余图片，删除
+			for each (var id:String in assetIDs)
+			{
+				if (sourceEles.indexOf(id) == - 1)
+					ImgLib.unRegister(uint(id));
+			}
+		}
+		
+		/**
+		 * 含有资源文件
+		 */		
+		private function get eleIDsHasAsset():Array
+		{
 			//这里需要清理冗余的图片数据
 			var imgIDsInXML:Array = [];
 			for each (var element:ElementBase in CoreFacade.coreProxy.elements)
@@ -166,15 +189,7 @@ package
 			if (CoreFacade.coreProxy.bgVO.imgID > 0)
 				imgIDsInXML.push(CoreFacade.coreProxy.bgVO.imgID.toString());
 			
-			//如果数据中的图片id不存在于xml中，则说明此图片是多余图片，删除
-			for each (var id:String in imgIDsInKvs)
-			{
-				if (imgIDsInXML.indexOf(id) == - 1)
-					ImgLib.unRegister(uint(id));
-			}
-			
-			PerformaceTest.end("xml解析结束");
-			
+			return imgIDsInXML;
 		}
 		
 		/**
@@ -185,7 +200,6 @@ package
 			reader.open(file);
 			
 			var list:Array = reader.getEntries();
-			var imgIDsInKvs:Array = new Array;
 			var fileName:String;
 			
 			for each(var entry:ZipEntry in list)
@@ -208,35 +222,14 @@ package
 					var imgID:String = (name.split('.')[0].toString()).split("/")[2];
 					
 					if (uint(imgID) != 0)
-					{
 						ImgLib.register(imgID, imgData, name.split('.')[1].toString());
-						imgIDsInKvs.push(imgID);
-					}
 				}
 			}
+			
 			setXMLData(PreziDataImporter.convertData(XML(xml)));
+			
+			unsetUnusedAssets();
 			reader.close();
-			
-			//这里需要清理冗余的图片数据
-			var imgIDsInXML:Array = [];
-			for each (var element:ElementBase in CoreFacade.coreProxy.elements)
-			{
-				if (element is ImgElementBase)
-					imgIDsInXML.push((element as ImgElementBase).imgVO.imgID.toString());
-			}
-			
-			if (CoreFacade.coreProxy.bgVO.imgID > 0)
-				imgIDsInXML.push(CoreFacade.coreProxy.bgVO.imgID.toString());
-			
-			//如果数据中的图片id不存在于xml中，则说明此图片是多余图片，删除
-			for each (var id:uint in imgIDsInKvs)
-			{
-				if (imgIDsInXML.indexOf(id.toString()) == - 1)
-					ImgLib.unRegister(id);
-			}
-			
-			PerformaceTest.end();
-			
 		}
 		
 		/**
@@ -420,6 +413,8 @@ package
 			isSaving = true;
 			
 			PerformaceTest.start("save");
+			
+			unsetUnusedAssets();
 			
 			try
 			{
