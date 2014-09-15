@@ -518,6 +518,9 @@ package modules.pages
 			{
 				//含有视频时，有时候无法成功draw
 				trace("页面截图错误");
+				
+				mainUI.canvas.toPreviewState();
+				mainUI.synBgContentToCanvas();
 			}
 			
 			return null;
