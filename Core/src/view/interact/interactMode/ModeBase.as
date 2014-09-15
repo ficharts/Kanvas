@@ -1,5 +1,7 @@
 package view.interact.interactMode
 {
+	import com.kvs.utils.PerformaceTest;
+	
 	import commands.Command;
 	
 	import flash.geom.Point;
@@ -266,14 +268,12 @@ package view.interact.interactMode
 		 */		
 		public function prev(xOff:Number, yOff:Number):void
 		{
-			
 		}
 		
 		/**
 		 */		
 		public function next(xOff:Number, yOff:Number):void
 		{
-			
 		}
 		
 		/**

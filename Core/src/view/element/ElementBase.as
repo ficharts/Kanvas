@@ -541,6 +541,7 @@ package view.element
 		{
 			return _screenshot;
 		}
+		
 		protected var _screenshot:Boolean;
 		
 		/**

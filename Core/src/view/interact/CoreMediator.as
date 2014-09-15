@@ -867,7 +867,6 @@ package view.interact
 			}
 		}
 		
-		
 		/**
 		 */		
 		private var treking:Boolean = false;

@@ -19,6 +19,20 @@ package view.interact.interactMode
 		
 		/**
 		 */		
+		override public function prev(xOff:Number, yOff:Number):void
+		{
+			mainMediator.pagesMnger.prev();
+		}
+		
+		/**
+		 */		
+		override public function next(xOff:Number, yOff:Number):void
+		{
+			mainMediator.pagesMnger.next();
+		}
+		
+		/**
+		 */		
 		override public function toPlayMode():void
 		{
 			mainMediator.currentMode = mainMediator.playMode;
