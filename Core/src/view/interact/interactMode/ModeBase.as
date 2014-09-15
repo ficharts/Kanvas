@@ -2,8 +2,6 @@ package view.interact.interactMode
 {
 	import commands.Command;
 	
-	import flash.geom.Point;
-	
 	import model.CoreFacade;
 	import model.vo.PageVO;
 	
@@ -57,6 +55,47 @@ package view.interact.interactMode
 		public function ModeBase(mainMediator:CoreMediator)
 		{
 			this.mainMediator = mainMediator;
+		}
+		
+		/**
+		 */		
+		public function flashStart():void
+		{
+			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
+			
+			for each (var element:ElementBase in elements)
+				element.flashStart();
+		}
+		
+		/**
+		 */		
+		public function flashing():void
+		{
+			//检测，重绘文本， 以达到像素精度不失真
+			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements, element:ElementBase;
+			for each (element in elements)
+			{
+				if (element.visible)
+					element.flashing();
+			}
+		}
+		
+		/**
+		 */		
+		public function flashStop():void
+		{
+			mainMediator.mainUI.curScreenState.enableCanvas();
+			//zoomMoveControl.enableBGInteract();//生效会导致动画编辑时背景可被拖动
+			
+			//文本刷新，图片开启smooth
+			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
+			for each (var element:ElementBase in elements)
+			{
+				if (element.visible)
+					element.flashStop();
+			}
+			
+			mainMediator.collisionDetection.updateAfterZoomMove();
 		}
 		
 		/**
@@ -193,12 +232,6 @@ package view.interact.interactMode
 		{
 			
 		}
-				
-		/**
-		 */		
-		public function moveOff(xOff:Number, yOff:Number):void
-		{
-		}
 		
 		/**
 		 * 选择状态下，移动元素时同步更新选择器位置
@@ -228,6 +261,18 @@ package view.interact.interactMode
 		public function esc():void
 		{
 			
+		}
+		
+		/**
+		 */		
+		public function prev(xOff:Number, yOff:Number):void
+		{
+		}
+		
+		/**
+		 */		
+		public function next(xOff:Number, yOff:Number):void
+		{
 		}
 		
 		/**
@@ -318,6 +363,13 @@ package view.interact.interactMode
 		/**
 		 */		
 		public function toPrevMode():void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function toPlayMode():void
 		{
 			
 		}

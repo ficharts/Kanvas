@@ -92,7 +92,7 @@ package commands
 			var imgID:uint = ImgLib.imgID;
 			
 			createImg(imgExtractor.view, imgID, imgExtractor.fileBytes);
-			ImgLib.register(imgID.toString(), imgExtractor.fileBytes);
+			ImgLib.register(imgID.toString(), imgExtractor.fileBytes, file.extension);
 				
 			element.toNomalState();
 		}

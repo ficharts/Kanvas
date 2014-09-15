@@ -19,6 +19,13 @@ package com.kvs.utils.extractor
 		
 		/**
 		 */		
+		override public function get type():String
+		{
+			return "swf";
+		}
+		
+		/**
+		 */		
 		override public function init(bytes:ByteArray,limit:Number = 4194304, quality:Number = 80):void
 		{
 			_fileBytes = bytes;

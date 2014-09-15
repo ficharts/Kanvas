@@ -24,6 +24,7 @@ package view.interact
 	
 	import view.editor.EditorBase;
 	import view.element.ElementBase;
+	import view.element.ElementEvent;
 	import view.element.GroupElement;
 	import view.element.IElement;
 	import view.element.imgElement.ImgElement;
@@ -203,9 +204,18 @@ package view.interact
 			currentMode.esc();
 		}
 		
-		public function moveOff(xOff:Number, yOff:Number):void
+		/**
+		 */		
+		public function prev(xOff:Number = 0, yOff:Number = 0):void
 		{
-			currentMode.moveOff(xOff, yOff);
+			currentMode.prev(xOff, yOff);
+		}
+		
+		/**
+		 */		
+		public function next(xOff:Number = 0, yOff:Number = 0):void
+		{
+			currentMode.next(xOff, yOff);
 		}
 		
 		/**
@@ -526,6 +536,7 @@ package view.interact
 		public var selectedMode:ModeBase;
 		public var unSelectedMode:ModeBase;
 		public var preMode:ModeBase;
+		public var playMode:ModeBase;
 		
 		/**
 		 */		
@@ -579,7 +590,7 @@ package view.interact
 		
 		public var pageManager:PageManager;
 		
-		public function get pages():IPageManager
+		public function get pagesMnger():IPageManager
 		{
 			return pageManager;
 		}
@@ -635,6 +646,7 @@ package view.interact
 			chartEditMode = new ChartEditMode(this);
 			
 			preMode = new PrevMode(this);
+			playMode = new PlayMode(this);
 			
 			currentMode = unSelectedMode;
 			
@@ -671,7 +683,15 @@ package view.interact
 			coreApp.addChild(cameraShotShape);
 			coreApp.addEventListener(KVSEvent.UPATE_BOUND, renderBoundHandler);
 			
-			
+			mainUI.addEventListener(ElementEvent.UPDATE_SELECTOR, updateSelectorHandler);
+		}
+		
+		/**
+		 * 视频插入后需要等到开始播放时才能知道其尺寸，此时需要刷新一下选择器的布局
+		 */		
+		private function updateSelectorHandler(evt:ElementEvent):void
+		{
+			selector.update();
 		}
 		
 		/**
@@ -819,14 +839,7 @@ package view.interact
 			if(!treking)
 			{
 				treking = true;
-				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-				for each (var element:ElementBase in elements)
-				{
-					if (element is ImgElement)
-						ImgElement(element).smooth = false;
-					//else if (element is TextEditField)
-						//TextEditField(element).smooth = false;
-				}
+				currentMode.flashStart();
 			}
 		}
 		
@@ -835,27 +848,7 @@ package view.interact
 		public function flashing():void
 		{
 			if (treking)
-			{
-				if (currentMode != preMode) 
-				{
-					currentMode.updateSelector();
-					collisionDetection.updateAfterZoomMove();
-					coreApp.updatePastPoint();
-				}
-				//检测，重绘文本， 以达到像素精度不失真
-				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements, element:ElementBase;
-				for each (element in elements)
-				{
-					if (element.visible)
-					{
-						if (element.isPage)
-							element.layoutPageNum();
-						if (element is TextEditField)
-							TextEditField(element).checkTextBm();
-					}
-				}
-			}
-			
+				currentMode.flashing();
 		}
 		
 		/**
@@ -865,30 +858,8 @@ package view.interact
 			if (treking)
 			{
 				treking = false;
-				mainUI.curScreenState.enableCanvas();
-				//zoomMoveControl.enableBGInteract();//生效会导致动画编辑时背景可被拖动
-				
-				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-				for each (var element:ElementBase in elements)
-				{
-					if (element is ImgElement)
-						ImgElement(element).smooth = true;
-				}
-				
-				//动画结束后再初始化页面动画，防止位置计算偏差，因为动画会让画布布局改变一下
-				if (currentMode == pageEditMode)
-					(pageEditMode as PageEditMode).init();
-				
-				playElementInPage();
+				currentMode.flashStop();
 			}
-		}
-		
-		/**
-		 * 演示模式下，页面动画结束时，播放元素内部动画(视频播放/图表动画)
-		 */		
-		private function playElementInPage():void
-		{
-			currentMode.playElement();
 		}
 		
 		/**

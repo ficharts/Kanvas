@@ -25,6 +25,8 @@ package view.element.text
 		{
 			element.currentState = element.unSelectedState;
 			element.enable();
+			
+			element.dispatchEvent(new KVSEvent(KVSEvent.DATA_CHANGED));
 		}
 		
 		/**

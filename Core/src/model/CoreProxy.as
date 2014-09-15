@@ -39,6 +39,7 @@ package model
 	import view.element.GroupElement;
 	import view.element.PageElement;
 	import view.element.imgElement.ImgElement;
+	import view.element.video.VideoVO;
 	
 	/**
 	 * 负责数据，样式整体控制;
@@ -209,7 +210,7 @@ package model
 			zipOut.closeEntry();
 			
 			//图片相关
-			var imgIDs:Array = ImgLib.imgKeys;
+			var imgIDs:Array = ImgLib.keys;
 			var imgDataBytes:ByteArray;
 			
 			var bmd:BitmapData = coreApp.thumbManager.getShotCut(ConfigInitor.THUMB_WIDTH, ConfigInitor.THUMB_HEIGHT);
@@ -525,6 +526,10 @@ package model
 				var imgVO:ImgVO = vo as ImgVO;
 				ImgLib.setID((vo as ImgVO).imgID); 
 			}
+			else if (vo is VideoVO)
+			{
+				ImgLib.setID((vo as VideoVO).videoID); 
+			}
 			
 			return vo;
 		}
@@ -540,7 +545,6 @@ package model
 			
 			//虽然添加到了显示列表，但元素未渲染，因为未设定样式
 			CoreFacade.addElement(element);
-			
 			
 			return element;
 		}

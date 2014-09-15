@@ -15,6 +15,7 @@ package view.interact.interactMode
 	import view.element.ElementBase;
 	import view.element.PageElement;
 	import view.interact.CoreMediator;
+	import view.ui.MainUIBase;
 	
 	/**
 	 *
@@ -28,6 +29,16 @@ package view.interact.interactMode
 		public function PageEditMode(mainMediator:CoreMediator)
 		{
 			super(mainMediator);
+		}
+		
+		/**
+		 */		
+		override public function flashStop():void
+		{
+			super.flashStop();
+			
+			//动画结束后再初始化页面动画，防止位置计算偏差，因为动画会让画布布局改变一下
+			(mainMediator.pageEditMode as PageEditMode).init();
 		}
 		
 		/**

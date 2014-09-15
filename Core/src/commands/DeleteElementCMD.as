@@ -9,6 +9,7 @@ package commands
 	
 	import view.element.ElementBase;
 	import view.element.IElement;
+	import view.element.video.VideoElement;
 
 	/**
 	 * 图形删除指令, 负责删除图形，线条和图片
@@ -89,6 +90,9 @@ package commands
 				CoreFacade.coreMediator.pageManager.addPageAt(element.vo.pageVO, element.vo.pageVO.index);
 				CoreFacade.coreMediator.pageManager.layoutPages();
 			}
+			
+			if (element is VideoElement)
+				(element as VideoElement).reset();
 			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
 			

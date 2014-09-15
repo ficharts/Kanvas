@@ -39,10 +39,13 @@ package view.element
 		override public function disable():void
 		{
 			super.disable();
+			
 			//使得放大时，页面编号依旧可被点击
 			mouseChildren = true;
 		}
 		
+		/**
+		 */		
 		override protected function init():void
 		{
 			super.init();
@@ -138,14 +141,27 @@ package view.element
 				graphics.lineTo(right, top);
 				graphics.endFill();
 				
-				//
-				graphics.lineStyle(0,0, 0);
-				graphics.beginFill(0, 0);
-				graphics.drawRect(left, top, width, height)
-				graphics.endFill();
+				//触控区域绘制
+				
+				if (parent.scaleX * scale * width < 200)
+				{
+					graphics.lineStyle(0,0, 0);
+					graphics.beginFill(0, 0);
+					graphics.drawRect(left, top, width, height)
+					graphics.endFill();
+				}
 			}
 		}
 		
+		/**
+		 */		
+		override public function flashStop():void
+		{
+			render();
+		}
+		
+		/**
+		 */		
 		override public function showToolBar(toolbar:ToolBarController):void
 		{
 			toolbar.setCurToolBar(toolbar.cameraShape);

@@ -13,11 +13,12 @@ package view.element.imgElement
 	
 	import view.element.ElementBase;
 	import view.element.ElementEvent;
+	import view.element.ISource;
 	import view.interact.autoGroup.IAutoGroupElement;
 	
 	/**
 	 */	
-	public class ImgElementBase extends ElementBase implements IAutoGroupElement
+	public class ImgElementBase extends ElementBase implements IAutoGroupElement, ISource
 	{
 		public function ImgElementBase(vo:ElementVO)
 		{
@@ -30,6 +31,13 @@ package view.element.imgElement
 			loadingState = new LoadingState(this);
 			normalState = new NormalState(this);
 			currLoadState = loadingState;
+		}
+		
+		/**
+		 */		
+		public function get dataID():String
+		{
+			return imgVO.imgID.toString();
 		}
 		
 		

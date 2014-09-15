@@ -7,7 +7,6 @@ package commands
 	
 	import util.undoRedo.UndoRedoMannager;
 	
-	import view.element.imgElement.ImgElement;
 	import view.element.imgElement.ImgElementBase;
 
 	/**
@@ -38,6 +37,7 @@ package commands
 			
 			CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
 			CoreFacade.removeElement(element);
+			
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
@@ -52,8 +52,10 @@ package commands
 		override public function undoHandler():void
 		{
 			CoreFacade.addElementAt(element, elementIndex);
+			
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.addPageAt(element.vo.pageVO, element.vo.pageVO.index);
+			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
 			
 			this.dataChanged();
@@ -64,8 +66,10 @@ package commands
 		override public function redoHandler():void
 		{
 			CoreFacade.removeElement(element);
+			
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
+			
 			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
 			
 			this.dataChanged();

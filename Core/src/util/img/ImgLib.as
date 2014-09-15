@@ -2,7 +2,6 @@ package util.img
 {
 	import com.kvs.utils.Map;
 	
-	import flash.display.BitmapData;
 	import flash.utils.ByteArray;
 
 	/**
@@ -20,15 +19,21 @@ package util.img
 		
 		/**
 		 */		
-		public static function register(id:String, imgData:ByteArray):void
+		public static function register(id:String, imgData:ByteArray, type:String):void
 		{
 			//预览图不需要
 			if (id != PRE_IMG && uint(id) != 0)
 			{
 				setID(uint(id));
-				imgMap.put(uint(id), imgData);
+				
+				dataMap.put(uint(id), imgData);
+				typeMap.put(id, type);
 			}
 		}
+		
+		/**
+		 */		
+		private static var typeMap:Map = new Map;
 		
 		/**
 		 * 预览图名称
@@ -39,42 +44,51 @@ package util.img
 		 */		
 		public static function unRegister(id:uint):void
 		{
-			imgMap.remove(id);
+			dataMap.remove(id);
+			typeMap.remove(id);
 		}
 		
 		/**
 		 */		
 		public static function getData(id:uint):ByteArray
 		{
-			return imgMap.getValue(id) as ByteArray;		
+			return dataMap.getValue(id) as ByteArray;		
+		}
+		
+		/**
+		 */		
+		public static function getType(id:uint):String
+		{
+			return typeMap.getValue(id); 
 		}
 		
 		/**
 		 */		
 		public static function clear():void
 		{
-			imgMap.clear();
+			dataMap.clear();
+			typeMap.clear();
 		}
 		
 		/**
 		 */		
 		public static function ifHasData(id:uint):Boolean
 		{
-			return imgMap.containsKey(id);
+			return dataMap.containsKey(id);
 		}
 		
 		/**
 		 */		
-		public static function get imgKeys():Array
+		public static function get keys():Array
 		{
-			return imgMap.keys;
+			return dataMap.keys;
 		}
 		
 		/**
 		 */		
-		public static function get imgs():Array
+		public static function get allData():Array
 		{
-			return imgMap.values();
+			return dataMap.values();
 		}
 		
 		/**
@@ -92,7 +106,7 @@ package util.img
 		
 		/**
 		 */		
-		private static var imgMap:Map = new Map;
+		private static var dataMap:Map = new Map;
 		
 		/**
 		 */		

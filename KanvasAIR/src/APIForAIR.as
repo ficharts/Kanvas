@@ -26,6 +26,7 @@ package
 	import util.img.ImgLib;
 	
 	import view.element.ElementBase;
+	import view.element.ISource;
 	import view.element.imgElement.ImgElementBase;
 	import view.ui.Bubble;
 
@@ -121,10 +122,10 @@ package
 			
 			var list:Array = reader.getEntries();
 			var xml:String;
-			var imgID:String;
-			var imgIDsInKvs:Array = new Array;
+			var assetID:String;
 				
 			var imgData:ByteArray;
+			var fileName:String;
 			
 			for each(var entry:ZipEntry in list)
 			{
@@ -135,15 +136,15 @@ package
 				else
 				{
 					imgData = reader.unzip(entry);
-					imgID = entry.getFilename().split('.')[0].toString();
+					fileName = entry.getFilename();
+					assetID = fileName.split('.')[0].toString();
 					
-					if (uint(imgID) != 0)
-					{
-						ImgLib.register(imgID, imgData);
-						imgIDsInKvs.push(imgID);
-					}
+					if (uint(assetID) != 0)
+						ImgLib.register(assetID, imgData, fileName.split('.')[1].toString());
 				}
 			}
+			
+			unsetUnusedAssets();
 			
 			reader.close();
 			PerformaceTest.end("文件解压缩结束");
@@ -151,27 +152,44 @@ package
 			PerformaceTest.start("解析xml");
 			this.setXMLData(xml);
 			
+			PerformaceTest.end("xml解析结束");
+			
+		}
+		
+		/**
+		 * 将没有用到的资源卸载掉
+		 */		
+		private function unsetUnusedAssets():void
+		{
+			var sourceEles:Array = eleIDsHasAsset;
+			var assetIDs:Array = ImgLib.keys;
+			
+			//如果数据中的图片id不存在于xml中，则说明此图片是多余图片，删除
+			for each (var id:String in assetIDs)
+			{
+				if (sourceEles.indexOf(id) == - 1)
+					ImgLib.unRegister(uint(id));
+			}
+		}
+		
+		/**
+		 * 含有资源文件
+		 */		
+		private function get eleIDsHasAsset():Array
+		{
 			//这里需要清理冗余的图片数据
 			var imgIDsInXML:Array = [];
 			for each (var element:ElementBase in CoreFacade.coreProxy.elements)
 			{
-				if (element is ImgElementBase)
-					imgIDsInXML.push((element as ImgElementBase).imgVO.imgID.toString());
+				if (element is ISource)
+					imgIDsInXML.push((element as ISource).dataID);
 			}
 			
 			//不能忘记背景图
 			if (CoreFacade.coreProxy.bgVO.imgID > 0)
 				imgIDsInXML.push(CoreFacade.coreProxy.bgVO.imgID.toString());
 			
-			//如果数据中的图片id不存在于xml中，则说明此图片是多余图片，删除
-			for each (var id:String in imgIDsInKvs)
-			{
-				if (imgIDsInXML.indexOf(id) == - 1)
-					ImgLib.unRegister(uint(id));
-			}
-			
-			PerformaceTest.end("xml解析结束");
-			
+			return imgIDsInXML;
 		}
 		
 		/**
@@ -182,7 +200,7 @@ package
 			reader.open(file);
 			
 			var list:Array = reader.getEntries();
-			var imgIDsInKvs:Array = new Array;
+			var fileName:String;
 			
 			for each(var entry:ZipEntry in list)
 			{
@@ -204,35 +222,14 @@ package
 					var imgID:String = (name.split('.')[0].toString()).split("/")[2];
 					
 					if (uint(imgID) != 0)
-					{
-						ImgLib.register(imgID, imgData);
-						imgIDsInKvs.push(imgID);
-					}
+						ImgLib.register(imgID, imgData, name.split('.')[1].toString());
 				}
 			}
+			
 			setXMLData(PreziDataImporter.convertData(XML(xml)));
+			
+			unsetUnusedAssets();
 			reader.close();
-			
-			//这里需要清理冗余的图片数据
-			var imgIDsInXML:Array = [];
-			for each (var element:ElementBase in CoreFacade.coreProxy.elements)
-			{
-				if (element is ImgElementBase)
-					imgIDsInXML.push((element as ImgElementBase).imgVO.imgID.toString());
-			}
-			
-			if (CoreFacade.coreProxy.bgVO.imgID > 0)
-				imgIDsInXML.push(CoreFacade.coreProxy.bgVO.imgID.toString());
-			
-			//如果数据中的图片id不存在于xml中，则说明此图片是多余图片，删除
-			for each (var id:uint in imgIDsInKvs)
-			{
-				if (imgIDsInXML.indexOf(id.toString()) == - 1)
-					ImgLib.unRegister(id);
-			}
-			
-			PerformaceTest.end();
-			
 		}
 		
 		/**
@@ -417,6 +414,8 @@ package
 			
 			PerformaceTest.start("save");
 			
+			unsetUnusedAssets();
+			
 			try
 			{
 				var writer:ZipFileWriter = new ZipFileWriter();// 这里每次都需要新建一个，全局writer的话第二次打开文件再保存会保存错误，将文件报废，再也打不开
@@ -432,19 +431,25 @@ package
 				//fileData.clear();
 				
 				//图片相关
-				var imgIDs:Array = ImgLib.imgKeys;
+				var imgIDs:Array = ImgLib.keys;
 				var imgDataBytes:ByteArray;
 				
-				//缩略图
-				var bmd:BitmapData = core.thumbManager.getShotCut(ConfigInitor.THUMB_WIDTH, ConfigInitor.THUMB_HEIGHT);
-				if (bmd)
+				try 
 				{
-					imgDataBytes = bmd.encode(bmd.rect, new PNGEncoderOptions);
-					writer.addBytes(imgDataBytes,"preview.png");
+					//缩略图
+					var bmd:BitmapData = core.thumbManager.getShotCut(ConfigInitor.THUMB_WIDTH, ConfigInitor.THUMB_HEIGHT);
+					if (bmd)
+					{
+						imgDataBytes = bmd.encode(bmd.rect, new PNGEncoderOptions);
+						writer.addBytes(imgDataBytes,"preview.png");
+						
+						//保存缩略图用于模版截图
+						saveFileImageForTemplate(imgDataBytes);
+					}
+				}
+				catch(e:Error)
+				{
 					
-					
-					//保存缩略图用于模版截图
-					saveFileImageForTemplate(imgDataBytes);
 				}
 				
 				// 添加图片资源数据
@@ -458,7 +463,7 @@ package
 					imgDataBytes.writeBytes(imgBytes, 0, imgBytes.bytesAvailable);
 					imgDataBytes.position = 0;
 					
-					writer.addBytes(imgDataBytes,imgID.toString() + '.png');
+					writer.addBytes(imgDataBytes,imgID.toString() + '.' + ImgLib.getType(imgID));
 				}
 				
 				writer.close();

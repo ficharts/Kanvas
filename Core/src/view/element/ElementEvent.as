@@ -146,6 +146,11 @@ package view.element
 		 */		
 		public static const PAST_GROUP:String = 'pastGroup';
 		
+		/**
+		 * 更新选择器的布局 
+		 */		
+		public static const UPDATE_SELECTOR:String = "updateSelector";
+		
 		
 		/**
 		 * 元素

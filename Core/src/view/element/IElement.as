@@ -4,6 +4,8 @@ package view.element
 	import flash.display.Shape;
 	
 	import model.vo.ElementVO;
+	
+	import view.ui.IMainUIMediator;
 
 	/**
 	 * 原件的公共接口
@@ -19,6 +21,10 @@ package view.element
 		function get shape():DisplayObject
 			
 		function get canvas():DisplayObject;
+		
+		/**
+		 */		
+		function clickedForPreview(cmt:IMainUIMediator):void;
 		
 		/**
 		 * 

@@ -313,10 +313,13 @@ package com.kvs.utils.extractor
 		/**
 		 * 文件类型，jpg、png。
 		 */
-		public function get type():String
+		override public function get type():String
 		{
 			return  __type;
 		}
+		
+		/**
+		 */		
 		private var __type:String;
 		
 		/**

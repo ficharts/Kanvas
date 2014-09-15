@@ -15,7 +15,7 @@ package com.kvs.utils
 		
 		/**
 		 */		
-		public static var ifRun:Boolean = false;
+		public static var ifRun:Boolean = true;
 		
 		/**
 		 */		

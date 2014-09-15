@@ -19,6 +19,28 @@ package view.interact.interactMode
 		
 		/**
 		 */		
+		override public function prev(xOff:Number, yOff:Number):void
+		{
+			mainMediator.pagesMnger.prev();
+		}
+		
+		/**
+		 */		
+		override public function next(xOff:Number, yOff:Number):void
+		{
+			mainMediator.pagesMnger.next();
+		}
+		
+		/**
+		 */		
+		override public function toPlayMode():void
+		{
+			mainMediator.currentMode = mainMediator.playMode;
+			mainMediator.previewCliker.enable = false;
+		}
+		
+		/**
+		 */		
 		override public function playElement():void
 		{
 			
@@ -28,6 +50,7 @@ package view.interact.interactMode
 		 */		
 		override public function autoZoom():void
 		{
+			mainMediator.pageManager.reset();
 			mainMediator.sendNotification(Command.AUTO_ZOOM);
 		}
 		

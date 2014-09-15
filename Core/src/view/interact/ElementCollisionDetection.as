@@ -2,6 +2,7 @@ package view.interact
 {
 	//import com.kvs.utils.HitTest;
 	
+	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	
 	import flash.display.DisplayObject;
@@ -130,7 +131,7 @@ package view.interact
 			//minLineInteractSizeSquare, maxLineInteractSizeSquare
 			var minLineSquare:Number = minInteractSize * minInteractSize * .25, maxLineSquare:Number = w * w;
 			
-			//PerformaceTest.start("ElementCollisionDetection.updateAfterZoomMove()")
+			PerformaceTest.start("ElementCollisionDetection.updateAfterZoomMove()")
 			var element:ElementBase, bound:Rectangle, size:Number;
 			for each (element in elements)
 			{
@@ -162,7 +163,7 @@ package view.interact
 					}
 				}
 			}
-			//PerformaceTest.end("ElementCollisionDetection.updateAfterZoomMove()")
+			PerformaceTest.end("ElementCollisionDetection.updateAfterZoomMove()")
 		}
 		
 		/**

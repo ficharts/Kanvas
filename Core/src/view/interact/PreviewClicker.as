@@ -2,7 +2,6 @@ package view.interact
 {
 	import com.kvs.ui.clickMove.ClickMoveControl;
 	import com.kvs.ui.clickMove.IClickMove;
-	import com.kvs.utils.XMLConfigKit.style.Text;
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -14,11 +13,12 @@ package view.interact
 	import flash.utils.Timer;
 	
 	import model.vo.ElementVO;
-	import model.vo.PageVO;
+	import model.vo.SWFVO;
 	import model.vo.TextVO;
 	
 	import util.LayoutUtil;
 	
+	import view.element.IElement;
 	import view.interact.zoomMove.GestureControl;
 	import view.ui.ICanvasLayout;
 	import view.ui.IMainUIMediator;
@@ -48,25 +48,31 @@ package view.interact
 		{
 			if (enable && !GestureControl.gestureControl)
 			{
-				if (mdt.pages.length && mdt.mainUI.stage.mouseX < 150 || mdt.mainUI.stage.mouseX > (mdt.mainUI.stage.stageWidth - 150))
+				if (mdt.pagesMnger.length && mdt.mainUI.stage.mouseX < 150 || mdt.mainUI.stage.mouseX > (mdt.mainUI.stage.stageWidth - 150))
 				{
 					if (mdt.mainUI.stage.mouseX < 150)
 					{
 						if (mdt.mainUI.stage.mouseX > 100 || mdt.mainUI.stage.mouseY < (mdt.mainUI.stage.stageHeight - 100))
 						{
-							try{
+							try
+							{
 								Object(mdt.mainUI).interact.show(0, 0, 150, mdt.mainUI.stage.stageHeight);
-							} catch (e:Error) { }
-							callLater(mdt.pages.prev);
+							} 
+							catch (e:Error) { }
+							
+							callLater(mdt.prev);
 							//mdt.pages.prev();
 						}
 					}
 					else
 					{
-						try{
+						try
+						{
 							Object(mdt.mainUI).interact.show((mdt.mainUI.stage.stageWidth - 150), 0, 150, mdt.mainUI.stage.stageHeight);
-						} catch (e:Error) { }
-						callLater(mdt.pages.next);
+						} 
+						catch (e:Error) { }
+						
+						callLater(mdt.next);
 						//mdt.pages.next();
 					}
 				}
@@ -81,7 +87,7 @@ package view.interact
 					{
 						var bound:Rectangle = LayoutUtil.getItemRect(mdt.mainUI.canvas, element);
 						
-						if (Object(element).canvas.alpha >= 1 && bound.width > 20 && bound.height > 20 &&　bound.contains(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY))
+						if (Object(element).canvas && Object(element).canvas.alpha >= 1 && bound.width > 20 && bound.height > 20 &&　bound.contains(mdt.mainUI.stage.mouseX, mdt.mainUI.stage.mouseY))
 						{
 							elementsHit.push(element);
 							
@@ -102,7 +108,7 @@ package view.interact
 			if (elementsHit.length)
 			{
 				elementsHit.sort(sortOnSize);
-				var targetElement:ICanvasLayout = elementsHit[0];
+				var targetElement:IElement = elementsHit[0];
 				
 				//点击区域的最小尺寸页面 ＝ 当前页面
 				if (pagesHit.length)
@@ -111,27 +117,9 @@ package view.interact
 					pagesHit.sort(sortOnSize);
 					var nearPage:ICanvasLayout = pagesHit[0];
 					mdt.setPageIndex((nearPage["vo"].pageVO).index);
-					//mdt.zoomElement(nearPage["vo"]);
-				}
-				else
-				{
-					//mdt.zoomElement(targetElement["vo"]);
 				}
 				
-				var elementVO:ElementVO = targetElement["vo"];
-				
-				if (elementVO is TextVO)
-				{
-					var t:String = (elementVO as TextVO).text;
-					
-					if (t.indexOf("http://") != - 1 || t.indexOf("https://") != - 1)
-					{
-						flash.net.navigateToURL(new URLRequest(t), "_blank");
-						return;
-					}
-				}
-				
-				mdt.zoomElement(elementVO);
+				targetElement.clickedForPreview(mdt);
 			}
 		}
 		
@@ -269,7 +257,7 @@ package view.interact
 		/**
 		 * 点击碰撞到的元素
 		 */		
-		private var elementsHit:Vector.<ICanvasLayout> = new Vector.<ICanvasLayout>;
+		private var elementsHit:Vector.<IElement> = new Vector.<IElement>;
 		
 		/**
 		 * 点击碰撞到的页面

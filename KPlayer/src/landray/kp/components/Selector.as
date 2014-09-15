@@ -7,7 +7,6 @@ package landray.kp.components
 	import landray.kp.core.KPConfig;
 	import landray.kp.core.kp_internal;
 	import landray.kp.maps.main.elements.Element;
-	import landray.kp.view.Viewer;
 	
 	import util.LayoutUtil;
 	
@@ -30,6 +29,9 @@ package landray.kp.components
 			visible = false;
 		}
 		
+		/**
+		 * 
+		 */		
 		public function render($element:Element = null):void
 		{
 			if ($element)

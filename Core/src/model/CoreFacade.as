@@ -27,6 +27,8 @@ package model
 	import view.element.imgElement.SWFElement;
 	import view.element.shapes.*;
 	import view.element.text.TextEditField;
+	import view.element.video.VideoElement;
+	import view.element.video.VideoVO;
 	import view.interact.CoreMediator;
 	import view.ui.Canvas;
 	
@@ -155,6 +157,7 @@ package model
 			
 			ElementCreator.registerElement("chart2d", ChartElement, ChartVO);
 			ElementCreator.registerElement("pie2d", PieElement, ChartVO);
+			ElementCreator.registerElement("video", VideoElement, VideoVO);
 		}
 		
 		/**

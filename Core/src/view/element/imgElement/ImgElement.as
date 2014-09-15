@@ -27,8 +27,24 @@ package view.element.imgElement
 			addChild(_canvas);
 		}
 		
+		/**
+		 */		
+		override public function flashStart():void
+		{
+			this.smooth = false;
+		}
 		
-
+		/**
+		 * 
+		 */		
+		override public function flashStop():void
+		{
+			this.smooth = true;
+		}
+		
+		/**
+		 * 
+		 */
 		override public function clone():ElementBase
 		{
 			var imgVO:ImgVO = new ImgVO;
