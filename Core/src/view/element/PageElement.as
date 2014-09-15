@@ -44,6 +44,8 @@ package view.element
 			mouseChildren = true;
 		}
 		
+		/**
+		 */		
 		override protected function init():void
 		{
 			super.init();
@@ -149,6 +151,13 @@ package view.element
 					graphics.endFill();
 				}
 			}
+		}
+		
+		/**
+		 */		
+		override public function flashStop():void
+		{
+			render();
 		}
 		
 		/**

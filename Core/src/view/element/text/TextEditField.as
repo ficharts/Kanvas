@@ -6,8 +6,10 @@ package view.element.text
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
+	import flash.text.TextFormat;
 	import flash.text.engine.BreakOpportunity;
 	import flash.text.engine.CFFHinting;
+	import flash.text.engine.TextRotation;
 	
 	import flashx.textLayout.container.TextContainerManager;
 	import flashx.textLayout.edit.EditingMode;
@@ -45,6 +47,14 @@ package view.element.text
 			textDrawer = new TextDrawer(this);
 			shape.visible = false;
 			
+		}
+		
+		/**
+		 * 
+		 */		
+		override public function flashStop():void
+		{
+			this.checkTextBm();
 		}
 		
 		/**
@@ -167,6 +177,8 @@ package view.element.text
 			textManager.setText("");
 			textManager.updateContainer();
 			graphics.clear();
+			
+			
 		}
 		
 		
@@ -299,8 +311,6 @@ package view.element.text
 			textLayoutFormat.cffHinting = CFFHinting.NONE;
 			textLayoutFormat.textAlign = TextAlign.LEFT;
 			textLayoutFormat.breakOpportunity = BreakOpportunity.AUTO;
-			
-			textManager.hostFormat = textLayoutFormat;
 		}
 		
 		/**

@@ -12,7 +12,6 @@ package view.element.imgElement
 	import util.ElementUtil;
 	
 	import view.element.ElementBase;
-	import view.element.ISource;
 	
 	
 	/**
@@ -26,6 +25,21 @@ package view.element.imgElement
 			
 			_canvas.addChild(graphicShape);
 			addChild(_canvas);
+		}
+		
+		/**
+		 */		
+		override public function flashStart():void
+		{
+			this.smooth = false;
+		}
+		
+		/**
+		 * 
+		 */		
+		override public function flashStop():void
+		{
+			this.smooth = true;
 		}
 		
 		/**

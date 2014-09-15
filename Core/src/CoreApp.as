@@ -546,7 +546,7 @@ package
 		private function initUI():void
 		{
 			// 值越高，动画播放更流畅, 但更消耗性能 
-			stage.frameRate = 30;
+			stage.frameRate = 24;
 			
 			thumbManager = new ThumbManager(this);
 			bgColorFlasher = new BgColorFlasher(this);

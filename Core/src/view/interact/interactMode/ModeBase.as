@@ -1,17 +1,11 @@
 package view.interact.interactMode
 {
-	import com.kvs.utils.PerformaceTest;
-	
 	import commands.Command;
-	
-	import flash.geom.Point;
 	
 	import model.CoreFacade;
 	import model.vo.PageVO;
 	
 	import view.element.ElementBase;
-	import view.element.imgElement.ImgElement;
-	import view.element.text.TextEditField;
 	import view.interact.CoreMediator;
 
 	/**
@@ -65,6 +59,16 @@ package view.interact.interactMode
 		
 		/**
 		 */		
+		public function flashStart():void
+		{
+			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
+			
+			for each (var element:ElementBase in elements)
+				element.flashStart();
+		}
+		
+		/**
+		 */		
 		public function flashing():void
 		{
 			//检测，重绘文本， 以达到像素精度不失真
@@ -72,16 +76,8 @@ package view.interact.interactMode
 			for each (element in elements)
 			{
 				if (element.visible)
-				{
-					if (element.isPage)
-						element.layoutPageNum();
-					
-					if (element is TextEditField)
-						TextEditField(element).checkTextBm();
-				}
+					element.flashing();
 			}
-			
-			mainMediator.collisionDetection.updateAfterZoomMove();
 		}
 		
 		/**
@@ -91,12 +87,15 @@ package view.interact.interactMode
 			mainMediator.mainUI.curScreenState.enableCanvas();
 			//zoomMoveControl.enableBGInteract();//生效会导致动画编辑时背景可被拖动
 			
+			//文本刷新，图片开启smooth
 			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
 			for each (var element:ElementBase in elements)
 			{
-				if (element is ImgElement)
-					ImgElement(element).smooth = true;
+				if (element.visible)
+					element.flashStop();
 			}
+			
+			mainMediator.collisionDetection.updateAfterZoomMove();
 		}
 		
 		/**

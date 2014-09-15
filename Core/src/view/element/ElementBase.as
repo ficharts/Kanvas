@@ -57,6 +57,29 @@ package view.element
 		
 		/**
 		 */		
+		public function flashStart():void
+		{
+			
+		}
+		
+		/**
+		 */		
+		public function flashing():void
+		{
+			if (isPage)
+				layoutPageNum();
+		}
+		
+		/**
+		 * 
+		 */		
+		public function flashStop():void
+		{
+			
+		}
+		
+		/**
+		 */		
 		public function clickedForPreview(cmt:IMainUIMediator):void
 		{
 			cmt.zoomElement(vo);

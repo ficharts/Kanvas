@@ -839,12 +839,7 @@ package view.interact
 			if(!treking)
 			{
 				treking = true;
-				var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-				for each (var element:ElementBase in elements)
-				{
-					if (element is ImgElement)
-						ImgElement(element).smooth = false;
-				}
+				currentMode.flashStart();
 			}
 		}
 		
