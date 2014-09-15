@@ -500,16 +500,28 @@ package modules.pages
 			
 			mat = new Matrix;
 			mat.translate(offsetX, offsetY);
-			var im:BitmapData = BitmapUtil.drawWithSize(mainUI.canvas, w, h, true, 0, mat, smooth);
 			
-			var bmd:BitmapData = new BitmapData(w, h, false, bgColor);
-			bmd.draw(bg, null, null, null, null, true);
-			bmd.draw(im, null, null, null, null, true);
+			try
+			{
+				var im:BitmapData = BitmapUtil.drawWithSize(mainUI.canvas, w, h, true, 0, mat, smooth);
+				
+				var bmd:BitmapData = new BitmapData(w, h, false, bgColor);
+				bmd.draw(bg, null, null, null, null, true);
+				bmd.draw(im, null, null, null, null, true);
+				
+				mainUI.canvas.toPreviewState();
+				mainUI.synBgContentToCanvas();
+				
+				return bmd;
+			} 
+			catch(error:Error) 
+			{
+				//含有视频时，有时候无法成功draw
+				trace("页面截图错误");
+			}
 			
-			mainUI.canvas.toPreviewState();
-			mainUI.synBgContentToCanvas();
+			return null;
 			
-			return bmd;
 		}
 		
 		private function get proxy():CoreProxy

@@ -144,14 +144,13 @@ package
 				}
 			}
 			
-			unsetUnusedAssets();
-			
 			reader.close();
 			PerformaceTest.end("文件解压缩结束");
 			
 			PerformaceTest.start("解析xml");
 			this.setXMLData(xml);
 			
+			unsetUnusedAssets();
 			PerformaceTest.end("xml解析结束");
 			
 		}

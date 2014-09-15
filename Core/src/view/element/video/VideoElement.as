@@ -17,8 +17,6 @@ package view.element.video
 	import view.element.ISource;
 	import view.element.state.ElementGroupState;
 	import view.element.state.ElementMultiSelected;
-	import view.element.state.ElementPrevState;
-	import view.element.state.ElementUnSelected;
 	import view.ui.IMainUIMediator;
 	
 	/**
