@@ -19,6 +19,13 @@ package view.element.state
 		}
 		
 		/**
+		 */		
+		public function flashing():void
+		{
+			
+		}
+		
+		/**
 		 * 元素
 		 */
 		protected var element:ElementBase;

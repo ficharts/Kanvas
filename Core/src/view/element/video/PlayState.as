@@ -1,5 +1,7 @@
 package view.element.video
 {
+	/**
+	 */	
 	public class PlayState extends VideoStateBase
 	{
 		public function PlayState(videoElement:VideoElement)
@@ -10,6 +12,15 @@ package view.element.video
 		/**
 		 */		
 		override public function play():void
+		{
+			videoEle.ns.pause();
+			
+			videoEle.videoState = videoEle.pauseState;
+		}
+		
+		/**
+		 */		
+		override public function pause():void
 		{
 			videoEle.ns.pause();
 			

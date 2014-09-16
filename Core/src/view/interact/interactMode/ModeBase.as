@@ -78,6 +78,8 @@ package view.interact.interactMode
 				if (element.visible)
 					element.flashing();
 			}
+			
+			mainMediator.collisionDetection.updateAfterZoomMove();
 		}
 		
 		/**
@@ -94,8 +96,6 @@ package view.interact.interactMode
 				if (element.visible)
 					element.flashStop();
 			}
-			
-			mainMediator.collisionDetection.updateAfterZoomMove();
 		}
 		
 		/**

@@ -16,6 +16,14 @@ package view.element.state
 		
 		/**
 		 */		
+		override public function flashing():void
+		{
+			if (element.isPage)
+				element.layoutPageNum();
+		}
+		
+		/**
+		 */		
 		override public function del():void
 		{
 			element.dispatchEvent(new ElementEvent(ElementEvent.DEL_SHAPE, element));

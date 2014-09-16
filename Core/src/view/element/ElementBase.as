@@ -66,8 +66,7 @@ package view.element
 		 */		
 		public function flashing():void
 		{
-			if (isPage)
-				layoutPageNum();
+			currentState.flashing();
 		}
 		
 		/**

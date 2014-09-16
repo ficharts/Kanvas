@@ -15,6 +15,14 @@ package view.element.state
 		}
 		
 		/**
+		 */		
+		override public function flashing():void
+		{
+			if (element.isPage)
+				element.layoutPageNum();
+		}
+		
+		/**
 		 * 当前状态鼠标按下后处理方法
 		 */
 		override public function clicked():void

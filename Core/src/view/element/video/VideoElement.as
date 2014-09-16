@@ -41,6 +41,13 @@ package view.element.video
 		
 		/**
 		 */		
+		override public function flashStart():void
+		{
+			this.pause();
+		}
+		
+		/**
+		 */		
 		private function resetVideoHandler(evt:MouseEvent):void
 		{
 			this.reset();
