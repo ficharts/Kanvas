@@ -126,8 +126,8 @@ package view.ui
 							shape.graphics.endFill();
 							shapes.push(shape);
 						}
-						var page:PageVO = manager.pages[i];
 						
+						var page:PageVO = manager.pages[i];
 						var bmd:BitmapData = manager.getThumbByPageVO(page, w, h);
 					}
 					else

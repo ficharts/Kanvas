@@ -423,9 +423,6 @@ package model
 			groupElements.length = 0;
 			groupElements = null;
 			
-			//for each (element in this.elements)
-				//element.render();
-				
 			//PerformaceTest.end("渲染结束");
 			
 			//背景图片加载

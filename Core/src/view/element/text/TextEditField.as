@@ -19,6 +19,8 @@ package view.element.text
 	import model.vo.ElementVO;
 	import model.vo.TextVO;
 	
+	import modules.pages.PageEvent;
+	
 	import util.textFlow.FlowTextManager;
 	import util.textFlow.ITextFlowLabel;
 	
@@ -132,6 +134,10 @@ package view.element.text
 		override public function toSelectedState():void
 		{
 			currentState.toSelected();
+			
+			//选择页面时，对应的页面列表中的页面需被选中
+			if (this.isPage)
+				vo.pageVO.dispatchEvent(new PageEvent(PageEvent.PAGE_SELECTED, vo.pageVO, false));
 		}
 		
 		/**

@@ -6,9 +6,14 @@ package view.element.video
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.net.NetStreamAppendBytesAction;
+	import flash.system.ApplicationDomain;
+	import flash.system.Security;
+	import flash.system.System;
 	import flash.utils.ByteArray;
 	
 	import model.vo.ElementVO;
+	
+	import modules.pages.PageEvent;
 	
 	import util.img.ImgLib;
 	
@@ -123,6 +128,9 @@ package view.element.video
 			ns = new NetStream(nc);
 			ns.client = {};
 			ns.backBufferTime = 0;
+			
+		
+			ns.checkPolicyFile = true;
 			ns.addEventListener(NetStatusEvent.NET_STATUS, status);
 			video.attachNetStream(ns);
 			
@@ -172,13 +180,19 @@ package view.element.video
 		{
 			if (evt.info.code == "NetStream.Play.Stop") 
 			{
-				ns.appendBytesAction(NetStreamAppendBytesAction.END_SEQUENCE);
+				//url加载方式播放时，此处会报错,所以先注释掉
+				//ns.appendBytesAction(NetStreamAppendBytesAction.END_SEQUENCE);
 			}
 			else if (evt.info.code == "NetStream.Play.Start") 
 			{
 				render();
-				
 				this.dispatchEvent(new ElementEvent(ElementEvent.UPDATE_SELECTOR));
+			}
+			else if (evt.info.code == "NetStream.Buffer.Full") 
+			{
+				//含有视频的文件再次打开时视频开始播放时才可以截图给页面
+				if (isPage)
+					vo.pageVO.dispatchEvent(new PageEvent(PageEvent.UPDATE_THUMB, vo.pageVO));
 			}
 		}
 		

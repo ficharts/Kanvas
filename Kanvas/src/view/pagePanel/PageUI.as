@@ -4,11 +4,13 @@ package view.pagePanel
 	import com.kvs.ui.clickMove.ClickMoveControl;
 	import com.kvs.ui.clickMove.IClickMove;
 	import com.kvs.ui.label.LabelUI;
+	import com.kvs.utils.graphic.BitmapUtil;
 	
 	import flash.display.Bitmap;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
 	
 	import model.CoreFacade;
 	import model.vo.PageVO;
@@ -16,6 +18,7 @@ package view.pagePanel
 	import modules.pages.PageEvent;
 	import modules.pages.PageManager;
 	
+	import view.interact.CoreMediator;
 	import view.ui.MainUIBase;
 	
 	/**
@@ -115,17 +118,9 @@ package view.pagePanel
 		 */		
 		private function updateThumb(evt:PageEvent = null):void
 		{
-			pageVO.bitmapData = CoreFacade.coreMediator.pageManager.getThumbByPageVO(pageVO, PageManager.THUMB_WIDTH, PageManager.THUMB_HEIGHT, true);
+			pageVO.bitmapData = CoreFacade.coreMediator.pageManager.getThumbByPageVO(pageVO, PageManager.THUMB_WIDTH, PageManager.THUMB_HEIGHT);
 			
-			
-			if (bmp && con.contains(bmp)) con.removeChild(bmp);
-			
-			con.addChild(bmp = new Bitmap(pageVO.bitmapData));
-			bmp.x = leftGutter;
-			bmp.y = (currState.height - iconH) / 2;
-			bmp.width = iconW;
-			bmp.height = iconH;
-			bmp.smoothing = true;
+			drawPageThumb();
 		}
 		
 		/**
@@ -165,24 +160,6 @@ package view.pagePanel
 			
 			drawPageThumb();
 			
-			if (pageVO.bitmapData)
-			{
-				if (bmp && con.contains(bmp)) con.removeChild(bmp);
-				con.addChild(bmp = new Bitmap(pageVO.bitmapData));
-				bmp.x = leftGutter;
-				bmp.y = (currState.height - iconH) / 2;
-				bmp.width = iconW;
-				bmp.height = iconH;
-				bmp.smoothing = true;
-			}
-			else
-			{
-				if (pageVO.thumbUpdatable)
-				{
-					updateThumb();
-				}
-			}
-			
 			deleteBtn.x = leftGutter + iconW;
 			deleteBtn.y = currState.height / 2;
 		}
@@ -196,8 +173,11 @@ package view.pagePanel
 			var ty:Number = (currState.height - iconH) / 2 - off;
 			
 			imgShape.graphics.clear();
-			imgShape.graphics.beginFill(0xeeeeee);
-			imgShape.graphics.drawRect(leftGutter - off, ty, iconW + off * 2, iconH + off * 2);
+			imgShape.graphics.beginFill(0xffffff, 0.3);
+			imgShape.graphics.drawRect(leftGutter, ty, iconW, iconH);
+			imgShape.graphics.endFill();
+			
+			BitmapUtil.drawBitmapDataToShape(pageVO.bitmapData, imgShape, iconW, iconH, leftGutter, ty, true);
 			imgShape.graphics.endFill();
 		}
 		

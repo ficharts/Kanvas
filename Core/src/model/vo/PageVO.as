@@ -28,10 +28,13 @@ package model.vo
 			xml = <page/>;
 		}
 		
+		/**
+		 */		
 		override public function clone():ElementVO
 		{
 			var vo:PageVO = super.clone() as PageVO;
 			vo.index = (parent) ? parent.length : -1;
+			
 			return vo;
 		}
 		
@@ -65,8 +68,6 @@ package model.vo
 			if (_x!= value)
 			{
 				_x = value;
-				if (thumbUpdatable)
-					dispatchEvent(new PageEvent(PageEvent.UPDATE_THUMB, this));
 			}
 		}
 		
@@ -77,8 +78,6 @@ package model.vo
 			if (_y!= value)
 			{
 				_y = value;
-				if (thumbUpdatable)
-					dispatchEvent(new PageEvent(PageEvent.UPDATE_THUMB, this));
 			}
 		}
 		
@@ -113,8 +112,6 @@ package model.vo
 			if (_scale!= value)
 			{
 				_scale = value;
-				if (thumbUpdatable)
-					dispatchEvent(new PageEvent(PageEvent.UPDATE_THUMB, this));
 			}
 		}
 		
@@ -125,8 +122,6 @@ package model.vo
 			if (_rotation!= value)
 			{
 				_rotation = value;
-				if (thumbUpdatable)
-					dispatchEvent(new PageEvent(PageEvent.UPDATE_THUMB, this));
 			}
 		}
 		

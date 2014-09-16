@@ -31,6 +31,7 @@ package modules.pages
 		{
 			registPageVO(pageVO, length);
 			pages[pages.length] = pageVO;//1.65
+			
 			dispatchEvent(new PageEvent(PageEvent.PAGE_ADDED, pageVO));//.7
 			
 			return pageVO;

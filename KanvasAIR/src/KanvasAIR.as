@@ -24,6 +24,7 @@ package
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.net.dns.AAAARecord;
+	import flash.system.Security;
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 	
@@ -52,6 +53,8 @@ package
 			super();
 			
 			initKanvasAIR();
+			
+			Security.loadPolicyFile("pf.xml");
 		}
 		
 		private function initKanvasAIR():void
