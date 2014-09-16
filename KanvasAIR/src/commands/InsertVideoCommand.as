@@ -9,6 +9,7 @@ package commands
 	
 	import org.puremvc.as3.interfaces.INotification;
 	
+	import util.ElementCreator;
 	import util.LayoutUtil;
 	import util.img.ImgLib;
 	import util.layout.LayoutTransformer;
@@ -40,6 +41,7 @@ package commands
 			
 			
 			videoVO = new VideoVO;
+			videoVO.id = ElementCreator.id;
 			videoVO.url = videoFile.nativePath;
 			videoVO.videoType = videoFile.extension;
 			
