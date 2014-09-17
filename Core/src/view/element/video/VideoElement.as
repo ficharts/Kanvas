@@ -129,8 +129,6 @@ package view.element.video
 			ns.client = {};
 			ns.backBufferTime = 0;
 			
-		
-			ns.checkPolicyFile = true;
 			ns.addEventListener(NetStatusEvent.NET_STATUS, status);
 			video.attachNetStream(ns);
 			
