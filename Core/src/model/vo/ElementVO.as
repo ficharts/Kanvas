@@ -112,12 +112,13 @@ package model.vo
 		{
 			return _x;
 		}
+		
 		public function set x(value:Number):void
 		{
 			_x = value;
 			if (pageVO && pageVO != this) pageVO.x = value;
-			
 		}
+		
 		protected var _x:Number = 0;
 		
 		/**
@@ -126,11 +127,13 @@ package model.vo
 		{
 			return _y;
 		}
+		
 		public function set y(value:Number):void
 		{
 			_y = value;
 			if (pageVO && pageVO != this) pageVO.y = value;
 		}
+		
 		protected var _y:Number = 0;
 		
 		/**

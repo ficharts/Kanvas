@@ -90,6 +90,8 @@ package modules.pages
 		 */
 		public function addPage(pageVO:PageVO):PageVO
 		{
+			pageVO.bitmapData = getThumbByPageVO(pageVO, THUMB_WIDTH, THUMB_HEIGHT);
+			
 			pageQuene.addPage(pageVO);
 			__index = pageVO.index;
 			
@@ -101,6 +103,8 @@ package modules.pages
 		 */
 		public function addPageAt(pageVO:PageVO, index:int):PageVO
 		{
+			pageVO.bitmapData = getThumbByPageVO(pageVO, THUMB_WIDTH, THUMB_HEIGHT);
+			
 			pageQuene.addPageAt(pageVO, index);
 			__index = pageVO.index;
 			
@@ -343,18 +347,24 @@ package modules.pages
 		
 		private var pageQuene:PageQuene;
 		
+		/**
+		 */		
 		public function notifyPageVOUpdateThumb(vo:PageVO):void
 		{
 			if (vo)
+			{
+				vo.bitmapData = getThumbByPageVO(vo, THUMB_WIDTH, THUMB_HEIGHT);
 				vo.dispatchEvent(new PageEvent(PageEvent.UPDATE_THUMB, vo));
+			}
 		}
 		
+		/**
+		 */		
 		public function registOverlappingPageVOs(current:ElementBase):void
 		{
 			if (current.isPage && current.parent) //元素本身是页面
-			{
 				registUpdateThumbVO(current.vo.pageVO);
-			}
+			
 			if (current.screenshot) //元素为可见元素
 			{
 				var elements:Vector.<ElementBase> = proxy.elements;
@@ -374,6 +384,8 @@ package modules.pages
 			}
 		}
 		
+		/**
+		 */		
 		public function registUpdateThumbVO(vo:PageVO):void
 		{
 			if (refreshed)
@@ -381,6 +393,7 @@ package modules.pages
 				refreshed = false;
 				updateThumbVOS.length = 0;
 			}
+			
 			if (vo)
 			{
 				if (updateThumbVOS.indexOf(vo) == -1)
@@ -403,8 +416,9 @@ package modules.pages
 			for each (vo in tmp)
 			{
 				vo.thumbUpdatable = true;
-				vo.dispatchEvent(new PageEvent(PageEvent.UPDATE_THUMB, vo));
+				notifyPageVOUpdateThumb(vo);
 			}
+			
 			return (pageVOs) ? null : updateThumbVOS.concat();
 		}
 		
@@ -412,6 +426,8 @@ package modules.pages
 		
 		private static const updateThumbVOS:Vector.<PageVO> = new Vector.<PageVO>;
 		
+		/**
+		 */		
 		public function refreshPageThumbsByElement(element:ElementBase):Vector.<PageVO>
 		{
 			var vector:Vector.<PageVO> = getOverlappingPages(element);
@@ -421,6 +437,9 @@ package modules.pages
 			return refreshVOThumbs();
 		}
 		
+		/**
+		 * 
+		 */		
 		public function getOverlappingPages(current:ElementBase):Vector.<PageVO>
 		{
 			if (current.isPage)
@@ -446,6 +465,7 @@ package modules.pages
 					}
 				}
 			}
+			
 			return vector;
 		}
 		
@@ -527,6 +547,8 @@ package modules.pages
 			
 		}
 		
+		/**
+		 */		
 		private function get proxy():CoreProxy
 		{
 			return CoreFacade.coreProxy;
