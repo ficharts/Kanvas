@@ -18,8 +18,6 @@ package view.element.video
 		override public function clicked():void
 		{
 			element.dispatchEvent(new ElementEvent(ElementEvent.FIRST_CLICKED, element));
-			
-			(element as VideoElement).play();
 		}
 		
 		/**

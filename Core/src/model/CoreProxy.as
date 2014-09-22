@@ -39,6 +39,7 @@ package model
 	import view.element.GroupElement;
 	import view.element.PageElement;
 	import view.element.imgElement.ImgElement;
+	import view.element.video.VideoElement;
 	import view.element.video.VideoVO;
 	
 	/**
@@ -423,8 +424,6 @@ package model
 			groupElements.length = 0;
 			groupElements = null;
 			
-			//PerformaceTest.end("渲染结束");
-			
 			//背景图片加载
 			bgImgLoader.addEventListener(ImgInsertEvent.IMG_LOADED, initializeBgImgLoaded);
 			if (ImgLib.ifHasData(bgVO.imgID))//从资源包种获取图片
@@ -546,6 +545,8 @@ package model
 			return element;
 		}
 		
+		/**
+		 */		
 		private function imageToNormalHandler(e:ElementEvent):void
 		{
 			e.currentTarget.removeEventListener(ElementEvent.IMAGE_TO_RENDER, imageToNormalHandler);
@@ -669,8 +670,6 @@ package model
 		/**
 		 * 存放所有的图片元素
 		 */		
-		//private var _imageElements:Vector.<ImageElement>;
-		
 		public function get imageElements():Vector.<ImgElement>
 		{
 			var vector:Vector.<ImgElement> = new Vector.<ImgElement>;
@@ -683,10 +682,20 @@ package model
 			return vector;
 		}
 		
-		/*public function set imageElements(value:Vector.<ImageElement>):void
+		/**
+		 * 获取所有视频元素
+		 */		
+		public function get videoes():Vector.<VideoElement>
 		{
-			_imageElements = value;
-		}*/
+			var result:Vector.<VideoElement> = new Vector.<VideoElement>
+			for each (var element:ElementBase in elements)
+			{
+				if (element is VideoElement)
+					result.push(element as VideoElement);
+			}
+				
+			return result;
+		}
 		
 		
 	}

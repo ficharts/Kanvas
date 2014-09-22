@@ -90,6 +90,11 @@ package
 		public static const IMPORT_DATA_COMPLETE:String = "importDataComplete";
 		
 		/**
+		 * 包含视频文件的kvs文件再次打开需要根据文件位置适配视频的URL地址 
+		 */		
+		public static const SET_VIDEO_URL:String = "setVideoURL";
+		
+		/**
 		 */		
 		public function KVSEvent(type:String)
 		{

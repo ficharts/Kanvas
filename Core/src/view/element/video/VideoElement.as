@@ -6,9 +6,6 @@ package view.element.video
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
 	import flash.net.NetStreamAppendBytesAction;
-	import flash.system.ApplicationDomain;
-	import flash.system.Security;
-	import flash.system.System;
 	import flash.utils.ByteArray;
 	
 	import model.vo.ElementVO;
@@ -19,7 +16,6 @@ package view.element.video
 	
 	import view.element.ElementBase;
 	import view.element.ElementEvent;
-	import view.element.ISource;
 	import view.element.state.ElementGroupState;
 	import view.element.state.ElementMultiSelected;
 	import view.ui.IMainUIMediator;
@@ -31,7 +27,7 @@ package view.element.video
 	 * @author wanglei
 	 * 
 	 */	
-	public class VideoElement extends ElementBase implements ISource
+	public class VideoElement extends ElementBase
 	{
 		public function VideoElement(vo:ElementVO)
 		{
@@ -116,9 +112,6 @@ package view.element.video
 		{
 			preRender();
 			
-			if (!data && ImgLib.ifHasData(videoVO.videoID))
-				videoVO.source = ImgLib.getData(videoVO.videoID);
-			
 			video = new Video(vo.width, vo.height);
 			addChild(video);
 			
@@ -142,21 +135,18 @@ package view.element.video
 		{
 			ns.close();
 			
-			if (data)
+			if (videoVO.url)
 			{
-				ns.play(null);
-				ns.appendBytesAction(NetStreamAppendBytesAction.RESET_BEGIN);	
-				
-				data.position = 0;
-				ns.appendBytes(data);
+				ns.play("file://" + videoVO.url); 
+				videoState = pauseState;
+				ns.pause();
 			}
 			else
 			{
-				ns.play("file://" + videoVO.url); 
+				var evt:KVSEvent = new KVSEvent(KVSEvent.SET_VIDEO_URL);
+				evt.element = this;
+				this.dispatchEvent(evt);
 			}
-			
-			videoState = pauseState;
-			ns.pause();
 		}
 		
 		/**
@@ -178,25 +168,24 @@ package view.element.video
 		{
 			if (evt.info.code == "NetStream.Play.Stop") 
 			{
-				//url加载方式播放时，此处会报错,所以先注释掉
-				//ns.appendBytesAction(NetStreamAppendBytesAction.END_SEQUENCE);
+				videoState = pauseState;
+				ns.pause();
+				
+				ns.seek(0);//将播放头置于视频开始处
 			}
 			else if (evt.info.code == "NetStream.Play.Start") 
 			{
 				render();
 				this.dispatchEvent(new ElementEvent(ElementEvent.UPDATE_SELECTOR));
-			}
-			else if (evt.info.code == "NetStream.Buffer.Full") 
-			{
-				//含有视频的文件再次打开时视频开始播放时才可以截图给页面
+				
 				if (isPage)
-					vo.pageVO.dispatchEvent(new PageEvent(PageEvent.UPDATE_THUMB, vo.pageVO));
+					vo.pageVO.dispatchEvent(new PageEvent(PageEvent.UPDATE_THUMB));
 			}
 		}
 		
 		/**
 		 */		
-		internal function get data():ByteArray
+		public function get data():ByteArray
 		{
 			return (vo as VideoVO).source;
 		}
@@ -210,7 +199,7 @@ package view.element.video
 		
 		/**
 		 */		
-		private function get videoVO():VideoVO
+		public function get videoVO():VideoVO
 		{
 			return vo as VideoVO;
 		}
@@ -238,6 +227,14 @@ package view.element.video
 				
 				super.render();
 			}
+		}
+		
+		/**
+		 * 视频文件的完整名称
+		 */		
+		public function get fileName():String
+		{
+			return dataID + "." + videoVO.videoType;
 		}
 		
 		/**
