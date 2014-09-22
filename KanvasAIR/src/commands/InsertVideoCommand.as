@@ -85,7 +85,6 @@ package commands
 			videoVO.source.writeBytes(videoFile.data, 0, videoFile.data.bytesAvailable);
 		
 			videoVO.videoID = ImgLib.imgID;
-			ImgLib.register(videoVO.videoID.toString(), videoVO.source, videoVO.videoType);
 		}
 		
 		/**

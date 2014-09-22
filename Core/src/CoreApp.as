@@ -30,6 +30,7 @@ package
 	import view.editor.text.TextEditor;
 	import view.element.ElementBase;
 	import view.element.imgElement.ImgElement;
+	import view.element.video.VideoElement;
 	import view.elementSelector.ElementHover;
 	import view.ui.BgColorFlasher;
 	import view.ui.Bubble;
@@ -226,7 +227,6 @@ package
 			facade.coreMediator.paste();
 		}
 		
-				
 		/**
 		 */		
 		public function exportData():XML
@@ -264,6 +264,14 @@ package
 			setLib();
 			
 			return facade.coreProxy.exportZipData();
+		}
+		
+		/**
+		 * 
+		 */		
+		public function get videoes():Vector.<VideoElement>
+		{
+			return facade.coreProxy.videoes;
 		}
 		
 		/**

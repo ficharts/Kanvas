@@ -53,8 +53,6 @@ package
 			super();
 			
 			initKanvasAIR();
-			
-			Security.loadPolicyFile("pf.xml");
 		}
 		
 		private function initKanvasAIR():void
@@ -315,7 +313,7 @@ package
 						if (this.templatePanel.isOpen == false || airAPI.file)
 							CoreFacade.sendNotification(Command.INSERT_IMAGE, f);
 					}
-					else if (extension == "flv")// || extension == "mp4")
+					else if (extension == "flv" || extension == "mp4")
 					{
 						if (this.templatePanel.isOpen == false || airAPI.file)
 							CoreFacade.sendNotification(Command.INSERT_VIDEO, f);

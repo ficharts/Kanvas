@@ -27,7 +27,7 @@ package
 	
 	import view.element.ElementBase;
 	import view.element.ISource;
-	import view.element.imgElement.ImgElementBase;
+	import view.element.video.VideoElement;
 	import view.ui.Bubble;
 
 	/**
@@ -44,6 +44,7 @@ package
 			core.stage.nativeWindow.addEventListener(Event.CLOSING,closing);
 			
 			cr = Bitmap(new Copyright);
+			core.addEventListener(KVSEvent.SET_VIDEO_URL, setVideoURLHandler);
 		}	
 		
 		/**
@@ -76,6 +77,8 @@ package
 		 */		
 		public var file:File;
 		
+		/**
+		 */		
 		private var kanvasAIR:KanvasAIR;
 		
 		/**
@@ -98,8 +101,31 @@ package
 				file.addEventListener(Event.SELECT, fileSelected);
 				file.browse([new FileFilter("kvs", "*.kvs")]);
 			}
-			
-			
+		}
+		
+		/**
+		 * 保存文件 
+		 */		
+		public function saveFile():void
+		{
+			if (file)
+			{
+				try {
+					writeFile();
+				}
+				catch (e:Error)
+				{
+					file.addEventListener(Event.SELECT, selectFileForSave);
+					file.browseForSave("保存kanvas文件");
+				}
+			}
+			else
+			{
+				file = new File;
+				file.addEventListener(Event.SELECT, selectFileForSave);
+				file.addEventListener(Event.CANCEL, cancelSelectFile);
+				file.browseForSave("保存kanvas文件");
+			}
 		}
 		
 		/**
@@ -149,10 +175,151 @@ package
 			
 			PerformaceTest.start("解析xml");
 			this.setXMLData(xml);
-			
-			unsetUnusedAssets();
 			PerformaceTest.end("xml解析结束");
 			
+			unsetUnusedAssets();
+		}
+		
+		/**
+		 * 含有视频的kvs文件再次编辑时需要重新配置视频文件的url
+		 */		
+		private function setVideoURLHandler(evt:KVSEvent):void
+		{
+			var video:VideoElement = evt.element as VideoElement;
+			video.videoVO.url = fileBasePath + "/" + video.fileName;
+			
+			video.reset();
+		}
+		
+		/**
+		 */		
+		private function writeFile():void
+		{
+			isSaving = true;
+			
+			PerformaceTest.start("save");
+			
+			unsetUnusedAssets();
+			
+			try
+			{
+				var writer:ZipFileWriter = new ZipFileWriter();// 这里每次都需要新建一个，全局writer的话第二次打开文件再保存会保存错误，将文件报废，再也打不开
+				writer.addEventListener("zipFileCreated", fileSaved, false, 0, true);
+				writer.openAsync(this.file);
+				
+				// file info
+				var fileData:ByteArray = new ByteArray();
+				fileData.writeUTFBytes(this.getXMLData());
+				writer.addBytes(fileData,"kvs.xml");
+				
+				//图片相关
+				var imgIDs:Array = ImgLib.keys;
+				var imgDataBytes:ByteArray;
+				
+				//缩略图
+				var bmd:BitmapData = core.thumbManager.getShotCut(ConfigInitor.THUMB_WIDTH, ConfigInitor.THUMB_HEIGHT);
+				if (bmd)
+				{
+					imgDataBytes = bmd.encode(bmd.rect, new PNGEncoderOptions);
+					writer.addBytes(imgDataBytes,"preview.png");
+					
+					//保存缩略图用于模版截图
+					saveFileImageForTemplate(imgDataBytes);
+				}
+			
+				// 添加图片资源数据
+				var imgBytes:ByteArray;
+				for each (var imgID:uint in imgIDs)
+				{
+					//imgDataBytes.clear();
+					imgDataBytes = new ByteArray();
+					imgBytes = ImgLib.getData(imgID);
+					imgBytes.position = 0;
+					imgDataBytes.writeBytes(imgBytes, 0, imgBytes.bytesAvailable);
+					imgDataBytes.position = 0;
+					
+					writer.addBytes(imgDataBytes,imgID.toString() + '.' + ImgLib.getType(imgID));
+				}
+				
+				writer.close();
+				saveVideos();
+				
+				
+				PerformaceTest.end("save");
+			}
+			catch (e:Error)
+			{
+				Bubble.show("保存数据出错，请重试！");
+			}
+			
+			return;
+		}
+		
+		/**
+		 * 保存视频文件，已经保存了的视频不用再保存，无效的视频删除
+		 */		
+		private function saveVideos():void
+		{
+			var videoes:Vector.<VideoElement> = core.videoes;
+			
+			//获取存储视频的目录
+			var videoDirPath:String = fileBasePath;
+			var dir:File = new File(videoDirPath);
+			
+			if (videoes.length == 0) 
+			{
+				if (dir.exists)
+					dir.moveToTrash();
+				
+				return;// 没有视频文件, 停止执行
+			}
+			
+			dir.createDirectory();
+			
+			var video:VideoElement;
+			var videoFile:File;
+			var videoesName:Array = [];
+			
+			//保存视频文件
+			for each (video in videoes)
+			{
+				videoesName.push(video.fileName);
+				videoFile = new File(videoDirPath + "/" + video.fileName);
+				
+				if (videoFile.exists == false)
+				{
+					var fs:FileStream = new FileStream();
+					fs.open(videoFile, FileMode.WRITE);
+					fs.position = 0
+					fs.writeBytes(video.data, 0, video.data.bytesAvailable);
+					fs.close();
+				}
+			}
+			
+			
+			//获取视频目录下的文件, 如果某个文件不包含在视频文件列表中，则删除此视频文件
+			var savedFiles:Array = dir.getDirectoryListing();
+			for each (var sfile:File in savedFiles)
+			{
+				if (videoesName.indexOf(sfile.name) == - 1)
+				{
+					videoFile = new File(videoDirPath + "/" + sfile.name);
+					if (videoFile.exists)
+						videoFile.moveToTrash();
+				}
+			}
+			
+		}
+		
+		/**
+		 * 获取相对与当前文件，其视频文件要保存的文件夹
+		 */		
+		private function get fileBasePath():String
+		{
+			var filePath:String = file.nativePath;
+			filePath = filePath.split(".")[0] ;
+			
+			return filePath;
 		}
 		
 		/**
@@ -210,12 +377,12 @@ package
 				}
 				else if (
 					name != "prezi/preview.png" && (
-					name.indexOf(".jpg" ) > 0 || 
-					name.indexOf(".png" ) > 0 || 
-					name.indexOf(".jpe" ) > 0 || 
-					name.indexOf(".jpeg") > 0 || 
-					name.indexOf(".gif" ) > 0 || 
-					name.indexOf(".swf" ) > 0 ))
+						name.indexOf(".jpg" ) > 0 || 
+						name.indexOf(".png" ) > 0 || 
+						name.indexOf(".jpe" ) > 0 || 
+						name.indexOf(".jpeg") > 0 || 
+						name.indexOf(".gif" ) > 0 || 
+						name.indexOf(".swf" ) > 0 ))
 				{
 					var imgData:ByteArray = reader.unzip(entry);
 					var imgID:String = (name.split('.')[0].toString()).split("/")[2];
@@ -229,31 +396,6 @@ package
 			
 			unsetUnusedAssets();
 			reader.close();
-		}
-		
-		/**
-		 * 保存文件 
-		 */		
-		public function saveFile():void
-		{
-			if (file)
-			{
-				try {
-					writeFile();
-				}
-				catch (e:Error)
-				{
-					file.addEventListener(Event.SELECT, selectFileForSave);
-					file.browseForSave("保存kanvas文件");
-				}
-			}
-			else
-			{
-				file = new File;
-				file.addEventListener(Event.SELECT, selectFileForSave);
-				file.addEventListener(Event.CANCEL, cancelSelectFile);
-				file.browseForSave("保存kanvas文件");
-			}
 		}
 		
 		/**
@@ -403,90 +545,6 @@ package
 			
 			file = new File((s.indexOf(".kvs") > -1) ? s : (s + ".kvs"));
 			writeFile();
-		}
-		
-		/**
-		 */		
-		private function writeFile():void
-		{
-			isSaving = true;
-			
-			PerformaceTest.start("save");
-			
-			unsetUnusedAssets();
-			
-			try
-			{
-				var writer:ZipFileWriter = new ZipFileWriter();// 这里每次都需要新建一个，全局writer的话第二次打开文件再保存会保存错误，将文件报废，再也打不开
-				writer.addEventListener("zipFileCreated", fileSaved, false, 0, true);
-				writer.openAsync(this.file);
-				
-				// file info
-				var fileData:ByteArray = new ByteArray();
-				
-				
-				fileData.writeUTFBytes(this.getXMLData());
-				writer.addBytes(fileData,"kvs.xml");
-				//fileData.clear();
-				
-				//图片相关
-				var imgIDs:Array = ImgLib.keys;
-				var imgDataBytes:ByteArray;
-				
-				try 
-				{
-					//缩略图
-					var bmd:BitmapData = core.thumbManager.getShotCut(ConfigInitor.THUMB_WIDTH, ConfigInitor.THUMB_HEIGHT);
-					if (bmd)
-					{
-						imgDataBytes = bmd.encode(bmd.rect, new PNGEncoderOptions);
-						writer.addBytes(imgDataBytes,"preview.png");
-						
-						//保存缩略图用于模版截图
-						saveFileImageForTemplate(imgDataBytes);
-					}
-				}
-				catch(e:Error)
-				{
-					
-				}
-				
-				// 添加图片资源数据
-				var imgBytes:ByteArray;
-				for each (var imgID:uint in imgIDs)
-				{
-					//imgDataBytes.clear();
-					imgDataBytes = new ByteArray();
-					imgBytes = ImgLib.getData(imgID);
-					imgBytes.position = 0;
-					imgDataBytes.writeBytes(imgBytes, 0, imgBytes.bytesAvailable);
-					imgDataBytes.position = 0;
-					
-					writer.addBytes(imgDataBytes,imgID.toString() + '.' + ImgLib.getType(imgID));
-				}
-				
-				writer.close();
-				PerformaceTest.end("save");
-				
-			}
-			catch (e:Error)
-			{
-				Bubble.show("保存数据出错，请重试！");
-			}
-			
-			return;
-			
-			/*var pageData:ByteArray = core.thumbManager.getPageBytes(960, 720);
-			if (pageData)
-			{
-				var vector:Vector.<ByteArray> = core.thumbManager.resolvePageData(pageData);
-				var flag:int = 1;
-				for each (var bytes:ByteArray in vector)
-				{
-					writer.addBytes(bytes, "pages/" + (flag++) + ".jpg");
-				}
-			}*/
-			
 		}
 		
 		/**
