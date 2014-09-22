@@ -136,6 +136,7 @@ package view.interact.zoomMove
 				control.uiMediator.flashStart();
 				isFlashing = true;
 			}
+			
 			if (packer) packer.modCanvasPosition();
 			
 			control.mainUI.synBgContentToCanvas();
