@@ -6,6 +6,8 @@ package
 	
 	import commands.*;
 	
+	import control.InteractEvent;
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -36,7 +38,16 @@ package
 			CoreFacade.delImgCommad = DeleteImgCMDBase;
 			
 			kvsCore.addEventListener(KVSEvent.SAVE, saveHandler);
+			addEventListener(InteractEvent.INSERT_ASSETS, insertAssetsHandler);
 		}
+		
+		/**
+		 */		
+		private function insertAssetsHandler(evt:InteractEvent):void
+		{
+			kvsCore.insertIMG();
+		}
+		
 		/**
 		 */		 
 		override protected function kvsReadyHandler(evt:KVSEvent):void

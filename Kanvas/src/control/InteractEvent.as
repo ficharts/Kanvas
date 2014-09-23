@@ -16,9 +16,9 @@ package control
 		public static const CLOSE_PANEL:String = "closeChartPanel";
 		
 		/**
-		 * 插入图片
+		 * 插入图片, 视频音乐等素材
 		 */		
-		public static const INSERT_IMAGE:String = 'insertImage';
+		public static const INSERT_ASSETS:String = 'insertAssets';
 		
 		/**
 		 * 开启图形创建面板 

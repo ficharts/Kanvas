@@ -53,7 +53,7 @@ package
 		/**
 		 * 产品版本号 
 		 */		
-		public static const VER:String = "1.2.5";
+		public static const VER:String = "1.2.7";
 		
 		
 		

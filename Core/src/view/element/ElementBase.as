@@ -74,7 +74,8 @@ package view.element
 		 */		
 		public function flashStop():void
 		{
-			
+			if (isPage)
+				layoutPageNum();
 		}
 		
 		/**

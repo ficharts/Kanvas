@@ -65,9 +65,9 @@ package
 			laoder.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioErroHander);
 			
 			var context:LoaderContext = new LoaderContext();
-			laoder.load(new URLRequest('http://www.kanvas.cn/web/KanvasWeb.swf'));
+			//laoder.load(new URLRequest('http://www.kanvas.cn/web/KanvasWeb.swf'));
 			
-			//laoder.load(new URLRequest('KanvasWeb.swf'));
+			laoder.load(new URLRequest('KanvasWeb.swf'));
 			
 		}
 		
