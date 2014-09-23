@@ -1,5 +1,6 @@
 package view.ui
 {
+	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	
 	import flash.display.DisplayObject;
@@ -9,6 +10,7 @@ package view.ui
 	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
+	import flash.utils.getTimer;
 	
 	import util.LayoutUtil;
 	
@@ -58,8 +60,13 @@ package view.ui
 			stage.addEventListener(Event.RENDER, renderHandler);
 		}
 		
+		/**
+		 * 
+		 */		
 		private function renderHandler(e:Event):void
 		{
+			trace(getTimer());
+			
 			if (renderable)
 			{
 				renderable = false;
@@ -67,6 +74,7 @@ package view.ui
 				for each (item in items)
 					item.updateView();
 			}
+			
 		}
 		
 		/**
@@ -232,14 +240,23 @@ package view.ui
 			interactorBG.graphics.endFill();
 		}
 		
-		private function updateView():void
+		/**
+		 */		
+		public function updateView():void
 		{
-			renderable = true;
-			if (stage) stage.invalidate();
+			if (renderable)
+			{
+				if (stage) stage.invalidate();
+			}
 		}
 		
-		private var renderable:Boolean = false;
+		/**
+		 * 动画播放过程中所有原件是不可见并且
+		 */		
+		public var renderable:Boolean = false;
 		
+		/**
+		 */		
 		override public function get scaleX():Number
 		{
 			return __scaleX;

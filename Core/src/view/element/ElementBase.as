@@ -4,6 +4,7 @@ package view.element
 	import com.kvs.ui.clickMove.IClickMove;
 	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.MathUtil;
+	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	import com.kvs.utils.StageUtil;
 	import com.kvs.utils.ViewUtil;
@@ -486,20 +487,8 @@ package view.element
 		public function updateView(check:Boolean = true):void
 		{
 			if (check && stage)
-			{
-				var rect:Rectangle = getItemRect(parent as Canvas, this);
+				super.visible = checkVisible();
 				
-				if (rect.width < 1 || rect.height < 1)
-				{
-					super.visible = false;
-				}
-				else 
-				{
-					var boud:Rectangle = getStageRect(stage);
-					super.visible = rectOverlapping(rect, boud);
-				}
-			}
-			
 			if (parent && visible)
 			{
 				var prtScale :Number = parent.scaleX, prtRadian:Number = MathUtil.angleToRadian(parent.rotation);
@@ -516,7 +505,30 @@ package view.element
 				super.x = tmpX * prtCos - tmpY * prtSin + parent.x;
 				super.y = tmpX * prtSin + tmpY * prtCos + parent.y;
 			}
+		}
+		
+		/**
+		 */		
+		private function checkVisible():Boolean
+		{
+			var result:Boolean = false;
 			
+			if (stage)
+			{
+				var rect:Rectangle = getItemRect(parent as Canvas, this);
+				
+				if (rect.width < 1 || rect.height < 1)
+				{
+					result = false;
+				}
+				else 
+				{
+					var boud:Rectangle = getStageRect(stage);
+					result = rectOverlapping(rect, boud);
+				}
+			}
+			
+			return result;
 		}
 		
 		/**
@@ -524,6 +536,7 @@ package view.element
 		public function toPreview(renderable:Boolean = false):void
 		{
 			super.visible = previewVisible;
+			
 			if (isPage &&　numShape) numShape.visible = true;
 			if (renderable)
 			{
@@ -550,9 +563,13 @@ package view.element
 			}
 		}
 		
+		/**
+		 */		
 		protected var previewAlpha  :Number;
 		protected var previewVisible:Boolean;
 		
+		/**
+		 */		
 		override public function set visible(value:Boolean):void
 		{
 			super.visible = value;

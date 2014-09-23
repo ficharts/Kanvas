@@ -61,10 +61,16 @@ package view.interact.interactMode
 		 */		
 		public function flashStart():void
 		{
+			mainMediator.mainUI.canvas.renderable = false;
+			mainMediator.mainUI.canvas.graphics.clear();
+			
 			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
 			
 			for each (var element:ElementBase in elements)
+			{
 				element.flashStart();
+				element.visible = false;
+			}
 		}
 		
 		/**
@@ -78,14 +84,16 @@ package view.interact.interactMode
 				if (element.visible)
 					element.flashing();
 			}
-			
-			mainMediator.collisionDetection.updateAfterZoomMove();
 		}
 		
 		/**
 		 */		
 		public function flashStop():void
 		{
+			mainMediator.mainUI.canvas.renderable = true;
+			mainMediator.mainUI.canvas.graphics.clear();
+			mainMediator.mainUI.canvas.updateView();
+			
 			mainMediator.mainUI.curScreenState.enableCanvas();
 			//zoomMoveControl.enableBGInteract();//生效会导致动画编辑时背景可被拖动
 			
@@ -96,6 +104,8 @@ package view.interact.interactMode
 				if (element.visible)
 					element.flashStop();
 			}
+			
+			mainMediator.collisionDetection.updateAfterZoomMove();
 		}
 		
 		/**
