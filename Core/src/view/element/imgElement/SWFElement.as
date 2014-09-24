@@ -37,6 +37,8 @@ package view.element.imgElement
 		override public function toPrevState():void
 		{
 			super.toPrevState();
+			
+			// 预览时，swf文件内容是可以交互的
 			this.mouseChildren = this.mouseEnabled = true;
 		}
 		
@@ -53,14 +55,14 @@ package view.element.imgElement
 		 */		
 		override public function enable():void
 		{
-			//currentState.enable();
+			currentState.enable();
 		}
 		
 		/**
 		 */		
 		override public function disable():void
 		{
-			//currentState.disable();
+			currentState.disable();
 		}
 		
 		/**
