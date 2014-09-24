@@ -29,9 +29,6 @@ package control
 			themeState = new ThemePanelState(this);
 			curPanelState = closeState;
 			
-			
-			app.addEventListener(InteractEvent.INSERT_IMAGE, insertImageHandler, false, 0, true);
-			
 			app.addEventListener(InteractEvent.OPEN_SHAPE_PANEL, openShapePanelHandler, false, 0, true);
 			app.addEventListener(InteractEvent.OPEN_THEME_PANEL, openThemePanelHandler, false, 0, true);
 			app.addEventListener(InteractEvent.OPEN_CHART_PANEL, openChartPanel, false, 0, true);
@@ -162,12 +159,6 @@ package control
 			curPanelState.toClose();
 		}
 		
-		/**
-		 */		
-		private function insertImageHandler(evt:InteractEvent):void
-		{
-			app.kvsCore.insertIMG();
-		}
 		
 		/**
 		 */		

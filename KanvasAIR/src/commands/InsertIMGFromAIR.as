@@ -8,7 +8,6 @@ package commands
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
-	import flash.net.FileFilter;
 	import flash.utils.ByteArray;
 	
 	import org.puremvc.as3.interfaces.INotification;
@@ -40,22 +39,7 @@ package commands
 			file = notification.getBody() as File;
 			
 			if (file)
-			{
 				start();
-			}
-			else
-			{
-				file = new File;
-				file.browse([new FileFilter("Images", "*.jpg;*.png;*.swf")]);
-				file.addEventListener(Event.SELECT, fileSelected);
-			}
-		}
-		
-		/**
-		 */		
-		private function fileSelected(evt:Event):void
-		{
-			start();
 		}
 		
 		/**

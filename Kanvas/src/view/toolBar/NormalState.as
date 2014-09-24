@@ -72,7 +72,7 @@ package view.toolBar
 		 */		
 		private function addImgHandler(evt:MouseEvent):void
 		{
-			tb.dispatchEvent(new InteractEvent(InteractEvent.INSERT_IMAGE));
+			tb.dispatchEvent(new InteractEvent(InteractEvent.INSERT_ASSETS));
 		}
 		
 		/**
@@ -174,7 +174,7 @@ package view.toolBar
 			imgBtn.w = imgBtn.h = ToolBar.BTN_SIZE;
 			imgBtn.x = chartBtn.width + gap;
 			imgBtn.setIcons("img_up", "img_over", "img_down");
-			imgBtn.tips = '图片';
+			imgBtn.tips = '多媒体';
 			centerBtnsC.addChild(imgBtn);
 			imgBtn.addEventListener(MouseEvent.CLICK, addImgHandler, false, 0, true);
 			

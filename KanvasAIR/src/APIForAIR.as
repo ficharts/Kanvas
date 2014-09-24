@@ -5,6 +5,10 @@ package
 	import com.coltware.airxzip.ZipFileWriter;
 	import com.kvs.utils.PerformaceTest;
 	
+	import commands.Command;
+	
+	import control.InteractEvent;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.PNGEncoderOptions;
@@ -45,7 +49,35 @@ package
 			
 			cr = Bitmap(new Copyright);
 			core.addEventListener(KVSEvent.SET_VIDEO_URL, setVideoURLHandler);
+			
+			
+			kanvasAIR.addEventListener(InteractEvent.INSERT_ASSETS, insertAssetsHandler);
 		}	
+		
+		/**
+		 * 插入素材，视频，音频，图片，swf，声音之类
+		 */		
+		private function insertAssetsHandler(evt:InteractEvent):void
+		{
+			assetFile = new File;
+			assetFile.browse([new FileFilter("Images", "*.jpg;*.png;*.swf;*.mp4;*.flv")]);
+			assetFile.addEventListener(Event.SELECT, assetSelected, false, 0, true);
+		}
+		
+		/**
+		 */		
+		private function assetSelected(evt:Event):void
+		{
+			if (assetFile.extension == "flv" || assetFile.extension == "mp4")
+				CoreFacade.sendNotification(Command.INSERT_VIDEO, assetFile);
+			else
+				CoreFacade.sendNotification(Command.INSERT_IMAGE, assetFile);
+		}
+		
+		/**
+		 * 多媒体文件 
+		 */		
+		private var assetFile:File;
 		
 		/**
 		 */		

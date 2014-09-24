@@ -8,6 +8,8 @@ package
 	import commands.InsertIMGFromAIR;
 	import commands.InsertVideoCommand;
 	
+	import control.InteractEvent;
+	
 	import flash.desktop.Clipboard;
 	import flash.desktop.ClipboardFormats;
 	import flash.desktop.NativeApplication;
@@ -24,23 +26,17 @@ package
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.net.dns.AAAARecord;
-	import flash.system.Security;
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 	
 	import model.CoreFacade;
-	import model.CoreProxy;
 	import model.vo.PageVO;
 	
-	import modules.PreziDataImporter;
 	import modules.pages.PageManager;
-	
-	import org.osmf.events.TimeEvent;
 	
 	import util.textFlow.FlowTextManager;
 	
 	import view.toolBar.ToolBar;
-	import view.ui.Bubble;
 	
 	
 	/**
@@ -69,6 +65,7 @@ package
 			kvsCore.addEventListener(KVSEvent.SAVE, saveHandler);
 			//kvsCore.addEventListener(KVSEvent.THEME_CHANGED, themeChanged);
 		}
+		
 		
 		/**
 		 * 此函数用来辅助批量生成样式截图
