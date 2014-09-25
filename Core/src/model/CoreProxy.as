@@ -380,9 +380,13 @@ package model
 			{
 				for each(item in groupElement.vo.xml.children())
 				{
-					element = temElementMap.getValue(item.@id.toString());		
-					element.toGroupState();
-					groupElement.childElements.push(element);
+					element = temElementMap.getValue(item.@id.toString());	
+					
+					if (element)
+					{
+						element.toGroupState();
+						groupElement.childElements.push(element);
+					}
 				}
 			}
 			
