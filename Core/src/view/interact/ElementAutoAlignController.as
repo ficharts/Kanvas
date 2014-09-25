@@ -12,7 +12,7 @@ package view.interact
 	import util.LayoutUtil;
 	
 	import view.element.ElementBase;
-	import view.ui.Canvas;
+	import view.ui.canvas.Canvas;
 
 	public final class ElementAutoAlignController
 	{

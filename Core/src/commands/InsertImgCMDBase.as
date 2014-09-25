@@ -23,7 +23,7 @@ package commands
 	import view.element.imgElement.ImgElement;
 	import view.element.imgElement.ImgElementBase;
 	import view.element.imgElement.SWFElement;
-	import view.ui.Canvas;
+	import view.ui.canvas.Canvas;
 
 	/**
 	 * 

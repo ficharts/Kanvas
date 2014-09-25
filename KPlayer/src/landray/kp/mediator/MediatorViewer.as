@@ -30,7 +30,7 @@ package landray.kp.mediator
 	import util.img.ImgInsertor;
 	
 	import view.interact.zoomMove.ZoomMoveControl;
-	import view.ui.Canvas;
+	import view.ui.canvas.Canvas;
 	import view.ui.IMainUIMediator;
 	import view.ui.MainUIBase;
 	

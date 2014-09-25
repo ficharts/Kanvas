@@ -13,7 +13,7 @@ package commands
 	import view.element.ElementBase;
 	import view.element.GroupElement;
 	import view.interact.multiSelect.TemGroupElement;
-	import view.ui.Canvas;
+	import view.ui.canvas.Canvas;
 
 	/**
 	 * 将临时组合转换为正式的组合

@@ -30,7 +30,7 @@ package model
 	import view.element.video.VideoElement;
 	import view.element.video.VideoVO;
 	import view.interact.CoreMediator;
-	import view.ui.Canvas;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 * 核心MVC控制器

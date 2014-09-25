@@ -1,7 +1,7 @@
-package view.ui
+package view.ui.canvas
 {
-	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
+	import com.kvs.utils.StageUtil;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -14,6 +14,9 @@ package view.ui
 	
 	import util.LayoutUtil;
 	
+	import view.ui.ICanvasLayout;
+	import view.ui.MainUIBase;
+	
 	/**
 	 * 核心画布，
 	 */	
@@ -24,16 +27,63 @@ package view.ui
 			super();
 			
 			mainUI = $mainUI;
-			
-			items  = new Vector.<ICanvasLayout>;
+			StageUtil.initApplication(this, init);
+		}
+		
+		/**
+		 */		
+		private function init():void
+		{
+			renderState = new RenderState(this);
+			drawState = new DrawState(this);
+			curRenderState = renderState;
 			
 			addChild(interactorBG);
 			
-			addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			
+			stage.addEventListener(Event.RENDER, renderHandler);
 			addEventListener(MouseEvent.CLICK, doubleClickRetriver);
 		}
 		
+		/**
+		 */		
+		public function toRenderState():void
+		{
+			curRenderState.toRenderState();
+		}
+		
+		/**
+		 */		
+		public function toDrawState():void
+		{
+			curRenderState.toDrawState();
+		}
+		
+		/**
+		 * 渲染模式，播放动画时，采用画布渲染模式，所有原件绘制到统一张画布上
+		 */		
+		internal var curRenderState:CanvasStateBase;
+		internal var renderState:RenderState;
+		internal var drawState:DrawState;
+		
+		/**
+		 * 画布渲染
+		 */		
+		private function renderHandler(e:Event):void
+		{
+			trace(getTimer());
+			
+			curRenderState.upate();
+		}
+		
+		/**
+		 */		
+		private function updateView():void
+		{
+			if (stage) stage.invalidate();
+		}
+		
+		/**
+		 */		
 		private function doubleClickRetriver(e:MouseEvent):void
 		{
 			if (doubleClickActived)
@@ -52,30 +102,10 @@ package view.ui
 				timer.start();
 			}
 		}
-		private var doubleClickActived:Boolean;
-		
-		private function addedToStageHandler(e:Event):void
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			stage.addEventListener(Event.RENDER, renderHandler);
-		}
 		
 		/**
-		 * 
 		 */		
-		private function renderHandler(e:Event):void
-		{
-			trace(getTimer());
-			
-			if (renderable)
-			{
-				renderable = false;
-				var item:ICanvasLayout;
-				for each (item in items)
-					item.updateView();
-			}
-			
-		}
+		private var doubleClickActived:Boolean;
 		
 		/**
 		 */		
@@ -85,7 +115,7 @@ package view.ui
 			if (child is ICanvasLayout)
 			{
 				var item:ICanvasLayout = ICanvasLayout(child);
-				item.updateView();
+				item.renderView();
 				items[items.length] = item;
 			}
 			
@@ -98,7 +128,7 @@ package view.ui
 			if (child is ICanvasLayout)
 			{
 				var item:ICanvasLayout = ICanvasLayout(child);
-				item.updateView();
+				item.renderView();
 				items[items.length] = item;
 			}
 			
@@ -178,6 +208,7 @@ package view.ui
 					{
 						renderable = true;
 					}
+					
 					vector = (renderable) ? previewItems : visibleItems;
 					vector.push(item);
 					item.toShotcut(renderable);
@@ -239,21 +270,6 @@ package view.ui
 			interactorBG.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
 			interactorBG.graphics.endFill();
 		}
-		
-		/**
-		 */		
-		public function updateView():void
-		{
-			if (renderable)
-			{
-				if (stage) stage.invalidate();
-			}
-		}
-		
-		/**
-		 * 动画播放过程中所有原件是不可见并且
-		 */		
-		public var renderable:Boolean = false;
 		
 		/**
 		 */		
@@ -366,7 +382,7 @@ package view.ui
 		
 		/**
 		 */		
-		private var items:Vector.<ICanvasLayout>;
+		internal var items:Vector.<ICanvasLayout> = new Vector.<ICanvasLayout>;;
 		
 		private static var getItemRect:Function = LayoutUtil.getItemRect;
 		

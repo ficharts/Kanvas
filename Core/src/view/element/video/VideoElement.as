@@ -42,7 +42,7 @@ package view.element.video
 		
 		/**
 		 */		
-		override public function flashStart():void
+		override public function startDraw():void
 		{
 			this.pause();
 		}

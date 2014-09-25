@@ -37,7 +37,7 @@ package view.interact
 	import view.interact.multiSelect.TemGroupElement;
 	import view.interact.zoomMove.GestureControl;
 	import view.interact.zoomMove.ZoomMoveControl;
-	import view.ui.Canvas;
+	import view.ui.canvas.Canvas;
 	import view.ui.IMainUIMediator;
 	import view.ui.MainUIBase;
 	

@@ -155,7 +155,7 @@ package view.element
 		
 		/**
 		 */		
-		override public function flashStop():void
+		override public function endDraw():void
 		{
 			render();
 		}

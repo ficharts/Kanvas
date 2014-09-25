@@ -53,16 +53,7 @@ package view.element.text
 		
 		/**
 		 */		
-		override public function flashing():void
-		{
-			super.flashing();
-			
-			checkTextBm();
-		}
-		
-		/**
-		 */		
-		override public function flashStop():void
+		override public function endDraw():void
 		{
 			this.checkTextBm();
 		}

@@ -3,15 +3,17 @@ package util
 	import com.kvs.utils.MathUtil;
 	import com.kvs.utils.PointUtil;
 	
-	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import view.ui.Canvas;
 	import view.ui.ICanvasLayout;
-
+	import view.ui.canvas.Canvas;
+	
+	
+	/**
+	 */
 	public final class LayoutUtil
 	{
 		/**

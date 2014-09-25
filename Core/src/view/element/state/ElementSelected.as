@@ -1,8 +1,9 @@
 package view.element.state
 {
-	import view.element.ElementEvent;
+	import flash.display.Sprite;
 	
 	import view.element.ElementBase;
+	import view.element.ElementEvent;
 	
 	/**
 	 * 选中状态
@@ -12,14 +13,6 @@ package view.element.state
 		public function ElementSelected(element:ElementBase)
 		{
 			super(element);
-		}
-		
-		/**
-		 */		
-		override public function flashing():void
-		{
-			if (element.isPage)
-				element.layoutPageNum();
 		}
 		
 		/**

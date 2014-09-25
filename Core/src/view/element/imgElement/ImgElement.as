@@ -29,7 +29,7 @@ package view.element.imgElement
 		
 		/**
 		 */		
-		override public function flashStart():void
+		override public function startDraw():void
 		{
 			this.smooth = false;
 		}
@@ -37,7 +37,7 @@ package view.element.imgElement
 		/**
 		 * 
 		 */		
-		override public function flashStop():void
+		override public function endDraw():void
 		{
 			this.smooth = true;
 		}

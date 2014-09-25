@@ -1,5 +1,7 @@
 package view.element.state
 {
+	import flash.display.Sprite;
+	
 	import view.element.ElementBase;
 	
 	/**
@@ -9,6 +11,12 @@ package view.element.state
 		public function ElementPrevState(element:ElementBase)
 		{
 			super(element);
+		}
+		
+		/**
+		 */		
+		override public function drawPageNum(canvas:Sprite):void
+		{
 		}
 		
 		/**

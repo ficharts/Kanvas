@@ -10,7 +10,7 @@ package landray.kp.components
 	
 	import util.LayoutUtil;
 	
-	import view.ui.Canvas;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 * 选择框

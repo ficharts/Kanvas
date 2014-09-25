@@ -4,7 +4,6 @@ package view.element
 	import com.kvs.ui.clickMove.IClickMove;
 	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.MathUtil;
-	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	import com.kvs.utils.StageUtil;
 	import com.kvs.utils.ViewUtil;
@@ -31,9 +30,9 @@ package view.element
 	import view.element.state.*;
 	import view.elementSelector.ElementSelector;
 	import view.elementSelector.toolBar.ToolBarController;
-	import view.ui.Canvas;
 	import view.ui.ICanvasLayout;
 	import view.ui.IMainUIMediator;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 * 所有元素UI的基类
@@ -57,25 +56,76 @@ package view.element
 		}
 		
 		/**
+		 * 图片，视频开始动画时需要特殊处理一下
 		 */		
-		public function flashStart():void
+		public function startDraw():void
 		{
 			
-		}
-		
-		/**
-		 */		
-		public function flashing():void
-		{
-			currentState.flashing();
 		}
 		
 		/**
 		 * 
 		 */		
-		public function flashStop():void
+		public function endDraw():void
 		{
 			
+		}
+		
+		/**
+		 * 渲染元素
+		 */		
+		public function renderView():void
+		{
+			if (stage)
+				super.visible = checkVisible();
+			
+			if (parent && visible)
+			{
+				var prtScale :Number = parent.scaleX, prtRadian:Number = MathUtil.angleToRadian(parent.rotation);
+				var prtCos:Number = Math.cos(prtRadian), prtSin:Number = Math.sin(prtRadian);
+				
+				//scale
+				var tmpX:Number = x * prtScale;
+				var tmpY:Number = y * prtScale;
+				
+				//rotate, move
+				super.rotation = parent.rotation + rotation;
+				super.scaleX = prtScale * scaleX;
+				super.scaleY = prtScale * scaleY;
+				super.x = tmpX * prtCos - tmpY * prtSin + parent.x;
+				super.y = tmpX * prtSin + tmpY * prtCos + parent.y;
+			}
+		}
+		
+		/**
+		 */		
+		public function drawView(canvas:Canvas):void
+		{
+			
+		}
+		
+		/**
+		 */		
+		private function checkVisible():Boolean
+		{
+			var result:Boolean = false;
+			
+			if (stage)
+			{
+				var rect:Rectangle = getItemRect(parent as Canvas, this);
+				
+				if (rect.width < 1 || rect.height < 1)
+				{
+					result = false;
+				}
+				else 
+				{
+					var boud:Rectangle = getStageRect(stage);
+					result = rectOverlapping(rect, boud);
+				}
+			}
+			
+			return result;
 		}
 		
 		/**
@@ -275,10 +325,12 @@ package view.element
 		{
 			var rx:Number = point.x * cos - point.y * sin;
 			var ry:Number = point.x * sin + point.y * cos;
+			
 			point.x = rx;
 			point.y = ry;
 			point.x += x;
 			point.y += y;
+			
 			return point;
 		}
 		
@@ -375,12 +427,15 @@ package view.element
 			return y + .5 * vo.scale * vo.height;
 		}
 		
-		
+		/**
+		 */		
 		override public function get rotation():Number
 		{
 			return __rotation;
 		}
 		
+		/**
+		 */		
 		override public function set rotation(value:Number):void
 		{
 			if (__rotation!= value)
@@ -388,14 +443,19 @@ package view.element
 				__rotation = value;
 				cos = Math.cos(MathUtil.angleToRadian(rotation));
 				sin = Math.sin(MathUtil.angleToRadian(rotation));
-				updateView();
+				renderView();
 			}
 		}
+		
+		/**
+		 */		
 		private var __rotation:Number;
 		
 		private var cos:Number = Math.cos(0);
 		private var sin:Number = Math.sin(0);
 		
+		/**
+		 */		
 		override public function get scaleX():Number
 		{
 			return __scaleX;
@@ -406,7 +466,7 @@ package view.element
 			if (__scaleX!= value)
 			{
 				__scaleX = value;
-				updateView();
+				renderView();
 			}
 		}
 		
@@ -422,7 +482,7 @@ package view.element
 			if (__scaleY!= value)
 			{
 				__scaleY = value;
-				updateView();
+				renderView();
 			}
 		}
 		
@@ -438,7 +498,7 @@ package view.element
 			if (__x!= value)
 			{
 				__x = value;
-				updateView();
+				renderView();
 			}
 		}
 		
@@ -454,7 +514,7 @@ package view.element
 			if (__y!= value)
 			{
 				__y = value;
-				updateView();
+				renderView();
 			}
 		}
 		
@@ -480,56 +540,10 @@ package view.element
 		{
 			__height = value;
 		}
+		
+		/**
+		 */		
 		private var __height:Number = 0;
-		
-		/**
-		 */		
-		public function updateView(check:Boolean = true):void
-		{
-			if (check && stage)
-				super.visible = checkVisible();
-				
-			if (parent && visible)
-			{
-				var prtScale :Number = parent.scaleX, prtRadian:Number = MathUtil.angleToRadian(parent.rotation);
-				var prtCos:Number = Math.cos(prtRadian), prtSin:Number = Math.sin(prtRadian);
-				
-				//scale
-				var tmpX:Number = x * prtScale;
-				var tmpY:Number = y * prtScale;
-				
-				//rotate, move
-				super.rotation = parent.rotation + rotation;
-				super.scaleX = prtScale * scaleX;
-				super.scaleY = prtScale * scaleY;
-				super.x = tmpX * prtCos - tmpY * prtSin + parent.x;
-				super.y = tmpX * prtSin + tmpY * prtCos + parent.y;
-			}
-		}
-		
-		/**
-		 */		
-		private function checkVisible():Boolean
-		{
-			var result:Boolean = false;
-			
-			if (stage)
-			{
-				var rect:Rectangle = getItemRect(parent as Canvas, this);
-				
-				if (rect.width < 1 || rect.height < 1)
-				{
-					result = false;
-				}
-				else 
-				{
-					var boud:Rectangle = getStageRect(stage);
-					result = rectOverlapping(rect, boud);
-				}
-			}
-			
-			return result;
-		}
 		
 		/**
 		 */		
@@ -541,7 +555,7 @@ package view.element
 			if (renderable)
 			{
 				alpha = previewAlpha;
-				updateView(false);
+				renderView();
 			}
 		}
 		
@@ -554,7 +568,7 @@ package view.element
 			{
 				alpha = 1;
 				super.visible = screenshot;
-				updateView(false);
+				renderView();
 			}
 			else
 			{
@@ -573,7 +587,7 @@ package view.element
 		override public function set visible(value:Boolean):void
 		{
 			super.visible = value;
-			if (visible) updateView();
+			if (visible) renderView();
 		}
 		
 		public function get screenshot():Boolean

@@ -10,7 +10,7 @@ package view.interact.zoomMove
 	
 	import util.LayoutUtil;
 	
-	import view.ui.Canvas;
+	import view.ui.canvas.Canvas;
 	import view.ui.IMainUIMediator;
 	import view.ui.MainUIBase;
 	

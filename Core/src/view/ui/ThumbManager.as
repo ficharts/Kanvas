@@ -28,6 +28,7 @@ package view.ui
 	
 	import util.CoreUtil;
 	import util.LayoutUtil;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 * 

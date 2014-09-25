@@ -1,7 +1,6 @@
 package view.element
 {
 	import flash.display.DisplayObject;
-	import flash.display.Shape;
 	
 	import model.vo.ElementVO;
 	

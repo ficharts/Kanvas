@@ -13,6 +13,7 @@ package view.ui
 	import view.screenState.FullScreenState;
 	import view.screenState.NormalScreenState;
 	import view.screenState.ScreenStateBase;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 */	

@@ -4,7 +4,6 @@ package landray.kp.command
 	import landray.kp.maps.main.Main;
 	import landray.kp.maps.main.elements.Element;
 	import landray.kp.maps.main.util.MainUtil;
-	import landray.kp.maps.mind.Mind;
 	import landray.kp.utils.CoreUtil;
 	import landray.kp.view.Graph;
 	
@@ -30,7 +29,6 @@ package landray.kp.command
 		{
 			graphManager.registGraph("basic", landray.kp.view.Graph);
 			graphManager.registGraph("main" , landray.kp.maps.main.Main);
-			graphManager.registGraph("mind" , landray.kp.maps.mind.Mind);
 		}
 		
 		private function resolveData():void

@@ -8,7 +8,7 @@ package view.interact.zoomMove
 	import util.LayoutUtil;
 	
 	import view.ui.Bubble;
-	import view.ui.Canvas;
+	import view.ui.canvas.Canvas;
 	import view.ui.MainUIBase;
 
 	/**
