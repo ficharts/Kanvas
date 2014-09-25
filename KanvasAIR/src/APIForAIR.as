@@ -60,7 +60,7 @@ package
 		private function insertAssetsHandler(evt:InteractEvent):void
 		{
 			assetFile = new File;
-			assetFile.browse([new FileFilter("Images", "*.jpg;*.png;*.swf;*.mp4;*.flv")]);
+			assetFile.browse([new FileFilter("多媒体素材", "*.jpg;*.png;*.swf;*.mp4;*.flv")]);
 			assetFile.addEventListener(Event.SELECT, assetSelected, false, 0, true);
 		}
 		
