@@ -12,6 +12,7 @@ package commands
 	
 	import view.element.ElementBase;
 	import view.element.GroupElement;
+	import view.element.PageElement;
 	import view.interact.multiSelect.TemGroupElement;
 	import view.ui.Canvas;
 
@@ -48,7 +49,17 @@ package commands
 			groupVO.rotation = temGroup.vo.rotation;
 			
 			group = new GroupElement(groupVO);
-			group.childElements = childs;
+			group.childElements = new Vector.<ElementBase>;
+			
+			//page页面不可以被纳入正式组合
+			for each (var ele:ElementBase in childs)
+			{
+				if (ele is PageElement)
+					continue;
+				
+				group.childElements.push(ele);
+				
+			}
 			
 			initRoup();
 			
