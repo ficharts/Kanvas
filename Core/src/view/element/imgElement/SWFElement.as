@@ -53,14 +53,14 @@ package view.element.imgElement
 		 */		
 		override public function enable():void
 		{
-			//currentState.enable();
+			currentState.enable();
 		}
 		
 		/**
 		 */		
 		override public function disable():void
 		{
-			//currentState.disable();
+			currentState.disable();
 		}
 		
 		/**

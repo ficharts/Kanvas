@@ -19,6 +19,7 @@ package view.element.video
 	import view.element.state.ElementGroupState;
 	import view.element.state.ElementMultiSelected;
 	import view.ui.IMainUIMediator;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 *
@@ -42,7 +43,7 @@ package view.element.video
 		
 		/**
 		 */		
-		override public function startDraw():void
+		override public function startDraw(canvas:Canvas):void
 		{
 			this.pause();
 		}

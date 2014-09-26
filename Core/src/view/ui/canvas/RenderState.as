@@ -22,7 +22,7 @@ package view.ui.canvas
 			
 			var item:ICanvasLayout;
 			for each (item in this.canvas.items)
-				item.startDraw();
+				item.startDraw(canvas);
 				
 			canvas.graphics.clear();
 		}

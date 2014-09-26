@@ -58,8 +58,10 @@ package view.element
 		/**
 		 * 图片，视频开始动画时需要特殊处理一下
 		 */		
-		public function startDraw():void
+		public function startDraw(canvas:Canvas):void
 		{
+			this.visible = false;
+			
 			
 		}
 		
@@ -68,7 +70,7 @@ package view.element
 		 */		
 		public function endDraw():void
 		{
-			
+			this.renderView();
 		}
 		
 		/**

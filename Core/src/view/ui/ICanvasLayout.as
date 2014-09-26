@@ -37,7 +37,7 @@ package view.ui
 			
 		function get isPage():Boolean
 		
-		function startDraw():void
+		function startDraw(canvas:Canvas):void
 		function endDraw():void
 				
 		function renderView():void

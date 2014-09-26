@@ -16,9 +16,9 @@ package landray.kp.maps.main.elements
 	import util.LayoutUtil;
 	
 	import view.element.IElement;
-	import view.ui.canvas.Canvas;
 	import view.ui.ICanvasLayout;
 	import view.ui.IMainUIMediator;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 * 
@@ -38,7 +38,7 @@ package landray.kp.maps.main.elements
 		
 		/**
 		 */		
-		public function startDraw():void
+		public function startDraw(canvas:Canvas):void
 		{
 			
 		}
