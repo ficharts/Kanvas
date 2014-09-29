@@ -454,6 +454,8 @@ package modules.pages
 		 */		
 		public function getThumbByPageVO(pageVO:PageVO, w:Number, h:Number, smooth:Boolean = false):BitmapData
 		{
+			if (ifUpdatePageThumb == false) return null;
+				
 			//背景色
 			var bgColor:uint = CoreFacade.coreProxy.bgColor;
 			var mainUI:MainUIBase = coreMdt.mainUI;
@@ -525,6 +527,11 @@ package modules.pages
 			return null;
 			
 		}
+		
+		/**
+		 * 文档初始化时，为了不重复绘制页面截图，需要临时关闭一下页面渲染 
+		 */		
+		public var ifUpdatePageThumb:Boolean = true;
 		
 		/**
 		 */		

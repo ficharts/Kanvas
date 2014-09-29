@@ -335,6 +335,7 @@ package model
 		{
 			temElementMap.clear();
 			
+			CoreFacade.coreMediator.pageManager.ifUpdatePageThumb = false;
 			CoreFacade.coreMediator.coreApp.drawBGImg(null);
 			
 			//先设置总体样式风格, 兼容旧数据的样式
@@ -434,9 +435,11 @@ package model
 				bgImgLoader.loadImgBytes(ImgLib.getData(bgVO.imgID));
 			else if (RexUtil.ifHasText(bgVO.imgURL) && bgVO.imgURL != 'null')
 				bgImgLoader.loadImg(bgVO.imgURL);
+			else
+				CoreFacade.coreMediator.pageManager.updateAllPagesThumb();
 			
+			CoreFacade.coreMediator.pageManager.ifUpdatePageThumb = true;
 			CoreFacade.coreMediator.coreApp.dispatchEvent(new KVSEvent(KVSEvent.IMPORT_DATA_COMPLETE));
-			
 		}
 		
 		/**
