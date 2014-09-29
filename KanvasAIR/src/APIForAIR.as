@@ -276,7 +276,6 @@ package
 				writer.close();
 				saveVideos();
 				
-				
 				PerformaceTest.end("save");
 			}
 			catch (e:Error)

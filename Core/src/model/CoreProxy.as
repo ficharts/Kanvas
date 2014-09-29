@@ -41,6 +41,7 @@ package model
 	import view.element.imgElement.ImgElement;
 	import view.element.video.VideoElement;
 	import view.element.video.VideoVO;
+	import view.interact.multiSelect.TemGroupElement;
 	
 	/**
 	 * 负责数据，样式整体控制;
@@ -291,7 +292,7 @@ package model
 			var pagesNode:XML = <pages/>;
 			for each (item in elementsWidthIndex)
 			{
-				if(item && !(item is PageElement))// 有时候会多出一个位置，但是此为止的element为null
+				if(item && !(item is PageElement) && !(item is TemGroupElement))//临时组合不可以被保存
 					mainNode.appendChild(item.exportData());
 			}
 			

@@ -28,6 +28,7 @@ package view.interact.multiSelect
 			
 			vo.styleID = 'tem';
 			vo.styleType = 'group';
+			vo.type = "group";
 			
 			control = multiSelectControl;
 		}
