@@ -79,7 +79,7 @@ package view.interact
 				? RectangleUtil.rectWithin(
 					LayoutUtil.getItemRect(coreMdt.canvas, small, false, false, false), 
 					LayoutUtil.getItemRect(coreMdt.canvas, large, false, false, false))
-				: ifHitElement(small, large.shape);
+				: ifHitElement(small, large.graphicShape);
 			
 			if (ifHit)
 			{

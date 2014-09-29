@@ -9,13 +9,14 @@ package view.elementSelector
 	import util.layout.ElementLayoutInfo;
 	
 	import view.element.ElementBase;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 * 当鼠标划入图形后的效果, 这里仅是负责效果框外轮廓尺寸的计算及样式，具体渲染交给元件自己
 	 */	
 	public class ElementHover extends Shape
 	{
-		public function ElementHover(layoutInfo:ElementLayoutInfo, canvas:Sprite)
+		public function ElementHover(layoutInfo:ElementLayoutInfo, canvas:Canvas)
 		{
 			super();
 			
@@ -27,7 +28,7 @@ package view.elementSelector
 		
 		/**
 		 */		
-		private var canvas:Sprite;
+		private var canvas:Canvas;
 		
 		/**
 		 * 显示
@@ -40,8 +41,8 @@ package view.elementSelector
 				layoutInfo.update();
 				
 				
-				style.width  = (layoutInfo.width  + offSet * 2) / element.vo.scale / canvas.scaleX;
-				style.height = (layoutInfo.height + offSet * 2) / element.vo.scale / canvas.scaleY;
+				style.width  = (layoutInfo.width  + offSet * 2) / element.vo.scale / canvas.scale;
+				style.height = (layoutInfo.height + offSet * 2) / element.vo.scale / canvas.scale;
 				style.tx = - style.width  / 2;
 				style.ty = - style.height / 2;
 				//trace(layoutInfo.width, element.vo.scale, style.width, style.height, style.tx, style.ty);
@@ -55,7 +56,7 @@ package view.elementSelector
 		 */		
 		public function getHoverHeight(h:Number, el:ElementBase):Number
 		{
-			return (h + offSet * 2) / el.scale / canvas.scaleY
+			return (h + offSet * 2) / el.scale / canvas.scale;
 		}
 		
 		/**

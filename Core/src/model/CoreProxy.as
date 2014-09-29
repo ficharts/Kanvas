@@ -554,7 +554,7 @@ package model
 		private function imageToNormalHandler(e:ElementEvent):void
 		{
 			e.currentTarget.removeEventListener(ElementEvent.IMAGE_TO_RENDER, imageToNormalHandler);
-			CoreFacade.coreMediator.pageManager.refreshPageThumbsByElement(e.currentTarget as ElementBase);
+			CoreFacade.coreMediator.pageManager.updatePageThumbsByElement(e.currentTarget as ElementBase);
 		}
 		
 		/**
@@ -568,10 +568,7 @@ package model
 			CoreFacade.coreMediator.coreApp.drawBGImg(bgVO.imgData);
 			coreApp.bgImgUpdated(bgVO.imgData);
 			
-			for each (var vo:PageVO in CoreFacade.coreMediator.pageManager.pages)
-				CoreFacade.coreMediator.pageManager.registUpdateThumbVO(vo);
-				
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs();
+			CoreFacade.coreMediator.pageManager.updateAllPagesThumb();
 		}
 		
 		/**

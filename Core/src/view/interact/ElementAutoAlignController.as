@@ -175,7 +175,7 @@ package view.interact
 		
 		private function distance(p1:Point, p2:Point):Number
 		{
-			return Point.distance(p1, p2) * canvas.scaleX;
+			return Point.distance(p1, p2) * canvas.scale;
 		}
 		
 		/**
@@ -269,8 +269,8 @@ package view.interact
 						var w2:Number = value2 * element.vo.width;
 						var h1:Number = value1 * current.vo.height;
 						var h2:Number = value2 * element.vo.height;
-						var ds:Number = areaScale / canvas.scaleX;
-						var dp:Number = areaPosition / canvas.scaleX;
+						var ds:Number = areaScale / canvas.scale;
+						var dp:Number = areaPosition / canvas.scale;
 						
 						if (Math.abs(w1 - w2) < dp)
 							result = w2 / current.vo.width;

@@ -132,7 +132,7 @@ package commands
 		 */		
 		private function created():void
 		{
-			CoreFacade.coreMediator.pageManager.refreshPageThumbsByElement(element);
+			CoreFacade.coreMediator.pageManager.updatePageThumbsByElement(element);
 		}
 		
 		/**

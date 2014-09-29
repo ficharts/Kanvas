@@ -27,7 +27,7 @@ package commands
 			
 			oldColorIndex = CoreFacade.coreProxy.bgColorIndex;
 			
-			setColor(newColorIndex, true);
+			setColor(newColorIndex);
 			
 			UndoRedoMannager.register(this);
 		}
@@ -45,7 +45,7 @@ package commands
 		}
 		/**
 		 */		
-		private function setColor(index:uint, exec:Boolean = false):void
+		private function setColor(index:uint):void
 		{
 			CoreFacade.coreProxy.bgColorIndex = index;
 			CoreFacade.coreProxy.updateBgColor();
@@ -53,17 +53,7 @@ package commands
 			sendNotification(Command.RENDER_BG_COLOR);
 			
 			CoreFacade.coreMediator.coreApp.bgColorUpdated(CoreFacade.coreProxy.bgColorIndex, CoreFacade.coreProxy.bgColor);
-			
-			if (exec)
-			{
-				for each (var vo:PageVO in CoreFacade.coreMediator.pageManager.pages)
-					CoreFacade.coreMediator.pageManager.registUpdateThumbVO(vo);
-				v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
-			}
-			else
-			{
-				CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
-			}
+			CoreFacade.coreMediator.pageManager.updateAllPagesThumb();
 			
 			this.dataChanged();
 		}
@@ -73,7 +63,5 @@ package commands
 		private var oldColorIndex:uint = 0;
 		
 		private var newColorIndex:uint = 0;
-		
-		private var v:Vector.<PageVO>;
 	}
 }

@@ -27,11 +27,11 @@ package commands
 			
 			element = notification.getBody() as TextEditField;
 			elementIndex = CoreFacade.getElementIndex(element);
-			CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
+			CoreFacade.coreMediator.pageManager.registPagesContainElement(element);
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			CoreFacade.removeElement(element);
-			v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
+			v = CoreFacade.coreMediator.pageManager.updatePagesThumb();
 			
 			UndoRedoMannager.register(this);
 			
@@ -49,7 +49,7 @@ package commands
 			// 编辑状态的文本看不到，本身没有绘制
 			element.render();
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			this.dataChanged();
 		}
@@ -59,7 +59,7 @@ package commands
 			CoreFacade.removeElement(element);
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			this.dataChanged();
 		}

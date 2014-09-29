@@ -1,8 +1,13 @@
 package view.element.imgElement
 {
+	import com.kvs.utils.MathUtil;
+	import com.kvs.utils.graphic.BitmapUtil;
+	
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.utils.ByteArray;
 	
 	import model.vo.ImgVO;
@@ -11,6 +16,7 @@ package view.element.imgElement
 	
 	import view.element.ElementBase;
 	import view.ui.canvas.Canvas;
+	import view.ui.canvas.ElementLayoutModel;
 	
 	
 	/**
@@ -22,7 +28,7 @@ package view.element.imgElement
 		{
 			super(vo);
 			
-			_canvas.addChild(graphicShape);
+			_canvas.addChild(_shape);
 			addChild(_canvas);
 		}
 		
@@ -38,6 +44,48 @@ package view.element.imgElement
 		 */		
 		override public function endDraw():void
 		{
+			super.endDraw();
+		}
+		
+		/**
+		 */		
+		override public function drawView(canvas:Canvas):void
+		{
+			if (imgVO.viewData == null) return;
+			if (canvas.checkVisible(this) == false) return;
+			
+			var layout:ElementLayoutModel = canvas.getElementLayout(this);
+			
+			var math:Matrix = new Matrix;
+			math.rotate(MathUtil.angleToRadian(layout.rotation));
+			math.scale(layout.scaleX, layout.scaleY);
+			
+			var w:Number = vo.width * layout.scaleX;
+			var h:Number = vo.height * layout.scaleY;
+			
+			var p:Point = canvas.getNewPos( - w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			
+			math.tx = p.x;
+			math.ty = p.y;
+			
+			canvas.graphics.beginBitmapFill(imgVO.viewData as BitmapData, math, false, false);
+			
+			canvas.graphics.moveTo(p.x, p.y);
+			
+			p = canvas.getNewPos( w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = canvas.getNewPos( w / 2 + layout.x,  h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = canvas.getNewPos( - w / 2 + layout.x,  h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = canvas.getNewPos( - w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			
+			canvas.graphics.endFill();
 		}
 		
 		/**
@@ -70,21 +118,20 @@ package view.element.imgElement
 		 */		
 		override public function showIMG():void
 		{
+			this.graphics.clear();
+			
+			BitmapUtil.drawBitmapDataToGraphics(imgVO.viewData as BitmapData, graphics, vo.width, vo.height, - vo.width / 2, - vo.height / 2, true);
 		}
 		
 		/**
 		 */		
 		override protected function initIMG(bmd:Object):void
 		{
-			if (bmd)
-			{
-				
-			}
 		}
 		
 		/**
 		 */		
-		override public function get canvas():DisplayObject
+		override public function get flashShape():DisplayObject
 		{
 			return _canvas;
 		}
@@ -95,15 +142,9 @@ package view.element.imgElement
 		
 		/**
 		 */		
-		override public function get shape():DisplayObject
+		override public function get graphicShape():DisplayObject
 		{
 			return this;
 		}
-		
-		/**
-		 */		
-		private var minSize   :Number = 400;
-		
-		private var bmdLarge:BitmapData;
 	}
 }

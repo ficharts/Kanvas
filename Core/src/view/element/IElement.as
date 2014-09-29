@@ -17,9 +17,9 @@ package view.element
 		/**
 		 * 绘制内容的容器
 		 */		
-		function get shape():DisplayObject
+		function get graphicShape():DisplayObject
 			
-		function get canvas():DisplayObject;
+		function get flashShape():DisplayObject;
 		
 		/**
 		 */		

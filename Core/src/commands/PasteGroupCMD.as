@@ -70,7 +70,7 @@ package commands
 					pageElements.push(element);
 				
 				if (element.screenshot)
-					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
+					CoreFacade.coreMediator.pageManager.registPagesContainElement(element);
 			}
 			
 			pageElements.sort(sortOnPageIndex);
@@ -78,7 +78,7 @@ package commands
 			for each (element in pageElements)
 				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
-			v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
+			v = CoreFacade.coreMediator.pageManager.updatePagesThumb();
 			
 			sendNotification(Command.SElECT_ELEMENT, newGroup);
 			UndoRedoMannager.register(this);
@@ -100,7 +100,7 @@ package commands
 			for each (var element:ElementBase in pageElements)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			this.dataChanged();
 		}
@@ -117,7 +117,7 @@ package commands
 			for each (var element:ElementBase in pageElements)
 				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			sendNotification(Command.SElECT_ELEMENT, newGroup);
 			

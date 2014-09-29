@@ -33,6 +33,8 @@ package view.ui.canvas
 		 */		
 		override public function upate():void
 		{
+			canvas.graphics.clear();
+			
 			var item:ICanvasLayout;
 			for each (item in this.canvas.items)
 				item.drawView(this.canvas);

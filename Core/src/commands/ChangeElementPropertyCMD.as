@@ -31,7 +31,7 @@ package commands
 		 */		
 		override public function execute(notification:INotification):void
 		{
-			
+			PerformaceTest.start("change");
 			element  = CoreFacade.coreMediator.currentElement;
 			if (element)
 			{
@@ -76,6 +76,8 @@ package commands
 				
 				UndoRedoMannager.register(this);
 			}
+			
+			PerformaceTest.end("change");
 		}
 		
 		override public function undoHandler():void
@@ -106,7 +108,7 @@ package commands
 				if(!(element is PageElement))
 				{
 					reset(element);
-					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
+					CoreFacade.coreMediator.pageManager.registPagesContainElement(element);
 				}
 			}
 			
@@ -147,7 +149,7 @@ package commands
 						if(!(item is PageElement))
 						{
 							resetGroupItem(item);
-							CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(item);
+							CoreFacade.coreMediator.pageManager.registPagesContainElement(item);
 						}
 					}
 				}
@@ -169,12 +171,7 @@ package commands
 				if (exec)
 				{
 					for each (item in CoreFacade.coreMediator.autoGroupController.elements)
-					{
-						if (item is PageElement)
-							CoreFacade.coreMediator.pageManager.registUpdateThumbVO(item.vo as PageVO);
-						else
-							CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(item);
-					}
+						CoreFacade.coreMediator.pageManager.registPagesContainElement(item);
 				}
 			}
 			
@@ -186,16 +183,14 @@ package commands
 			///PerformaceTest.start("setProperty() element updatePageThumbs");
 			if (exec)
 			{
-				if (element is PageElement)
-					CoreFacade.coreMediator.pageManager.registUpdateThumbVO(element.vo as PageVO);
-				else
-					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
-				v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
+				CoreFacade.coreMediator.pageManager.registPagesContainElement(element);
+				v = CoreFacade.coreMediator.pageManager.updatePagesThumb();
 			}
 			else
 			{
-				CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+				CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			}
+			
 			///PerformaceTest.end("setProperty() element updatePageThumbs");
 			
 			this.dataChanged();

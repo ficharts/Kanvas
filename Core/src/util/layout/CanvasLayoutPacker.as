@@ -9,6 +9,7 @@ package util.layout
 	import util.LayoutUtil;
 	
 	import view.ui.MainUIBase;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 * 画布容器包装类
@@ -46,7 +47,7 @@ package util.layout
 			endRotation = targetRotation;
 			startX = x = canvas.x;
 			startY = y = canvas.y;
-			startScale = lastScale = canvas.scaleX;
+			startScale = lastScale = canvas.scale;
 			startRotation = canvas.rotation;
 			progress = 0;
 			modPositionNeed = true;
@@ -124,15 +125,15 @@ package util.layout
 					scale = (progress < proSM)
 						? log2Start  - lenSM *  (progress / proSM)
 						: log2Middle + lenME * ((progress - proSM) / proME);
-					percent =  (lastScale > canvas.scaleX)
-						? Math.abs(canvas.scaleX - startScale ) / scaleDis
-						:(Math.abs(canvas.scaleX - centerScale) + Math.abs(centerScale - startScale)) / scaleDis;
+					percent =  (lastScale > canvas.scale)
+						? Math.abs(canvas.scale - startScale ) / scaleDis
+						:(Math.abs(canvas.scale - centerScale) + Math.abs(centerScale - startScale)) / scaleDis;
 				}
 				else
 				{
 					scale = log2Start + (log2End - log2Start) * progress;
 					if (! MathUtil.equals(scaleDis, 0))
-						percent = Math.abs(canvas.scaleX - startScale) / scaleDis;
+						percent = Math.abs(canvas.scale - startScale) / scaleDis;
 				}
 				percent = Math.min(Math.max(0, percent), 1);
 				
@@ -147,13 +148,13 @@ package util.layout
 				var sceOC:Point = Point.interpolate(sceAC, sceBC, .5);
 				var eleOC:Point = Point.interpolate(eleAO, eleBO, .5);
 				//get canvas plus
-				PointUtil.multiply(eleOC, canvas.scaleX);
+				PointUtil.multiply(eleOC, canvas.scale);
 				PointUtil.rotate(eleOC, MathUtil.angleToRadian(rotation));
 				//move
 				canvas.x = sceOC.x - eleOC.x;
 				canvas.y = sceOC.y - eleOC.y;
 				
-				lastScale = canvas.scaleX;
+				lastScale = canvas.scale;
 			}
 		}
 		
@@ -174,11 +175,11 @@ package util.layout
 		
 		public function get scale():Number
 		{
-			return MathUtil.log2(canvas.scaleX);
+			return MathUtil.log2(canvas.scale);
 		}
 		public function set scale(value:Number):void
 		{
-			canvas.scaleX = canvas.scaleY = MathUtil.exp2(value);
+			canvas.scale = MathUtil.exp2(value);
 		}
 		
 		/**
@@ -350,7 +351,7 @@ package util.layout
 		 */
 		private var proME:Number;
 		
-		private var canvas:Sprite;
+		private var canvas:Canvas;
 		
 		private var mainUI:MainUIBase;
 		

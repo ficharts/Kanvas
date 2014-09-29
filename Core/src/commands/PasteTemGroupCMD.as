@@ -99,7 +99,7 @@ package commands
 				
 				//根据元素检测需要刷新的页面并注册至刷新库以待刷新
 				if (ele.screenshot)
-					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(ele);
+					CoreFacade.coreMediator.pageManager.registPagesContainElement(ele);
 			}
 			
 			//对要添加的页面进行排序
@@ -107,8 +107,9 @@ package commands
 			
 			for each (var element:ElementBase in pageElements)
 				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
+				
 			//刷新需要刷新的页面
-			v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
+			v = CoreFacade.coreMediator.pageManager.updatePagesThumb();
 			
 			sendNotification(Command.SElECT_ELEMENT, newGroup);
 			UndoRedoMannager.register(this);
@@ -130,7 +131,7 @@ package commands
 			for each (var element:ElementBase in pageElements)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			this.dataChanged();
 		}
@@ -147,7 +148,7 @@ package commands
 			for each (var element:ElementBase in pageElements)
 				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			sendNotification(Command.SElECT_ELEMENT, newGroup);
 		}

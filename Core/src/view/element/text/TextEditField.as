@@ -1,15 +1,17 @@
 package view.element.text
 {
 	import com.kvs.ui.label.TextDrawer;
+	import com.kvs.utils.MathUtil;
 	
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
-	import flash.text.TextFormat;
 	import flash.text.engine.BreakOpportunity;
 	import flash.text.engine.CFFHinting;
-	import flash.text.engine.TextRotation;
 	
 	import flashx.textLayout.container.TextContainerManager;
 	import flashx.textLayout.edit.EditingMode;
@@ -31,6 +33,8 @@ package view.element.text
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.interact.autoGroup.IAutoGroupElement;
 	import view.ui.IMainUIMediator;
+	import view.ui.canvas.Canvas;
+	import view.ui.canvas.ElementLayoutModel;
 	
 	
 	/**
@@ -47,15 +51,60 @@ package view.element.text
 			
 			vo.xml = <text/>;
 			textDrawer = new TextDrawer(this);
-			shape.visible = false;
+			textDrawer.ifDrawText = false;
+		}
+		
+		/**
+		 */		
+		override public function drawView(canvas:Canvas):void
+		{
+			if (canvas.checkVisible(this) == false) return;
 			
+			var layout:ElementLayoutModel = canvas.getElementLayout(this);
+			
+			checkTextBm();
+			
+			var bmd:BitmapData = textDrawer.textBMD;
+			
+			var math:Matrix = new Matrix;
+			math.rotate(MathUtil.angleToRadian(layout.rotation));
+			
+			var w:Number = vo.width * layout.scaleX;
+			var h:Number = vo.height * layout.scaleY;
+			
+			var scale:Number = w / bmd.width;
+			
+			math.scale(scale, scale);
+			
+			var p:Point = canvas.getNewPos( - w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			
+			math.tx = p.x;
+			math.ty = p.y;
+			
+			canvas.graphics.beginBitmapFill(bmd, math, false, true);
+			
+			canvas.graphics.moveTo(p.x, p.y);
+			
+			p = canvas.getNewPos( w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = canvas.getNewPos( w / 2 + layout.x,  h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = canvas.getNewPos( - w / 2 + layout.x,  h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = canvas.getNewPos( - w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			canvas.graphics.endFill();
 		}
 		
 		/**
 		 */		
 		override public function endDraw():void
 		{
-			this.checkTextBm();
+			super.endDraw();
 		}
 		
 		/**
@@ -74,33 +123,13 @@ package view.element.text
 		 */		
 		public function useBitmap():void
 		{
-			textCanvas.visible = false;
-			shape.visible = true;
 		}
 		
 		/**
 		 */		
 		public function useText():void
 		{
-			textCanvas.visible = true;
-			shape.visible = false;
 		}
-		
-		/**
-		 */		
-		override public function toShotcut(renderable:Boolean = false):void
-		{
-			super.toShotcut(renderable);
-			if (renderable)
-			{
-				if (visible && stageWidth > minRenderSize && stageHeight > minRenderSize)
-				{
-					shape.visible = false;
-					textCanvas.visible = true;
-				}
-			}
-		}
-		
 		
 		/**
 		 */		
@@ -231,7 +260,6 @@ package view.element.text
 		{
 			FlowTextManager.renderTextVOLabel(this, textVO);
 			renderAfterLabelRender();
-			checkTextBm(true);// 文本渲染时要强制重新截图
 		}
 		
 		/**
@@ -239,12 +267,8 @@ package view.element.text
 		 */		
 		public function checkTextBm(force:Boolean = false):void
 		{
-			if (visible || force)
-			{
-				textDrawer.checkTextBm(graphics, textCanvas, textVO.scale * parent.scaleX, true, force);
-			}
+			textDrawer.checkTextBm(graphics, textCanvas, textVO.scale * canvas.scale, false, force);
 		}
-		
 		
 		/**
 		 */		
@@ -253,8 +277,8 @@ package view.element.text
 			var bound:Rectangle = textManager.getContentBounds();
 			textVO.width  = textManager.compositionWidth;
 			textVO.height = textManager.compositionHeight;
+			
 			renderAfterLabelRender();
-			checkTextBm(true);
 		}
 		
 		/**
@@ -305,7 +329,7 @@ package view.element.text
 		{
 			super.preRender();
 			
-			_canvas.addChild(shape);
+			_canvas.addChild(graphicShape);
 			_canvas.addChild(textCanvas = new Sprite);
 			addChild(_canvas);
 			
@@ -320,7 +344,7 @@ package view.element.text
 		
 		/**
 		 */		
-		override public function get canvas():DisplayObject
+		override public function get flashShape():DisplayObject
 		{
 			return _canvas;
 		}

@@ -110,7 +110,7 @@ package commands
 			if (CoreFacade.coreMediator.createNewShapeTweenOver && CoreFacade.coreMediator.createNewShapeMouseUped)
 			{
 				if (element.screenshot)
-					CoreFacade.coreMediator.pageManager.refreshPageThumbsByElement(element);
+					CoreFacade.coreMediator.pageManager.updatePageThumbsByElement(element);
 				sendNotification(Command.SElECT_ELEMENT, element);
 			}
 			
@@ -124,7 +124,7 @@ package commands
 			if (indexChangeElements)
 				CoreFacade.coreMediator.autoLayerController.swapElements(indexChangeElements, oldIndex);
 			CoreFacade.removeElement(element);
-			CoreFacade.coreMediator.pageManager.refreshPageThumbsByElement(element);
+			CoreFacade.coreMediator.pageManager.updatePageThumbsByElement(element);
 			
 			this.dataChanged();
 		}
@@ -134,7 +134,7 @@ package commands
 			CoreFacade.addElement(element);
 			if (indexChangeElements)
 				CoreFacade.coreMediator.autoLayerController.swapElements(indexChangeElements, newIndex);
-			CoreFacade.coreMediator.pageManager.refreshPageThumbsByElement(element);
+			CoreFacade.coreMediator.pageManager.updatePageThumbsByElement(element);
 			
 			this.dataChanged();
 		}

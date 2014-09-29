@@ -1,6 +1,5 @@
 package 
 {
-	import com.kvs.charts.chart2D.encry.SB;
 	import com.kvs.utils.RexUtil;
 	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.IApp;
@@ -53,7 +52,11 @@ package
 		/**
 		 * 产品版本号 
 		 */		
-		public static const VER:String = "1.2.5";
+		public static const VER:String = "1.2.8";
+		
+		/**
+		 */		
+		public static const FRAME_RATE:uint = 100;
 		
 		
 		
@@ -554,7 +557,7 @@ package
 		private function initUI():void
 		{
 			// 值越高，动画播放更流畅, 但更消耗性能 
-			stage.frameRate = 100;
+			stage.frameRate = FRAME_RATE;
 			
 			thumbManager = new ThumbManager(this);
 			bgColorFlasher = new BgColorFlasher(this);

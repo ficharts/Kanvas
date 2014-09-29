@@ -143,7 +143,7 @@ package view.element
 				
 				//触控区域绘制
 				
-				if (parent.scaleX * scale * width < 200)
+				if (canvas.scale * scale * width < 200)
 				{
 					graphics.lineStyle(0,0, 0);
 					graphics.beginFill(0, 0);

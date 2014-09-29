@@ -10,7 +10,6 @@ package view.pagePanel
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.geom.Matrix;
 	
 	import model.CoreFacade;
 	import model.vo.PageVO;
@@ -18,7 +17,6 @@ package view.pagePanel
 	import modules.pages.PageEvent;
 	import modules.pages.PageManager;
 	
-	import view.interact.CoreMediator;
 	import view.ui.MainUIBase;
 	
 	/**
@@ -119,7 +117,6 @@ package view.pagePanel
 		private function updateThumb(evt:PageEvent = null):void
 		{
 			pageVO.bitmapData = CoreFacade.coreMediator.pageManager.getThumbByPageVO(pageVO, PageManager.THUMB_WIDTH, PageManager.THUMB_HEIGHT);
-			
 			drawPageThumb();
 		}
 		

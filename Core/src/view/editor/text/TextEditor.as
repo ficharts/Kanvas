@@ -210,13 +210,13 @@ package view.editor.text
 			{
 				var field:TextEditField = editMode.element as TextEditField;
 				//改变之前的页面
-				mainUIMediator.pageManager.registOverlappingPageVOs(field);
+				mainUIMediator.pageManager.registPagesContainElement(field);
 				synEditorToTextLabel(editMode.element.vo as TextVO);
 				field.render();
 				//改变之后的页面
-				mainUIMediator.pageManager.registOverlappingPageVOs(field);
+				mainUIMediator.pageManager.registPagesContainElement(field);
 				//field.checkTextBm(true);
-				mainUIMediator.pageManager.refreshVOThumbs();
+				mainUIMediator.pageManager.updatePagesThumb();
 			}
 			else 
 			{
@@ -277,7 +277,7 @@ package view.editor.text
 				field.y = textVO.y;
 				field.scaleX = field.scaleY = textVO.scale;
 				field.width = textVO.width;
-				field.layoutPageNum();
+				field.renderPageNum();
 			}
 			
 			//field.layoutPageNum();

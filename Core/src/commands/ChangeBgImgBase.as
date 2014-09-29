@@ -38,7 +38,7 @@ package commands
 		
 		/**
 		 */		
-		protected function setBgImg(obj:Object, exec:Boolean = false):void
+		protected function setBgImg(obj:Object):void
 		{
 			//分配背景图片的ID
 			CoreFacade.coreProxy.bgVO.imgID   = obj.imgID;
@@ -48,17 +48,7 @@ package commands
 			CoreFacade.coreMediator.coreApp.drawBGImg(obj.imgData);
 			(CoreFacade.coreMediator.coreApp as CoreApp).bgImgUpdated(obj.imgData);
 			
-			if (exec)
-			{
-				for each (var vo:PageVO in CoreFacade.coreMediator.pageManager.pages)
-				CoreFacade.coreMediator.pageManager.registUpdateThumbVO(vo);
-				
-				v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
-			}
-			else
-			{
-				CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
-			}
+			CoreFacade.coreMediator.pageManager.updateAllPagesThumb();
 			
 			this.dataChanged();
 		}
@@ -71,6 +61,5 @@ package commands
 		 */		
 		protected var newImgObj:Object;
 		
-		private var v:Vector.<PageVO>;
 	}
 }

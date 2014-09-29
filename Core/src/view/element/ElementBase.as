@@ -2,21 +2,21 @@ package view.element
 {
 	import com.kvs.ui.clickMove.ClickMoveControl;
 	import com.kvs.ui.clickMove.IClickMove;
-	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.MathUtil;
-	import com.kvs.utils.RectangleUtil;
 	import com.kvs.utils.StageUtil;
 	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.style.Style;
+	import com.kvs.utils.graphic.BitmapUtil;
 	
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	
 	import model.vo.ElementVO;
 	import model.vo.PageVO;
@@ -25,7 +25,6 @@ package view.element
 	import modules.pages.flash.IFlash;
 	
 	import util.ElementCreator;
-	import util.LayoutUtil;
 	
 	import view.element.state.*;
 	import view.elementSelector.ElementSelector;
@@ -33,6 +32,7 @@ package view.element
 	import view.ui.ICanvasLayout;
 	import view.ui.IMainUIMediator;
 	import view.ui.canvas.Canvas;
+	import view.ui.canvas.ElementLayoutModel;
 	
 	/**
 	 * 所有元素UI的基类
@@ -47,12 +47,13 @@ package view.element
 			
 			_screenshot = true;
 			mouseChildren = false;
-			addChild(graphicShape = new Shape);
+			addChild(_shape = new Shape);
+			addChild(pageNumCanvas);
 			
 			initState();
-			StageUtil.initApplication(this, init);
-			
 			doubleClickEnabled = true;
+			
+			StageUtil.initApplication(this, init);
 		}
 		
 		/**
@@ -61,8 +62,6 @@ package view.element
 		public function startDraw(canvas:Canvas):void
 		{
 			this.visible = false;
-			
-			
 		}
 		
 		/**
@@ -78,24 +77,21 @@ package view.element
 		 */		
 		public function renderView():void
 		{
-			if (stage)
-				super.visible = checkVisible();
+			if (canvas)
+				super.visible = canvas.checkVisible(this);
 			
-			if (parent && visible)
+			if (canvas && visible)
 			{
-				var prtScale :Number = parent.scaleX, prtRadian:Number = MathUtil.angleToRadian(parent.rotation);
-				var prtCos:Number = Math.cos(prtRadian), prtSin:Number = Math.sin(prtRadian);
+				var layout:ElementLayoutModel = canvas.getElementLayout(this);
 				
-				//scale
-				var tmpX:Number = x * prtScale;
-				var tmpY:Number = y * prtScale;
+				super.x = layout.x;
+				super.y = layout.y;
+				super.scaleX = layout.scaleX;
+				super.scaleY = layout.scaleY;
+				super.rotation = layout.rotation;
 				
-				//rotate, move
-				super.rotation = parent.rotation + rotation;
-				super.scaleX = prtScale * scaleX;
-				super.scaleY = prtScale * scaleY;
-				super.x = tmpX * prtCos - tmpY * prtSin + parent.x;
-				super.y = tmpX * prtSin + tmpY * prtCos + parent.y;
+				//if (isPage)
+					
 			}
 		}
 		
@@ -104,30 +100,6 @@ package view.element
 		public function drawView(canvas:Canvas):void
 		{
 			
-		}
-		
-		/**
-		 */		
-		private function checkVisible():Boolean
-		{
-			var result:Boolean = false;
-			
-			if (stage)
-			{
-				var rect:Rectangle = getItemRect(parent as Canvas, this);
-				
-				if (rect.width < 1 || rect.height < 1)
-				{
-					result = false;
-				}
-				else 
-				{
-					var boud:Rectangle = getStageRect(stage);
-					result = rectOverlapping(rect, boud);
-				}
-			}
-			
-			return result;
 		}
 		
 		/**
@@ -553,7 +525,6 @@ package view.element
 		{
 			super.visible = previewVisible;
 			
-			if (isPage &&　numShape) numShape.visible = true;
 			if (renderable)
 			{
 				alpha = previewAlpha;
@@ -561,11 +532,14 @@ package view.element
 			}
 		}
 		
+		/**
+		 * 
+		 */		
 		public function toShotcut(renderable:Boolean = false):void
 		{
 			previewAlpha   = alpha;
 			previewVisible = visible;
-			if (isPage &&　numShape) numShape.visible = false;
+			
 			if (renderable)
 			{
 				alpha = 1;
@@ -632,6 +606,7 @@ package view.element
 			var w:Number = vo.width * scale;
 			if (vo.style && vo.style.getBorder)
 				w = w + vo.thickness * scale;
+			
 			return w;
 		}
 		
@@ -679,98 +654,71 @@ package view.element
 				vo.pageVO.addEventListener(PageEvent.DELETE_PAGE_FROM_UI, deletePageHandler);
 				vo.pageVO.addEventListener(PageEvent.UPDATE_PAGE_INDEX, updatePageIndex);
 				vo.updatePageLayout();
-				drawPageNum();
-				layoutPageNum();
+				
+				updatePageNum();
+				renderPageNum();
 			}
 			else
 			{
 				vo.pageVO.elementVO = null;
 				vo.pageVO = null;
+				
 				clearPageNum();
 			}
 		}
 		
+		/**
+		 */		
 		private function updatePageIndex(e:PageEvent):void
 		{
-			drawPageNum();
+			updatePageNum();
 		}
 		
-		private function deletePageHandler(e:PageEvent):void
+		/**
+		 */		
+		private function updatePageNum():void
 		{
-			if (elementPageConvertable && isPage)
-				dispatchEvent(new ElementEvent(ElementEvent.CONVERT_PAGE_2_ELEMENT, this));
-			else
-				del();
+			if(isPage)
+				pageNumBmd = canvas.getPageNumBmd(pageVO.index)
 		}
 		
 		/**
 		 *  保证页面编号控制在和尺寸内
 		 * 
 		 */		
-		public function layoutPageNum(s:Number = NaN):void
+		public function renderPageNum():void
 		{
 			if (isPage)
 			{
-				if(!numLabel)
-					drawPageNum();
-				if (isNaN(s))
-					s = scaleX;
+				var mat:Matrix = new Matrix;
+				var scale:Number = vo.scale * canvas.scale;
+				var showSize:Number = pageNumBmd.width * scale; //实际现实的尺寸
 				
-				numShape.width = numShape.height = 100;
-				var parentScale:Number = (parent) ? parent.scaleX : 1;
-				var temSize:Number = numShape.width * s * parentScale;
+				var drawSize:Number;//绘制尺寸
 				
-				if (temSize > maxNumSize)
+				if (showSize > maxNumSize)
 				{
-					var size:Number = maxNumSize / s / parentScale;
+					scale = maxNumSize / showSize;
+					mat.scale(scale, scale);
 					
-					numShape.width  = size;
-					numShape.height = size;
+					drawSize = 	maxNumSize / scale;
+				}
+				else
+				{
+					drawSize = pageNumBmd.width;
 				}
 				
-				numShape.x = - width * .5 - numShape.width * .5;
-				numShape.y = - numShape.height;
-			}
-		}
-		
-		/**
-		 */		
-		private function drawPageNum(size:Number = 20):void
-		{
-			if(!numLabel)
-			{
-				addChild(numShape = new Sprite);
-				numShape.addChild(numLabel = new LabelUI);
-				numLabel.styleXML = <label radius='0' vPadding='0' hPadding='0'>
-										<format color='#FFFFFF' font='黑体' size='12'/>
-									</label>;
-				numShape.mouseChildren = false;
-				numShape.buttonMode = true;
-				numShape.cacheAsBitmap = true;
+				BitmapUtil.drawBitmapDataToShape(pageNumBmd, pageNumCanvas, drawSize, drawSize, 0, 0);
 			}
 			
-			numLabel.text = (vo.pageVO.index + 1).toString();
-			numLabel.render();
-			numLabel.x = - numLabel.width  * .5;
-			numLabel.y = - numLabel.height * .5;
-			
-			numShape.graphics.clear();
-			numShape.graphics.lineStyle(1, 0, 0.8);
-			numShape.graphics.beginFill(0x555555, .8);
-			numShape.graphics.drawCircle(0, 0, size * .5);
-			numShape.graphics.endFill();
 		}
 		
 		/**
 		 */		
 		private function clearPageNum():void
 		{
-			if (numLabel)
-			{
-				removeChild(numShape);
-				numShape = null;
-				numLabel = null;
-			}
+			pageNumCanvas.graphics.clear();
+			pageNumBmd = null;
 		}
 		
 		/**
@@ -779,12 +727,22 @@ package view.element
 		
 		/**
 		 */		
-		public var numLabel:LabelUI;
+		private var pageNumBmd:BitmapData
 		
 		/**
 		 * 用来绘制页面序号 
 		 */		
-		private var numShape:Sprite;
+		private var pageNumCanvas:Shape = new Shape;
+		
+		/**
+		 */		
+		private function deletePageHandler(e:PageEvent):void
+		{
+			if (elementPageConvertable && isPage)
+				dispatchEvent(new ElementEvent(ElementEvent.CONVERT_PAGE_2_ELEMENT, this));
+			else
+				del();
+		}
 		
 		/**
 		 */		
@@ -811,32 +769,50 @@ package view.element
 			updateLayout();
 		}
 		
-		
+		/**
+		 * 
+		 */		
 		public function get index():int
 		{
 			return (parent) ? parent.getChildIndex(this) : -1;
 		}
 		
 		/**
+		 * 应用动画效果的容器，参与动画的图形都被放到这里
 		 */		
-		override public function get graphics():Graphics
-		{
-			return graphicShape.graphics;
-		}
-		
-		/**
-		 */		
-		public function get canvas():DisplayObject
-		{
-			return shape;
-		}
-		
-		/**
-		 */		
-		public function get shape():DisplayObject
+		public function get flashShape():DisplayObject
 		{
 			return graphicShape;
 		}
+		
+		/**
+		 */		
+		override public function get graphics():Graphics
+		{
+			return _shape.graphics;
+		}
+		
+		/**
+		 * 用于基础的图形绘制，碰撞检测
+		 */		
+		public function get graphicShape():DisplayObject
+		{
+			return _shape;
+		}
+		
+		/**
+		 */		
+		protected var _shape:Shape;
+		
+		/**
+		 * 根容器
+		 */		
+		protected function get canvas():Canvas
+		{
+			return parent as Canvas;
+		}
+		
+		
 		
 		
 		
@@ -1042,8 +1018,6 @@ package view.element
 			
 			if (isPage)
 			{
-				numShape.visible = false;
-				
 				this.vo.pageVO.flashIndex = 0;
 				var flasher:IFlash;
 				
@@ -1069,8 +1043,6 @@ package view.element
 			
 			if (isPage)
 			{
-				numShape.visible = true;
-				
 				this.vo.pageVO.flashIndex = 0;
 				var flasher:IFlash;
 				
@@ -1146,7 +1118,6 @@ package view.element
 		{
 			updateLayout();
 			drawBG();
-			layoutPageNum();
 		}
 		
 		/**
@@ -1250,7 +1221,7 @@ package view.element
 		public function clicked():void
 		{
 			// 非选择状态下才会触发clicked
-			if (isPage && clickMoveControl.clickTarget == numShape)
+			if (isPage && clickMoveControl.clickTarget == pageNumCanvas)
 			{
 				dispatchEvent(new PageEvent(PageEvent.PAGE_NUM_CLICKED, vo.pageVO, true));
 				vo.pageVO.dispatchEvent(new PageEvent(PageEvent.PAGE_SELECTED, vo.pageVO, false));
@@ -1316,13 +1287,6 @@ package view.element
 		public var returnFromPrevFun:Function; 
 		
 		
-		//绘制图形的画布
-		protected var graphicShape:Shape;
 		
-		private static var getItemRect:Function = LayoutUtil.getItemRect;
-		
-		private static var getStageRect:Function = LayoutUtil.getStageRect;
-		
-		private static var rectOverlapping:Function = RectangleUtil.rectOverlapping;
 	}
 }

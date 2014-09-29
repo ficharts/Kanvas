@@ -9,6 +9,8 @@ package view.interact.zoomMove
 	
 	import util.layout.CanvasLayoutPacker;
 	
+	import view.ui.canvas.Canvas;
+	
 	/**
 	 * 画布缩放和拖动动画的控制器；
 	 */	
@@ -28,7 +30,7 @@ package view.interact.zoomMove
 		 */		
 		public function ready():void
 		{
-			TweenMax.killTweensOf(canvas, false);
+			TweenLite.killTweensOf(canvas, false);
 			
 			if (packer)
 			{
@@ -37,7 +39,7 @@ package view.interact.zoomMove
 			}
 			
 			canvasTargetRotation = canvas.rotation;
-			canvasTargetScale = canvas.scaleX;
+			canvasTargetScale = canvas.scale;
 			canvasTargetX = canvas.x;
 			canvasTargetY = canvas.y;
 		}
@@ -46,10 +48,10 @@ package view.interact.zoomMove
 		 */		
 		public function flash(time:Number = 0.3, easeFlash:Object = null):void
 		{
-			if (Math.max(canvasTargetScale / canvas.scaleX, canvas.scaleX / canvasTargetScale) > 1.0005)
+			if (Math.max(canvasTargetScale / canvas.scale, canvas.scale / canvasTargetScale) > 1.0005)
 				control.mainUI.curScreenState.disableCanvas();
 			
-			TweenMax.to(canvas, time, {scaleX: canvasTargetScale, scaleY: canvasTargetScale, x: canvasTargetX, y: canvasTargetY, 
+			TweenLite.to(canvas, time, {scale: canvasTargetScale, x: canvasTargetX, y: canvasTargetY, 
 				ease : easeFlash, 
 				onUpdate : updated,
 				onComplete : finishZoom});
@@ -60,7 +62,7 @@ package view.interact.zoomMove
 		 */		
 		public function advancedFlash(easeFlash:Object = null, time:Number = NaN):void
 		{
-			if (MathUtil.equals(MathUtil.log2(canvas.scaleX), MathUtil.log2(canvasTargetScale)) && 
+			if (MathUtil.equals(MathUtil.log2(canvas.scale), MathUtil.log2(canvasTargetScale)) && 
 				MathUtil.equals(MathUtil.modRotation(canvas.rotation), MathUtil.modRotation(canvasTargetRotation)) && 
 				MathUtil.equals(canvas.x, canvasTargetX) && 
 				MathUtil.equals(canvas.y, canvasTargetY))
@@ -68,7 +70,7 @@ package view.interact.zoomMove
 			
 			if (time == 0)
 			{
-				canvas.scaleX = canvas.scaleY = canvasTargetScale;
+				canvas.scale = canvasTargetScale;
 				canvas.rotation = canvasTargetRotation;
 				canvas.x = canvasTargetX;
 				canvas.y = canvasTargetY;
@@ -78,7 +80,7 @@ package view.interact.zoomMove
 			}
 			else
 			{
-				if (Math.max(canvasTargetScale / canvas.scaleX, canvas.scaleX / canvasTargetScale) > 1.0005)
+				if (Math.max(canvasTargetScale / canvas.scale, canvas.scale / canvasTargetScale) > 1.0005)
 					control.mainUI.curScreenState.disableCanvas();
 				
 				if(!easeFlash)
@@ -87,7 +89,7 @@ package view.interact.zoomMove
 				if(!packer) 
 					packer = new CanvasLayoutPacker(control.mainUI);
 				else
-					TweenMax.killTweensOf(packer, false);
+					TweenLite.killTweensOf(packer, false);
 				
 				canvasTargetRotation = MathUtil.modTargetRotation(packer.rotation, canvasTargetRotation);
 				
@@ -106,7 +108,7 @@ package view.interact.zoomMove
 					easeFlash = (canvas.scaleX < canvasTargetScale) ? Quart.easeIn : Quart.easeOut;
 				}*/
 				 
-				TweenMax.to(packer, time, {
+				TweenLite.to(packer, time, {
 					progress:1, 
 					rotation:canvasTargetRotation, 
 					ease:easeFlash, 
@@ -120,7 +122,7 @@ package view.interact.zoomMove
 		 */		
 		private function getScalePlus(canvasMiddleScale:Number):Number
 		{
-			var log2S:Number = MathUtil.log2(canvas.scaleX);
+			var log2S:Number = MathUtil.log2(canvas.scale);
 			var log2E:Number = MathUtil.log2(canvasTargetScale);
 			var log2M:Number = MathUtil.log2(canvasMiddleScale);
 			
@@ -177,7 +179,7 @@ package view.interact.zoomMove
 		
 		/**
 		 */		
-		private function get canvas():Sprite
+		private function get canvas():Canvas
 		{
 			return control.mainUI.canvas;
 		}

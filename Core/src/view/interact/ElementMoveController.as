@@ -136,14 +136,12 @@ package view.interact
 			}
 			else
 			{
-				if (coreMdt.currentElement.vo is PageVO)
-					PageVO(coreMdt.currentElement.vo).thumbUpdatable = true;
-				
 				coreMdt.createNewShape = false;
 				coreMdt.createNewShapeMouseUped = true;
+				
 				if (coreMdt.createNewShapeMouseUped && coreMdt.createNewShapeTweenOver)
 				{
-					coreMdt.pageManager.refreshPageThumbsByElement(curMovingElement);
+					coreMdt.pageManager.updatePageThumbsByElement(curMovingElement);
 					coreMdt.sendNotification(Command.SElECT_ELEMENT, curMovingElement);
 				}
 			}

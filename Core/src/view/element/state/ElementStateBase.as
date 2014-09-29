@@ -25,7 +25,7 @@ package view.element.state
 		public function drawPageNum(canvas:Sprite):void
 		{
 			if (element.isPage)
-				element.layoutPageNum();
+				element.renderPageNum();
 		}
 		
 		/**

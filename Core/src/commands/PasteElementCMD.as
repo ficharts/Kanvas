@@ -69,7 +69,7 @@ package commands
 			elementIndex = element.index;
 			
 			if (element.screenshot)
-				CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
+				CoreFacade.coreMediator.pageManager.registPagesContainElement(element);
 			
 			autoGroupEnabled = CoreFacade.coreMediator.autoGroupController.enabled;
 			if (autoGroupEnabled)
@@ -88,7 +88,7 @@ package commands
 						pageElements.push(ele);
 					
 					if (ele.screenshot)
-						CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(ele);
+						CoreFacade.coreMediator.pageManager.registPagesContainElement(ele);
 				}
 			}
 			
@@ -100,7 +100,7 @@ package commands
 			if (pageElements.length)
 				CoreFacade.coreMediator.pageManager.layoutPages();
 				
-			v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
+			v = CoreFacade.coreMediator.pageManager.updatePagesThumb();
 			
 			sendNotification(Command.SElECT_ELEMENT, element);
 			UndoRedoMannager.register(this);
@@ -126,7 +126,7 @@ package commands
 			for each (var element:ElementBase in pageElements)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			this.dataChanged();
 		}
@@ -146,7 +146,7 @@ package commands
 			for each (var element:ElementBase in pageElements)
 				CoreFacade.coreMediator.pageManager.addPage(element.vo.pageVO);
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			this.dataChanged();
 		}

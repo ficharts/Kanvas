@@ -1,13 +1,17 @@
 package view.ui.canvas
 {
+	import com.kvs.utils.MathUtil;
 	import com.kvs.utils.RectangleUtil;
 	import com.kvs.utils.StageUtil;
+	import com.kvs.utils.graphic.BitmapUtil;
 	
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
@@ -16,6 +20,7 @@ package view.ui.canvas
 	
 	import view.ui.ICanvasLayout;
 	import view.ui.MainUIBase;
+	import view.ui.PageNum;
 	
 	/**
 	 * 核心画布，
@@ -49,6 +54,8 @@ package view.ui.canvas
 		public function toRenderState():void
 		{
 			curRenderState.toRenderState();
+			
+			trace(rateSum / rate.length, "平均帧频");
 		}
 		
 		/**
@@ -56,6 +63,9 @@ package view.ui.canvas
 		public function toDrawState():void
 		{
 			curRenderState.toDrawState();
+			
+			rateSum = 0;
+			rate.length = 0;
 		}
 		
 		/**
@@ -68,18 +78,111 @@ package view.ui.canvas
 		/**
 		 * 画布渲染
 		 */		
-		private function renderHandler(e:Event):void
+		public function renderHandler(e:Event = null):void
 		{
-			trace(getTimer());
+			var cur:Number = getTimer();
+			//trace(1000 /(cur - prevT), cur - prevT);
+			
+			var i:Number = 1000 /(cur - prevT);
+			rateSum += i;
+			rate.push(i);
+			
+			prevT = cur;
 			
 			curRenderState.upate();
 		}
+		
+		private var rate:Array = new Array;
+		private var rateSum:Number = 0;;
+		
+		/**
+		 */		
+		private var prevT:Number = getTimer();
 		
 		/**
 		 */		
 		private function updateView():void
 		{
 			if (stage) stage.invalidate();
+		}
+		
+		/**
+		 * 检测远见是否在窗口可见范围内
+		 */		
+		public function checkVisible(element:ICanvasLayout):Boolean
+		{
+			var result:Boolean = false;
+			
+			if (stage)
+			{
+				var rect:Rectangle = LayoutUtil.getItemRect(this, element);
+				
+				if (rect.width < 1 || rect.height < 1)
+				{
+					result = false;
+				}
+				else 
+				{
+					var boud:Rectangle = LayoutUtil.getStageRect(stage);
+					result = RectangleUtil.rectOverlapping(rect, boud);
+				}
+			}
+			
+			return result;
+		}
+		
+		/**
+		 * 获取原件的布局信息
+		 * 
+		 */		
+		public function getElementLayout(element:Sprite):ElementLayoutModel
+		{
+			var layout:ElementLayoutModel = new ElementLayoutModel; 
+			
+			var prtScale :Number = this.scale, prtRadian:Number = MathUtil.angleToRadian(this.rotation);
+			var prtCos:Number = Math.cos(prtRadian), prtSin:Number = Math.sin(prtRadian);
+			
+			//scale
+			var tmpX:Number = element.x * prtScale;
+			var tmpY:Number = element.y * prtScale;
+			
+			//rotate, move
+			layout.rotation = this.rotation + element.rotation;
+			layout.scaleX = prtScale * element.scaleX;
+			layout.scaleY = prtScale * element.scaleY;
+			layout.x = tmpX * prtCos - tmpY * prtSin + this.x;
+			layout.y = tmpX * prtSin + tmpY * prtCos + this.y;
+			
+			return layout;
+		}
+		
+		/**
+		 * 页面编号刷新时
+		 */		
+		public function getPageNumBmd(index:uint):BitmapData
+		{
+			pageNumCreator.render(index);
+			
+			return BitmapUtil.getBitmapData(pageNumCreator);
+		}
+		
+		/**
+		 */		
+		private var pageNumCreator:PageNum = new PageNum
+		
+		/**
+		 * 点(x, y)绕原点(ox, oy)转了角度r，求点(x, y)的新坐标 
+		 */		
+		public function getNewPos(x:Number, y:Number, ox:Number, oy:Number, r:Number):Point
+		{
+			var point:Point = new Point;
+			var prtRadian:Number = MathUtil.angleToRadian(r);
+			var prtCos:Number = Math.cos(prtRadian), prtSin:Number = Math.sin(prtRadian);
+			
+			point.x = (x-ox) * prtCos - (y-oy) * prtSin + ox;
+			point.y = (y-oy) * prtCos + (x-ox) * prtSin + oy;
+				
+			return point;
 		}
 		
 		/**
@@ -185,12 +288,12 @@ package view.ui.canvas
 				previewState = true;
 				previewX = x;
 				previewY = y;
-				previewScale = scaleX;
+				previewScale = scale;
 				previewRotation = rotation;
 				
 				__x = $x;
 				__y = $y;
-				__scaleX = __scaleY = $scale;
+				__scale = $scale;
 				__rotation = $rotation;
 				
 				var renderable:Boolean, vector:Vector.<ICanvasLayout>, rect:Rectangle, item:ICanvasLayout;
@@ -200,9 +303,9 @@ package view.ui.canvas
 					renderable = false;
 					if (page)
 					{
-						rect = getItemRect(this, item);
+						rect = LayoutUtil.getItemRect(this, item);
 						if (rect.width > 1 && rect.height > 1)
-							renderable = rectOverlapping(page, rect);
+							renderable = RectangleUtil.rectOverlapping(page, rect);
 					}
 					else
 					{
@@ -225,7 +328,7 @@ package view.ui.canvas
 				previewState = false;
 				__x = previewX;
 				__y = previewY;
-				__scaleX = __scaleY = previewScale;
+				__scale = previewScale;
 				__rotation = previewRotation;
 				
 				var item:ICanvasLayout;
@@ -275,36 +378,18 @@ package view.ui.canvas
 		 */		
 		override public function get scaleX():Number
 		{
-			return __scaleX;
+			return __scale;
 		}
 		
-		override public function set scaleX(value:Number):void
-		{
-			if (__scaleX!= value) 
-			{
-				__scaleX = value;
-				updateView();
-			}
-		}
-		
-		private var __scaleX:Number = 1;
-		
+		/**
+		 */		
 		override public function get scaleY():Number
 		{
-			return __scaleY;
+			return __scale;
 		}
 		
-		override public function set scaleY(value:Number):void
-		{
-			if (__scaleY!= value) 
-			{
-				__scaleY = value;
-				updateView();
-			}
-		}
-		
-		private var __scaleY:Number = 1;
-		
+		/**
+		 */		
 		public function get scale():Number
 		{
 			return __scale;
@@ -313,10 +398,9 @@ package view.ui.canvas
 		public function set scale(value:Number):void
 		{
 			if (__scale!= value) 
-			{
 				__scale = value;
-				updateView();
-			}
+			
+			updateView();
 		}
 		
 		private var __scale:Number = 1;
@@ -329,10 +413,9 @@ package view.ui.canvas
 		override public function set rotation(value:Number):void
 		{
 			if (__rotation!= value) 
-			{
 				__rotation = value;
-				updateView();
-			}
+			
+			updateView();
 		}
 		
 		private var __rotation:Number = 0;
@@ -345,10 +428,9 @@ package view.ui.canvas
 		override public function set x(value:Number):void
 		{
 			if (__x!= value) 
-			{
 				__x = value;
-				updateView();
-			}
+			
+			updateView();
 		}
 		
 		private var __x:Number = 0;
@@ -361,10 +443,9 @@ package view.ui.canvas
 		override public function set y(value:Number):void
 		{
 			if (__y!= value) 
-			{
 				__y = value;
-				updateView();
-			}
+			
+			updateView();
 		}
 		
 		private var __y:Number = 0;
@@ -384,8 +465,5 @@ package view.ui.canvas
 		 */		
 		internal var items:Vector.<ICanvasLayout> = new Vector.<ICanvasLayout>;;
 		
-		private static var getItemRect:Function = LayoutUtil.getItemRect;
-		
-		private static var rectOverlapping:Function = RectangleUtil.rectOverlapping;
 	}
 }

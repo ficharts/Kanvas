@@ -1,12 +1,7 @@
 package view.elementSelector.lineControl
 {
-	import com.kvs.utils.MathUtil;
-	
 	import flash.geom.Point;
 	
-	import mx.utils.ColorUtil;
-	
-	import util.CoreUtil;
 	import util.LayoutUtil;
 	
 	import view.elementSelector.ControlPointBase;
@@ -28,8 +23,6 @@ package view.elementSelector.lineControl
 		override public function startDragMove():void
 		{
 			cacheOldProperty();
-			if (selector.element.isPage)
-				selector.element.vo.pageVO.thumbUpdatable = false;
 		}
 		
 		/**

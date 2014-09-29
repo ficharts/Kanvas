@@ -447,9 +447,9 @@ package landray.kp.maps.main.elements
 		
 		/**
 		 */		
-		public function get canvas():DisplayObject
+		public function get flashShape():DisplayObject
 		{
-			return shape;
+			return graphicShape;
 		}
 		
 		/**
@@ -488,7 +488,7 @@ package landray.kp.maps.main.elements
 		
 		/**
 		 */		
-		public function get shape():DisplayObject
+		public function get graphicShape():DisplayObject
 		{
 			return _shape;
 		}

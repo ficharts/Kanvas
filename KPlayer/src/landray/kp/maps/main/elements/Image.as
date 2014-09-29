@@ -17,13 +17,13 @@ package landray.kp.maps.main.elements
 		{
 			super($vo);
 			
-			_canvas.addChild(shape);
+			_canvas.addChild(graphicShape);
 			addChild(_canvas);
 		}
 		
 		/**
 		 */		
-		override public function get canvas():DisplayObject
+		override public function get flashShape():DisplayObject
 		{
 			return _canvas;
 		}

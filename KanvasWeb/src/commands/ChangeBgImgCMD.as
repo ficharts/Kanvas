@@ -82,7 +82,7 @@ package commands
 			
 			//CoreFacade.coreMediator.mainUI.canvas.hideLoading();
 			
-			setBgImg(newImgObj, true);
+			setBgImg(newImgObj);
 			
 			UndoRedoMannager.register(this);
 		}

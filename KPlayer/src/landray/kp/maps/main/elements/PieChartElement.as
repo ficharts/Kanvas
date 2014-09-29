@@ -67,7 +67,7 @@ package landray.kp.maps.main.elements
 		
 		/**
 		 */		
-		override public function get shape():DisplayObject
+		override public function get graphicShape():DisplayObject
 		{
 			return chart;
 		}

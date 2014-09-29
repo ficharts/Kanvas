@@ -15,6 +15,7 @@ package view.element.imgElement
 	import view.element.ISource;
 	import view.interact.autoGroup.IAutoGroupElement;
 	import view.ui.IMainUIMediator;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 */	
@@ -23,6 +24,29 @@ package view.element.imgElement
 		public function SWFElement(vo:ElementVO)
 		{
 			super(vo);
+		}
+		
+		/**
+		 * 图片，视频开始动画时需要特殊处理一下
+		 */		
+		override public function startDraw(canvas:Canvas):void
+		{
+			
+		}
+		
+		/**
+		 */		
+		override public function drawView(canvas:Canvas):void
+		{
+			renderView();
+		}
+		
+		/**
+		 * 
+		 */		
+		override public function endDraw():void
+		{
+			this.renderView();
 		}
 		
 		/**
@@ -157,7 +181,7 @@ package view.element.imgElement
 		
 		/**
 		 */		
-		override public function get canvas():DisplayObject
+		override public function get flashShape():DisplayObject
 		{
 			return swf as DisplayObject;
 		}

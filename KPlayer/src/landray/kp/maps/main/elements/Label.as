@@ -38,7 +38,7 @@ package landray.kp.maps.main.elements
 		public function useBitmap():void
 		{
 			textCanvas.visible = false;
-			shape.visible = true;
+			graphicShape.visible = true;
 		}
 		
 		/**
@@ -46,12 +46,12 @@ package landray.kp.maps.main.elements
 		public function useText():void
 		{
 			textCanvas.visible = true;
-			shape.visible = false;
+			graphicShape.visible = false;
 		}
 		
 		/**
 		 */		
-		override public function get canvas():DisplayObject
+		override public function get flashShape():DisplayObject
 		{
 			return _canvas;
 		}
@@ -64,7 +64,7 @@ package landray.kp.maps.main.elements
 		 */		
 		private function init():void
 		{
-			_canvas.addChild(shape);
+			_canvas.addChild(graphicShape);
 			_canvas.addChild(textCanvas = new Sprite);
 			addChild(_canvas);
 			

@@ -126,7 +126,7 @@ package view.element.chart
 				chart.visible = true;
 				ifSizing = false;
 				
-				graphicShape.graphics.clear();
+				_shape.graphics.clear();
 			}
 		}
 		
@@ -162,8 +162,8 @@ package view.element.chart
 				chart.visible = false;
 				ifSizing = true;
 			}
-				graphicShape.graphics.clear();
-				BitmapUtil.drawBitmapDataToGraphics(BitmapUtil.getBitmapData(chart), graphicShape.graphics, 
+				_shape.graphics.clear();
+				BitmapUtil.drawBitmapDataToGraphics(BitmapUtil.getBitmapData(chart), _shape.graphics, 
 					vo.width, vo.height, - vo.width / 2, - vo.height / 2, true);
 				
 		}
@@ -212,7 +212,7 @@ package view.element.chart
 		
 		/**
 		 */		
-		override public function get shape():DisplayObject
+		override public function get graphicShape():DisplayObject
 		{
 			return chart;
 		}

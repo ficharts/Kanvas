@@ -26,11 +26,11 @@ package util
 		 * @return 
 		 * 
 		 */
-		public static function elementPointToStagePoint(x:Number, y:Number, canvas:Sprite, ignoreRotation:Boolean = false):Point
+		public static function elementPointToStagePoint(x:Number, y:Number, canvas:Canvas, ignoreRotation:Boolean = false):Point
 		{
 			var result:Point = new Point(x, y);
 			//缩放
-			PointUtil.multiply(result, canvas.scaleX);
+			PointUtil.multiply(result, canvas.scale);
 			//旋转
 			if(!ignoreRotation)
 				PointUtil.rotate(result, MathUtil.angleToRadian(canvas.rotation));
@@ -50,7 +50,7 @@ package util
 		 * @return 
 		 * 
 		 */
-		public static function stagePointToElementPoint(x:Number, y:Number, canvas:Sprite, ignoreRotation:Boolean = false):Point
+		public static function stagePointToElementPoint(x:Number, y:Number, canvas:Canvas, ignoreRotation:Boolean = false):Point
 		{
 			var result:Point = new Point(x, y);
 			
@@ -62,7 +62,7 @@ package util
 				PointUtil.rotate(result, MathUtil.angleToRadian(- canvas.rotation));
 			
 			//缩放
-			PointUtil.multiply(result, 1 / canvas.scaleX);
+			PointUtil.multiply(result, 1 / canvas.scale);
 			
 			return result;
 		}
@@ -162,18 +162,22 @@ package util
 			var x:Number = 0, y:Number = 0, w:Number = 0, h:Number = 0;
 			var offsetX:Number = (toStage && canvas) ? canvas.x : 0;
 			var offsetY:Number = (toStage && canvas) ? canvas.y : 0;
-			var offsetScale   :Number = (toStage && canvas) ? canvas.scaleX : 1;
+			var offsetScale   :Number = (toStage && canvas) ? canvas.scale : 1;
 			var offsetRotation:Number = (toStage && canvas && !ignoreCanvasRotate) ? canvas.rotation : 0;
+			
 			if (!ignoreItemRotate)
 			{
 				var p1:Point = item.topLeft.clone(), p2:Point = item.topRight.clone();
 				var p3:Point = item.bottomLeft.clone(), p4:Point = item.bottomRight.clone();
+				
 				convertPointCanvas2Stage(p1, offsetX, offsetY, offsetScale, offsetRotation);
 				convertPointCanvas2Stage(p2, offsetX, offsetY, offsetScale, offsetRotation);
 				convertPointCanvas2Stage(p3, offsetX, offsetY, offsetScale, offsetRotation);
 				convertPointCanvas2Stage(p4, offsetX, offsetY, offsetScale, offsetRotation);
+				
 				var minX:Number = Math.min(p1.x, p2.x, p3.x, p4.x), maxX:Number = Math.max(p1.x, p2.x, p3.x, p4.x);
 				var minY:Number = Math.min(p1.y, p2.y, p3.y, p4.y), maxY:Number = Math.max(p1.y, p2.y, p3.y, p4.y);
+				
 				x = minX;
 				y = minY;
 				w = maxX - minX;
@@ -183,6 +187,7 @@ package util
 			{
 				var point:Point = new Point(item.left, item.top);
 				convertPointCanvas2Stage(point, offsetX, offsetY, offsetScale, offsetRotation);
+				
 				x = point.x;
 				y = point.y;
 				w = offsetScale * item.scaledWidth;
