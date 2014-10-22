@@ -119,19 +119,16 @@ package view.interact
 		
 		/**
 		 * 
-		 * 显示区域外的元件会被隐藏
-		 * 
 		 * 显示区域内的元件，尺寸超出区域大小时会被禁止交互;
 		 * 
 		 * 显示区域 内的元件，尺寸过小时也会被禁止交互, 并且隐藏
 		 */		
-		public function updateAfterZoomMove():void
+		public function checkElementEnable():void
 		{
 			var stage:Rectangle = coreMdt.mainUI.autofitRect, w:Number = stage.width, h:Number = stage.height;
 			//minLineInteractSizeSquare, maxLineInteractSizeSquare
 			var minLineSquare:Number = minInteractSize * minInteractSize * .25, maxLineSquare:Number = w * w;
 			
-			PerformaceTest.start("ElementCollisionDetection.updateAfterZoomMove()")
 			var element:ElementBase, bound:Rectangle, size:Number;
 			for each (element in elements)
 			{
@@ -163,7 +160,7 @@ package view.interact
 					}
 				}
 			}
-			PerformaceTest.end("ElementCollisionDetection.updateAfterZoomMove()")
+			
 		}
 		
 		/**

@@ -30,6 +30,9 @@ package view.element.imgElement
 			
 			_canvas.addChild(_shape);
 			addChild(_canvas);
+			
+			//确保页码编号位于图片上
+			addChild(pageNumCanvas);
 		}
 		
 		/**
@@ -83,7 +86,6 @@ package view.element.imgElement
 			
 			p = canvas.getNewPos( - w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
 			canvas.graphics.lineTo(p.x, p.y);
-			
 			
 			canvas.graphics.endFill();
 		}

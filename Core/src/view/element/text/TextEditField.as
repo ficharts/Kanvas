@@ -81,7 +81,7 @@ package view.element.text
 			math.tx = p.x;
 			math.ty = p.y;
 			
-			canvas.graphics.beginBitmapFill(bmd, math, false, true);
+			canvas.graphics.beginBitmapFill(bmd, math, false, false);
 			
 			canvas.graphics.moveTo(p.x, p.y);
 			

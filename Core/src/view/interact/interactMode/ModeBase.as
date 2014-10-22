@@ -83,9 +83,9 @@ package view.interact.interactMode
 		public function flashStop():void
 		{
 			mainMediator.mainUI.curScreenState.enableCanvas();
-			mainMediator.collisionDetection.updateAfterZoomMove();
 			
 			canvas.toRenderState();
+			mainMediator.collisionDetection.checkElementEnable();//检测仅对可见元件有效
 		}
 		
 		/**

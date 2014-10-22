@@ -353,8 +353,6 @@ package modules.pages
 		 */		
 		public function registPagesContainElement(current:ElementBase):void
 		{
-			
-			
 			if (current.isPage && current.parent) //元素本身是页面
 			{
 				if (current is PageElement)
@@ -434,7 +432,7 @@ package modules.pages
 		
 		/**
 		 */		
-		private function registHumbPage(vo:PageVO):void
+		public function registHumbPage(vo:PageVO):void
 		{
 			if (vo)
 			{
@@ -450,7 +448,6 @@ package modules.pages
 		
 		/**
 		 * 根据PageVO，生成此页面的截图
-		 * 
 		 */		
 		public function getThumbByPageVO(pageVO:PageVO, w:Number, h:Number, smooth:Boolean = false):BitmapData
 		{

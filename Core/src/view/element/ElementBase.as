@@ -73,7 +73,7 @@ package view.element
 		}
 		
 		/**
-		 * 渲染元素
+		 * 渲染元素自身，元素被创建/编辑时，画布缩放动画结束时，
 		 */		
 		public function renderView():void
 		{
@@ -90,17 +90,28 @@ package view.element
 				super.scaleY = layout.scaleY;
 				super.rotation = layout.rotation;
 				
-				//if (isPage)
-					
+				renderPageNum();
 			}
 		}
 		
 		/**
+		 * 图形自身的绘制和画布绘制不同，画布绘制时，绘制路径要先转换为画布上的绘制路径
+		 * 
+		 * 转换之先更新原始绘制点坐标，转换之后用新的绘制点集合绘制图形
+		 * 
+		 * 有些特殊的图形自身绘制时并不需要绘制点，如文字，图片，视频；
+		 * 
+		 * 规则的圆，矩形等难以用绘制点方式绘制，两种渲染模式下都不需要更新绘制点信息，直接绘制或者只显示不绘制(画布绘制时)
 		 */		
 		public function drawView(canvas:Canvas):void
 		{
 			
 		}
+		
+		/**
+		 * 存储绘制点集合的数组，通常在元素创建完毕后初始化，会知时仅是刷新具体点的坐标数据，总点数不变
+		 */		
+		protected var renderPoints:Vector.<Point>;
 		
 		/**
 		 */		
@@ -563,6 +574,7 @@ package view.element
 		override public function set visible(value:Boolean):void
 		{
 			super.visible = value;
+			
 			if (visible) renderView();
 		}
 		
@@ -675,6 +687,7 @@ package view.element
 		}
 		
 		/**
+		 * 刷新页面序号的图片数据,这个数据在画布缩放平易时重新绘制
 		 */		
 		private function updatePageNum():void
 		{
@@ -685,30 +698,33 @@ package view.element
 		/**
 		 *  保证页面编号控制在和尺寸内
 		 * 
+		 *  缩放单个元件时，为了让缩放过程中页码同步更新尺寸，需要一个临时比例，因为此时VO上的比例并未生效，
+		 * 
+		 * 	缩放结束时才生效
 		 */		
-		public function renderPageNum():void
+		public function renderPageNum(temScale:Number = NaN):void
 		{
 			if (isPage)
 			{
+				if (isNaN(temScale))
+					temScale = vo.scale;
+					
 				var mat:Matrix = new Matrix;
-				var scale:Number = vo.scale * canvas.scale;
+				var scale:Number = temScale * canvas.scale;
 				var showSize:Number = pageNumBmd.width * scale; //实际现实的尺寸
 				
 				var drawSize:Number;//绘制尺寸
 				
 				if (showSize > maxNumSize)
-				{
-					scale = maxNumSize / showSize;
-					mat.scale(scale, scale);
-					
-					drawSize = 	maxNumSize / scale;
-				}
+					drawSize = maxNumSize / scale;
 				else
-				{
 					drawSize = pageNumBmd.width;
-				}
 				
-				BitmapUtil.drawBitmapDataToShape(pageNumBmd, pageNumCanvas, drawSize, drawSize, 0, 0);
+				pageNumCanvas.graphics.clear();
+				BitmapUtil.drawBitmapDataToShape(pageNumBmd, pageNumCanvas, 
+					drawSize, drawSize, 
+					- vo.width / 2 - drawSize / 2, - drawSize / 2, 
+					true);
 			}
 			
 		}
@@ -723,7 +739,7 @@ package view.element
 		
 		/**
 		 */		
-		private var maxNumSize:uint = 26;
+		private var maxNumSize:uint = 30;
 		
 		/**
 		 */		
@@ -732,7 +748,7 @@ package view.element
 		/**
 		 * 用来绘制页面序号 
 		 */		
-		private var pageNumCanvas:Shape = new Shape;
+		protected var pageNumCanvas:Shape = new Shape;
 		
 		/**
 		 */		

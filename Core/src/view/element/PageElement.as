@@ -41,7 +41,7 @@ package view.element
 			super.disable();
 			
 			//使得放大时，页面编号依旧可被点击
-			mouseChildren = true;
+			//mouseChildren = true;
 		}
 		
 		/**
@@ -157,6 +157,8 @@ package view.element
 		 */		
 		override public function endDraw():void
 		{
+			super.endDraw();
+			
 			render();
 		}
 		

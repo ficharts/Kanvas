@@ -1,5 +1,6 @@
 package com.kvs.ui.label
 {
+	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.graphic.BitmapUtil;
 	
 	import flash.display.BitmapData;

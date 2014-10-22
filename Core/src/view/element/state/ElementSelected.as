@@ -48,6 +48,15 @@ package view.element.state
 		}
 		
 		/**
+		 */		
+		override public function disable():void
+		{
+			super.disable();
+			
+			toUnSelected();
+		}
+		
+		/**
 		 * 多选状态
 		 */
 		override public function toMultiSelection():void

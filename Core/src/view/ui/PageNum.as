@@ -15,7 +15,7 @@ package view.ui
 			
 			addChild(numLabel = new LabelUI);
 			numLabel.styleXML = <label radius='0' vPadding='0' hPadding='0'>
-									<format color='#FFFFFF' font='Arial' size='12'/>
+									<format color='#FFFFFF' font='微软雅黑' size='26'/>
 								</label>;
 		}
 		
@@ -24,8 +24,8 @@ package view.ui
 		public function render(index:uint):void
 		{
 			graphics.clear();
-			graphics.lineStyle(0.1, 0, 0.8);
-			graphics.beginFill(0x666666, .8);
+			graphics.lineStyle(0.1, 0, 0);
+			graphics.beginFill(0x555555, .8);
 			
 			graphics.drawCircle(radius, radius, radius);
 			graphics.endFill();
