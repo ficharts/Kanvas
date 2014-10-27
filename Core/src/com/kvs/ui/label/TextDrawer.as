@@ -71,15 +71,15 @@ package com.kvs.ui.label
 				{
 					renderTextBMD(shape, textCanvas, scale, smooth);
 					
-					host.useBitmap();
+					//host.useBitmap();
 				}
 				else if (max > imgMaxSize && textCanvas.visible == false)
-				{
-					host.useText();
+				{//
+					//host.useText();
 				}
 				else if (max < imgMaxSize && textCanvas.visible)
 				{
-					host.useText();
+					//host.useText();
 				}
 			}
 		}

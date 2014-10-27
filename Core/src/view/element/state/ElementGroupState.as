@@ -81,6 +81,8 @@ package view.element.state
 		 */		
 		override public function toPrevState():void
 		{
+			super.toPrevState();
+			
 			element.currentState = element.prevState;
 			
 			element.returnFromPrevFun = function():void{

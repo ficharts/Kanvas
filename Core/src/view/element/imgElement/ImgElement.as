@@ -33,6 +33,7 @@ package view.element.imgElement
 			
 			//确保页码编号位于图片上
 			addChild(pageNumCanvas);
+			initRenderPoints(4);
 		}
 		
 		/**
@@ -58,16 +59,13 @@ package view.element.imgElement
 			if (canvas.checkVisible(this) == false) return;
 			
 			var layout:ElementLayoutModel = canvas.getElementLayout(this);
+			canvas.transformRenderPoints(renderPoints, layout);
 			
 			var math:Matrix = new Matrix;
 			math.rotate(MathUtil.angleToRadian(layout.rotation));
 			math.scale(layout.scaleX, layout.scaleY);
 			
-			var w:Number = vo.width * layout.scaleX;
-			var h:Number = vo.height * layout.scaleY;
-			
-			var p:Point = canvas.getNewPos( - w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
-			
+			var p:Point = renderPoints[0];
 			math.tx = p.x;
 			math.ty = p.y;
 			
@@ -75,16 +73,16 @@ package view.element.imgElement
 			
 			canvas.graphics.moveTo(p.x, p.y);
 			
-			p = canvas.getNewPos( w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			p = renderPoints[1]
 			canvas.graphics.lineTo(p.x, p.y);
 			
-			p = canvas.getNewPos( w / 2 + layout.x,  h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			p = renderPoints[2]
 			canvas.graphics.lineTo(p.x, p.y);
 			
-			p = canvas.getNewPos( - w / 2 + layout.x,  h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			p = renderPoints[3]
 			canvas.graphics.lineTo(p.x, p.y);
 			
-			p = canvas.getNewPos( - w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			p = renderPoints[3]
 			canvas.graphics.lineTo(p.x, p.y);
 			
 			canvas.graphics.endFill();
@@ -123,6 +121,18 @@ package view.element.imgElement
 			this.graphics.clear();
 			
 			BitmapUtil.drawBitmapDataToGraphics(imgVO.viewData as BitmapData, graphics, vo.width, vo.height, - vo.width / 2, - vo.height / 2, true);
+			
+			renderPoints[0].x = - vo.width / 2;
+			renderPoints[0].y = - vo.height / 2;
+			
+			renderPoints[1].x =  vo.width / 2;
+			renderPoints[1].y = - vo.height / 2;
+			
+			renderPoints[2].x =  vo.width / 2;
+			renderPoints[2].y =  vo.height / 2;
+			
+			renderPoints[3].x =  - vo.width / 2;
+			renderPoints[3].y =  vo.height / 2;
 		}
 		
 		/**

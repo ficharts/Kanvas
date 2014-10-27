@@ -22,7 +22,7 @@ package view.element.state
 		
 		/**
 		 */		
-		public function drawPageNum(canvas:Sprite):void
+		public function drawPageNum():void
 		{
 			if (element.isPage)
 				element.renderPageNum();
@@ -175,7 +175,7 @@ package view.element.state
 		 */		
 		public function toPrevState():void
 		{
-			
+			element.pageNumCanvas.graphics.clear();
 		}
 		
 		/**

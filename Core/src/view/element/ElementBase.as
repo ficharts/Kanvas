@@ -17,6 +17,7 @@ package view.element
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.sampler.NewObjectSample;
 	
 	import model.vo.ElementVO;
 	import model.vo.PageVO;
@@ -90,7 +91,8 @@ package view.element
 				super.scaleY = layout.scaleY;
 				super.rotation = layout.rotation;
 				
-				renderPageNum();
+				if (currentState)//临时组合没有状态
+					currentState.drawPageNum();
 			}
 		}
 		
@@ -106,6 +108,22 @@ package view.element
 		public function drawView(canvas:Canvas):void
 		{
 			
+		}
+		
+		/**
+		 * 根据绘制点的数量初始化这些点，他们在绘制图形时会被具体设定好点的数据，这样做是为了防止
+		 * 
+		 * 绘制时创建大量的点造成的性能消耗，所以点的构造在元素创建时就完成
+		 */		
+		protected function initRenderPoints(num:uint = 1):void
+		{
+			renderPoints = new Vector.<Point>;
+			while (num)
+			{
+				renderPoints.push(new Point);
+				
+				num -= 1;
+			}
 		}
 		
 		/**
@@ -246,9 +264,6 @@ package view.element
 			StyleManager.setLineStyle(hoverEffectShape.graphics, hoverStyle.getBorder);
 			hoverEffectShape.graphics.drawRect(hoverStyle.tx, hoverStyle.ty, hoverStyle.width, hoverStyle.height);
 			hoverEffectShape.graphics.endFill();
-			
-			//hoverEffectShape.graphics.lineStyle(1, 0xFFFFFF, 1, true, 'none');
-			//hoverEffectShape.graphics.drawRect(style.tx - 1, style.ty - 1, style.width + 2, style.height + 2);
 		}
 		
 		/**
@@ -668,7 +683,7 @@ package view.element
 				vo.updatePageLayout();
 				
 				updatePageNum();
-				renderPageNum();
+				currentState.drawPageNum();
 			}
 			else
 			{
@@ -748,7 +763,7 @@ package view.element
 		/**
 		 * 用来绘制页面序号 
 		 */		
-		protected var pageNumCanvas:Shape = new Shape;
+		public var pageNumCanvas:Shape = new Shape;
 		
 		/**
 		 */		

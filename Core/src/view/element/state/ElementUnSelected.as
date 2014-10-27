@@ -70,6 +70,8 @@ package view.element.state
 		 */		
 		override public function toPrevState():void
 		{
+			super.toPrevState();
+			
 			element.enable();
 			element.clearHoverEffect();
 			element.mouseChildren = element.mouseEnabled = false;
@@ -78,6 +80,7 @@ package view.element.state
 			element.returnFromPrevFun = function():void{
 				element.mouseChildren = element.mouseEnabled = true;
 				element.currentState = element.unSelectedState;
+				element.currentState.drawPageNum();
 			}
 		}
 		

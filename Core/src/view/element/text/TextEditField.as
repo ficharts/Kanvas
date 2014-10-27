@@ -52,6 +52,18 @@ package view.element.text
 			vo.xml = <text/>;
 			textDrawer = new TextDrawer(this);
 			textDrawer.ifDrawText = false;
+			
+			initRenderPoints(4);
+		}
+		
+		
+		/**
+		 */		
+		override public function startDraw(canvas:Canvas):void
+		{
+			checkTextBm(true);
+			
+			this.visible = false;
 		}
 		
 		/**
@@ -61,40 +73,35 @@ package view.element.text
 			if (canvas.checkVisible(this) == false) return;
 			
 			var layout:ElementLayoutModel = canvas.getElementLayout(this);
+			canvas.transformRenderPoints(renderPoints, layout);
 			
 			checkTextBm();
-			
 			var bmd:BitmapData = textDrawer.textBMD;
 			
 			var math:Matrix = new Matrix;
 			math.rotate(MathUtil.angleToRadian(layout.rotation));
 			
-			var w:Number = vo.width * layout.scaleX;
-			var h:Number = vo.height * layout.scaleY;
-			
-			var scale:Number = w / bmd.width;
-			
+			var scale:Number = vo.width * layout.scaleX / bmd.width;
 			math.scale(scale, scale);
 			
-			var p:Point = canvas.getNewPos( - w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			var p:Point = renderPoints[0];
 			
 			math.tx = p.x;
 			math.ty = p.y;
 			
 			canvas.graphics.beginBitmapFill(bmd, math, false, false);
-			
 			canvas.graphics.moveTo(p.x, p.y);
 			
-			p = canvas.getNewPos( w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			p = renderPoints[1];
 			canvas.graphics.lineTo(p.x, p.y);
 			
-			p = canvas.getNewPos( w / 2 + layout.x,  h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			p = renderPoints[2];
 			canvas.graphics.lineTo(p.x, p.y);
 			
-			p = canvas.getNewPos( - w / 2 + layout.x,  h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			p = renderPoints[3];
 			canvas.graphics.lineTo(p.x, p.y);
 			
-			p = canvas.getNewPos( - w / 2 + layout.x, - h / 2 + layout.y, layout.x, layout.y, layout.rotation);
+			p = renderPoints[0];
 			canvas.graphics.lineTo(p.x, p.y);
 			
 			canvas.graphics.endFill();
@@ -260,6 +267,18 @@ package view.element.text
 		{
 			FlowTextManager.renderTextVOLabel(this, textVO);
 			renderAfterLabelRender();
+			
+			renderPoints[0].x = - vo.width / 2;
+			renderPoints[0].y = - vo.height / 2;
+			
+			renderPoints[1].x =  vo.width / 2;
+			renderPoints[1].y = - vo.height / 2;
+			
+			renderPoints[2].x =  vo.width / 2;
+			renderPoints[2].y =  vo.height / 2;
+			
+			renderPoints[3].x =  - vo.width / 2;
+			renderPoints[3].y =  vo.height / 2;
 		}
 		
 		/**

@@ -9,6 +9,7 @@ package view.element.shapes
 	import view.elementSelector.ElementSelector;
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.interact.autoGroup.IAutoGroupElement;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 * 图形基类
@@ -21,6 +22,20 @@ package view.element.shapes
 		public function ShapeBase(vo:ShapeVO)
 		{
 			super(vo);
+		}
+		
+		/**
+		 */		
+		override public function startDraw(canvas:Canvas):void
+		{
+			//this.visible = false;
+		}
+		
+		/**
+		 */		
+		override public function drawView(canvas:Canvas):void
+		{
+			renderView();
 		}
 		
 		/**

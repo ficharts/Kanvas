@@ -15,7 +15,7 @@ package view.element.state
 		
 		/**
 		 */		
-		override public function drawPageNum(canvas:Sprite):void
+		override public function drawPageNum():void
 		{
 		}
 		

@@ -170,19 +170,32 @@ package view.ui.canvas
 		 */		
 		private var pageNumCreator:PageNum = new PageNum
 		
+			
+		/**
+		 *
+		 * 把元素上的渲染点转换为全局绝对坐标的点
+		 *  
+		 * @param points
+		 * 
+		 */			
+		public function transformRenderPoints(points:Vector.<Point>, layout:ElementLayoutModel):void
+		{
+			var p:Point;
+			for each (p in points)
+				getNewPos(p.x * layout.scaleX + layout.x, p.y * layout.scaleY + layout.y, layout.x, layout.y, layout.rotation, p);
+		}
+			
 		/**
 		 * 点(x, y)绕原点(ox, oy)转了角度r，求点(x, y)的新坐标 
 		 */		
-		public function getNewPos(x:Number, y:Number, ox:Number, oy:Number, r:Number):Point
+		public function getNewPos(x:Number, y:Number, ox:Number, oy:Number, r:Number, point:Point):void
 		{
-			var point:Point = new Point;
 			var prtRadian:Number = MathUtil.angleToRadian(r);
 			var prtCos:Number = Math.cos(prtRadian), prtSin:Number = Math.sin(prtRadian);
 			
 			point.x = (x-ox) * prtCos - (y-oy) * prtSin + ox;
 			point.y = (y-oy) * prtCos + (x-ox) * prtSin + oy;
 				
-			return point;
 		}
 		
 		/**
