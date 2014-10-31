@@ -193,12 +193,37 @@ package util
 				w = offsetScale * item.scaledWidth;
 				h = offsetScale * item.scaledHeight;
 			}
-			return new Rectangle(x, y, w, h);
+			
+			rect.x = x;
+			rect.y = y;
+			rect.width = w;
+			rect.height = h;
+			
+			return rect;
 		}
 		
+		/**
+		 * 缓存，防止过多的创造rect导致的性能损耗,因为渲染过程中需要频繁调用到相关方法
+		 */		
+		private static var rect:Rectangle = new Rectangle;
+		
+		/**
+		 */		
 		public static function getStageRect(stage:Stage):Rectangle
 		{
-			return (stage) ? new Rectangle(0, 0, stage.stageWidth, stage.stageHeight) : new Rectangle;
+			if (stage)
+			{
+				rect.x = 0;
+				rect.y = 0;
+				rect.width = stage.stageWidth;
+				rect.height = stage.stageHeight;
+				
+				return rect;
+			}
+			else
+			{
+				return rect;
+			}
 		}
 	}
 }

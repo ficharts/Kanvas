@@ -58,6 +58,18 @@ package view.element.imgElement
 			if (imgVO.viewData == null) return;
 			if (canvas.checkVisible(this) == false) return;
 			
+			renderPoints[0].x = - vo.width / 2;
+			renderPoints[0].y = - vo.height / 2;
+			
+			renderPoints[1].x =  vo.width / 2;
+			renderPoints[1].y = - vo.height / 2;
+			
+			renderPoints[2].x =  vo.width / 2;
+			renderPoints[2].y =  vo.height / 2;
+			
+			renderPoints[3].x =  - vo.width / 2;
+			renderPoints[3].y =  vo.height / 2;
+			
 			var layout:ElementLayoutModel = canvas.getElementLayout(this);
 			canvas.transformRenderPoints(renderPoints, layout);
 			
@@ -122,17 +134,7 @@ package view.element.imgElement
 			
 			BitmapUtil.drawBitmapDataToGraphics(imgVO.viewData as BitmapData, graphics, vo.width, vo.height, - vo.width / 2, - vo.height / 2, true);
 			
-			renderPoints[0].x = - vo.width / 2;
-			renderPoints[0].y = - vo.height / 2;
 			
-			renderPoints[1].x =  vo.width / 2;
-			renderPoints[1].y = - vo.height / 2;
-			
-			renderPoints[2].x =  vo.width / 2;
-			renderPoints[2].y =  vo.height / 2;
-			
-			renderPoints[3].x =  - vo.width / 2;
-			renderPoints[3].y =  vo.height / 2;
 		}
 		
 		/**

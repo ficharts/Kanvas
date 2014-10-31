@@ -429,16 +429,16 @@ package model
 			groupElements.length = 0;
 			groupElements = null;
 			
+			CoreFacade.coreMediator.pageManager.ifUpdatePageThumb = true;
+			CoreFacade.coreMediator.pageManager.updateAllPagesThumb();
+			
 			//背景图片加载
 			bgImgLoader.addEventListener(ImgInsertEvent.IMG_LOADED, initializeBgImgLoaded);
 			if (ImgLib.ifHasData(bgVO.imgID))//从资源包种获取图片
 				bgImgLoader.loadImgBytes(ImgLib.getData(bgVO.imgID));
 			else if (RexUtil.ifHasText(bgVO.imgURL) && bgVO.imgURL != 'null')
 				bgImgLoader.loadImg(bgVO.imgURL);
-			else
-				CoreFacade.coreMediator.pageManager.updateAllPagesThumb();
 			
-			CoreFacade.coreMediator.pageManager.ifUpdatePageThumb = true;
 			CoreFacade.coreMediator.coreApp.dispatchEvent(new KVSEvent(KVSEvent.IMPORT_DATA_COMPLETE));
 		}
 		

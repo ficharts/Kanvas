@@ -28,14 +28,14 @@ package view.element.shapes
 		 */		
 		override public function startDraw(canvas:Canvas):void
 		{
-			//this.visible = false;
+			this.visible = false;
 		}
 		
 		/**
 		 */		
 		override public function drawView(canvas:Canvas):void
 		{
-			renderView();
+			//renderView();
 		}
 		
 		/**

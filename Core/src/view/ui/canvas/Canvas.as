@@ -293,6 +293,7 @@ package view.ui.canvas
 		}
 		
 		/**
+		 * 页面截图时调用
 		 */		
 		public function toShotcutState($x:Number, $y:Number, $scale:Number, $rotation:Number, page:Rectangle = null):void
 		{
@@ -333,6 +334,8 @@ package view.ui.canvas
 		}
 		
 		/**
+		 * 
+		 * 页面截图完毕时调用
 		 */		
 		public function toPreviewState():void
 		{

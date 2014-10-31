@@ -2,6 +2,7 @@ package view.element.text
 {
 	import com.kvs.ui.label.TextDrawer;
 	import com.kvs.utils.MathUtil;
+	import com.kvs.utils.PerformaceTest;
 	
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -61,8 +62,6 @@ package view.element.text
 		 */		
 		override public function startDraw(canvas:Canvas):void
 		{
-			checkTextBm(true);
-			
 			this.visible = false;
 		}
 		
@@ -71,6 +70,19 @@ package view.element.text
 		override public function drawView(canvas:Canvas):void
 		{
 			if (canvas.checkVisible(this) == false) return;
+			if (this.canvas.alpha < 1) return;
+			
+			renderPoints[0].x = - vo.width / 2;
+			renderPoints[0].y = - vo.height / 2;
+			
+			renderPoints[1].x =  vo.width / 2;
+			renderPoints[1].y = - vo.height / 2;
+			
+			renderPoints[2].x =  vo.width / 2;
+			renderPoints[2].y =  vo.height / 2;
+			
+			renderPoints[3].x =  - vo.width / 2;
+			renderPoints[3].y =  vo.height / 2;
 			
 			var layout:ElementLayoutModel = canvas.getElementLayout(this);
 			canvas.transformRenderPoints(renderPoints, layout);
@@ -267,18 +279,15 @@ package view.element.text
 		{
 			FlowTextManager.renderTextVOLabel(this, textVO);
 			renderAfterLabelRender();
+		}
+		
+		/**
+		 */		
+		override public function renderView():void
+		{
+			super.renderView();
 			
-			renderPoints[0].x = - vo.width / 2;
-			renderPoints[0].y = - vo.height / 2;
 			
-			renderPoints[1].x =  vo.width / 2;
-			renderPoints[1].y = - vo.height / 2;
-			
-			renderPoints[2].x =  vo.width / 2;
-			renderPoints[2].y =  vo.height / 2;
-			
-			renderPoints[3].x =  - vo.width / 2;
-			renderPoints[3].y =  vo.height / 2;
 		}
 		
 		/**
