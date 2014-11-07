@@ -87,8 +87,8 @@ package view.element.text
 			var layout:ElementLayoutModel = canvas.getElementLayout(this);
 			canvas.transformRenderPoints(renderPoints, layout);
 			
-			checkTextBm();
-			var bmd:BitmapData = textDrawer.textBMD;
+			//checkTextBm();
+			//var bmd:BitmapData = textDrawer.textBMD;
 			
 			var math:Matrix = new Matrix;
 			math.rotate(MathUtil.angleToRadian(layout.rotation));
@@ -279,7 +279,13 @@ package view.element.text
 		{
 			FlowTextManager.renderTextVOLabel(this, textVO);
 			renderAfterLabelRender();
+			
+			bmd = canvas.getElemetBmd(textCanvas);
 		}
+		
+		/**
+		 */		
+		private var bmd:BitmapData;
 		
 		/**
 		 */		

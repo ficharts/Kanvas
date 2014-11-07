@@ -1,6 +1,7 @@
 package view.ui.canvas
 {
 	import com.kvs.utils.MathUtil;
+	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.RectangleUtil;
 	import com.kvs.utils.StageUtil;
 	import com.kvs.utils.graphic.BitmapUtil;
@@ -129,6 +130,26 @@ package view.ui.canvas
 			}
 			
 			return result;
+		}
+		
+		/**
+		 * 获取显示对象的位图数据，这里获取到的是放大原矢量图后得到的位图数据，
+		 * 
+		 * 每次原件渲染时获取到截图数据，用于缩放动画时
+		 */		
+		public function getElemetBmd(ele:DisplayObject):BitmapData
+		{
+			var s:Number;
+			if (ele.width > ele.height)
+				s = stage.stageWidth / ele.width;
+			else
+				s = stage.stageHeight / ele.height;
+			
+			PerformaceTest.start("draw");
+			var textBMD:BitmapData = BitmapUtil.getBitmapData(ele, true, s);
+			PerformaceTest.end("draw");
+			
+			return textBMD;
 		}
 		
 		/**

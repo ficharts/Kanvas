@@ -370,11 +370,11 @@ package modules.pages
 					var currentRect:Rectangle = LayoutUtil.getItemRect(coreMdt.canvas, current, false, true, false);
 					for each(var element:ElementBase in elements)
 					{
-						if (element.isPage)
+						if (element.visible && element.isPage)
 						{
-							var elementRect:Rectangle = LayoutUtil.getItemRect(coreMdt.canvas, element, false, true, false);
+							var pageRect:Rectangle = LayoutUtil.getItemRect(coreMdt.canvas, element, false, true, false);
 							
-							if (RectangleUtil.rectOverlapping(currentRect, elementRect))
+							if (RectangleUtil.rectOverlapping(currentRect, pageRect))
 								registHumbPage(element.vo.pageVO);
 						}
 					}

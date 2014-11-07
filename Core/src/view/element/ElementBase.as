@@ -1153,6 +1153,8 @@ package view.element
 		
 		/**
 		 * 通常resize相当于重新渲染，但对于特殊的复杂组件，调节宽高时渲染会很消耗性能，需要特殊处理
+		 * 
+		 * 比如图表
 		 */		
 		public function resizing():void
 		{

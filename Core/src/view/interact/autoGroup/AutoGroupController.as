@@ -268,8 +268,6 @@ package view.interact.autoGroup
 			_elements = _elements.concat(elements);
 		}
 		
-		
-		
 		/**
 		 */		
 		public function get elements():Vector.<IElement>
@@ -281,6 +279,9 @@ package view.interact.autoGroup
 		 */		
 		public var _elements:Vector.<IElement> = new Vector.<IElement>;
 		
+		/**
+		 * 默认只能组合是开启的，按下shift键后此模式会关闭
+		 */		
 		public var enabled:Boolean = true;
 		
 		/**
