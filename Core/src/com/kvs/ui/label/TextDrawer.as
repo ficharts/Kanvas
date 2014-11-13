@@ -39,7 +39,9 @@ package com.kvs.ui.label
 		{
 			shape.clear();
 			
+			PerformaceTest.start("text");
 			textBMD = BitmapUtil.getBitmapData(textCanvas, smooth, scale);
+			PerformaceTest.end("text")
 			
 			if (ifDrawText)
 			{

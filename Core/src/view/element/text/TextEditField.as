@@ -70,7 +70,6 @@ package view.element.text
 		override public function drawView(canvas:Canvas):void
 		{
 			if (canvas.checkVisible(this) == false) return;
-			if (this.canvas.alpha < 1) return;
 			
 			renderPoints[0].x = - vo.width / 2;
 			renderPoints[0].y = - vo.height / 2;
@@ -87,8 +86,8 @@ package view.element.text
 			var layout:ElementLayoutModel = canvas.getElementLayout(this);
 			canvas.transformRenderPoints(renderPoints, layout);
 			
-			checkTextBm();
-			var bmd:BitmapData = textDrawer.textBMD;
+			//checkTextBm();
+			//var bmd:BitmapData = textDrawer.textBMD;
 			
 			var math:Matrix = new Matrix;
 			math.rotate(MathUtil.angleToRadian(layout.rotation));
@@ -279,7 +278,13 @@ package view.element.text
 		{
 			FlowTextManager.renderTextVOLabel(this, textVO);
 			renderAfterLabelRender();
+			
+			bmd = canvas.getElemetBmd(textCanvas);
 		}
+		
+		/**
+		 */		
+		private var bmd:BitmapData;
 		
 		/**
 		 */		

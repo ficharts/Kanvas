@@ -80,12 +80,18 @@ package commands
 			PerformaceTest.end("change");
 		}
 		
+		/**
+		 * 
+		 */		
 		override public function undoHandler():void
 		{
 			element.clearHoverEffect();
 			setProperty(oldPropertyObj);
 		}
 		
+		/**
+		 * 
+		 */		
 		override public function redoHandler():void
 		{
 			element.clearHoverEffect();
@@ -144,7 +150,7 @@ package commands
 				//变化前检测需要刷新的pages
 				if (exec)
 				{
-					for each (var item:ElementBase in CoreFacade.coreMediator.autoGroupController.elements)
+					for each (var item:ElementBase in groupElements)
 					{
 						if(!(item is PageElement))
 						{
@@ -155,32 +161,26 @@ package commands
 				}
 				
 				if (obj["x"] != undefined && obj["y"] != undefined && (obj["width"] == undefined && obj["height"] == undefined))
-				{
 					CoreFacade.coreMediator.autoGroupController.moveTo(newObj.x - oldObj.x, newObj.y - oldObj.y, group);
-				}
+				
 				if (obj["rotation"] != undefined)
-				{
 					CoreFacade.coreMediator.autoGroupController.rollTo(newObj.rotation - oldObj.rotation, element, group);
-				}
+				
 				if (obj["scale"] != undefined)
-				{
 					CoreFacade.coreMediator.autoGroupController.scaleTo(newObj.scale / oldObj.scale, element, group);
-				}
 				
 				//变化后检测需要刷新的pages
 				if (exec)
 				{
-					for each (item in CoreFacade.coreMediator.autoGroupController.elements)
+					for each (item in groupElements)
 						CoreFacade.coreMediator.pageManager.registPagesContainElement(item);
 				}
 			}
 			
 			element.render();
 			selector.update();
-			
-			
+					
 			//变化后检测需要刷新的pages
-			///PerformaceTest.start("setProperty() element updatePageThumbs");
 			if (exec)
 			{
 				CoreFacade.coreMediator.pageManager.registPagesContainElement(element);
@@ -191,11 +191,11 @@ package commands
 				CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			}
 			
-			///PerformaceTest.end("setProperty() element updatePageThumbs");
-			
 			this.dataChanged();
 		}
 		
+		/**
+		 */		
 		private function reset(item:ElementBase):void
 		{
 			for (var propertyName:String in oldPropertyObj) 
@@ -205,17 +205,15 @@ package commands
 				else
 				{
 					if (item.hasOwnProperty(propertyName))
-					{
 						item[propertyName] = oldPropertyObj[propertyName];
-					}
 					else
-					{
 						item.vo[propertyName] = oldPropertyObj[propertyName];
-					}
 				}
 			}
 		}
 		
+		/**
+		 */		
 		private function resetGroupItem(item:ElementBase):void
 		{
 			for (var propertyName:String in oldPropertyObj) 
