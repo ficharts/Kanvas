@@ -194,12 +194,7 @@ package util
 				h = offsetScale * item.scaledHeight;
 			}
 			
-			rect.x = x;
-			rect.y = y;
-			rect.width = w;
-			rect.height = h;
-			
-			return rect;
+			return new Rectangle(x, y, w, h);
 		}
 		
 		/**
@@ -213,12 +208,7 @@ package util
 		{
 			if (stage)
 			{
-				rect.x = 0;
-				rect.y = 0;
-				rect.width = stage.stageWidth;
-				rect.height = stage.stageHeight;
-				
-				return rect;
+				return new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);;
 			}
 			else
 			{

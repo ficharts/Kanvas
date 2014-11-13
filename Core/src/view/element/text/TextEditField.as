@@ -70,7 +70,6 @@ package view.element.text
 		override public function drawView(canvas:Canvas):void
 		{
 			if (canvas.checkVisible(this) == false) return;
-			if (this.canvas.alpha < 1) return;
 			
 			renderPoints[0].x = - vo.width / 2;
 			renderPoints[0].y = - vo.height / 2;

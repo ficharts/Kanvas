@@ -35,7 +35,7 @@ package view.element.shapes
 		 */		
 		override public function drawView(canvas:Canvas):void
 		{
-			//renderView();
+			renderView();
 		}
 		
 		/**

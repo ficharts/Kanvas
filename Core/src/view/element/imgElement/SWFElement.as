@@ -3,6 +3,7 @@ package view.element.imgElement
 	import com.kvs.utils.extractor.SWFExtractor;
 	
 	import flash.display.DisplayObject;
+	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.utils.ByteArray;
 	
@@ -188,7 +189,7 @@ package view.element.imgElement
 		
 		/**
 		 */		
-		private var swf:Object;
+		private var swf:Object = new Shape;
 		
 	}
 }

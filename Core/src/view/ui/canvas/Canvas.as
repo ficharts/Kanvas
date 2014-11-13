@@ -19,6 +19,7 @@ package view.ui.canvas
 	
 	import util.LayoutUtil;
 	
+	import view.element.IElement;
 	import view.ui.ICanvasLayout;
 	import view.ui.MainUIBase;
 	import view.ui.PageNum;
@@ -114,6 +115,11 @@ package view.ui.canvas
 		{
 			var result:Boolean = false;
 			
+			//应用了动画效果的原件不显示
+			if ((element as IElement).flashShape.alpha < 1)
+				return false;
+			
+			//不在显示窗口里的原件和过小的原件均不显示, 不用绘制
 			if (stage)
 			{
 				var rect:Rectangle = LayoutUtil.getItemRect(this, element);

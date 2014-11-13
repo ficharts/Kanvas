@@ -193,7 +193,9 @@ package view.interact
 				vector.x -= x;
 				vector.y -= y;
 				
-				coreMdt.zoomMoveControl.zoomMoveOff(plsScale, vector.x, vector.y, time);
+				if (vector.x > 0 && vector.y > 0)//有移动和缩放才应用动画
+					coreMdt.zoomMoveControl.zoomMoveOff(plsScale, vector.x, vector.y, time);
+				
 				return true;
 			}
 			return false;
