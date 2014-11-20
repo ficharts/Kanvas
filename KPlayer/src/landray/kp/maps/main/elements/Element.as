@@ -38,6 +38,27 @@ package landray.kp.maps.main.elements
 		
 		/**
 		 */		
+		public function checkTrueRender():Boolean
+		{
+			return false;
+		}
+		
+		/**
+		 */		
+		private var _ifInViewRect:Boolean
+		
+		public function get ifInViewRect():Boolean
+		{
+			return _ifInViewRect;
+		}
+
+		public function set ifInViewRect(value:Boolean):void
+		{
+			_ifInViewRect = value;
+		}
+
+		/**
+		 */		
 		public function startDraw(canvas:Canvas):void
 		{
 			

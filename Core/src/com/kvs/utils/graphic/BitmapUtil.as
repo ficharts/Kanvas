@@ -109,12 +109,13 @@ package com.kvs.utils.graphic
 		public static function getBitmapData(target:DisplayObject, ifSmooth:Boolean = false, scale:Number = 1):BitmapData
 		{
 			var rect:Rectangle = target.getBounds(target);
-			var ow:Number = Math.max(1, target.width  * scale);
-			var oh:Number = Math.max(1, target.height * scale);
+			var ow:Number = Math.max(1, rect.width * scale);
+			var oh:Number = Math.max(1, rect.height * scale);
 			var nw:Number = ow;
 			var nh:Number = oh;
 			var p:Number = ow * oh;
 			var s:Number = 1;
+			
 			if (p > maxBitmapSize)
 			{
 				s = maxBitmapSize / p;
@@ -125,10 +126,8 @@ package com.kvs.utils.graphic
 			
 			var myBitmapData:BitmapData = new BitmapData(ow, oh, true, 0xFFFFFF);
 			var mat:Matrix = new Matrix;
-			mat.createBox(scale, scale, 0, - rect.left, - rect.top);
+			mat.createBox(scale, scale, 0, - rect.left * scale, - rect.top * scale );
 			myBitmapData.draw(target, mat, null, null, null, ifSmooth);
-			
-			
 			
 			return myBitmapData;
 		}

@@ -78,9 +78,6 @@ package view.element
 		 */		
 		public function renderView():void
 		{
-			if (canvas)
-				super.visible = canvas.checkVisible(this);
-			
 			if (canvas && visible)
 			{
 				var layout:ElementLayoutModel = canvas.getElementLayout(this);
@@ -95,6 +92,39 @@ package view.element
 					currentState.drawPageNum();
 			}
 		}
+		
+		/**
+		 * 
+		 * 绘制模式下，矢量图形尺寸超过显示区域时需要实体可见，正式渲染，不再绘制
+		 * 
+		 * @return 
+		 * 
+		 */		
+		public function checkTrueRender():Boolean
+		{
+			return false;
+		}
+		
+		/**
+		 */		
+		private var _ifInViewRect:Boolean = true;
+
+		/**
+		 * 是否在可是范围内，绘制模式时，当有的适量元素过大时需要实体可视，从而所有可见元件都得实体可见。
+		 */
+		public function get ifInViewRect():Boolean
+		{
+			return _ifInViewRect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set ifInViewRect(value:Boolean):void
+		{
+			_ifInViewRect = value;
+		}
+
 		
 		/**
 		 * 图形自身的绘制和画布绘制不同，画布绘制时，绘制路径要先转换为画布上的绘制路径
@@ -586,13 +616,6 @@ package view.element
 		
 		/**
 		 */		
-		override public function set visible(value:Boolean):void
-		{
-			super.visible = value;
-			
-			if (visible) renderView();
-		}
-		
 		public function get screenshot():Boolean
 		{
 			return _screenshot;
@@ -1150,6 +1173,11 @@ package view.element
 			updateLayout();
 			drawBG();
 		}
+		
+		/**
+		 * 每个元件都会有一个截图，在画布动画时绘制在画布上，这样可以提升
+		 */		
+		protected var bmd:BitmapData;
 		
 		/**
 		 * 通常resize相当于重新渲染，但对于特殊的复杂组件，调节宽高时渲染会很消耗性能，需要特殊处理
