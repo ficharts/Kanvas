@@ -32,8 +32,14 @@ package view.ui.canvas
 		override public function upate():void
 		{
 			var item:ICanvasLayout;
+			
 			for each (item in this.canvas.items)
+			{
+				item.visible = canvas.checkVisible(item);
 				item.renderView();
+			}
+				
 		}
+		
 	}
 }

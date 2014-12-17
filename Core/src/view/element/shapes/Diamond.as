@@ -33,6 +33,8 @@ package view.element.shapes
 			graphics.lineTo(- vo.width / 2, 0);
 			graphics.lineTo(0, - vo.height / 2);
 			graphics.endFill();
+			
+			bmd = canvas.getElemetBmd(flashShape);
 		}
 	}
 }

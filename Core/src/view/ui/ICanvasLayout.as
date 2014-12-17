@@ -26,6 +26,11 @@ package view.ui
 			
 		function get visible():Boolean
 		function set visible(value:Boolean):void
+			
+		function get ifInViewRect():Boolean;
+		function set ifInViewRect(value:Boolean):void;
+		
+		function checkTrueRender():Boolean;
 		
 		function get alpha():Number
 		function set alpha(value:Number):void
@@ -35,6 +40,7 @@ package view.ui
 		function get index():int
 			
 		function get isPage():Boolean
+		function get isHollow():Boolean;
 		
 		function startDraw(canvas:Canvas):void
 		function endDraw():void

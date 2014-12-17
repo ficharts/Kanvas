@@ -32,14 +32,7 @@ package view.element.imgElement
 		 */		
 		override public function startDraw(canvas:Canvas):void
 		{
-			
-		}
-		
-		/**
-		 */		
-		override public function drawView(canvas:Canvas):void
-		{
-			renderView();
+			super.startDraw(canvas);
 		}
 		
 		/**
@@ -167,6 +160,8 @@ package view.element.imgElement
 			graphics.beginFill(0, 0);
 			graphics.drawRect(swf.x, swf.y, swf.width, swf.height);
 			graphics.endFill();
+			
+			bmd = canvas.getElemetBmd(this);
 		}
 		
 		/**

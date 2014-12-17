@@ -47,6 +47,13 @@ package view.element
 		
 		/**
 		 */		
+		override public function get isHollow():Boolean
+		{
+			return true;
+		}
+		
+		/**
+		 */		
 		override protected function init():void
 		{
 			super.init();
@@ -72,6 +79,17 @@ package view.element
 			graphics.beginFill(0, 0);
 			graphics.drawRect(- width * .5, - height * .5, width, height);
 			graphics.endFill();
+		}
+		
+		/**
+		 * 预览模式下不绘制页面帧
+		 */		
+		override public function drawView(canvas:Canvas):void
+		{
+			if (currentState is ElementPrevState)
+				return;
+			
+			super.drawView(canvas);
 		}
 		
 		/**
@@ -143,7 +161,6 @@ package view.element
 				graphics.endFill();
 				
 				//触控区域绘制
-				
 				if (canvas.scale * scale * width < 200)
 				{
 					graphics.lineStyle(0,0, 0);
@@ -151,21 +168,9 @@ package view.element
 					graphics.drawRect(left, top, width, height)
 					graphics.endFill();
 				}
+				
+				bmd = canvas.getElemetBmd(flashShape);
 			}
-		}
-		
-		/**
-		 */		
-		override public function startDraw(canvas:Canvas):void
-		{
-			//this.visible = false;
-		}
-		
-		/**
-		 */		
-		override public function drawView(canvas:Canvas):void
-		{
-			renderView();
 		}
 		
 		/**

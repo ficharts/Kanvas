@@ -2,12 +2,7 @@ package view.element.shapes
 {
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	
-	import model.vo.ElementVO;
 	import model.vo.ShapeVO;
-	
-	import util.ElementCreator;
-	
-	import view.element.ElementBase;
 	
 	/**
 	 * 圆形
@@ -32,6 +27,7 @@ package view.element.shapes
 			graphics.drawEllipse(vo.style.tx, vo.style.ty, vo.width, vo.height);
 			graphics.endFill();
 			
+			bmd = canvas.getElemetBmd(flashShape);
 		}
 		
 	}

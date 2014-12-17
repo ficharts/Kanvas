@@ -115,27 +115,43 @@ package view.ui.canvas
 		{
 			var result:Boolean = false;
 			
-			//应用了动画效果的原件不显示
-			if ((element as IElement).flashShape.alpha < 1)
-				return false;
-			
 			//不在显示窗口里的原件和过小的原件均不显示, 不用绘制
 			if (stage)
 			{
 				var rect:Rectangle = LayoutUtil.getItemRect(this, element);
+				var stageRect:Rectangle = LayoutUtil.getStageRect(stage);
 				
-				if (rect.width < 1 || rect.height < 1)
-				{
+				if (rect.width < 1 || rect.height < 1)//太小不显示
 					result = false;
-				}
+				else if (element.isHollow && RectangleUtil.enlarge(rect, stageRect))//超出现实范围的也不显示
+					result = false;
 				else 
-				{
-					var boud:Rectangle = LayoutUtil.getStageRect(stage);
-					result = RectangleUtil.rectOverlapping(rect, boud);
-				}
+					result = RectangleUtil.rectOverlapping(rect, stageRect);
 			}
 			
 			return result;
+		}
+		
+		/**
+		 * 检测元件是否比显示区域大，如果超过显示区域则需要实体渲染
+		 * 
+		 * 应用了动画的元件永远都是实体显示
+		 */		
+		public function checkTrueRender(element:ICanvasLayout):Boolean
+		{
+			if (element.ifInViewRect)
+			{
+				//应用了动画效果的原件不显示
+				if ((element as IElement).hasFlash)
+					return true;
+				
+				var rect:Rectangle = LayoutUtil.getItemRect(this, element);
+				
+				if (rect.width > stage.stageWidth || rect.height > stage.stageHeight)
+					return true;
+			}
+			
+			return false;
 		}
 		
 		/**
@@ -151,9 +167,9 @@ package view.ui.canvas
 			else
 				s = stage.stageHeight / ele.height;
 			
-			PerformaceTest.start("draw");
+			//PerformaceTest.start("draw");
 			var textBMD:BitmapData = BitmapUtil.getBitmapData(ele, true, s);
-			PerformaceTest.end("draw");
+			//PerformaceTest.end("draw");
 			
 			return textBMD;
 		}
@@ -265,6 +281,9 @@ package view.ui.canvas
 			return child;
 		}
 		
+		/**
+		 * 
+		 */		
 		override public function addChildAt(child:DisplayObject, index:int):DisplayObject
 		{
 			super.addChildAt(child, index);
@@ -278,6 +297,8 @@ package view.ui.canvas
 			return child;
 		}
 		
+		/**
+		 */		
 		override public function removeChild(child:DisplayObject):DisplayObject
 		{
 			super.removeChild(child);
@@ -291,6 +312,8 @@ package view.ui.canvas
 			return child;
 		}
 		
+		/**
+		 */		
 		override public function removeChildAt(index:int):DisplayObject
 		{
 			var child:DisplayObject = super.removeChildAt(index);
@@ -303,6 +326,8 @@ package view.ui.canvas
 			return child;
 		}
 		
+		/**
+		 */		
 		override public function removeChildren(beginIndex:int = 0, endIndex:int = int.MAX_VALUE):void
 		{
 			endIndex = Math.min(numChildren, endIndex);

@@ -14,6 +14,8 @@ package view.element
 		function get vo():ElementVO;
 		function set vo(value:ElementVO):void;
 		
+		function get hasFlash():Boolean;
+		
 		/**
 		 * 绘制内容的容器
 		 */		

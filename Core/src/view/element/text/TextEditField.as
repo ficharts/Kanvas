@@ -69,8 +69,6 @@ package view.element.text
 		 */		
 		override public function drawView(canvas:Canvas):void
 		{
-			if (canvas.checkVisible(this) == false) return;
-			
 			renderPoints[0].x = - vo.width / 2;
 			renderPoints[0].y = - vo.height / 2;
 			
@@ -281,10 +279,6 @@ package view.element.text
 			
 			bmd = canvas.getElemetBmd(textCanvas);
 		}
-		
-		/**
-		 */		
-		private var bmd:BitmapData;
 		
 		/**
 		 */		

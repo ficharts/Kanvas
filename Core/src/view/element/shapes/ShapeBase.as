@@ -2,7 +2,6 @@ package view.element.shapes
 {
 	import com.kvs.utils.ViewUtil;
 	
-	import model.vo.ElementVO;
 	import model.vo.ShapeVO;
 	
 	import view.element.ElementBase;
@@ -26,18 +25,20 @@ package view.element.shapes
 		
 		/**
 		 */		
-		override public function startDraw(canvas:Canvas):void
+		override public function get isHollow():Boolean
 		{
-			this.visible = false;
+			if (vo.styleType == "border")
+				return true;
+			else
+				return false;
 		}
 		
 		/**
 		 */		
-		override public function drawView(canvas:Canvas):void
+		override public function startDraw(canvas:Canvas):void
 		{
-			renderView();
+			this.visible = false;
 		}
-		
 		/**
 		 */		
 		override public function exportData():XML

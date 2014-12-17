@@ -75,6 +75,8 @@ package view.element.shapes
 			
 			vo.style.radius = rectVO.radius * 2;
 			StyleManager.drawRect(this, vo.style, vo);
+			
+			bmd = canvas.getElemetBmd(flashShape);
 		}
 		
 		/**

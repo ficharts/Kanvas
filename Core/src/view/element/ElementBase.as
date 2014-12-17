@@ -17,6 +17,7 @@ package view.element
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.sampler.NewObjectSample;
 	
 	import model.vo.ElementVO;
@@ -54,6 +55,8 @@ package view.element
 			initState();
 			doubleClickEnabled = true;
 			
+			initRenderPoints(4);
+			
 			StageUtil.initApplication(this, init);
 		}
 		
@@ -70,6 +73,8 @@ package view.element
 		 */		
 		public function endDraw():void
 		{
+			this.visible = canvas.checkVisible(this);
+			
 			this.renderView();
 		}
 		
@@ -78,9 +83,6 @@ package view.element
 		 */		
 		public function renderView():void
 		{
-			if (canvas)
-				super.visible = canvas.checkVisible(this);
-			
 			if (canvas && visible)
 			{
 				var layout:ElementLayoutModel = canvas.getElementLayout(this);
@@ -97,6 +99,67 @@ package view.element
 		}
 		
 		/**
+		 * 
+		 * 绘制模式下，矢量图形尺寸超过显示区域时需要实体可见，正式渲染，不再绘制
+		 * 
+		 * 有动画的图形也需要真实可见
+		 * 
+		 * @return 
+		 * 
+		 */		
+		public function checkTrueRender():Boolean
+		{
+			return canvas.checkTrueRender(this);
+		}
+		
+		/**
+		 * 
+		 * 是否是空心图形，空心图形在放大超出舞台后不显示
+		 * 
+		 */		
+		public function get isHollow():Boolean
+		{
+			return false;
+		}
+		
+		/**
+		 * 
+		 * 是否含有动画，含有动画效果的元件始终实体可见
+		 * 
+		 */		
+		public function get hasFlash():Boolean
+		{
+			if (isPage)
+			{
+				if (pageVO.flashers && pageVO.flashers.length)
+					return true;
+			}
+			
+			return false;
+		}
+		
+		/**
+		 */		
+		private var _ifInViewRect:Boolean = true;
+
+		/**
+		 * 是否在可是范围内，绘制模式时，当有的适量元素过大时需要实体可视，从而所有可见元件都得实体可见。
+		 */
+		public function get ifInViewRect():Boolean
+		{
+			return _ifInViewRect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set ifInViewRect(value:Boolean):void
+		{
+			_ifInViewRect = value;
+		}
+
+		
+		/**
 		 * 图形自身的绘制和画布绘制不同，画布绘制时，绘制路径要先转换为画布上的绘制路径
 		 * 
 		 * 转换之先更新原始绘制点坐标，转换之后用新的绘制点集合绘制图形
@@ -107,7 +170,52 @@ package view.element
 		 */		
 		public function drawView(canvas:Canvas):void
 		{
+			if (bmd == null) return;
 			
+			var rect:Rectangle = graphicRect;
+			
+			renderPoints[0].x = rect.left;
+			renderPoints[0].y = rect.top;
+			
+			renderPoints[1].x = rect.right;
+			renderPoints[1].y = rect.top;
+			
+			renderPoints[2].x =  rect.right;
+			renderPoints[2].y =  rect.bottom;
+			
+			renderPoints[3].x =  rect.left;
+			renderPoints[3].y =  rect.bottom;
+			
+			var layout:ElementLayoutModel = canvas.getElementLayout(this);
+			canvas.transformRenderPoints(renderPoints, layout);
+			
+			var math:Matrix = new Matrix;
+			math.rotate(MathUtil.angleToRadian(layout.rotation));
+			
+			var scale:Number = rect.width * layout.scaleX / bmd.width;
+			math.scale(scale, scale);
+			
+			var p:Point = renderPoints[0];
+			
+			math.tx = p.x;
+			math.ty = p.y;
+			
+			canvas.graphics.beginBitmapFill(bmd, math, false, false);
+			canvas.graphics.moveTo(p.x, p.y);
+			
+			p = renderPoints[1];
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = renderPoints[2];
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = renderPoints[3];
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = renderPoints[0];
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			canvas.graphics.endFill();
 		}
 		
 		/**
@@ -586,13 +694,6 @@ package view.element
 		
 		/**
 		 */		
-		override public function set visible(value:Boolean):void
-		{
-			super.visible = value;
-			
-			if (visible) renderView();
-		}
-		
 		public function get screenshot():Boolean
 		{
 			return _screenshot;
@@ -806,6 +907,14 @@ package view.element
 		public function get index():int
 		{
 			return (parent) ? parent.getChildIndex(this) : -1;
+		}
+		
+		/**
+		 * 图形区域，用于辅助在全局画布上绘制
+		 */		
+		protected function get graphicRect():Rectangle
+		{
+			return flashShape.getBounds(flashShape);
 		}
 		
 		/**
@@ -1150,6 +1259,11 @@ package view.element
 			updateLayout();
 			drawBG();
 		}
+		
+		/**
+		 * 每个元件都会有一个截图，在画布动画时绘制在画布上，这样可以提升
+		 */		
+		protected var bmd:BitmapData;
 		
 		/**
 		 * 通常resize相当于重新渲染，但对于特殊的复杂组件，调节宽高时渲染会很消耗性能，需要特殊处理
