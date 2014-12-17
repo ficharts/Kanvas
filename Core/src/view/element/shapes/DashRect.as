@@ -55,7 +55,7 @@ package view.element.shapes
 			dl.setDash(thickness, thickness * 2); 
 			DashLine.curvedBox(dl, vo.style.tx, vo.style.ty, vo.style.width, vo.style.height, rectVO.radius);
 		
-			//trace(vo.thickness)
+			bmd = canvas.getElemetBmd(flashShape);
 		}
 		
 		/**

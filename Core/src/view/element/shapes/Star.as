@@ -134,6 +134,8 @@ package view.element.shapes
 			vo.style.height = vo.height;
 			
 			StyleManager.drawStar(this, vo.style, starVO.innerRadius, vo);
+			
+			bmd = canvas.getElemetBmd(flashShape);
 		}
 		
 		/**

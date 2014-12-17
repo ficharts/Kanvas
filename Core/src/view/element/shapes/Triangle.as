@@ -77,6 +77,8 @@ package view.element.shapes
 			graphics.lineTo(- vo.width / 2 , vo.height / 2 );
 			graphics.lineTo(startX , startY);
 			graphics.endFill();
+			
+			bmd = canvas.getElemetBmd(flashShape);
 		}
 		
 		/**

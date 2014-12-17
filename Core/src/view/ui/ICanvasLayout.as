@@ -40,6 +40,7 @@ package view.ui
 		function get index():int
 			
 		function get isPage():Boolean
+		function get isHollow():Boolean;
 		
 		function startDraw(canvas:Canvas):void
 		function endDraw():void

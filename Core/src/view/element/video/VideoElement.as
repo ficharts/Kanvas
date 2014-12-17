@@ -1,18 +1,17 @@
 package view.element.video
 {
+	import flash.display.BitmapData;
 	import flash.events.MouseEvent;
 	import flash.events.NetStatusEvent;
+	import flash.geom.Rectangle;
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
-	import flash.net.NetStreamAppendBytesAction;
 	import flash.utils.ByteArray;
 	
 	import model.vo.ElementVO;
 	
 	import modules.pages.PageEvent;
-	
-	import util.img.ImgLib;
 	
 	import view.element.ElementBase;
 	import view.element.ElementEvent;
@@ -227,7 +226,16 @@ package view.element.video
 				video.y = - vo.height / 2;
 				
 				super.render();
+				
+				bmd = canvas.getElemetBmd(video);
 			}
+		}
+		
+		/**
+		 */		
+		override protected function get graphicRect():Rectangle
+		{
+			return new Rectangle(video.x, video.y, video.videoWidth, video.videoHeight);
 		}
 		
 		/**

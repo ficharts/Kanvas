@@ -1,13 +1,7 @@
 package view.element.shapes
 {
-	import com.kvs.utils.MathUtil;
 	import com.kvs.utils.ViewUtil;
 	
-	import flash.geom.Matrix;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	
-	import model.vo.ElementVO;
 	import model.vo.ShapeVO;
 	
 	import view.element.ElementBase;
@@ -15,7 +9,6 @@ package view.element.shapes
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.interact.autoGroup.IAutoGroupElement;
 	import view.ui.canvas.Canvas;
-	import view.ui.canvas.ElementLayoutModel;
 	
 	/**
 	 * 图形基类
@@ -28,8 +21,16 @@ package view.element.shapes
 		public function ShapeBase(vo:ShapeVO)
 		{
 			super(vo);
-			
-			initRenderPoints(4);
+		}
+		
+		/**
+		 */		
+		override public function get isHollow():Boolean
+		{
+			if (vo.styleType == "border")
+				return true;
+			else
+				return false;
 		}
 		
 		/**
@@ -38,66 +39,6 @@ package view.element.shapes
 		{
 			this.visible = false;
 		}
-		
-		/**
-		 */		
-		override public function checkTrueRender():Boolean
-		{
-			return canvas.isLargeThanView(this);
-		}
-		
-		/**
-		 */		
-		override public function drawView(canvas:Canvas):void
-		{
-			if (bmd == null) return;
-			
-			var rect:Rectangle = flashShape.getBounds(flashShape);
-			
-			renderPoints[0].x = rect.left;
-			renderPoints[0].y = rect.top;
-			
-			renderPoints[1].x = rect.right;
-			renderPoints[1].y = rect.top;
-			
-			renderPoints[2].x =  rect.right;
-			renderPoints[2].y =  rect.bottom;
-			
-			renderPoints[3].x =  rect.left;
-			renderPoints[3].y =  rect.bottom;
-			
-			var layout:ElementLayoutModel = canvas.getElementLayout(this);
-			canvas.transformRenderPoints(renderPoints, layout);
-			
-			var math:Matrix = new Matrix;
-			math.rotate(MathUtil.angleToRadian(layout.rotation));
-			
-			var scale:Number = rect.width * layout.scaleX / bmd.width;
-			math.scale(scale, scale);
-			
-			var p:Point = renderPoints[0];
-			
-			math.tx = p.x;
-			math.ty = p.y;
-			
-			canvas.graphics.beginBitmapFill(bmd, math, false, false);
-			canvas.graphics.moveTo(p.x, p.y);
-			
-			p = renderPoints[1];
-			canvas.graphics.lineTo(p.x, p.y);
-			
-			p = renderPoints[2];
-			canvas.graphics.lineTo(p.x, p.y);
-			
-			p = renderPoints[3];
-			canvas.graphics.lineTo(p.x, p.y);
-			
-			p = renderPoints[0];
-			canvas.graphics.lineTo(p.x, p.y);
-			
-			canvas.graphics.endFill();
-		}
-		
 		/**
 		 */		
 		override public function exportData():XML

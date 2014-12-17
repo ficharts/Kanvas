@@ -56,6 +56,8 @@ package view.element.shapes
 			graphics.moveTo(vo.width / 2, 0);
 			
 			graphics.endFill();
+			
+			bmd = canvas.getElemetBmd(flashShape);
 		}
 		
 	}

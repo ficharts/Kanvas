@@ -4,13 +4,10 @@ package view.element.shapes
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	
 	import model.vo.ElementVO;
 	import model.vo.LineVO;
 	import model.vo.PageVO;
-	
-	import modules.pages.PageEvent;
 	
 	import view.element.ElementBase;
 	import view.elementSelector.ElementSelector;
@@ -37,6 +34,8 @@ package view.element.shapes
 		
 		private const _propertyNameArray:Array = ["arc"];
 		
+		/**
+		 */		
 		override public function setPage(pageVO:PageVO):void
 		{
 			super.setPage(pageVO);
@@ -46,7 +45,6 @@ package view.element.shapes
 				vo.pageVO.height   = vo.height + Math.abs(lineVO.arc);
 			}
 		}
-		
 		
 		/**
 		 */		
@@ -62,8 +60,12 @@ package view.element.shapes
 			StyleManager.setLineStyle(graphics, vo.style.getBorder, vo.style, vo);
 			graphics.moveTo(- lineVO.width / 2, 0);
 			graphics.curveTo(0, lineVO.arc * 2, lineVO.width / 2, 0);
+			
+			bmd = canvas.getElemetBmd(flashShape);
 		}
 		
+		/**
+		 */		
 		override public function get topLeft():Point
 		{
 			tlPoint.x = vo.scale * - .5 * vo.width;

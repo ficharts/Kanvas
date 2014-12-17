@@ -45,6 +45,26 @@ package landray.kp.maps.main.elements
 		
 		/**
 		 */		
+		public function get isHollow():Boolean
+		{
+			return false;
+		}
+		
+		/**
+		 */		
+		public function get hasFlash():Boolean
+		{
+			if (isPage)
+			{
+				if (vo.pageVO.flashers && vo.pageVO.flashers.length)
+					return true;
+			}
+			
+			return false;
+		}
+		
+		/**
+		 */		
 		private var _ifInViewRect:Boolean
 		
 		public function get ifInViewRect():Boolean
