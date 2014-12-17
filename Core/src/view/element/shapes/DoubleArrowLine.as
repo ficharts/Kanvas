@@ -32,6 +32,7 @@ package view.element.shapes
 			graphics.moveTo( - lineVO.width / 2, 0);
 			graphics.lineTo( - lineVO.width / 2 + Math.cos(rad - Math.PI / 4) * r, Math.sin(rad - Math.PI / 4) * r);
 			
+			bmd = canvas.getElemetBmd(flashShape);
 		}
 	}
 }

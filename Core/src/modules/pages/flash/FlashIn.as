@@ -82,7 +82,7 @@ package modules.pages.flash
 			elements = element.getChilds(elements);
 			
 			for each (var item:IElement in elements)
-				item.canvas.alpha = 0;
+				item.flashShape.alpha = 0;
 		}
 		
 		/**
@@ -94,7 +94,7 @@ package modules.pages.flash
 			elements = element.getChilds(elements);
 			
 			for each (var item:IElement in elements)
-				item.canvas.alpha = 1;
+				item.flashShape.alpha = 1;
 		}
 		
 		/**
@@ -106,7 +106,7 @@ package modules.pages.flash
 			elements = element.getChilds(elements);
 			
 			for each (var item:IElement in elements)
-				TweenLite.to(item.canvas, TIME, {alpha: 1});
+				TweenLite.to(item.flashShape, TIME, {alpha: 1});
 			
 		}
 		
@@ -119,7 +119,7 @@ package modules.pages.flash
 			elements = element.getChilds(elements);
 			
 			for each (var item:IElement in elements)
-				TweenLite.to(item.canvas, TIME, {alpha: 0});
+				TweenLite.to(item.flashShape, TIME, {alpha: 0});
 		}
 		
 		/**

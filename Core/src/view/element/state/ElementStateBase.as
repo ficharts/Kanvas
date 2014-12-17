@@ -1,5 +1,7 @@
 package view.element.state
 {
+	import flash.display.Sprite;
+	
 	import view.element.ElementBase;
 	import view.element.ElementEvent;
 
@@ -20,9 +22,10 @@ package view.element.state
 		
 		/**
 		 */		
-		public function flashing():void
+		public function drawPageNum():void
 		{
-			
+			if (element.isPage)
+				element.renderPageNum();
 		}
 		
 		/**
@@ -172,7 +175,7 @@ package view.element.state
 		 */		
 		public function toPrevState():void
 		{
-			
+			element.pageNumCanvas.graphics.clear();
 		}
 		
 		/**

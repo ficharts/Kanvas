@@ -23,7 +23,7 @@ package commands
 	import view.element.imgElement.ImgElement;
 	import view.element.imgElement.ImgElementBase;
 	import view.element.imgElement.SWFElement;
-	import view.ui.Canvas;
+	import view.ui.canvas.Canvas;
 
 	/**
 	 * 
@@ -132,7 +132,7 @@ package commands
 		 */		
 		private function created():void
 		{
-			CoreFacade.coreMediator.pageManager.refreshPageThumbsByElement(element);
+			CoreFacade.coreMediator.pageManager.updatePageThumbsByElement(element);
 		}
 		
 		/**

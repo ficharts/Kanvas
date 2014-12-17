@@ -29,7 +29,7 @@ package commands
 			
 			element = notification.getBody() as ElementBase;
 			elementIndex = CoreFacade.getElementIndex(element);
-			CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
+			CoreFacade.coreMediator.pageManager.registPagesContainElement(element);
 			CoreFacade.removeElement(element);
 			
 			if (element.isPage)
@@ -47,7 +47,7 @@ package commands
 					var item:ElementBase = groupElements[i] as ElementBase;
 					
 					elementIndexArray[i] = CoreFacade.getElementIndex(item);
-					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(item);
+					CoreFacade.coreMediator.pageManager.registPagesContainElement(item);
 					CoreFacade.removeElement(item);
 					
 					if (item.isPage)
@@ -55,7 +55,7 @@ package commands
 				}
 			}
 			
-			v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
+			v = CoreFacade.coreMediator.pageManager.updatePagesThumb();
 			
 			UndoRedoMannager.register(this);
 			
@@ -94,7 +94,7 @@ package commands
 			if (element is VideoElement)
 				(element as VideoElement).reset();
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			dataChanged();
 		}
@@ -118,7 +118,7 @@ package commands
 				}
 			}
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			dataChanged();
 		}

@@ -13,6 +13,7 @@ package view.ui
 	import view.screenState.FullScreenState;
 	import view.screenState.NormalScreenState;
 	import view.screenState.ScreenStateBase;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 */	
@@ -222,20 +223,20 @@ package view.ui
 		public function synBgContentToCanvas():void
 		{
 			bgImageCanvas.rotation = canvas.rotation;
-			if (canvas.scaleX > 1)
+			if (canvas.scale > 1)
 			{
-				bgImageCanvas.scaleX = bgImageCanvas.scaleY = Math.pow(canvas.scaleX, .8);
+				bgImageCanvas.scaleX = bgImageCanvas.scaleY = Math.pow(canvas.scale, .8);
 				var wc:Number = autofitRect.x + autofitRect.width  * .5;
 				var hc:Number = autofitRect.y + autofitRect.height * .5;
 				var wo:Number = canvas.x - wc;
 				var ho:Number = canvas.y - hc;
-				var si:Number = bgImageCanvas.scaleX / canvas.scaleX;
+				var si:Number = bgImageCanvas.scaleX / canvas.scale;
 				bgImageCanvas.x = wc + wo * si;
 				bgImageCanvas.y = hc + ho * si;
 			}
 			else
 			{
-				bgImageCanvas.scaleX = bgImageCanvas.scaleY = canvas.scaleX;
+				bgImageCanvas.scaleX = bgImageCanvas.scaleY = canvas.scale;
 				bgImageCanvas.x = canvas.x;
 				bgImageCanvas.y = canvas.y;
 			}

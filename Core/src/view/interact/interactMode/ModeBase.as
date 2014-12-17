@@ -2,11 +2,14 @@ package view.interact.interactMode
 {
 	import commands.Command;
 	
+	import flash.display.Sprite;
+	
 	import model.CoreFacade;
 	import model.vo.PageVO;
 	
 	import view.element.ElementBase;
 	import view.interact.CoreMediator;
+	import view.ui.canvas.Canvas;
 
 	/**
 	 * 整个应用的选择模式, 有两种：非选择模式，选择模式
@@ -55,31 +58,24 @@ package view.interact.interactMode
 		public function ModeBase(mainMediator:CoreMediator)
 		{
 			this.mainMediator = mainMediator;
+			canvas = mainMediator.mainUI.canvas;
 		}
+		
+		/**
+		 */		
+		private var canvas:Canvas;
 		
 		/**
 		 */		
 		public function flashStart():void
 		{
-			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-			
-			for each (var element:ElementBase in elements)
-				element.flashStart();
+			canvas.toDrawState();
 		}
 		
 		/**
 		 */		
 		public function flashing():void
 		{
-			//检测，重绘文本， 以达到像素精度不失真
-			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements, element:ElementBase;
-			for each (element in elements)
-			{
-				if (element.visible)
-					element.flashing();
-			}
-			
-			mainMediator.collisionDetection.updateAfterZoomMove();
 		}
 		
 		/**
@@ -87,15 +83,9 @@ package view.interact.interactMode
 		public function flashStop():void
 		{
 			mainMediator.mainUI.curScreenState.enableCanvas();
-			//zoomMoveControl.enableBGInteract();//生效会导致动画编辑时背景可被拖动
 			
-			//文本刷新，图片开启smooth
-			var elements:Vector.<ElementBase> = CoreFacade.coreProxy.elements;
-			for each (var element:ElementBase in elements)
-			{
-				if (element.visible)
-					element.flashStop();
-			}
+			canvas.toRenderState();
+			mainMediator.collisionDetection.checkElementEnable();//检测仅对可见元件有效
 		}
 		
 		/**

@@ -49,9 +49,9 @@ package commands
 			{
 				parent.setChildIndex(element, layer);
 				if (exec)
-					v = CoreFacade.coreMediator.pageManager.refreshPageThumbsByElement(element);
+					v = CoreFacade.coreMediator.pageManager.updatePageThumbsByElement(element);
 				else
-					CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+					CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			}
 			
 			this.dataChanged();

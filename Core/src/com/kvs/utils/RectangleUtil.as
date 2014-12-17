@@ -37,14 +37,28 @@ package com.kvs.utils
 		}
 		
 		/**
-		 * 判断两矩形是否相交。
+		 * 判断两矩形是否相交
 		 */
-		public static function rectOverlapping(rect1:Rectangle, rect2:Rectangle):Boolean
+		public static function rectOverlapping(smallRect:Rectangle, largeRect:Rectangle):Boolean
 		{
-			return  ! ( rect1.left   > rect2.right  ||
-						rect1.right  < rect2.left   ||
-						rect1.top    > rect2.bottom ||
-						rect1.bottom < rect2.top);
+			return  ! ( smallRect.left   > largeRect.right  ||
+						smallRect.right  < largeRect.left   ||
+						smallRect.top    > largeRect.bottom ||
+						smallRect.bottom < largeRect.top);
+		}
+		
+		/**
+		 *
+		 * 判断元件是否超过可见区域，即个方向均超越目标区域
+		 *  
+		 * @param rect
+		 * @param baseRect
+		 * @return 
+		 * 
+		 */		
+		public static function enlarge(rect:Rectangle, baseRect:Rectangle):Boolean
+		{
+			return (rect.left < baseRect.left && rect.top < baseRect.top && rect.right > baseRect.right && rect.bottom > baseRect.bottom)
 		}
 		
 		/**

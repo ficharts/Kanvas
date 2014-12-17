@@ -1,10 +1,10 @@
 package view.element.imgElement
 {
-	import flash.display.Bitmap;
+	import com.kvs.utils.graphic.BitmapUtil;
+	
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.geom.Matrix;
 	import flash.utils.ByteArray;
 	
 	import model.vo.ImgVO;
@@ -12,6 +12,7 @@ package view.element.imgElement
 	import util.ElementUtil;
 	
 	import view.element.ElementBase;
+	import view.ui.canvas.Canvas;
 	
 	
 	/**
@@ -23,27 +24,36 @@ package view.element.imgElement
 		{
 			super(vo);
 			
-			_canvas.addChild(graphicShape);
+			_canvas.addChild(_shape);
 			addChild(_canvas);
+			
+			//确保页码编号位于图片上
+			addChild(pageNumCanvas);
 		}
 		
 		/**
 		 */		
-		override public function flashStart():void
+		override public function checkTrueRender():Boolean
 		{
-			this.smooth = false;
+			return false;
+		}
+		
+		/**
+		 */		
+		override public function startDraw(canvas:Canvas):void
+		{
+			super.startDraw(canvas);
 		}
 		
 		/**
 		 * 
 		 */		
-		override public function flashStop():void
+		override public function endDraw():void
 		{
-			this.smooth = true;
+			super.endDraw();
 		}
 		
 		/**
-		 * 
 		 */
 		override public function clone():ElementBase
 		{
@@ -73,72 +83,22 @@ package view.element.imgElement
 		 */		
 		override public function showIMG():void
 		{
-			if (bmpLarge && bmpSmall)
-			{
-				var tmpDispl:Bitmap = (stageWidth <= minSize || stageHeight <= minSize) ? bmpSmall : bmpLarge;
-				
-				if (tmpDispl != bmpDispl)
-				{
-					if (bmpDispl) bmpDispl.visible = false;
-					
-					bmpDispl = tmpDispl;
-					bmpDispl.visible = true;
-				}
-				/*bmpDispl = true;
-				if (bmpDispl.smoothing!= smooth)
-					bmpDispl.smoothing = smooth;*/
-			}
+			this.graphics.clear();
+			
+			BitmapUtil.drawBitmapDataToGraphics(imgVO.viewData as BitmapData, graphics, vo.width, vo.height, - vo.width / 2, - vo.height / 2, true);
+			
+			bmd = imgVO.viewData as BitmapData;
 		}
 		
 		/**
 		 */		
 		override protected function initIMG(bmd:Object):void
 		{
-			if (bmd)
-			{
-				bmdLarge = bmd as BitmapData;
-				bmpLarge = new Bitmap(bmdLarge);
-				bmpLarge.visible = false;
-				bmpLarge.width  =  vo.width;
-				bmpLarge.height =  vo.height;
-				bmpLarge.x = -.5 * vo.width;
-				bmpLarge.y = -.5 * vo.height;
-				bmpLarge.smoothing = true;
-				_canvas.addChild(bmpLarge);
-				
-				
-				if(!bmdSmall)
-				{
-					var ow:Number = bmdLarge.width;
-					var oh:Number = bmdLarge.height;
-					if (ow > minSize && oh > minSize)
-					{
-						var ss:Number = (ow > oh) ? minSize / oh : minSize / ow;
-						bmdSmall = new BitmapData(ow * ss, oh * ss, true, 0);
-						var matrix:Matrix = new Matrix;
-						matrix.scale(ss, ss);
-						bmdSmall.draw(bmdLarge, matrix, null, null, null, true);
-					}
-					else
-					{
-						bmdSmall = bmdLarge;
-					}
-					
-					bmpSmall = new Bitmap(bmdSmall);
-					bmpSmall.visible = false;
-					bmpSmall.width  =  vo.width;
-					bmpSmall.height =  vo.height;
-					bmpSmall.x = -.5 * vo.width;
-					bmpSmall.y = -.5 * vo.height;
-					bmpSmall.smoothing = true;
-					_canvas.addChild(bmpSmall);
-				}
-			}
 		}
 		
 		/**
 		 */		
-		override public function get canvas():DisplayObject
+		override public function get flashShape():DisplayObject
 		{
 			return _canvas;
 		}
@@ -149,61 +109,9 @@ package view.element.imgElement
 		
 		/**
 		 */		
-		public function checkBmdRender():void
-		{
-			var renderBmdNeeded:Boolean = (stageWidth > minSize && stageHeight > minSize)
-				? (lastWidth <= minSize || lastHeight<= minSize)
-				: (lastWidth > minSize && lastHeight > minSize);
-			
-			lastWidth  = width;
-			lastHeight = height;
-			
-			if (renderBmdNeeded) showIMG();
-		}
-		
-		public function get smooth():Boolean
-		{
-			return __smooth;
-		}
-		
-		public function set smooth(value:Boolean):void
-		{
-			if (__smooth!= value)
-			{
-				__smooth = value;
-				if (bmpSmall && bmpLarge)
-				{
-					if (smooth)
-					{
-						bmpSmall.visible = (stageWidth < minSize || stageHeight < minSize);
-						bmpLarge.visible = !bmpSmall.visible;
-					}
-					else
-					{
-						bmpLarge.visible = false;
-						bmpSmall.visible = true;
-					}
-				}
-			}
-		}
-		
-		private var __smooth:Boolean = true;
-		
-		/**
-		 */		
-		override public function get shape():DisplayObject
+		override public function get graphicShape():DisplayObject
 		{
 			return this;
 		}
-		
-		private var lastWidth :Number;
-		private var lastHeight:Number;
-		private var minSize   :Number = 400;
-		
-		private var bmdLarge:BitmapData;
-		private var bmdSmall:BitmapData;
-		private var bmpLarge:Bitmap;
-		private var bmpSmall:Bitmap;
-		private var bmpDispl:Bitmap;
 	}
 }

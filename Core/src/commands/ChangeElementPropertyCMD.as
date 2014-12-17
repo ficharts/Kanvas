@@ -31,7 +31,7 @@ package commands
 		 */		
 		override public function execute(notification:INotification):void
 		{
-			
+			PerformaceTest.start("change");
 			element  = CoreFacade.coreMediator.currentElement;
 			if (element)
 			{
@@ -76,14 +76,22 @@ package commands
 				
 				UndoRedoMannager.register(this);
 			}
+			
+			PerformaceTest.end("change");
 		}
 		
+		/**
+		 * 
+		 */		
 		override public function undoHandler():void
 		{
 			element.clearHoverEffect();
 			setProperty(oldPropertyObj);
 		}
 		
+		/**
+		 * 
+		 */		
 		override public function redoHandler():void
 		{
 			element.clearHoverEffect();
@@ -106,7 +114,7 @@ package commands
 				if(!(element is PageElement))
 				{
 					reset(element);
-					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
+					CoreFacade.coreMediator.pageManager.registPagesContainElement(element);
 				}
 			}
 			
@@ -142,65 +150,52 @@ package commands
 				//变化前检测需要刷新的pages
 				if (exec)
 				{
-					for each (var item:ElementBase in CoreFacade.coreMediator.autoGroupController.elements)
+					for each (var item:ElementBase in groupElements)
 					{
 						if(!(item is PageElement))
 						{
 							resetGroupItem(item);
-							CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(item);
+							CoreFacade.coreMediator.pageManager.registPagesContainElement(item);
 						}
 					}
 				}
 				
 				if (obj["x"] != undefined && obj["y"] != undefined && (obj["width"] == undefined && obj["height"] == undefined))
-				{
 					CoreFacade.coreMediator.autoGroupController.moveTo(newObj.x - oldObj.x, newObj.y - oldObj.y, group);
-				}
+				
 				if (obj["rotation"] != undefined)
-				{
 					CoreFacade.coreMediator.autoGroupController.rollTo(newObj.rotation - oldObj.rotation, element, group);
-				}
+				
 				if (obj["scale"] != undefined)
-				{
 					CoreFacade.coreMediator.autoGroupController.scaleTo(newObj.scale / oldObj.scale, element, group);
-				}
 				
 				//变化后检测需要刷新的pages
 				if (exec)
 				{
-					for each (item in CoreFacade.coreMediator.autoGroupController.elements)
-					{
-						if (item is PageElement)
-							CoreFacade.coreMediator.pageManager.registUpdateThumbVO(item.vo as PageVO);
-						else
-							CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(item);
-					}
+					for each (item in groupElements)
+						CoreFacade.coreMediator.pageManager.registPagesContainElement(item);
 				}
 			}
 			
 			element.render();
 			selector.update();
-			
-			
+					
 			//变化后检测需要刷新的pages
-			///PerformaceTest.start("setProperty() element updatePageThumbs");
 			if (exec)
 			{
-				if (element is PageElement)
-					CoreFacade.coreMediator.pageManager.registUpdateThumbVO(element.vo as PageVO);
-				else
-					CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
-				v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
+				CoreFacade.coreMediator.pageManager.registPagesContainElement(element);
+				v = CoreFacade.coreMediator.pageManager.updatePagesThumb();
 			}
 			else
 			{
-				CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+				CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			}
-			///PerformaceTest.end("setProperty() element updatePageThumbs");
 			
 			this.dataChanged();
 		}
 		
+		/**
+		 */		
 		private function reset(item:ElementBase):void
 		{
 			for (var propertyName:String in oldPropertyObj) 
@@ -210,17 +205,15 @@ package commands
 				else
 				{
 					if (item.hasOwnProperty(propertyName))
-					{
 						item[propertyName] = oldPropertyObj[propertyName];
-					}
 					else
-					{
 						item.vo[propertyName] = oldPropertyObj[propertyName];
-					}
 				}
 			}
 		}
 		
+		/**
+		 */		
 		private function resetGroupItem(item:ElementBase):void
 		{
 			for (var propertyName:String in oldPropertyObj) 

@@ -2,7 +2,6 @@ package commands
 {
 	import model.CoreFacade;
 	import model.CoreProxy;
-	import model.vo.PageVO;
 	
 	import org.puremvc.as3.interfaces.INotification;
 	
@@ -30,7 +29,7 @@ package commands
 			newStyle = notification.getBody().theme;
 			
 			var redoable:Boolean = notification.getBody().redoable;
-			if (setStyle(newStyle, true) && redoable) 
+			if (setStyle(newStyle) && redoable) 
 				UndoRedoMannager.register(this);
 		}
 		
@@ -46,7 +45,7 @@ package commands
 		
 		/**
 		 */		
-		private function setStyle(value:String, exec:Boolean = false):Boolean
+		private function setStyle(value:String):Boolean
 		{
 			var result:Boolean = proxy.isHasStyle(value);
 			
@@ -71,16 +70,7 @@ package commands
 				coreApp.bgColorsUpdated(proxy.bgColorsXML);
 				coreApp.bgColorUpdated(proxy.bgColorIndex, proxy.bgColor);
 				
-				if (exec)
-				{
-					for each (var vo:PageVO in CoreFacade.coreMediator.pageManager.pages)
-						CoreFacade.coreMediator.pageManager.registUpdateThumbVO(vo);
-					v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
-				}
-				else
-				{
-					CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
-				}
+				CoreFacade.coreMediator.pageManager.updateAllPagesThumb();
 			}
 			
 			this.dataChanged();
@@ -99,9 +89,6 @@ package commands
 		 */		
 		private var oldStyle:String = '';
 		private var newStyle:String;
-		
 		private var proxy:CoreProxy;
-		
-		private var v:Vector.<PageVO>;
 	}
 }

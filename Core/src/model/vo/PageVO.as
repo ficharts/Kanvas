@@ -153,23 +153,9 @@ package model.vo
 		private var __index:int = -1;
 		
 		/**
+		 * 防止
 		 */		
-		public function get thumbUpdatable():Boolean
-		{
-			return __thumbUpdatable;
-		}
-		
-		/**
-		 */		
-		public function set thumbUpdatable(value:Boolean):void
-		{
-			if (__thumbUpdatable!= value)
-			{
-				__thumbUpdatable = value;
-			}
-		}
-		
-		private var __thumbUpdatable:Boolean = true;
+		internal var thumbUpdatable:Boolean
 		
 		/**
 		 */		

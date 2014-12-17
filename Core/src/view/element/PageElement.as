@@ -9,6 +9,7 @@ package view.element
 	import view.elementSelector.ElementSelector;
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.interact.autoGroup.IAutoGroupElement;
+	import view.ui.canvas.Canvas;
 	
 	
 	/**
@@ -41,7 +42,14 @@ package view.element
 			super.disable();
 			
 			//使得放大时，页面编号依旧可被点击
-			mouseChildren = true;
+			//mouseChildren = true;
+		}
+		
+		/**
+		 */		
+		override public function get isHollow():Boolean
+		{
+			return true;
 		}
 		
 		/**
@@ -71,6 +79,17 @@ package view.element
 			graphics.beginFill(0, 0);
 			graphics.drawRect(- width * .5, - height * .5, width, height);
 			graphics.endFill();
+		}
+		
+		/**
+		 * 预览模式下不绘制页面帧
+		 */		
+		override public function drawView(canvas:Canvas):void
+		{
+			if (currentState is ElementPrevState)
+				return;
+			
+			super.drawView(canvas);
 		}
 		
 		/**
@@ -142,21 +161,24 @@ package view.element
 				graphics.endFill();
 				
 				//触控区域绘制
-				
-				if (parent.scaleX * scale * width < 200)
+				if (canvas.scale * scale * width < 200)
 				{
 					graphics.lineStyle(0,0, 0);
 					graphics.beginFill(0, 0);
 					graphics.drawRect(left, top, width, height)
 					graphics.endFill();
 				}
+				
+				bmd = canvas.getElemetBmd(flashShape);
 			}
 		}
 		
 		/**
 		 */		
-		override public function flashStop():void
+		override public function endDraw():void
 		{
+			super.endDraw();
+			
 			render();
 		}
 		

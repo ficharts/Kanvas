@@ -341,7 +341,7 @@ package
 				return;
 				
 			//先窗口最大化
-			NativeApplication.nativeApplication.activeWindow.maximize();
+			//NativeApplication.nativeApplication.activeWindow.maximize();
 			
 			if (event.arguments.length > 0) 
 			{ 

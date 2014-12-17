@@ -3,9 +3,7 @@ package com.kvs.ui.label
 	import com.kvs.utils.PerformaceTest;
 	import com.kvs.utils.graphic.BitmapUtil;
 	
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.DisplayObjectContainer;
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	
@@ -41,10 +39,15 @@ package com.kvs.ui.label
 		{
 			shape.clear();
 			
+			PerformaceTest.start("text");
 			textBMD = BitmapUtil.getBitmapData(textCanvas, smooth, scale);
+			PerformaceTest.end("text")
 			
-			BitmapUtil.drawBitmapDataToGraphics(textBMD, shape, textCanvas.width, textCanvas.height, 
-				- textCanvas.width * .5,  - textCanvas.height * .5, smooth);
+			if (ifDrawText)
+			{
+				BitmapUtil.drawBitmapDataToGraphics(textBMD, shape, textCanvas.width, textCanvas.height, 
+					- textCanvas.width * .5,  - textCanvas.height * .5, smooth);
+			}
 		}
 
 		
@@ -66,19 +69,19 @@ package com.kvs.ui.label
 				var r:Number = textBMD.width / (scale * textCanvas.width);
 				//截图有最大尺寸限制，最大宽高乘积为 imgMaxSize
 				var max:Number = scale * textCanvas.width * scale * textCanvas.height;
-				if (host.visible && max < imgMaxSize && (textBMD.width < textCanvas.width * scale || r > bmMaxScaleMultiple))
+				if (max < imgMaxSize && (textBMD.width < textCanvas.width * scale || r > bmMaxScaleMultiple))
 				{
 					renderTextBMD(shape, textCanvas, scale, smooth);
 					
-					host.useBitmap();
+					//host.useBitmap();
 				}
 				else if (max > imgMaxSize && textCanvas.visible == false)
-				{
-					host.useText();
+				{//
+					//host.useText();
 				}
 				else if (max < imgMaxSize && textCanvas.visible)
 				{
-					host.useText();
+					//host.useText();
 				}
 			}
 		}
@@ -99,6 +102,11 @@ package com.kvs.ui.label
 		 * 当截图尺大于实际需要尺寸倍数超过此值，需重新截图，防止显示异常问题 
 		 */		
 		public var bmMaxScaleMultiple:uint = 30;
+		
+		/**
+		 * 是否每次检测渲染时，绘制新的文本截图
+		 */		
+		public var ifDrawText:Boolean = true;
 		
 		/**
 		 */		

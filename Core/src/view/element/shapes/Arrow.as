@@ -91,6 +91,8 @@ package view.element.shapes
 			graphics.lineTo( w, 0);
 			
 			graphics.endFill();
+			
+			bmd = canvas.getElemetBmd(flashShape);
 		}
 		
 		/**

@@ -86,7 +86,7 @@ package view.elementSelector.sizeControl
 				newDis *= - 1;
 			
 			var hDis:Number = newDis - oldDis;
-			var newSize:Number = oldSize + hDis / holder.element.scale / holder.layoutTransformer.canvas.scaleX;
+			var newSize:Number = oldSize + hDis / holder.element.scale / holder.layoutTransformer.canvas.scale;
 			oppsite = (newSize < 0);
 			
 			holder.element.vo.width = Math.abs(newSize);

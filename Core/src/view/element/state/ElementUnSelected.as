@@ -1,8 +1,9 @@
 package view.element.state
 {
-	import view.element.ElementEvent;
+	import flash.display.Sprite;
 	
 	import view.element.ElementBase;
+	import view.element.ElementEvent;
 	
 	/**
 	 * 没选中状态
@@ -12,14 +13,6 @@ package view.element.state
 		public function ElementUnSelected(element:ElementBase)
 		{
 			super(element);
-		}
-		
-		/**
-		 */		
-		override public function flashing():void
-		{
-			if (element.isPage)
-				element.layoutPageNum();
 		}
 		
 		/**
@@ -77,6 +70,8 @@ package view.element.state
 		 */		
 		override public function toPrevState():void
 		{
+			super.toPrevState();
+			
 			element.enable();
 			element.clearHoverEffect();
 			element.mouseChildren = element.mouseEnabled = false;
@@ -85,6 +80,7 @@ package view.element.state
 			element.returnFromPrevFun = function():void{
 				element.mouseChildren = element.mouseEnabled = true;
 				element.currentState = element.unSelectedState;
+				element.currentState.drawPageNum();
 			}
 		}
 		

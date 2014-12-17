@@ -52,7 +52,7 @@ package view.elementSelector.sizeControl
 			oldY = holder.y;
 			
 			if (holder.element.isPage)
-				holder.coreMdt.pageManager.registUpdateThumbVO(holder.element.vo.pageVO);
+				holder.coreMdt.pageManager.registHumbPage(holder.element.vo.pageVO);
 		}
 		
 		/**

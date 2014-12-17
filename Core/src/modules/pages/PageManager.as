@@ -20,6 +20,7 @@ package modules.pages
 	import util.LayoutUtil;
 	
 	import view.element.ElementBase;
+	import view.element.PageElement;
 	import view.interact.CoreMediator;
 	import view.ui.MainUIBase;
 
@@ -348,36 +349,33 @@ package modules.pages
 		private var pageQuene:PageQuene;
 		
 		/**
+		 * 注册与原件碰撞的页面，这些页面在稍后会被刷新
 		 */		
-		public function notifyPageVOUpdateThumb(vo:PageVO):void
-		{
-			if (vo)
-			{
-				vo.bitmapData = getThumbByPageVO(vo, THUMB_WIDTH, THUMB_HEIGHT);
-				vo.dispatchEvent(new PageEvent(PageEvent.UPDATE_THUMB, vo));
-			}
-		}
-		
-		/**
-		 */		
-		public function registOverlappingPageVOs(current:ElementBase):void
+		public function registPagesContainElement(current:ElementBase):void
 		{
 			if (current.isPage && current.parent) //元素本身是页面
-				registUpdateThumbVO(current.vo.pageVO);
+			{
+				if (current is PageElement)
+					registHumbPage(current.vo as PageVO)
+				else
+					registHumbPage(current.vo.pageVO);
+			}
 			
 			if (current.screenshot) //元素为可见元素
 			{
 				var elements:Vector.<ElementBase> = proxy.elements;
+				
 				if (elements)
 				{
 					var currentRect:Rectangle = LayoutUtil.getItemRect(coreMdt.canvas, current, false, true, false);
 					for each(var element:ElementBase in elements)
 					{
-						if (element.isPage)
+						if (element.visible && element.isPage)
 						{
-							var elementRect:Rectangle = LayoutUtil.getItemRect(coreMdt.canvas, element, false, true, false);
-							if (RectangleUtil.rectOverlapping(currentRect, elementRect))
-								registUpdateThumbVO(element.vo.pageVO);
+							var pageRect:Rectangle = LayoutUtil.getItemRect(coreMdt.canvas, element, false, true, false);
+							
+							if (RectangleUtil.rectOverlapping(currentRect, pageRect))
+								registHumbPage(element.vo.pageVO);
 						}
 					}
 				}
@@ -386,95 +384,75 @@ package modules.pages
 		
 		/**
 		 */		
-		public function registUpdateThumbVO(vo:PageVO):void
+		public function updatePageThumbsByElement(element:ElementBase):Vector.<PageVO>
 		{
-			if (refreshed)
-			{
-				refreshed = false;
-				updateThumbVOS.length = 0;
-			}
+			registPagesContainElement(element);
 			
-			if (vo)
-			{
-				if (updateThumbVOS.indexOf(vo) == -1)
-				{
-					vo.thumbUpdatable = false;
-					updateThumbVOS.push(vo);
-				}
-			}
+			return updatePagesThumb();
 		}
 		
-		public function refreshVOThumbs(pageVOs:Vector.<PageVO> = null):Vector.<PageVO>
+		/**
+		 * 更新页面的
+		 */		
+		public function updatePagesThumb(pageVOs:Vector.<PageVO> = null):Vector.<PageVO>
 		{
-			refreshed = true;
 			if (pageVOs)
 			{
+				thumbPages.length = 0;
 				for each (var vo:PageVO in pageVOs)
-					registUpdateThumbVO(vo);
+					registHumbPage(vo);
 			}
-			var tmp:Vector.<PageVO> = updateThumbVOS;
-			for each (vo in tmp)
-			{
-				vo.thumbUpdatable = true;
+			
+			for each (vo in thumbPages)
 				notifyPageVOUpdateThumb(vo);
-			}
 			
-			return (pageVOs) ? null : updateThumbVOS.concat();
-		}
-		
-		private static var refreshed:Boolean = false;
-		
-		private static const updateThumbVOS:Vector.<PageVO> = new Vector.<PageVO>;
-		
-		/**
-		 */		
-		public function refreshPageThumbsByElement(element:ElementBase):Vector.<PageVO>
-		{
-			var vector:Vector.<PageVO> = getOverlappingPages(element);
-			for each (var vo:PageVO in vector)
-				registUpdateThumbVO(vo);
+			var result:Vector.<PageVO> = (pageVOs) ? null : thumbPages.concat();
+			thumbPages.length = 0;
 			
-			return refreshVOThumbs();
+			return result;
 		}
 		
 		/**
-		 * 
+		 * 更新所有页面的截图, 用于改变背景图片，背景色，初始化完毕时
 		 */		
-		public function getOverlappingPages(current:ElementBase):Vector.<PageVO>
+		public function updateAllPagesThumb():void
 		{
-			if (current.isPage)
-			{
-				var vector:Vector.<PageVO> = new Vector.<PageVO>;
-				vector.push(current.vo.pageVO);
-			}
-			if (current.screenshot)
-			{
-				var elements:Vector.<ElementBase> = proxy.elements;
-				if(!vector) vector = new Vector.<PageVO>;
-				if( elements)
-				{
-					var currentRect:Rectangle = LayoutUtil.getItemRect(coreMdt.canvas, current, false, true, false);
-					for each(var element:ElementBase in elements)
-					{
-						if (element.isPage)
-						{
-							var elementRect:Rectangle = LayoutUtil.getItemRect(coreMdt.canvas, element, false, true, false);
-							if (RectangleUtil.rectOverlapping(currentRect, elementRect))
-								vector.push(element.vo.pageVO);
-						}
-					}
-				}
-			}
-			
-			return vector;
+			var vo:PageVO
+			for each (vo in pages)
+				notifyPageVOUpdateThumb(vo);
 		}
+		
+		/**
+		 */		
+		public function notifyPageVOUpdateThumb(vo:PageVO):void
+		{
+			if (vo)
+				vo.dispatchEvent(new PageEvent(PageEvent.UPDATE_THUMB, vo));
+		}
+		
+		/**
+		 */		
+		public function registHumbPage(vo:PageVO):void
+		{
+			if (vo)
+			{
+				if (thumbPages.indexOf(vo) == -1)
+					thumbPages.push(vo);
+			}
+		}
+		
+		/**
+		 * 将要被更新截图的页面
+		 */		
+		private var thumbPages:Vector.<PageVO> = new Vector.<PageVO>;
 		
 		/**
 		 * 根据PageVO，生成此页面的截图
-		 * 
 		 */		
 		public function getThumbByPageVO(pageVO:PageVO, w:Number, h:Number, smooth:Boolean = false):BitmapData
 		{
+			if (ifUpdatePageThumb == false) return null;
+				
 			//背景色
 			var bgColor:uint = CoreFacade.coreProxy.bgColor;
 			var mainUI:MainUIBase = coreMdt.mainUI;
@@ -546,6 +524,11 @@ package modules.pages
 			return null;
 			
 		}
+		
+		/**
+		 * 文档初始化时，为了不重复绘制页面截图，需要临时关闭一下页面渲染 
+		 */		
+		public var ifUpdatePageThumb:Boolean = true;
 		
 		/**
 		 */		

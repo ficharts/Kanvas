@@ -8,6 +8,7 @@ package view.element.chart
 	import com.kvs.utils.graphic.BitmapUtil;
 	
 	import flash.display.DisplayObject;
+	import flash.geom.Rectangle;
 	
 	import model.vo.ChartVO;
 	import model.vo.ElementVO;
@@ -16,6 +17,7 @@ package view.element.chart
 	import view.elementSelector.ElementSelector;
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.interact.autoGroup.IAutoGroupElement;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 * 
@@ -126,8 +128,10 @@ package view.element.chart
 				chart.visible = true;
 				ifSizing = false;
 				
-				graphicShape.graphics.clear();
+				_shape.graphics.clear();
 			}
+			
+			bmd = canvas.getElemetBmd(chart.chart as DisplayObject);
 		}
 		
 		/**
@@ -162,8 +166,8 @@ package view.element.chart
 				chart.visible = false;
 				ifSizing = true;
 			}
-				graphicShape.graphics.clear();
-				BitmapUtil.drawBitmapDataToGraphics(BitmapUtil.getBitmapData(chart), graphicShape.graphics, 
+				_shape.graphics.clear();
+				BitmapUtil.drawBitmapDataToGraphics(bmd, _shape.graphics, 
 					vo.width, vo.height, - vo.width / 2, - vo.height / 2, true);
 				
 		}
@@ -212,7 +216,14 @@ package view.element.chart
 		
 		/**
 		 */		
-		override public function get shape():DisplayObject
+		override protected function get graphicRect():Rectangle
+		{
+			return new Rectangle(chart.x, chart.y, chart.width, chart.height);
+		}
+		
+		/**
+		 */		
+		override public function get graphicShape():DisplayObject
 		{
 			return chart;
 		}

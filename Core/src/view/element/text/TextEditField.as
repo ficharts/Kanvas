@@ -1,15 +1,18 @@
 package view.element.text
 {
 	import com.kvs.ui.label.TextDrawer;
+	import com.kvs.utils.MathUtil;
+	import com.kvs.utils.PerformaceTest;
 	
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
-	import flash.text.TextFormat;
 	import flash.text.engine.BreakOpportunity;
 	import flash.text.engine.CFFHinting;
-	import flash.text.engine.TextRotation;
 	
 	import flashx.textLayout.container.TextContainerManager;
 	import flashx.textLayout.edit.EditingMode;
@@ -31,6 +34,8 @@ package view.element.text
 	import view.elementSelector.toolBar.ToolBarController;
 	import view.interact.autoGroup.IAutoGroupElement;
 	import view.ui.IMainUIMediator;
+	import view.ui.canvas.Canvas;
+	import view.ui.canvas.ElementLayoutModel;
 	
 	
 	/**
@@ -47,24 +52,75 @@ package view.element.text
 			
 			vo.xml = <text/>;
 			textDrawer = new TextDrawer(this);
-			shape.visible = false;
+			textDrawer.ifDrawText = false;
 			
+			initRenderPoints(4);
+		}
+		
+		
+		/**
+		 */		
+		override public function startDraw(canvas:Canvas):void
+		{
+			this.visible = false;
 		}
 		
 		/**
 		 */		
-		override public function flashing():void
+		override public function drawView(canvas:Canvas):void
 		{
-			super.flashing();
+			renderPoints[0].x = - vo.width / 2;
+			renderPoints[0].y = - vo.height / 2;
 			
-			checkTextBm();
+			renderPoints[1].x =  vo.width / 2;
+			renderPoints[1].y = - vo.height / 2;
+			
+			renderPoints[2].x =  vo.width / 2;
+			renderPoints[2].y =  vo.height / 2;
+			
+			renderPoints[3].x =  - vo.width / 2;
+			renderPoints[3].y =  vo.height / 2;
+			
+			var layout:ElementLayoutModel = canvas.getElementLayout(this);
+			canvas.transformRenderPoints(renderPoints, layout);
+			
+			//checkTextBm();
+			//var bmd:BitmapData = textDrawer.textBMD;
+			
+			var math:Matrix = new Matrix;
+			math.rotate(MathUtil.angleToRadian(layout.rotation));
+			
+			var scale:Number = vo.width * layout.scaleX / bmd.width;
+			math.scale(scale, scale);
+			
+			var p:Point = renderPoints[0];
+			
+			math.tx = p.x;
+			math.ty = p.y;
+			
+			canvas.graphics.beginBitmapFill(bmd, math, false, false);
+			canvas.graphics.moveTo(p.x, p.y);
+			
+			p = renderPoints[1];
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = renderPoints[2];
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = renderPoints[3];
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = renderPoints[0];
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			canvas.graphics.endFill();
 		}
 		
 		/**
 		 */		
-		override public function flashStop():void
+		override public function endDraw():void
 		{
-			this.checkTextBm();
+			super.endDraw();
 		}
 		
 		/**
@@ -83,33 +139,13 @@ package view.element.text
 		 */		
 		public function useBitmap():void
 		{
-			textCanvas.visible = false;
-			shape.visible = true;
 		}
 		
 		/**
 		 */		
 		public function useText():void
 		{
-			textCanvas.visible = true;
-			shape.visible = false;
 		}
-		
-		/**
-		 */		
-		override public function toShotcut(renderable:Boolean = false):void
-		{
-			super.toShotcut(renderable);
-			if (renderable)
-			{
-				if (visible && stageWidth > minRenderSize && stageHeight > minRenderSize)
-				{
-					shape.visible = false;
-					textCanvas.visible = true;
-				}
-			}
-		}
-		
 		
 		/**
 		 */		
@@ -240,7 +276,17 @@ package view.element.text
 		{
 			FlowTextManager.renderTextVOLabel(this, textVO);
 			renderAfterLabelRender();
-			checkTextBm(true);// 文本渲染时要强制重新截图
+			
+			bmd = canvas.getElemetBmd(textCanvas);
+		}
+		
+		/**
+		 */		
+		override public function renderView():void
+		{
+			super.renderView();
+			
+			
 		}
 		
 		/**
@@ -248,12 +294,8 @@ package view.element.text
 		 */		
 		public function checkTextBm(force:Boolean = false):void
 		{
-			if (visible || force)
-			{
-				textDrawer.checkTextBm(graphics, textCanvas, textVO.scale * parent.scaleX, true, force);
-			}
+			textDrawer.checkTextBm(graphics, textCanvas, textVO.scale * canvas.scale, false, force);
 		}
-		
 		
 		/**
 		 */		
@@ -262,8 +304,8 @@ package view.element.text
 			var bound:Rectangle = textManager.getContentBounds();
 			textVO.width  = textManager.compositionWidth;
 			textVO.height = textManager.compositionHeight;
+			
 			renderAfterLabelRender();
-			checkTextBm(true);
 		}
 		
 		/**
@@ -314,7 +356,7 @@ package view.element.text
 		{
 			super.preRender();
 			
-			_canvas.addChild(shape);
+			_canvas.addChild(graphicShape);
 			_canvas.addChild(textCanvas = new Sprite);
 			addChild(_canvas);
 			
@@ -329,7 +371,7 @@ package view.element.text
 		
 		/**
 		 */		
-		override public function get canvas():DisplayObject
+		override public function get flashShape():DisplayObject
 		{
 			return _canvas;
 		}

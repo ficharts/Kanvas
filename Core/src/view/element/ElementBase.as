@@ -2,21 +2,23 @@ package view.element
 {
 	import com.kvs.ui.clickMove.ClickMoveControl;
 	import com.kvs.ui.clickMove.IClickMove;
-	import com.kvs.ui.label.LabelUI;
 	import com.kvs.utils.MathUtil;
-	import com.kvs.utils.RectangleUtil;
 	import com.kvs.utils.StageUtil;
 	import com.kvs.utils.ViewUtil;
 	import com.kvs.utils.XMLConfigKit.StyleManager;
 	import com.kvs.utils.XMLConfigKit.style.Style;
+	import com.kvs.utils.graphic.BitmapUtil;
 	
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.sampler.NewObjectSample;
 	
 	import model.vo.ElementVO;
 	import model.vo.PageVO;
@@ -25,14 +27,14 @@ package view.element
 	import modules.pages.flash.IFlash;
 	
 	import util.ElementCreator;
-	import util.LayoutUtil;
 	
 	import view.element.state.*;
 	import view.elementSelector.ElementSelector;
 	import view.elementSelector.toolBar.ToolBarController;
-	import view.ui.Canvas;
 	import view.ui.ICanvasLayout;
 	import view.ui.IMainUIMediator;
+	import view.ui.canvas.Canvas;
+	import view.ui.canvas.ElementLayoutModel;
 	
 	/**
 	 * 所有元素UI的基类
@@ -47,36 +49,195 @@ package view.element
 			
 			_screenshot = true;
 			mouseChildren = false;
-			addChild(graphicShape = new Shape);
+			addChild(_shape = new Shape);
+			addChild(pageNumCanvas);
 			
 			initState();
-			StageUtil.initApplication(this, init);
-			
 			doubleClickEnabled = true;
-		}
-		
-		/**
-		 */		
-		public function flashStart():void
-		{
 			
+			initRenderPoints(4);
+			
+			StageUtil.initApplication(this, init);
 		}
 		
 		/**
+		 * 图片，视频开始动画时需要特殊处理一下
 		 */		
-		public function flashing():void
+		public function startDraw(canvas:Canvas):void
 		{
-			currentState.flashing();
+			this.visible = false;
 		}
 		
 		/**
 		 * 
 		 */		
-		public function flashStop():void
+		public function endDraw():void
+		{
+			this.visible = canvas.checkVisible(this);
+			
+			this.renderView();
+		}
+		
+		/**
+		 * 渲染元素自身，元素被创建/编辑时，画布缩放动画结束时，
+		 */		
+		public function renderView():void
+		{
+			if (canvas && visible)
+			{
+				var layout:ElementLayoutModel = canvas.getElementLayout(this);
+				
+				super.x = layout.x;
+				super.y = layout.y;
+				super.scaleX = layout.scaleX;
+				super.scaleY = layout.scaleY;
+				super.rotation = layout.rotation;
+				
+				if (currentState)//临时组合没有状态
+					currentState.drawPageNum();
+			}
+		}
+		
+		/**
+		 * 
+		 * 绘制模式下，矢量图形尺寸超过显示区域时需要实体可见，正式渲染，不再绘制
+		 * 
+		 * 有动画的图形也需要真实可见
+		 * 
+		 * @return 
+		 * 
+		 */		
+		public function checkTrueRender():Boolean
+		{
+			return canvas.checkTrueRender(this);
+		}
+		
+		/**
+		 * 
+		 * 是否是空心图形，空心图形在放大超出舞台后不显示
+		 * 
+		 */		
+		public function get isHollow():Boolean
+		{
+			return false;
+		}
+		
+		/**
+		 * 
+		 * 是否含有动画，含有动画效果的元件始终实体可见
+		 * 
+		 */		
+		public function get hasFlash():Boolean
 		{
 			if (isPage)
-				layoutPageNum();
+			{
+				if (pageVO.flashers && pageVO.flashers.length)
+					return true;
+			}
+			
+			return false;
 		}
+		
+		/**
+		 */		
+		private var _ifInViewRect:Boolean = true;
+
+		/**
+		 * 是否在可是范围内，绘制模式时，当有的适量元素过大时需要实体可视，从而所有可见元件都得实体可见。
+		 */
+		public function get ifInViewRect():Boolean
+		{
+			return _ifInViewRect;
+		}
+
+		/**
+		 * @private
+		 */
+		public function set ifInViewRect(value:Boolean):void
+		{
+			_ifInViewRect = value;
+		}
+
+		
+		/**
+		 * 图形自身的绘制和画布绘制不同，画布绘制时，绘制路径要先转换为画布上的绘制路径
+		 * 
+		 * 转换之先更新原始绘制点坐标，转换之后用新的绘制点集合绘制图形
+		 * 
+		 * 有些特殊的图形自身绘制时并不需要绘制点，如文字，图片，视频；
+		 * 
+		 * 规则的圆，矩形等难以用绘制点方式绘制，两种渲染模式下都不需要更新绘制点信息，直接绘制或者只显示不绘制(画布绘制时)
+		 */		
+		public function drawView(canvas:Canvas):void
+		{
+			if (bmd == null) return;
+			
+			var rect:Rectangle = graphicRect;
+			
+			renderPoints[0].x = rect.left;
+			renderPoints[0].y = rect.top;
+			
+			renderPoints[1].x = rect.right;
+			renderPoints[1].y = rect.top;
+			
+			renderPoints[2].x =  rect.right;
+			renderPoints[2].y =  rect.bottom;
+			
+			renderPoints[3].x =  rect.left;
+			renderPoints[3].y =  rect.bottom;
+			
+			var layout:ElementLayoutModel = canvas.getElementLayout(this);
+			canvas.transformRenderPoints(renderPoints, layout);
+			
+			var math:Matrix = new Matrix;
+			math.rotate(MathUtil.angleToRadian(layout.rotation));
+			
+			var scale:Number = rect.width * layout.scaleX / bmd.width;
+			math.scale(scale, scale);
+			
+			var p:Point = renderPoints[0];
+			
+			math.tx = p.x;
+			math.ty = p.y;
+			
+			canvas.graphics.beginBitmapFill(bmd, math, false, false);
+			canvas.graphics.moveTo(p.x, p.y);
+			
+			p = renderPoints[1];
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = renderPoints[2];
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = renderPoints[3];
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			p = renderPoints[0];
+			canvas.graphics.lineTo(p.x, p.y);
+			
+			canvas.graphics.endFill();
+		}
+		
+		/**
+		 * 根据绘制点的数量初始化这些点，他们在绘制图形时会被具体设定好点的数据，这样做是为了防止
+		 * 
+		 * 绘制时创建大量的点造成的性能消耗，所以点的构造在元素创建时就完成
+		 */		
+		protected function initRenderPoints(num:uint = 1):void
+		{
+			renderPoints = new Vector.<Point>;
+			while (num)
+			{
+				renderPoints.push(new Point);
+				
+				num -= 1;
+			}
+		}
+		
+		/**
+		 * 存储绘制点集合的数组，通常在元素创建完毕后初始化，会知时仅是刷新具体点的坐标数据，总点数不变
+		 */		
+		protected var renderPoints:Vector.<Point>;
 		
 		/**
 		 */		
@@ -211,9 +372,6 @@ package view.element
 			StyleManager.setLineStyle(hoverEffectShape.graphics, hoverStyle.getBorder);
 			hoverEffectShape.graphics.drawRect(hoverStyle.tx, hoverStyle.ty, hoverStyle.width, hoverStyle.height);
 			hoverEffectShape.graphics.endFill();
-			
-			//hoverEffectShape.graphics.lineStyle(1, 0xFFFFFF, 1, true, 'none');
-			//hoverEffectShape.graphics.drawRect(style.tx - 1, style.ty - 1, style.width + 2, style.height + 2);
 		}
 		
 		/**
@@ -275,10 +433,12 @@ package view.element
 		{
 			var rx:Number = point.x * cos - point.y * sin;
 			var ry:Number = point.x * sin + point.y * cos;
+			
 			point.x = rx;
 			point.y = ry;
 			point.x += x;
 			point.y += y;
+			
 			return point;
 		}
 		
@@ -375,12 +535,15 @@ package view.element
 			return y + .5 * vo.scale * vo.height;
 		}
 		
-		
+		/**
+		 */		
 		override public function get rotation():Number
 		{
 			return __rotation;
 		}
 		
+		/**
+		 */		
 		override public function set rotation(value:Number):void
 		{
 			if (__rotation!= value)
@@ -388,14 +551,19 @@ package view.element
 				__rotation = value;
 				cos = Math.cos(MathUtil.angleToRadian(rotation));
 				sin = Math.sin(MathUtil.angleToRadian(rotation));
-				updateView();
+				renderView();
 			}
 		}
+		
+		/**
+		 */		
 		private var __rotation:Number;
 		
 		private var cos:Number = Math.cos(0);
 		private var sin:Number = Math.sin(0);
 		
+		/**
+		 */		
 		override public function get scaleX():Number
 		{
 			return __scaleX;
@@ -406,7 +574,7 @@ package view.element
 			if (__scaleX!= value)
 			{
 				__scaleX = value;
-				updateView();
+				renderView();
 			}
 		}
 		
@@ -422,7 +590,7 @@ package view.element
 			if (__scaleY!= value)
 			{
 				__scaleY = value;
-				updateView();
+				renderView();
 			}
 		}
 		
@@ -438,7 +606,7 @@ package view.element
 			if (__x!= value)
 			{
 				__x = value;
-				updateView();
+				renderView();
 			}
 		}
 		
@@ -454,7 +622,7 @@ package view.element
 			if (__y!= value)
 			{
 				__y = value;
-				updateView();
+				renderView();
 			}
 		}
 		
@@ -480,69 +648,37 @@ package view.element
 		{
 			__height = value;
 		}
-		private var __height:Number = 0;
 		
 		/**
 		 */		
-		public function updateView(check:Boolean = true):void
-		{
-			if (check && stage)
-			{
-				var rect:Rectangle = getItemRect(parent as Canvas, this);
-				
-				if (rect.width < 1 || rect.height < 1)
-				{
-					super.visible = false;
-				}
-				else 
-				{
-					var boud:Rectangle = getStageRect(stage);
-					super.visible = rectOverlapping(rect, boud);
-				}
-			}
-			
-			if (parent && visible)
-			{
-				var prtScale :Number = parent.scaleX, prtRadian:Number = MathUtil.angleToRadian(parent.rotation);
-				var prtCos:Number = Math.cos(prtRadian), prtSin:Number = Math.sin(prtRadian);
-				
-				//scale
-				var tmpX:Number = x * prtScale;
-				var tmpY:Number = y * prtScale;
-				
-				//rotate, move
-				super.rotation = parent.rotation + rotation;
-				super.scaleX = prtScale * scaleX;
-				super.scaleY = prtScale * scaleY;
-				super.x = tmpX * prtCos - tmpY * prtSin + parent.x;
-				super.y = tmpX * prtSin + tmpY * prtCos + parent.y;
-			}
-			
-		}
+		private var __height:Number = 0;
 		
 		/**
 		 */		
 		public function toPreview(renderable:Boolean = false):void
 		{
 			super.visible = previewVisible;
-			if (isPage &&　numShape) numShape.visible = true;
+			
 			if (renderable)
 			{
 				alpha = previewAlpha;
-				updateView(false);
+				renderView();
 			}
 		}
 		
+		/**
+		 * 
+		 */		
 		public function toShotcut(renderable:Boolean = false):void
 		{
 			previewAlpha   = alpha;
 			previewVisible = visible;
-			if (isPage &&　numShape) numShape.visible = false;
+			
 			if (renderable)
 			{
 				alpha = 1;
 				super.visible = screenshot;
-				updateView(false);
+				renderView();
 			}
 			else
 			{
@@ -551,15 +687,13 @@ package view.element
 			}
 		}
 		
+		/**
+		 */		
 		protected var previewAlpha  :Number;
 		protected var previewVisible:Boolean;
 		
-		override public function set visible(value:Boolean):void
-		{
-			super.visible = value;
-			if (visible) updateView();
-		}
-		
+		/**
+		 */		
 		public function get screenshot():Boolean
 		{
 			return _screenshot;
@@ -600,6 +734,7 @@ package view.element
 			var w:Number = vo.width * scale;
 			if (vo.style && vo.style.getBorder)
 				w = w + vo.thickness * scale;
+			
 			return w;
 		}
 		
@@ -647,22 +782,92 @@ package view.element
 				vo.pageVO.addEventListener(PageEvent.DELETE_PAGE_FROM_UI, deletePageHandler);
 				vo.pageVO.addEventListener(PageEvent.UPDATE_PAGE_INDEX, updatePageIndex);
 				vo.updatePageLayout();
-				drawPageNum();
-				layoutPageNum();
+				
+				updatePageNum();
+				currentState.drawPageNum();
 			}
 			else
 			{
 				vo.pageVO.elementVO = null;
 				vo.pageVO = null;
+				
 				clearPageNum();
 			}
 		}
 		
+		/**
+		 */		
 		private function updatePageIndex(e:PageEvent):void
 		{
-			drawPageNum();
+			updatePageNum();
 		}
 		
+		/**
+		 * 刷新页面序号的图片数据,这个数据在画布缩放平易时重新绘制
+		 */		
+		private function updatePageNum():void
+		{
+			if(isPage)
+				pageNumBmd = canvas.getPageNumBmd(pageVO.index)
+		}
+		
+		/**
+		 *  保证页面编号控制在和尺寸内
+		 * 
+		 *  缩放单个元件时，为了让缩放过程中页码同步更新尺寸，需要一个临时比例，因为此时VO上的比例并未生效，
+		 * 
+		 * 	缩放结束时才生效
+		 */		
+		public function renderPageNum(temScale:Number = NaN):void
+		{
+			if (isPage)
+			{
+				if (isNaN(temScale))
+					temScale = vo.scale;
+					
+				var mat:Matrix = new Matrix;
+				var scale:Number = temScale * canvas.scale;
+				var showSize:Number = pageNumBmd.width * scale; //实际现实的尺寸
+				
+				var drawSize:Number;//绘制尺寸
+				
+				if (showSize > maxNumSize)
+					drawSize = maxNumSize / scale;
+				else
+					drawSize = pageNumBmd.width;
+				
+				pageNumCanvas.graphics.clear();
+				BitmapUtil.drawBitmapDataToShape(pageNumBmd, pageNumCanvas, 
+					drawSize, drawSize, 
+					- vo.width / 2 - drawSize / 2, - drawSize / 2, 
+					true);
+			}
+			
+		}
+		
+		/**
+		 */		
+		private function clearPageNum():void
+		{
+			pageNumCanvas.graphics.clear();
+			pageNumBmd = null;
+		}
+		
+		/**
+		 */		
+		private var maxNumSize:uint = 30;
+		
+		/**
+		 */		
+		private var pageNumBmd:BitmapData
+		
+		/**
+		 * 用来绘制页面序号 
+		 */		
+		public var pageNumCanvas:Shape = new Shape;
+		
+		/**
+		 */		
 		private function deletePageHandler(e:PageEvent):void
 		{
 			if (elementPageConvertable && isPage)
@@ -670,89 +875,6 @@ package view.element
 			else
 				del();
 		}
-		
-		/**
-		 *  保证页面编号控制在和尺寸内
-		 * 
-		 */		
-		public function layoutPageNum(s:Number = NaN):void
-		{
-			if (isPage)
-			{
-				if(!numLabel)
-					drawPageNum();
-				if (isNaN(s))
-					s = scaleX;
-				
-				numShape.width = numShape.height = 100;
-				var parentScale:Number = (parent) ? parent.scaleX : 1;
-				var temSize:Number = numShape.width * s * parentScale;
-				
-				if (temSize > maxNumSize)
-				{
-					var size:Number = maxNumSize / s / parentScale;
-					
-					numShape.width  = size;
-					numShape.height = size;
-				}
-				
-				numShape.x = - width * .5 - numShape.width * .5;
-				numShape.y = - numShape.height;
-			}
-		}
-		
-		/**
-		 */		
-		private function drawPageNum(size:Number = 20):void
-		{
-			if(!numLabel)
-			{
-				addChild(numShape = new Sprite);
-				numShape.addChild(numLabel = new LabelUI);
-				numLabel.styleXML = <label radius='0' vPadding='0' hPadding='0'>
-										<format color='#FFFFFF' font='黑体' size='12'/>
-									</label>;
-				numShape.mouseChildren = false;
-				numShape.buttonMode = true;
-				numShape.cacheAsBitmap = true;
-			}
-			
-			numLabel.text = (vo.pageVO.index + 1).toString();
-			numLabel.render();
-			numLabel.x = - numLabel.width  * .5;
-			numLabel.y = - numLabel.height * .5;
-			
-			numShape.graphics.clear();
-			numShape.graphics.lineStyle(1, 0, 0.8);
-			numShape.graphics.beginFill(0x555555, .8);
-			numShape.graphics.drawCircle(0, 0, size * .5);
-			numShape.graphics.endFill();
-		}
-		
-		/**
-		 */		
-		private function clearPageNum():void
-		{
-			if (numLabel)
-			{
-				removeChild(numShape);
-				numShape = null;
-				numLabel = null;
-			}
-		}
-		
-		/**
-		 */		
-		private var maxNumSize:uint = 26;
-		
-		/**
-		 */		
-		public var numLabel:LabelUI;
-		
-		/**
-		 * 用来绘制页面序号 
-		 */		
-		private var numShape:Sprite;
 		
 		/**
 		 */		
@@ -779,32 +901,58 @@ package view.element
 			updateLayout();
 		}
 		
-		
+		/**
+		 * 
+		 */		
 		public function get index():int
 		{
 			return (parent) ? parent.getChildIndex(this) : -1;
 		}
 		
 		/**
+		 * 图形区域，用于辅助在全局画布上绘制
 		 */		
-		override public function get graphics():Graphics
+		protected function get graphicRect():Rectangle
 		{
-			return graphicShape.graphics;
+			return flashShape.getBounds(flashShape);
 		}
 		
 		/**
+		 * 应用动画效果的容器，参与动画的图形都被放到这里
 		 */		
-		public function get canvas():DisplayObject
-		{
-			return shape;
-		}
-		
-		/**
-		 */		
-		public function get shape():DisplayObject
+		public function get flashShape():DisplayObject
 		{
 			return graphicShape;
 		}
+		
+		/**
+		 */		
+		override public function get graphics():Graphics
+		{
+			return _shape.graphics;
+		}
+		
+		/**
+		 * 用于基础的图形绘制，碰撞检测
+		 */		
+		public function get graphicShape():DisplayObject
+		{
+			return _shape;
+		}
+		
+		/**
+		 */		
+		protected var _shape:Shape;
+		
+		/**
+		 * 根容器
+		 */		
+		protected function get canvas():Canvas
+		{
+			return parent as Canvas;
+		}
+		
+		
 		
 		
 		
@@ -1010,8 +1158,6 @@ package view.element
 			
 			if (isPage)
 			{
-				numShape.visible = false;
-				
 				this.vo.pageVO.flashIndex = 0;
 				var flasher:IFlash;
 				
@@ -1037,8 +1183,6 @@ package view.element
 			
 			if (isPage)
 			{
-				numShape.visible = true;
-				
 				this.vo.pageVO.flashIndex = 0;
 				var flasher:IFlash;
 				
@@ -1114,11 +1258,17 @@ package view.element
 		{
 			updateLayout();
 			drawBG();
-			layoutPageNum();
 		}
 		
 		/**
+		 * 每个元件都会有一个截图，在画布动画时绘制在画布上，这样可以提升
+		 */		
+		protected var bmd:BitmapData;
+		
+		/**
 		 * 通常resize相当于重新渲染，但对于特殊的复杂组件，调节宽高时渲染会很消耗性能，需要特殊处理
+		 * 
+		 * 比如图表
 		 */		
 		public function resizing():void
 		{
@@ -1218,7 +1368,7 @@ package view.element
 		public function clicked():void
 		{
 			// 非选择状态下才会触发clicked
-			if (isPage && clickMoveControl.clickTarget == numShape)
+			if (isPage && clickMoveControl.clickTarget == pageNumCanvas)
 			{
 				dispatchEvent(new PageEvent(PageEvent.PAGE_NUM_CLICKED, vo.pageVO, true));
 				vo.pageVO.dispatchEvent(new PageEvent(PageEvent.PAGE_SELECTED, vo.pageVO, false));
@@ -1284,13 +1434,6 @@ package view.element
 		public var returnFromPrevFun:Function; 
 		
 		
-		//绘制图形的画布
-		protected var graphicShape:Shape;
 		
-		private static var getItemRect:Function = LayoutUtil.getItemRect;
-		
-		private static var getStageRect:Function = LayoutUtil.getStageRect;
-		
-		private static var rectOverlapping:Function = RectangleUtil.rectOverlapping;
 	}
 }

@@ -57,8 +57,7 @@ package view.elementSelector.scaleRollControl
 			selector.render();
 			
 			if (selector.element.isPage)
-				selector.element.layoutPageNum(s);
-			
+				selector.element.renderPageNum(s);
 		}
 		
 		/**

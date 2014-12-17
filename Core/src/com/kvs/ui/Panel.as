@@ -51,6 +51,7 @@ package com.kvs.ui
 			isOpen = true;
 			alpha = 0;
 			
+			this.visible = true;
 			TweenLite.killTweensOf(this);
 			TweenLite.to(this, 0.5, {alpha : 1, x: x, y: y});
 		}
@@ -69,7 +70,7 @@ package com.kvs.ui
 		 */		
 		private function afterClose():void
 		{
-			
+			this.visible = false;
 		}
 		
 		/**

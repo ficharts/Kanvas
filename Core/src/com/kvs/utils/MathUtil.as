@@ -17,6 +17,9 @@ package com.kvs.utils
 			return radian * 180 / Math.PI;
 		}
 		
+		/**
+		 * 使得角度在0～360
+		 */		
 		public static function modRotation(value:Number):Number
 		{
 			value = value % 360;

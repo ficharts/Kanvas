@@ -52,7 +52,7 @@ package view.element.imgElement
 			
 			element.currLoadState = element.normalState;
 			
-			element.shape.visible = true;
+			element.graphicShape.visible = true;
 			element.graphics.clear();
 			element.graphics.beginFill(0xff0000, 0.3);
 			element.graphics.drawRect( - element.vo.width * .5, - element.vo.height * .5, element.vo.width, element.vo.height);

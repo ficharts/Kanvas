@@ -1,9 +1,5 @@
 package util.layout
 {
-	import com.kvs.utils.MathUtil;
-	import com.kvs.utils.PointUtil;
-	
-	import flash.display.Sprite;
 	import flash.geom.Point;
 	
 	import model.vo.ElementVO;
@@ -12,6 +8,7 @@ package util.layout
 	
 	import view.element.ElementBase;
 	import view.element.shapes.LineElement;
+	import view.ui.canvas.Canvas;
 
 	/**
 	 * 画布坐标与stage坐标的转换器
@@ -20,7 +17,7 @@ package util.layout
 	{
 		/**
 		 */		
-		public function LayoutTransformer(canvas:Sprite)
+		public function LayoutTransformer(canvas:Canvas)
 		{
 			this.canvas = canvas;
 		}
@@ -62,7 +59,7 @@ package util.layout
 		 */		
 		public function get compensateScale():Number
 		{
-			return 1 / canvas.scaleX;
+			return 1 / canvas.scale;
 		}
 		
 		/**
@@ -94,11 +91,11 @@ package util.layout
 		 */		
 		public function get canvasScale():Number
 		{
-			return canvas.scaleX;
+			return canvas.scale;
 		}
 		
 		/**
 		 */		
-		public var canvas:Sprite;
+		public var canvas:Canvas;
 	}
 }

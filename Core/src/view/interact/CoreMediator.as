@@ -37,7 +37,7 @@ package view.interact
 	import view.interact.multiSelect.TemGroupElement;
 	import view.interact.zoomMove.GestureControl;
 	import view.interact.zoomMove.ZoomMoveControl;
-	import view.ui.Canvas;
+	import view.ui.canvas.Canvas;
 	import view.ui.IMainUIMediator;
 	import view.ui.MainUIBase;
 	
@@ -849,6 +849,8 @@ package view.interact
 		{
 			if (treking)
 				currentMode.flashing();
+			
+			//canvas.renderHandler();
 		}
 		
 		/**
@@ -859,6 +861,7 @@ package view.interact
 			{
 				treking = false;
 				currentMode.flashStop();
+				
 			}
 		}
 		
@@ -1034,15 +1037,12 @@ package view.interact
 			{
 				if (currentElement.vo is PageVO)
 					var pageVO:PageVO = currentElement.vo as PageVO;
-				if (pageVO)
-					pageVO.thumbUpdatable = false;
+				
 				currentElement.vo.x = currentElement.x;
 				currentElement.vo.y = currentElement.y;
+				
 				if (pageVO)
-				{
-					pageVO.thumbUpdatable = true;
 					pageManager.notifyPageVOUpdateThumb(pageVO);
-				}
 				
 			}
 		}

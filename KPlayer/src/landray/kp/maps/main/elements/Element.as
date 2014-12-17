@@ -16,9 +16,9 @@ package landray.kp.maps.main.elements
 	import util.LayoutUtil;
 	
 	import view.element.IElement;
-	import view.ui.Canvas;
 	import view.ui.ICanvasLayout;
 	import view.ui.IMainUIMediator;
+	import view.ui.canvas.Canvas;
 	
 	/**
 	 * 
@@ -36,6 +36,62 @@ package landray.kp.maps.main.elements
 			init();
 		}
 		
+		/**
+		 */		
+		public function checkTrueRender():Boolean
+		{
+			return false;
+		}
+		
+		/**
+		 */		
+		public function get isHollow():Boolean
+		{
+			return false;
+		}
+		
+		/**
+		 */		
+		public function get hasFlash():Boolean
+		{
+			if (isPage)
+			{
+				if (vo.pageVO.flashers && vo.pageVO.flashers.length)
+					return true;
+			}
+			
+			return false;
+		}
+		
+		/**
+		 */		
+		private var _ifInViewRect:Boolean
+		
+		public function get ifInViewRect():Boolean
+		{
+			return _ifInViewRect;
+		}
+
+		public function set ifInViewRect(value:Boolean):void
+		{
+			_ifInViewRect = value;
+		}
+
+		/**
+		 */		
+		public function startDraw(canvas:Canvas):void
+		{
+			
+		}
+		
+		/**
+		 * 
+		 */		
+		public function endDraw():void
+		{
+			
+		}
+			
 		/**
 		 */		
 		public function clickedForPreview(cmt:IMainUIMediator):void
@@ -253,9 +309,11 @@ package landray.kp.maps.main.elements
 			return false;
 		}
 		
-		public function updateView(check:Boolean = true):void
+		/**
+		 */		
+		public function renderView():void
 		{
-			if (check && stage)
+			if (stage)
 			{
 				var rect:Rectangle = LayoutUtil.getItemRect(canvasCtner, this);
 				if (rect.width < 1 || rect.height < 1)
@@ -289,10 +347,19 @@ package landray.kp.maps.main.elements
 			}
 		}
 		
+		/**
+		 */		
+		public function drawView(canvas:Canvas):void
+		{
+			
+		}
+		
+		/**
+		 */		
 		override public function set visible(value:Boolean):void
 		{
 			super.visible = value;
-			if (visible) updateView();
+			if (visible) renderView();
 		}
 		
 		override public function get rotation():Number
@@ -363,7 +430,7 @@ package landray.kp.maps.main.elements
 			if (__x!= value)
 			{
 				__x = value;
-				updateView();
+				renderView();
 			}
 		}
 		
@@ -379,7 +446,7 @@ package landray.kp.maps.main.elements
 			if (__y!= value)
 			{
 				__y = value;
-				updateView();
+				renderView();
 			}
 		}
 		
@@ -421,9 +488,9 @@ package landray.kp.maps.main.elements
 		
 		/**
 		 */		
-		public function get canvas():DisplayObject
+		public function get flashShape():DisplayObject
 		{
-			return shape;
+			return graphicShape;
 		}
 		
 		/**
@@ -462,7 +529,7 @@ package landray.kp.maps.main.elements
 		
 		/**
 		 */		
-		public function get shape():DisplayObject
+		public function get graphicShape():DisplayObject
 		{
 			return _shape;
 		}

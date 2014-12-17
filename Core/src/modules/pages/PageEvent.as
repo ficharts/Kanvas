@@ -52,32 +52,21 @@ package modules.pages
 		
 		/**
 		 */		
-		public function PageEvent(type:String, $vo:ElementVO = null, bubbles:Boolean = false, cancelable:Boolean = false)
+		public function PageEvent(type:String, $vo:PageVO = null, bubbles:Boolean = false, cancelable:Boolean = false)
 		{
 			super(type, bubbles, cancelable);
-			__vo = $vo;
-			if (vo is PageVO)
-			{
-				__pageVO = PageVO(vo);
-			}
+			
+			this.pageVO = $vo;
 		}
 		
 		override public function clone():Event
 		{
-			return new PageEvent(type, __pageVO, true);
+			return new PageEvent(type, pageVO, true);
 		}
 		
-		public function get pageVO():PageVO
-		{
-			return  __pageVO;
-		}
+		/**
+		 */		
+		public var pageVO:PageVO;
 		
-		private var __pageVO:PageVO;
-		
-		public function get vo():ElementVO
-		{
-			return  __vo;
-		}
-		private var __vo:ElementVO;
 	}
 }

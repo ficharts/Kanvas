@@ -3,6 +3,7 @@ package view.ui
 	import model.vo.ElementVO;
 	
 	import modules.pages.IPageManager;
+	import view.ui.canvas.Canvas;
 
 	public interface IMainUIMediator
 	{

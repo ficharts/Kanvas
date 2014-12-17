@@ -57,6 +57,8 @@ package view.element.shapes
 			vo.style.height = vo.height;
 			
 			StyleManager.drawRect(this, vo.style, vo);
+			
+			bmd = canvas.getElemetBmd(flashShape);
 		}
 		
 		/**

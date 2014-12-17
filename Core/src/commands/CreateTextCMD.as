@@ -41,7 +41,7 @@ package commands
 			
 			CoreFacade.addElement(textField);
 			
-			v = CoreFacade.coreMediator.pageManager.refreshPageThumbsByElement(textField);
+			v = CoreFacade.coreMediator.pageManager.updatePageThumbsByElement(textField);
 			
 			UndoRedoMannager.register(this);
 			
@@ -56,7 +56,7 @@ package commands
 			
 			CoreFacade.removeElement(textField);
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			this.dataChanged();
 		}
@@ -65,7 +65,7 @@ package commands
 		{
 			CoreFacade.addElement(textField);
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			this.dataChanged();
 		}

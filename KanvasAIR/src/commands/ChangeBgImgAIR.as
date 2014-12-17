@@ -93,7 +93,7 @@ package commands
 			newImgObj.imgData = imgExtractor.bitmapData;
 			//newImgObj.imgURL  = evt.imgURL;
 			
-			setBgImg(newImgObj, true);
+			setBgImg(newImgObj);
 			
 			ImgLib.register(imgID.toString(), imgExtractor.fileBytes, imgExtractor.type);
 			

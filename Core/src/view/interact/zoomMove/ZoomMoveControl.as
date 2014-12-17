@@ -8,7 +8,7 @@ package view.interact.zoomMove
 	import modules.pages.PageUtil;
 	import modules.pages.Scene;
 	
-	import view.ui.Canvas;
+	import view.ui.canvas.Canvas;
 	import view.ui.IMainUIMediator;
 	import view.ui.MainUIBase;
 

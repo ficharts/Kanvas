@@ -35,13 +35,13 @@ package commands
 			
 			elementIndex = element.index;
 			
-			CoreFacade.coreMediator.pageManager.registOverlappingPageVOs(element);
+			CoreFacade.coreMediator.pageManager.registPagesContainElement(element);
 			CoreFacade.removeElement(element);
 			
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
-			v = CoreFacade.coreMediator.pageManager.refreshVOThumbs();
+			v = CoreFacade.coreMediator.pageManager.updatePagesThumb();
 			UndoRedoMannager.register(this);
 			
 			this.dataChanged();
@@ -56,7 +56,7 @@ package commands
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.addPageAt(element.vo.pageVO, element.vo.pageVO.index);
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			this.dataChanged();
 		}
@@ -70,7 +70,7 @@ package commands
 			if (element.isPage)
 				CoreFacade.coreMediator.pageManager.removePage(element.vo.pageVO);
 			
-			CoreFacade.coreMediator.pageManager.refreshVOThumbs(v);
+			CoreFacade.coreMediator.pageManager.updatePagesThumb(v);
 			
 			this.dataChanged();
 		}

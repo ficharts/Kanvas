@@ -81,7 +81,9 @@ package view.interact.keyboard
 			if (evt.shiftKey && ! shiftKey)
 			{
 				shiftKey = true;
-				Bubble.show("智能模式关闭");
+				
+				//Bubble.show("智能模式关闭");
+				
 				mainUIMediator.autoAlignController.enabled = false;
 				mainUIMediator.autofitController.enabled = false;
 				mainUIMediator.autoLayerController.enabled = false;
@@ -121,7 +123,8 @@ package view.interact.keyboard
 			if (shiftKey && ! evt.shiftKey)
 			{
 				shiftKey = false;
-				Bubble.show("智能模式开启");
+				//Bubble.show("智能模式开启");
+				
 				mainUIMediator.autoAlignController.enabled = true;
 				mainUIMediator.autofitController.enabled = true;
 				mainUIMediator.autoLayerController.enabled = true;
