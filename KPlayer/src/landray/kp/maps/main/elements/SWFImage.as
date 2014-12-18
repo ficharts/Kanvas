@@ -2,6 +2,7 @@ package landray.kp.maps.main.elements
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.geom.Rectangle;
 	
 	import model.vo.ElementVO;
 	

@@ -5,6 +5,7 @@ package view.element.imgElement
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
 	import flash.events.Event;
+	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	
 	import model.vo.ElementVO;
@@ -164,6 +165,13 @@ package view.element.imgElement
 			graphics.endFill();
 			
 			bmd = canvas.getElemetBmd(this);
+		}
+		
+		/**
+		 */		
+		override protected function get graphicRect():Rectangle
+		{
+			return new Rectangle(swf.x, swf.y, swf.width, swf.height);
 		}
 		
 		/**
