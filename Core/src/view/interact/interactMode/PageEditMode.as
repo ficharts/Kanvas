@@ -15,7 +15,6 @@ package view.interact.interactMode
 	import view.element.ElementBase;
 	import view.element.PageElement;
 	import view.interact.CoreMediator;
-	import view.ui.MainUIBase;
 	
 	/**
 	 *

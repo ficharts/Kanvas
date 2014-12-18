@@ -58,6 +58,15 @@ package control
 		}
 		
 		/**
+		 * 清除所有页面种的动画效果 
+		 * 
+		 */		
+		public function clearFlashesInPage():void
+		{
+			app.kvsCore.resetFlashesInPage();
+		}
+		
+		/**
 		 */		
 		public function confirmPageEdit():void
 		{

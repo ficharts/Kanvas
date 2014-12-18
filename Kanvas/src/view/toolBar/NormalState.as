@@ -123,7 +123,7 @@ package view.toolBar
 			previewBtn.iconW = previewBtn.iconH = ToolBar.BTN_SIZE;
 			previewBtn.w = previewBtn.h = ToolBar.BTN_SIZE;
 			previewBtn.setIcons("play_up", "play_over", "play_down");
-			previewBtn.tips = '预览';
+			previewBtn.tips = '播放幻灯片';
 			ctner.addChild(previewBtn);
 			previewBtn.addEventListener(MouseEvent.CLICK, prevHandler, false, 0, true);
 			

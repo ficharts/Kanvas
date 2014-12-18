@@ -22,13 +22,15 @@ package view.toolBar
 		{
 			this.ctner.visible = false;
 			
-			title.text = "点击图片，文字，图形，为其添加闪现效果";
+			title.text = "点击图片，文字，图形，为其添加动画效果";
 			title.styleXML = <label radius='0' vPadding='5' hPadding='5'>
 									<format color='#eeeeee' font='微软雅黑' size='12'/>
 								  </label>
 			title.render();
 			this.ctner.addChild(title);
 			
+			
+			//确定按钮
 			confirmBtn.text = "确定";
 			confirmBtn.bgStyleXML = <states>
 										<normal>
@@ -48,7 +50,9 @@ package view.toolBar
 				
 			confirmBtn.render();
 			this.ctner.addChild(confirmBtn);
+			confirmBtn.addEventListener(MouseEvent.CLICK, confirmEdit);
 			
+			//取消按钮
 			cancelBtn.bgStyleXML = <states>
 										<normal>
 											<fill color='#333333' alpha='1'/>
@@ -69,7 +73,21 @@ package view.toolBar
 			this.ctner.addChild(cancelBtn);
 			
 			cancelBtn.addEventListener(MouseEvent.CLICK, cancelEdit);
-			confirmBtn.addEventListener(MouseEvent.CLICK, confirmEdit);
+			
+			
+			//清除动画按钮
+			clearBtn.bgStyleXML = cancelBtn.bgStyleXML;
+			clearBtn.labelStyleXML = cancelBtn.labelStyleXML;
+			clearBtn.text = "重设动画";
+			this.ctner.addChild(clearBtn);
+			clearBtn.addEventListener(MouseEvent.CLICK, clearFlashesHandler);
+		}
+		
+		/**
+		 */		
+		private function clearFlashesHandler(evt:MouseEvent):void
+		{
+			tb.main.mainNavControl.clearFlashesInPage();
 		}
 		
 		/**
@@ -97,9 +115,10 @@ package view.toolBar
 			
 			
 			confirmBtn.x = tb.w - confirmBtn.width - 20;
-			cancelBtn.y = confirmBtn.y = (tb.h - confirmBtn.height) / 2;
+			cancelBtn.y = clearBtn.y = confirmBtn.y = (tb.h - confirmBtn.height) / 2;
 			
 			cancelBtn.x = 20;
+			clearBtn.x = cancelBtn.x + cancelBtn.width + 10;
 		}
 		
 		/**
@@ -113,6 +132,10 @@ package view.toolBar
 		/**
 		 */		
 		internal var cancelBtn:LabelBtn = new LabelBtn();
+		
+		/**
+		 */		
+		internal var clearBtn:LabelBtn = new LabelBtn();
 		
 		/**
 		 */		
