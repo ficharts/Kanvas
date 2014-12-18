@@ -455,7 +455,7 @@ package
 		/**
 		 * 清空所有页面动画
 		 */		
-		public function resetPage():void
+		public function resetFlashesInPage():void
 		{
 			CoreFacade.coreMediator.resetPageEdit();
 		}

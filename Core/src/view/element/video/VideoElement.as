@@ -49,6 +49,13 @@ package view.element.video
 		
 		/**
 		 */		
+		override public function checkTrueRender():Boolean
+		{
+			return true;
+		}
+		
+		/**
+		 */		
 		private function resetVideoHandler(evt:MouseEvent):void
 		{
 			this.reset();
@@ -140,6 +147,7 @@ package view.element.video
 				ns.play("file://" + videoVO.url); 
 				videoState = pauseState;
 				ns.pause();
+				
 			}
 			else
 			{
@@ -172,10 +180,12 @@ package view.element.video
 				ns.pause();
 				
 				ns.seek(0);//将播放头置于视频开始处
+				
 			}
 			else if (evt.info.code == "NetStream.Play.Start") 
 			{
 				render();
+				
 				this.dispatchEvent(new ElementEvent(ElementEvent.UPDATE_SELECTOR));
 				
 				if (isPage)
@@ -219,6 +229,8 @@ package view.element.video
 		{
 			if(video.videoWidth > 0)
 			{
+			
+				
 				vo.width = video.width = video.videoWidth;
 				vo.height = video.height = video.videoHeight;
 				
@@ -227,7 +239,7 @@ package view.element.video
 				
 				super.render();
 				
-				bmd = canvas.getElemetBmd(video);
+				
 			}
 		}
 		
