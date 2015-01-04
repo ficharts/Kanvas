@@ -5,6 +5,8 @@ package view.interact.interactMode
 	
 	import flash.ui.Mouse;
 	
+	import model.CoreFacade;
+	
 	import view.interact.CoreMediator;
 	
 	/**
@@ -69,6 +71,8 @@ package view.interact.interactMode
 			mainMediator.mouseController.autoHide = false;
 			Mouse.show();
 			
+			if (CoreFacade.coreProxy.sound)
+				CoreFacade.coreProxy.sound.stop();
 			//从演播模式退出后，画布继续停留在演播的位置
 		}
 	}

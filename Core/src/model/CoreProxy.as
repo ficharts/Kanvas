@@ -11,6 +11,9 @@ package model
 	
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
+	import flash.media.Sound;
+	import flash.media.SoundChannel;
+	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
 	
 	import model.vo.BgVO;
@@ -277,6 +280,10 @@ package model
 			xml.header.@styleID = currStyle;
 			var mainNode:XMLList = xml.child('main');
 			
+			//背景音乐
+			if (sound)
+				xml.main.@sound = sound.name;
+			
 			// 先根据图层关系排列原件
 			elementsWidthIndex.length = 0;
 			elementsWidthIndex.length = elements.length;
@@ -343,6 +350,17 @@ package model
 			var styleID:String = (themeConfigMap.containsKey(xml.header.@styleID.toString())) ? xml.header.@styleID : "style_1";
 			
 			setCurrTheme(styleID);
+			
+			//初始化背景音乐
+			if (xml.main.hasOwnProperty("@sound"))
+			{
+				this.sound = new SoundElment();
+				this.sound.name = xml.main.@sound.toString();
+			}
+			else
+			{
+				this.sound = null;
+			}
 			
 			//更新文本编辑器样式属性
 			CoreFacade.coreMediator.coreApp.textEditor.initStyle();
@@ -702,6 +720,10 @@ package model
 			return result;
 		}
 		
+		/**
+		 * 
+		 */		
+		public var sound:SoundElment;
 		
 	}
 }
