@@ -6,6 +6,8 @@ package view.interact.interactMode
 	
 	import flash.ui.Mouse;
 	
+	import model.CoreFacade;
+	
 	import view.element.ElementBase;
 	import view.interact.CoreMediator;
 	
@@ -117,6 +119,10 @@ package view.interact.interactMode
 			mainMediator.previewCliker.enable = true;
 			mainMediator.mouseController.autoHide = true;
 			Mouse.hide();
+			
+			//播放背景音乐
+			if (CoreFacade.coreProxy.sound)
+				CoreFacade.coreProxy.sound.play();
 			
 			//防止鼠标位于预览按钮上时，
 			this.mainMediator.mainUI.dispatchEvent(new ToolTipsEvent(ToolTipsEvent.HIDE_TOOL_TIPS));

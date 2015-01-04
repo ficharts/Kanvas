@@ -5,6 +5,7 @@ package
 	import commands.ChangeBgImgAIR;
 	import commands.Command;
 	import commands.DelImageFromAIRCMD;
+	import commands.InsertBgMusicCommand;
 	import commands.InsertIMGFromAIR;
 	import commands.InsertVideoCommand;
 	
@@ -59,7 +60,7 @@ package
 			CoreFacade.delImgCommad = DelImageFromAIRCMD;
 			
 			CoreFacade.instance.registerCommand(Command.INSERT_VIDEO, InsertVideoCommand);
-			
+			CoreFacade.instance.registerCommand(Command.INSERT_BG_MUSIC, InsertBgMusicCommand);
 			
 			FlowTextManager.ifUseEmbedFont = true;
 			kvsCore.addEventListener(KVSEvent.SAVE, saveHandler);

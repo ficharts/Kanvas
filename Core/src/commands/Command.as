@@ -15,6 +15,12 @@ package commands
 		 */		
 		public static const INSERT_VIDEO:String = "insertVideo";
 		
+		public static const INSERT_BG_MUSIC:String = "insertBgMusic";
+		
+		/**
+		 */		
+		public static const DEL_BG_MUSIC:String = "delBgMusic";
+		
 		/**
 		 * 
 		 */		

@@ -17,11 +17,13 @@ package
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.geom.Matrix;
+	import flash.media.Sound;
 	import flash.net.FileFilter;
 	import flash.utils.ByteArray;
 	
 	import model.ConfigInitor;
 	import model.CoreFacade;
+	import model.SoundElment;
 	import model.vo.PageVO;
 	
 	import modules.PreziDataImporter;
@@ -209,6 +211,9 @@ package
 			this.setXMLData(xml);
 			PerformaceTest.end("xml解析结束");
 			
+			if (CoreFacade.coreProxy.sound)
+				CoreFacade.coreProxy.sound.resetSound(fileBasePath + "/");
+			
 			unsetUnusedAssets();
 		}
 		
@@ -274,7 +279,7 @@ package
 				}
 				
 				writer.close();
-				saveVideos();
+				saveVideosAndSound();
 				
 				PerformaceTest.end("save");
 			}
@@ -289,15 +294,22 @@ package
 		/**
 		 * 保存视频文件，已经保存了的视频不用再保存，无效的视频删除
 		 */		
-		private function saveVideos():void
+		private function saveVideosAndSound():void
 		{
+			var fs:FileStream;
 			var videoes:Vector.<VideoElement> = core.videoes;
+			var bgSound:SoundElment = CoreFacade.coreProxy.sound;
+			
+			var filesName:Array = [];
+			var fileToSave:File;
+			
 			
 			//获取存储视频的目录
 			var videoDirPath:String = fileBasePath;
 			var dir:File = new File(videoDirPath);
 			
-			if (videoes.length == 0) 
+			//没有视频和音乐文件时，不创建目录
+			if (videoes.length == 0 && bgSound == null) 
 			{
 				if (dir.exists)
 					dir.moveToTrash();
@@ -307,20 +319,35 @@ package
 			
 			dir.createDirectory();
 			
-			var video:VideoElement;
-			var videoFile:File;
-			var videoesName:Array = [];
+			//保存背景音乐文件
+			if (bgSound)
+			{
+				fileToSave = new File(videoDirPath + "/" + bgSound.name);
+				filesName.push(fileToSave.name);
+				
+				if (fileToSave.exists == false)
+				{
+					fs = new FileStream();
+					fs.open(fileToSave, FileMode.WRITE);
+					fs.position = 0
+					fs.writeBytes(bgSound.bytes);
+					fs.close();
+				}
+			}
+			
+			
 			
 			//保存视频文件
+			var video:VideoElement;
 			for each (video in videoes)
 			{
-				videoesName.push(video.fileName);
-				videoFile = new File(videoDirPath + "/" + video.fileName);
+				filesName.push(video.fileName);
+				fileToSave = new File(videoDirPath + "/" + video.fileName);
 				
-				if (videoFile.exists == false)
+				if (fileToSave.exists == false)
 				{
-					var fs:FileStream = new FileStream();
-					fs.open(videoFile, FileMode.WRITE);
+					fs = new FileStream();
+					fs.open(fileToSave, FileMode.WRITE);
 					fs.position = 0
 					fs.writeBytes(video.data, 0, video.data.bytesAvailable);
 					fs.close();
@@ -328,18 +355,19 @@ package
 			}
 			
 			
+			
+			
 			//获取视频目录下的文件, 如果某个文件不包含在视频文件列表中，则删除此视频文件
 			var savedFiles:Array = dir.getDirectoryListing();
 			for each (var sfile:File in savedFiles)
 			{
-				if (videoesName.indexOf(sfile.name) == - 1)
+				if (filesName.indexOf(sfile.name) == - 1)
 				{
-					videoFile = new File(videoDirPath + "/" + sfile.name);
-					if (videoFile.exists)
-						videoFile.moveToTrash();
+					fileToSave = new File(videoDirPath + "/" + sfile.name);
+					if (fileToSave.exists)
+						fileToSave.moveToTrash();
 				}
 			}
-			
 		}
 		
 		/**

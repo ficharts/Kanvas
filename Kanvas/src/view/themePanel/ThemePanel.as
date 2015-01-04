@@ -9,6 +9,8 @@ package view.themePanel
 	import com.kvs.utils.XMLConfigKit.style.Style;
 	import com.kvs.utils.layout.VerticalLayouter;
 	
+	import commands.Command;
+	
 	import control.InteractEvent;
 	
 	import flash.display.Sprite;
@@ -54,6 +56,16 @@ package view.themePanel
 			this.kvs.kvsCore.addEventListener(KVSEvent.THEME_UPDATED, updateCurTheme); 
 			this.kvs.kvsCore.addEventListener(KVSEvent.UPDATE_BG_COLOR_LIST, updateBgColorList);
 			this.kvs.kvsCore.addEventListener(KVSEvent.UPDATE_BG_COLOR, updateBGColor);
+			
+			this.doubleClickEnabled = true;
+			this.addEventListener(MouseEvent.DOUBLE_CLICK, insertBgSoundHander);
+		}
+		
+		/**
+		 */		
+		private function insertBgSoundHander(evt:MouseEvent):void
+		{
+			kvs.kvsCore.facade.sendNotification(Command.INSERT_BG_MUSIC);
 		}
 		
 		/**
