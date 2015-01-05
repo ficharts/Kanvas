@@ -17,6 +17,7 @@ package view.themePanel
 	import flash.events.MouseEvent;
 	
 	import view.elementSelector.toolBar.StyleBtn;
+	import view.themePanel.sound.SoundInserter;
 	
 	/**
 	 * 全局风格设置面板
@@ -57,20 +58,15 @@ package view.themePanel
 			this.kvs.kvsCore.addEventListener(KVSEvent.UPDATE_BG_COLOR_LIST, updateBgColorList);
 			this.kvs.kvsCore.addEventListener(KVSEvent.UPDATE_BG_COLOR, updateBGColor);
 			
-			this.doubleClickEnabled = true;
-			this.addEventListener(MouseEvent.DOUBLE_CLICK, insertBgSoundHander);
 		}
 		
 		/**
 		 */		
-		private function insertBgSoundHander(evt:MouseEvent):void
-		{
-			kvs.kvsCore.facade.sendNotification(Command.INSERT_BG_MUSIC);
-		}
+		public var kvs:Kanvas;
 		
 		/**
 		 */		
-		internal var kvs:Kanvas;
+		public var sound:SoundInserter
 		
 		/**
 		 */		
@@ -85,6 +81,8 @@ package view.themePanel
 			
 			scrollProxy.updateMask();
 			scrollProxy.update();
+			
+			
 			
 			render();
 		}
@@ -247,6 +245,9 @@ package view.themePanel
 			bgColorIcon.addEventListener(MouseEvent.CLICK, colorBtnClickHandler);
 			bgConfigArea.addChild(bgColorIcon);
 			
+			sound = new SoundInserter(this);
+			addChild(sound);
+			
 			layoutBGArea();
 		}
 		
@@ -333,7 +334,6 @@ package view.themePanel
 				themesContainer.mouseChildren = themesContainer.mouseEnabled = true;
 		}
 		
-		
 		/**
 		 */		
 		private function layoutBGArea():void
@@ -345,9 +345,13 @@ package view.themePanel
 			bgColorIcon.y = bgImgInertor.y + 8;
 			
 			bgConfigArea.x = 3;
-			bgConfigArea.y = h - bgConfigPanelHeight;
+			bgConfigArea.y = barHeight + scrollProxy.viewHeight//h - bgConfigPanelHeight;
 			
 			layoutColorPanel();
+			
+			//布局背景音乐插入按钮
+			sound.x = (w - sound.width) / 2;
+			sound.y = bgConfigArea.y + bgConfigArea.height + 20;
 		}
 		
 		/**
@@ -554,7 +558,7 @@ package view.themePanel
 												<img/>
 											</hover>
 											<down>
-												<fill color='#539fd8, #3c92e0' alpha='0.8, 0.8' angle='90'/>
+												<fill color='#1b7ed1' alpha='0.8' angle='90'/>
 												<img/>
 											</down>
 										</states>

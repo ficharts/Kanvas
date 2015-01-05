@@ -47,6 +47,7 @@ package control
 			app.toolBar.toPageEditMode();
 			
 			app.zoomToolBar.visible = false;
+			app.pagePanel.visible = false;
 		}
 		
 		/**
@@ -54,6 +55,13 @@ package control
 		public function cancelPageEdit():void
 		{
 			app.kvsCore.cancelPageEdit();
+			toNormal();
+		}
+		
+		/**
+		 */		
+		public function confirmPageEdit():void
+		{
 			toNormal();
 		}
 		
@@ -67,13 +75,6 @@ package control
 		}
 		
 		/**
-		 */		
-		public function confirmPageEdit():void
-		{
-			toNormal();
-		}
-		
-		/**
 		 * 整体应用进入到正常模式下
 		 */		
 		public function toNormal():void
@@ -84,6 +85,7 @@ package control
 			app.toolBar.toNormalMode();
 			
 			app.zoomToolBar.visible = true;
+			app.pagePanel.visible = true;
 		}
 		
 		/**

@@ -12,6 +12,10 @@ package view
 		
 		/**
 		 */		
+		public static const THEME_PANEL:String = "themePanel";
+		
+		/**
+		 */		
 		public function MediatorNames()
 		{
 		}

@@ -3,7 +3,6 @@ package commands
 	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.net.FileFilter;
-	import flash.utils.ByteArray;
 	
 	import model.CoreFacade;
 	import model.SoundElment;
@@ -11,12 +10,15 @@ package commands
 	import org.puremvc.as3.interfaces.INotification;
 	
 	import util.undoRedo.UndoRedoMannager;
+	
+	import view.MediatorNames;
+	import view.themePanel.ThemePanelMediator;
 
 	/**
 	 */	
-	public class InsertBgMusicCommand extends Command
+	public class InsertBgSoundCommand extends Command
 	{
-		public function InsertBgMusicCommand()
+		public function InsertBgSoundCommand()
 		{
 			super();
 		}
@@ -29,9 +31,14 @@ package commands
 			musicFile.browse([new FileFilter("音乐文件", "*.mp3")]);
 			musicFile.addEventListener(Event.SELECT, fileSelected);
 			
-			UndoRedoMannager.register(this);
-			this.dataChanged();
+			themePanel = facade.retrieveMediator(MediatorNames.THEME_PANEL) as ThemePanelMediator;
+			
+			
 		}
+		
+		/**
+		 */		
+		private var themePanel:ThemePanelMediator;
 		
 		/**
 		 */		
@@ -41,6 +48,10 @@ package commands
 			CoreFacade.coreProxy.sound.insertSound(musicFile.url, musicFile.name);
 			
 			this.sound = CoreFacade.coreProxy.sound;
+			themePanel.toInserted();
+			
+			UndoRedoMannager.register(this);
+			this.dataChanged();
 		}
 		
 		/**
@@ -48,6 +59,8 @@ package commands
 		override public function undoHandler():void
 		{
 			CoreFacade.coreProxy.sound = null;
+			themePanel.toNormal();
+			
 			this.dataChanged();
 		}
 		
@@ -56,6 +69,8 @@ package commands
 		override public function redoHandler():void
 		{
 			CoreFacade.coreProxy.sound = this.sound;
+			themePanel.toInserted();
+			
 			this.dataChanged();
 		}
 		

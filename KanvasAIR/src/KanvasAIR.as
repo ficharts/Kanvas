@@ -4,8 +4,9 @@ package
 	
 	import commands.ChangeBgImgAIR;
 	import commands.Command;
+	import commands.DelBgSoundCommand;
 	import commands.DelImageFromAIRCMD;
-	import commands.InsertBgMusicCommand;
+	import commands.InsertBgSoundCommand;
 	import commands.InsertIMGFromAIR;
 	import commands.InsertVideoCommand;
 	
@@ -35,8 +36,12 @@ package
 	
 	import modules.pages.PageManager;
 	
+	import org.puremvc.as3.patterns.mediator.Mediator;
+	
 	import util.textFlow.FlowTextManager;
 	
+	import view.MediatorNames;
+	import view.themePanel.ThemePanelMediator;
 	import view.toolBar.ToolBar;
 	
 	
@@ -60,7 +65,8 @@ package
 			CoreFacade.delImgCommad = DelImageFromAIRCMD;
 			
 			CoreFacade.instance.registerCommand(Command.INSERT_VIDEO, InsertVideoCommand);
-			CoreFacade.instance.registerCommand(Command.INSERT_BG_MUSIC, InsertBgMusicCommand);
+			CoreFacade.instance.registerCommand(Command.INSERT_BG_MUSIC, InsertBgSoundCommand);
+			CoreFacade.instance.registerCommand(Command.DEL_BG_MUSIC, DelBgSoundCommand);
 			
 			FlowTextManager.ifUseEmbedFont = true;
 			kvsCore.addEventListener(KVSEvent.SAVE, saveHandler);
@@ -104,6 +110,8 @@ package
 			FlowTextManager.loadFont("FontLib.swf");
 			addChild(updater = new AIRUpdater);
 			updater.update(AIR_CLIENT_URL, "check");
+			
+			CoreFacade.instance.registerMediator(new ThemePanelMediator(MediatorNames.THEME_PANEL, themePanel));
 		}
 		
 		/**
@@ -111,6 +119,7 @@ package
 		override protected function kvsReadyHandler(evt:KVSEvent):void 
 		{
 			super.kvsReadyHandler(evt);
+			
 			
 			this.api = new APIForAIR(kvsCore, this);
 			
@@ -131,9 +140,10 @@ package
 			exportImgBtn.setIcons("img_save_up", "img_save_over", "img_save_down");
 			exportImgBtn.tips = "存为长图片";
 			exportImgBtn.addEventListener(MouseEvent.MOUSE_DOWN, exportImgHandler);
+			
 			//
 			var btns:Vector.<IconBtn> = new Vector.<IconBtn>;
-			btns.push(saveBtn, exportImgBtn);
+			btns.push(saveBtn)//, exportImgBtn);
 			toolBar.addCustomButtons(btns);
 			
 			kvsCore.addEventListener(KVSEvent.DATA_CHANGED, dataChanged);

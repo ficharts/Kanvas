@@ -96,7 +96,7 @@ package view.themePanel
 		 */		
 		public function get viewHeight():Number
 		{
-			return panel.h - panel.barHeight - panel.bgConfigPanelHeight;
+			return panel.h - panel.barHeight - panel.bgConfigPanelHeight - 30;
 		}
 		
 		/**

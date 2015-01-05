@@ -107,7 +107,7 @@ package view.toolBar
 		 */		
 		internal function layoutCustomBtnC():void
 		{
-			customButtonContainer.x = tb.w - customButtonContainer.width - 10;
+			customButtonContainer.x = tb.w - customButtonContainer.width - 20;
 			customButtonContainer.y = (tb.h - customButtonContainer.height) / 2;
 		}
 		
