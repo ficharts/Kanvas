@@ -470,6 +470,10 @@ package util.textFlow
 			Font.registerFont(fontLoader.content['FangSong']);
 			Font.registerFont(fontLoader.content['Sonti']);
 			
+			Font.registerFont(fontLoader.content['GangBi']);
+			Font.registerFont(fontLoader.content['LanTing']);
+			
+			
 			sysFonts = sysFonts.concat(fontLoader.content['fonts']);
 			
 			ifFontLoaded = true;

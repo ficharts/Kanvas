@@ -947,7 +947,7 @@ package view.element
 		/**
 		 * 根容器
 		 */		
-		protected function get canvas():Canvas
+		public function get canvas():Canvas
 		{
 			return parent as Canvas;
 		}

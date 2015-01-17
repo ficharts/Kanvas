@@ -22,10 +22,16 @@ package model
 	import model.vo.PageVO;
 	
 	import modules.pages.PageEvent;
+	import modules.pages.flash.Deflate;
+	import modules.pages.flash.EnlargeFlash;
+	import modules.pages.flash.FadeIn;
+	import modules.pages.flash.FadeOut;
+	import modules.pages.flash.Fall;
 	import modules.pages.flash.FlashChart;
-	import modules.pages.flash.FlashIn;
-	import modules.pages.flash.FlashOut;
+	import modules.pages.flash.FlashFromLeft;
 	import modules.pages.flash.IFlash;
+	import modules.pages.flash.Rise;
+	import modules.pages.flash.Rote;
 	
 	import org.puremvc.as3.patterns.proxy.Proxy;
 	
@@ -357,6 +363,7 @@ package model
 				this.sound = new SoundElment();
 				this.sound.name = xml.main.@sound.toString();
 			}
+	
 			else
 			{
 				this.sound = null;
@@ -480,14 +487,26 @@ package model
 				{
 					nodeN = fxml.name();
 					
-					if (nodeN == "flashIn")
-						f = new FlashIn();
-					else if (nodeN == "flashOut")
-						f = new FlashOut();
+					if (nodeN == "flashIn" || nodeN == "fadeIn")
+						f = new FadeIn();
+					else if (nodeN == "flashOut" || nodeN == "fadeOut")
+						f = new FadeOut();
 					else if (nodeN == "flashChart")
 						f = new FlashChart();
+					else if (nodeN == "enlarge")
+						f = new EnlargeFlash();
+					else if (nodeN == "deflate")
+						f = new Deflate();
+					else if (nodeN == "fall")
+						f = new Fall();
+					else if (nodeN == "fromLeft")
+						f = new FlashFromLeft();
+					else if (nodeN == "rise")
+						f = new Rise();
+					else if (nodeN == "rote")
+						f = new Rote();
 					else
-						f = new FlashIn();
+						f = new FadeIn();
 						
 					XMLVOMapper.fuck(fxml, f);
 					f.element = temElementMap.getValue(f.elementID) as ElementBase;// 匹配动画原件

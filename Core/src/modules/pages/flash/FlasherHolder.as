@@ -1,10 +1,22 @@
 package modules.pages.flash
 {
 	import com.kvs.ui.button.LabelBtn;
+	import com.kvs.utils.Map;
 	
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	
+	import modules.pages.flash.btns.ChartFlashBtn;
+	import modules.pages.flash.btns.DeflateBtn;
+	import modules.pages.flash.btns.EnlargeBtn;
+	import modules.pages.flash.btns.FadeInBtn;
+	import modules.pages.flash.btns.FadeOutBtn;
+	import modules.pages.flash.btns.FallBtn;
+	import modules.pages.flash.btns.FlashBtnBS;
+	import modules.pages.flash.btns.FlashFromLeftBtn;
+	import modules.pages.flash.btns.RiseBtn;
+	import modules.pages.flash.btns.RoteBtn;
 	
 	import view.element.ElementBase;
 	import view.element.chart.IChartElement;
@@ -58,8 +70,8 @@ package modules.pages.flash
 			
 			var gap:uint = 3;
 			btnsCtner.graphics.clear();
-			var w:Number = btnsCtner.width;
-			var h:Number = 24//btnsCtner.height;
+			var w:Number = btnsCtner.width + gap;
+			var h:Number = btnsCtner.height//btnsCtner.height;
 			
 			//绘制箭头
 			btnsCtner.graphics.beginFill(0x555555);
@@ -77,13 +89,15 @@ package modules.pages.flash
 			btnsCtner.x = - w / 2;
 			btnsCtner.y = (- this.h / 2 - h) - dis - 5;
 			
-			flashInBtn.disSelect();
-			flashOutBtn.disSelect();
+			
+			var btns:Array = flashBtns.values();
+			for each (var btn:FlashBtnBS in btns)
+				btn.disSelect();
 		}
 		
 		/**
 		 */		
-		private var curFlashBtn:LabelBtn;
+		private var curFlashBtn:FlashBtnBS;
 		
 		/**
 		 * 
@@ -91,20 +105,23 @@ package modules.pages.flash
 		private var shapeProxy:Sprite = new Sprite;
 		
 		/**
+		 * 初始化动画按钮
 		 */		
 		private function initFlashBtns():void
 		{
-			initBtnStyle(flashInBtn);
-			initBtnStyle(flashOutBtn);
+			initBtn(new FadeInBtn(this));
+			initBtn(new FlashFromLeftBtn(this));
+			initBtn(new EnlargeBtn(this));
+			initBtn(new DeflateBtn(this));
+			initBtn(new RoteBtn(this));
+			initBtn(new FallBtn(this));
+			initBtn(new RiseBtn(this));
 			
-			flashInBtn.text = "淡入";
-			flashOutBtn.text = "淡出";
+			
+			initBtn(new FadeOutBtn(this));
 			
 			if (ele is IChartElement)
-			{
-				chartBtn.text = "图表";
-				initBtnStyle(chartBtn);
-			}
+				initBtn(new ChartFlashBtn(this));
 			
 			btnsCtner.visible = false;
 			addChild(btnsCtner);
@@ -113,34 +130,33 @@ package modules.pages.flash
 		
 		/**
 		 */		
-		private function initBtnStyle(btn:LabelBtn):void
+		private function initBtn(btn:FlashBtnBS):void
 		{
-			btn.minWidth = 42;
-			btn.labelStyleXML = <label vAlign="center" hpadding='2'>
+			btn.minWidth = 30;
+			btn.h = 26;
+			btn.labelStyleXML = <label vAlign="center" hpadding='0'>
 									<format color='ffffff' font='微软雅黑' size='12' letterSpacing="3"/>
 								</label>
 			
-			btn.bgStyleXML = <states>
-								<normal>
+			btn.bgStyleXML = <states radius='2'>
+								<normal radius='2'>
 									<fill color='#1b7ed1' alpha='0'/>
 								</normal>
 								<hover>
 									<fill color='#68a9df' alpha='1'/>
 								</hover>
 								<down>
-									<fill color='#1b7ed1' alpha='1' angle="90"/>
+									<fill color='#ff9999' alpha='1' angle="90"/>
 								</down>
 							</states>
 				
 			btn.x = btnsCtner.width + 2;
 			btn.render();
 			btnsCtner.addChild(btn);
+			
+			flashBtns.put(btn.key, btn);
 		}
 		
-		/**
-		 */		
-		private var flashInBtn:LabelBtn = new LabelBtn;
-		private var flashOutBtn:LabelBtn = new LabelBtn;
 		
 		/**
 		 */		
@@ -184,17 +200,10 @@ package modules.pages.flash
 					edm.removeFlash(this);
 				}
 				
-				curFlashBtn = evt.target as LabelBtn;
+				curFlashBtn = evt.target as FlashBtnBS;
 				curFlashBtn.selected();
 				
-				var f:IFlash;
-				if (curFlashBtn == flashInBtn)       
-					f = new FlashIn();
-				else if (curFlashBtn == flashOutBtn)
-					f = new FlashOut();
-				else if (curFlashBtn == chartBtn)
-					f = new FlashChart();
-				
+				var f:IFlash = curFlashBtn.flash;
 				f.element = ele;
 				f.elementID = ele.vo.id;
 				
@@ -242,17 +251,13 @@ package modules.pages.flash
 			else
 			{
 				var f:IFlash;
+				var btns:Array = flashBtns.values();
 				if (ele is IChartElement)
-				{
-					curFlashBtn = chartBtn;
-					f = new FlashChart();
-				}
+					curFlashBtn = btns[flashBtns.size - 1];
 				else
-				{
-					curFlashBtn = flashInBtn;
-					f = new FlashIn;
-				}
+					curFlashBtn = btns[0];
 				
+				f = curFlashBtn.flash;
 				curFlashBtn.selected();
 				
 				f.element = ele;
@@ -284,15 +289,13 @@ package modules.pages.flash
 			if (curFlashBtn && curFlashBtn.isSelect)
 				curFlashBtn.disSelect();
 			
-			if (flasher is FlashIn)
-				curFlashBtn = flashInBtn;
-			else if (flasher is FlashOut)
-				curFlashBtn = flashOutBtn;
-			else if (flasher is FlashChart)
-				curFlashBtn = chartBtn;
-			
+			curFlashBtn = flashBtns.getValue(flasher.key) as FlashBtnBS;
 			curFlashBtn.selected();
 		}
+		
+		/**
+		 */		
+		private var flashBtns:Map = new Map
 		
 		/**
 		 */		

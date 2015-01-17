@@ -9,6 +9,7 @@ package view.ui.canvas
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
@@ -238,7 +239,22 @@ package view.ui.canvas
 			
 			point.x = (x-ox) * prtCos - (y-oy) * prtSin + ox;
 			point.y = (y-oy) * prtCos + (x-ox) * prtSin + oy;
-				
+		}
+		
+		/**
+		 * 将全局坐标转化为canvas上的坐标
+		 */		
+		public function stagePointToCanvas(x:Number, y:Number):Point
+		{
+			return LayoutUtil.stagePointToElementPoint(x, y, this);
+		}
+		
+		/**
+		 * 
+		 */
+		public function canvasPointToStage(x:Number, y:Number):Point
+		{
+			return LayoutUtil.elementPointToStagePoint(x, y, this);
 		}
 		
 		/**

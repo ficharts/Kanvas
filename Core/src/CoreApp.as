@@ -866,7 +866,7 @@ package
 			bgColorFlasher.render(color);
 		}
 		
-		/**
+		/**ƒÏ
 		 * 绘制背景
 		 */		
 		public function drawBgInteractorShape():void

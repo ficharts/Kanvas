@@ -13,6 +13,13 @@ package modules.pages.flash
 		
 		/**
 		 */		
+		public function get key():String
+		{
+			return "chart";
+		}
+		
+		/**
+		 */		
 		private var _index:uint = 0;
 		
 		/**
