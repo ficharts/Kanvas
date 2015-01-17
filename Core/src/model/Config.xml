@@ -5,7 +5,9 @@
 	<template>
 		<format id='FontBody' font='宋体' size='${size}' color='${color}'/>
 		<format id='FontTitle' font='微软雅黑' size='${size}' color='${color}'/>
-		<format id='FontSubTitle' font='仿宋' size='${size}' color='${color}'/>
+		<format id='FontSubTitle' font='娃娃体' size='${size}' color='${color}'/>
+		<format id='FontGangBi' font='钢笔字' size='${size}' color='${color}'/>
+		<format id='FontLanTing' font='兰亭黑' size='${size}' color='${color}'/>
 		
 		<fill id='Simple' color='${color}' alpha='1' angle='90' type='radial'/>
 		<border id='Simple' color='${color}' alpha='1' thickness='${thickness}' caps='round' pixelHinting='true'/>
@@ -146,8 +148,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -161,6 +165,16 @@
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
 			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
+			</text>
+
+			
 			
 		</style_1>
 
@@ -211,8 +225,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -225,6 +241,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_2>
@@ -276,8 +300,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='8'/>
 				<text styleID='Body' text='宋体' colorIndex='8'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='8'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='8'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
@@ -290,6 +316,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='8'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='8'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='8'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_3>
@@ -341,8 +375,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='8'/>
 				<text styleID='Body' text='宋体' colorIndex='8'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='8'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='8'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
@@ -355,6 +391,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='8'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='8'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='8'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_4>
@@ -406,8 +450,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='8'/>
 				<text styleID='Body' text='宋体' colorIndex='8'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='8'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='8'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
@@ -420,6 +466,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='8'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='8'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='8'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_5>
@@ -471,8 +525,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='8'/>
 				<text styleID='Body' text='宋体' colorIndex='8'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='8'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='8'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
@@ -485,6 +541,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='8'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='8'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='8'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_6>
@@ -536,8 +600,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='8'/>
 				<text styleID='Body' text='宋体' colorIndex='8'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='8'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='8'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
@@ -550,6 +616,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='8'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='8'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='8'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_7>
@@ -601,8 +675,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='8'/>
 				<text styleID='Body' text='宋体' colorIndex='8'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='8'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='8'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
@@ -615,6 +691,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='8'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='8'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='8'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_8>
@@ -666,8 +750,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='8'/>
 				<text styleID='Body' text='宋体' colorIndex='8'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='8'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='8'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
@@ -680,6 +766,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='8'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='8'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='8'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_9>
@@ -731,8 +825,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -745,6 +841,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_10>
@@ -796,8 +900,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -810,6 +916,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_11>
@@ -861,8 +975,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -875,6 +991,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_12>
@@ -926,8 +1050,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -940,6 +1066,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_13>
@@ -991,8 +1125,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -1005,6 +1141,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_14>
@@ -1056,8 +1200,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -1070,6 +1216,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_15>
@@ -1121,8 +1275,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -1135,6 +1291,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_16>
@@ -1186,8 +1350,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='8'/>
 				<text styleID='Body' text='宋体' colorIndex='8'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='8'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='8'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
@@ -1200,6 +1366,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='8'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='8'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='8'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_17>
@@ -1251,8 +1425,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -1265,6 +1441,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_18>
@@ -1316,8 +1500,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='8'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='8'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='8'/>
 				<text styleID='Body' text='宋体' colorIndex='8'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='8'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='8'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='8'>
@@ -1330,6 +1516,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='8'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='8'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='8'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_19>
@@ -1381,8 +1575,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -1395,6 +1591,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_20>
@@ -1447,8 +1651,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -1461,6 +1667,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_21>
@@ -1513,8 +1727,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -1527,6 +1743,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_22>
@@ -1578,8 +1802,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -1592,6 +1818,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_23>
@@ -1643,8 +1877,10 @@
 			<!-- 文本模板 -->
 			<template styleID='text'>
 				<text styleID='Title' text='微软雅黑' colorIndex='28'/>
-				<text styleID='SubTitle' text='仿宋' colorIndex='28'/>
+				<text styleID='LanTing' text="兰亭黑" colorIndex='28'/>
 				<text styleID='Body' text='宋体' colorIndex='28'/>
+				<text styleID='SubTitle' text='娃娃体' colorIndex='28'/>
+				<text styleID='GangBi' text='钢笔字' colorIndex='28'/>
 			</template>
 			
 			<text styleID='Title' size='30' colorIndex='28'>
@@ -1657,6 +1893,14 @@
 			
 			<text styleID='Body' size='30' colorIndex='28'>
 				<label format='FontBody'/>
+			</text>
+
+			<text styleID='GangBi' size='30' colorIndex='28'>
+				<label format='FontGangBi'/>
+			</text>
+
+			<text styleID='LanTing' size='30' colorIndex='28'>
+				<label format='FontLanTing'/>
 			</text>
 			
 		</style_24>

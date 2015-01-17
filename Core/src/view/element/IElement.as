@@ -5,6 +5,7 @@ package view.element
 	import model.vo.ElementVO;
 	
 	import view.ui.IMainUIMediator;
+	import view.ui.canvas.Canvas;
 
 	/**
 	 * 原件的公共接口
@@ -28,8 +29,18 @@ package view.element
 		function clickedForPreview(cmt:IMainUIMediator):void;
 		
 		/**
-		 * 
+		 */		
+		function get canvas():Canvas
+		
+		/**
 		 */		
 		function getChilds(group:Vector.<IElement>):Vector.<IElement>
+			
+		function get x():Number
+			
+		function set x(value:Number):void;
+		
+		function set y(y:Number):void;
+		function get y():Number;
 	}
 }

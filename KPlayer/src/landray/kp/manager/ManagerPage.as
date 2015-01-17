@@ -12,8 +12,8 @@ package landray.kp.manager
 	import modules.pages.IPageManager;
 	import modules.pages.PageQuene;
 	import modules.pages.flash.FlashChart;
-	import modules.pages.flash.FlashIn;
-	import modules.pages.flash.FlashOut;
+	import modules.pages.flash.FadeIn;
+	import modules.pages.flash.FadeOut;
 	import modules.pages.flash.IFlash;
 	
 	import view.element.IElement;
@@ -232,13 +232,13 @@ package landray.kp.manager
 					nodeN = fxml.name();
 					
 					if (nodeN == "flashIn")
-						f = new FlashIn();
+						f = new FadeIn();
 					else if (nodeN == "flashOut")
-						f = new FlashOut();
+						f = new FadeOut();
 					else if (nodeN == "flashChart")
 						f = new FlashChart();
 					else
-						f = new FlashIn();
+						f = new FadeIn();
 					
 					XMLVOMapper.fuck(fxml, f);
 					f.element = config.kp_internal::elementMap.getValue(f.elementID.toString()) as IElement;// 匹配动画原件

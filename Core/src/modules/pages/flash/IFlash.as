@@ -27,5 +27,12 @@ package modules.pages.flash
 		
 		function get elementID():uint
 		function set elementID(value:uint):void
+		
+		/**
+		 * 
+		 * 动画标示， 与动画按钮上的标示对应 
+		 * 
+		 */			
+		function get key():String;
 	}
 }

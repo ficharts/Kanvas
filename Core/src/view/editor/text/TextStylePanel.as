@@ -393,7 +393,7 @@ package view.editor.text
 		/**
 		 * 面板的最小宽度，防止按钮放不下
 		 */		
-		private var panelMinWidth:uint = 270;
+		private var panelMinWidth:uint = 380;
 		
 		/**
 		 */		
