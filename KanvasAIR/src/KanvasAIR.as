@@ -359,15 +359,11 @@ package
 				var file:File = new File(event.arguments[0]); 
 				var extension:String = file.extension.toLowerCase();
 				
+				//先赋值，防止双击文件无法直接开启
+				airAPI.file = file;
+				
 				if (airAPI.file)
-				{
-					airAPI.openFile(file);
-				}
-				else
-				{	
-					airAPI.file = file;
-					kvsCore.addEventListener(Event.RESIZE, kvsResizeHandler);
-				}
+					airAPI.openFile(airAPI.file);
 			}
 			else// 正常打开应用，没有通过双击文件方式 
 			{
@@ -380,17 +376,6 @@ package
 		} 
 		
 		private var ifOpend:Boolean = false;
-		
-		/**
-		 */		
-		private function kvsResizeHandler(evt:Event):void
-		{
-			if (airAPI.file)
-			{
-				airAPI.openFile(airAPI.file);
-				kvsCore.removeEventListener(Event.RESIZE, kvsResizeHandler);
-			}
-		}
 		
 		/**
 		 */		
